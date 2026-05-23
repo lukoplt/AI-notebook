@@ -17,10 +17,15 @@ let package = Package(
             targets: ["AINotebookApp"]
         )
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/groue/GRDB.swift.git", from: "7.0.0")
+    ],
     targets: [
         .target(
-            name: "AINotebookCore"
+            name: "AINotebookCore",
+            dependencies: [
+                .product(name: "GRDB", package: "GRDB.swift")
+            ]
         ),
         .executableTarget(
             name: "AINotebookApp",
