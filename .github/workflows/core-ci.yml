@@ -30,12 +30,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11   # v4.1.1
 
-      - name: Forbid URLSession in AINotebookCore (M0 — entire Core)
-        # M0 has no network code anywhere. OllamaClient (M2) will be
-        # excluded from this gate at that point.
+      - name: Forbid URLSession in AINotebookCore except OllamaClient
+        # OllamaClient is the only file allowed to talk to the network.
+        # Every other Core file must stay offline.
         run: |
-          if grep -r --include='*.swift' 'URLSession' Sources/AINotebookCore/; then
-            echo "::error::URLSession found in AINotebookCore — Core must stay offline in M0."
+          OFFENDERS=$(grep -rl --include='*.swift' 'URLSession' Sources/AINotebookCore/ | grep -v '/OllamaClient.swift$' || true)
+          if [ -n "$OFFENDERS" ]; then
+            echo "::error::URLSession found outside OllamaClient.swift:"
+            echo "$OFFENDERS"
             exit 1
           fi
-          echo "OK: no URLSession in AINotebookCore."
+          echo "OK: URLSession only present in OllamaClient.swift."
