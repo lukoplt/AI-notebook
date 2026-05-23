@@ -1,0 +1,41 @@
+name: Core CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11   # v4.1.1
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Build
+        run: swift build -c debug
+
+      - name: Test
+        run: swift test --parallel
+
+  privacy-grep:
+    runs-on: macos-14
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11   # v4.1.1
+
+      - name: Forbid URLSession in AINotebookCore (M0 — entire Core)
+        # M0 has no network code anywhere. OllamaClient (M2) will be
+        # excluded from this gate at that point.
+        run: |
+          if grep -r --include='*.swift' 'URLSession' Sources/AINotebookCore/; then
+            echo "::error::URLSession found in AINotebookCore — Core must stay offline in M0."
+            exit 1
+          fi
+          echo "OK: no URLSession in AINotebookCore."
