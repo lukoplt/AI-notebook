@@ -26,6 +26,27 @@ public struct AppText: Sendable {
         case chatTabComingSoon
         case notesTabComingSoon
         case transformationsTabComingSoon
+        case welcome
+        case welcomeBody
+        case continueLabel
+        case onboardingDetectTitle
+        case onboardingDetectBody
+        case onboardingDetectChecking
+        case onboardingDetectFound
+        case openOllamaDownload
+        case onboardingDetectWaiting
+        case onboardingPickModelsTitle
+        case onboardingPickModelsBody
+        case chatModel
+        case embeddingModel
+        case onboardingPullTitle
+        case onboardingPullBody
+        case onboardingPullingChat
+        case onboardingPullingEmbedding
+        case onboardingDoneTitle
+        case onboardingDoneBody
+        case ollamaUnreachable
+        case startUsingApp
     }
 
     public let language: AppLanguage
@@ -71,6 +92,27 @@ public struct AppText: Sendable {
         case .chatTabComingSoon:    "Chat arrives in milestone M5."
         case .notesTabComingSoon:   "Notes arrive in milestone M6."
         case .transformationsTabComingSoon: "Transformations arrive in milestone M6."
+        case .welcome:                     "Welcome"
+        case .welcomeBody:                 "AI Notebook keeps everything local. To run AI, we'll use Ollama on your Mac."
+        case .continueLabel:               "Continue"
+        case .onboardingDetectTitle:       "Check Ollama"
+        case .onboardingDetectBody:        "We're looking for a running Ollama on your Mac."
+        case .onboardingDetectChecking:    "Checking…"
+        case .onboardingDetectFound:       "Ollama is running."
+        case .openOllamaDownload:          "Open download page"
+        case .onboardingDetectWaiting:     "Waiting for Ollama to start…"
+        case .onboardingPickModelsTitle:   "Pick models"
+        case .onboardingPickModelsBody:    "Defaults are fine for most people. You can change them later in Settings."
+        case .chatModel:                   "Chat model"
+        case .embeddingModel:              "Embedding model"
+        case .onboardingPullTitle:         "Downloading models"
+        case .onboardingPullBody:          "This is a one-time download. Keep the app open."
+        case .onboardingPullingChat:       "Chat model"
+        case .onboardingPullingEmbedding:  "Embedding model"
+        case .onboardingDoneTitle:         "All set"
+        case .onboardingDoneBody:          "You can now create your first notebook."
+        case .ollamaUnreachable:           "Cannot reach Ollama. Is it running?"
+        case .startUsingApp:               "Start using the app"
         }
     }
 
@@ -102,6 +144,27 @@ public struct AppText: Sendable {
         case .chatTabComingSoon:    "Chat přijde v milníku M5."
         case .notesTabComingSoon:   "Poznámky přijdou v milníku M6."
         case .transformationsTabComingSoon: "Transformace přijdou v milníku M6."
+        case .welcome:                     "Vítejte"
+        case .welcomeBody:                 "AI Notebook udržuje vše lokálně. K AI použijeme Ollamu spuštěnou na vašem Macu."
+        case .continueLabel:               "Pokračovat"
+        case .onboardingDetectTitle:       "Kontrola Ollamy"
+        case .onboardingDetectBody:        "Hledáme spuštěnou Ollamu na vašem Macu."
+        case .onboardingDetectChecking:    "Hledám…"
+        case .onboardingDetectFound:       "Ollama běží."
+        case .openOllamaDownload:          "Otevřít stránku ke stažení"
+        case .onboardingDetectWaiting:     "Čekám, až se Ollama spustí…"
+        case .onboardingPickModelsTitle:   "Vyberte modely"
+        case .onboardingPickModelsBody:    "Výchozí hodnoty vyhovují většině uživatelů. Změnit je můžete později v Nastavení."
+        case .chatModel:                   "Model pro chat"
+        case .embeddingModel:              "Model pro embeddingy"
+        case .onboardingPullTitle:         "Stahuji modely"
+        case .onboardingPullBody:          "Tohle je jednorázové stažení. Nechte aplikaci spuštěnou."
+        case .onboardingPullingChat:       "Model pro chat"
+        case .onboardingPullingEmbedding:  "Model pro embeddingy"
+        case .onboardingDoneTitle:         "Hotovo"
+        case .onboardingDoneBody:          "Teď můžete vytvořit svůj první poznámkový blok."
+        case .ollamaUnreachable:           "Nelze se připojit k Ollamě. Je spuštěná?"
+        case .startUsingApp:               "Začít používat aplikaci"
         }
     }
 }

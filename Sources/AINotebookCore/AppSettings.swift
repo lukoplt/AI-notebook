@@ -11,6 +11,9 @@ import Foundation
 public final class AppSettings: ObservableObject {
     private enum Keys {
         static let language = "language"
+        static let hasCompletedOnboarding = "hasCompletedOnboarding"
+        static let selectedChatModel = "selectedChatModel"
+        static let selectedEmbeddingModel = "selectedEmbeddingModel"
     }
 
     private let defaults: UserDefaults
@@ -19,6 +22,18 @@ public final class AppSettings: ObservableObject {
         didSet {
             defaults.set(language.rawValue, forKey: Keys.language)
         }
+    }
+
+    @Published public var hasCompletedOnboarding: Bool {
+        didSet { defaults.set(hasCompletedOnboarding, forKey: Keys.hasCompletedOnboarding) }
+    }
+
+    @Published public var selectedChatModel: String {
+        didSet { defaults.set(selectedChatModel, forKey: Keys.selectedChatModel) }
+    }
+
+    @Published public var selectedEmbeddingModel: String {
+        didSet { defaults.set(selectedEmbeddingModel, forKey: Keys.selectedEmbeddingModel) }
     }
 
     public init(
@@ -33,6 +48,12 @@ public final class AppSettings: ObservableObject {
         } else {
             self.language = detectInitialLanguage(preferredLanguages: preferredLanguages)
         }
+
+        self.hasCompletedOnboarding = defaults.bool(forKey: Keys.hasCompletedOnboarding)
+        self.selectedChatModel =
+            defaults.string(forKey: Keys.selectedChatModel) ?? "llama3.2:3b"
+        self.selectedEmbeddingModel =
+            defaults.string(forKey: Keys.selectedEmbeddingModel) ?? "nomic-embed-text"
     }
 
     public var text: AppText {

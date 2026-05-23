@@ -54,4 +54,46 @@ final class AppSettingsTests: XCTestCase {
         )
         XCTAssertEqual(settings.language, .czech)
     }
+
+    func testHasCompletedOnboardingDefaultsFalse() {
+        let defaults = makeSuite("test.onb.\(UUID().uuidString)")
+        let settings = AppSettings(
+            defaults: defaults,
+            preferredLanguages: ["en-US"]
+        )
+        XCTAssertFalse(settings.hasCompletedOnboarding)
+    }
+
+    func testHasCompletedOnboardingPersists() {
+        let suite = "test.onb-persist.\(UUID().uuidString)"
+        let defaults = makeSuite(suite)
+        let settings = AppSettings(
+            defaults: defaults,
+            preferredLanguages: ["en-US"]
+        )
+        settings.hasCompletedOnboarding = true
+        XCTAssertEqual(defaults.bool(forKey: "hasCompletedOnboarding"), true)
+    }
+
+    func testSelectedModelsDefaults() {
+        let defaults = makeSuite("test.models.\(UUID().uuidString)")
+        let settings = AppSettings(
+            defaults: defaults,
+            preferredLanguages: ["en-US"]
+        )
+        XCTAssertEqual(settings.selectedChatModel, "llama3.2:3b")
+        XCTAssertEqual(settings.selectedEmbeddingModel, "nomic-embed-text")
+    }
+
+    func testSelectedModelsPersist() {
+        let defaults = makeSuite("test.models-w.\(UUID().uuidString)")
+        let settings = AppSettings(
+            defaults: defaults,
+            preferredLanguages: ["en-US"]
+        )
+        settings.selectedChatModel = "llama3.1:8b"
+        settings.selectedEmbeddingModel = "mxbai-embed-large"
+        XCTAssertEqual(defaults.string(forKey: "selectedChatModel"), "llama3.1:8b")
+        XCTAssertEqual(defaults.string(forKey: "selectedEmbeddingModel"), "mxbai-embed-large")
+    }
 }
