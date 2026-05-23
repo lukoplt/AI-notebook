@@ -33,9 +33,15 @@ final class LocalizationTests: XCTestCase {
         let en = AppText(language: .english)
         XCTAssertEqual(en.string(.settings), "Settings")
         XCTAssertEqual(en.string(.notebooks), "Notebooks")
+        XCTAssertEqual(en.string(.create), "Create")
+        XCTAssertEqual(en.string(.cancel), "Cancel")
+        XCTAssertEqual(en.string(.delete), "Delete")
 
         let cs = AppText(language: .czech)
         XCTAssertEqual(cs.string(.settings), "Nastavení")
         XCTAssertEqual(cs.string(.notebooks), "Poznámkové bloky")
+        XCTAssertEqual(cs.string(.create), "Vytvořit")
+        XCTAssertEqual(cs.string(.cancel), "Zrušit")
+        XCTAssertEqual(cs.string(.delete), "Smazat")
     }
 }
