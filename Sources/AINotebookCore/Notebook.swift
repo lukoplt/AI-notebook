@@ -29,12 +29,16 @@ extension Notebook: FetchableRecord, MutablePersistableRecord {
     public static let databaseColumnEncodingStrategy = DatabaseColumnEncodingStrategy.convertToSnakeCase
     public static let databaseColumnDecodingStrategy = DatabaseColumnDecodingStrategy.convertFromSnakeCase
 
-    public enum Columns {
-        public static let id = Column(CodingKeys.id)
-        public static let name = Column(CodingKeys.name)
-        public static let description = Column(CodingKeys.description)
-        public static let createdAt = Column(CodingKeys.createdAt)
-        public static let updatedAt = Column(CodingKeys.updatedAt)
+    public enum Columns: String {
+        case id
+        case name
+        case description
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+
+        var column: Column {
+            Column(self.rawValue)
+        }
     }
 
     public mutating func didInsert(_ inserted: InsertionSuccess) {

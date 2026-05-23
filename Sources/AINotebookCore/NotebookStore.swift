@@ -1,0 +1,86 @@
+import Foundation
+import GRDB
+
+/// Owns the SQLite database file and exposes synchronous CRUD operations
+/// for notebooks. `@Published notebooks` drives the sidebar list — it is
+/// refreshed from disk after every mutation.
+///
+/// `@MainActor` is correct here because GRDB queue reads/writes from this
+/// type are short and the SwiftUI views consume the published list on the
+/// main thread. Future high-throughput paths (e.g. embedding ingestion in
+/// M4) will use GRDB's async APIs from background actors.
+@MainActor
+public final class NotebookStore: ObservableObject {
+    private let dbQueue: DatabaseQueue
+
+    @Published public private(set) var notebooks: [Notebook] = []
+
+    public init(path: StorePath) throws {
+        if let url = path.fileURL {
+            self.dbQueue = try DatabaseQueue(path: url.path)
+        } else {
+            self.dbQueue = try DatabaseQueue()
+        }
+        var migrator = DatabaseMigrator()
+        registerMigrationV1(on: &migrator)
+        try migrator.migrate(dbQueue)
+        try refresh()
+    }
+
+    public func refresh() throws {
+        notebooks = try dbQueue.read { db in
+            try Notebook
+                .order(Notebook.Columns.updatedAt.column.desc)
+                .fetchAll(db)
+        }
+    }
+
+    @discardableResult
+    public func createNotebook(name: String, description: String = "") throws -> Notebook {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            throw StoreError.invalidNotebookName(name)
+        }
+        let now = Date()
+        var notebook = Notebook(
+            name: trimmed,
+            description: description,
+            createdAt: now,
+            updatedAt: now
+        )
+        try dbQueue.write { db in
+            try notebook.insert(db)
+        }
+        try refresh()
+        return notebook
+    }
+
+    @discardableResult
+    public func renameNotebook(id: Int64, newName: String) throws -> Notebook {
+        let trimmed = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            throw StoreError.invalidNotebookName(newName)
+        }
+        let updated = try dbQueue.write { db -> Notebook in
+            guard var existing = try Notebook.fetchOne(db, key: id) else {
+                throw StoreError.notebookNotFound(id: id)
+            }
+            existing.name = trimmed
+            existing.updatedAt = Date()
+            try existing.update(db)
+            return existing
+        }
+        try refresh()
+        return updated
+    }
+
+    public func deleteNotebook(id: Int64) throws {
+        let deleted = try dbQueue.write { db in
+            try Notebook.deleteOne(db, key: id)
+        }
+        guard deleted else {
+            throw StoreError.notebookNotFound(id: id)
+        }
+        try refresh()
+    }
+}
