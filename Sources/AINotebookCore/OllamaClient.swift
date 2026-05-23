@@ -106,6 +106,24 @@ public final class OllamaClient: @unchecked Sendable {
         }
     }
 
+    /// `POST /api/embed` — returns one `[Double]` per input string.
+    public func embed(model: String, input: [String]) async throws -> [[Double]] {
+        let url = baseURL.appendingPathComponent("api/embed")
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.httpBody = try encoder.encode(OllamaEmbedRequest(model: model, input: input))
+
+        let (data, response) = try await sendData(req)
+        try ensureSuccess(response: response, body: data)
+        do {
+            let decoded = try decoder.decode(OllamaEmbedResponse.self, from: data)
+            return decoded.embeddings
+        } catch {
+            throw OllamaError.decoding(message: String(describing: error))
+        }
+    }
+
     // MARK: - Helpers
 
     private func sendData(_ req: URLRequest) async throws -> (Data, URLResponse) {
