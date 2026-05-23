@@ -4,7 +4,6 @@
 # Swift / SPM
 .build/
 .swiftpm/
-Package.resolved
 *.xcodeproj/
 *.xcworkspace/
 DerivedData/
