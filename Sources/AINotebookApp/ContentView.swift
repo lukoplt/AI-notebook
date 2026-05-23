@@ -3,13 +3,18 @@ import AINotebookCore
 
 struct ContentView: View {
     @EnvironmentObject private var settings: AppSettings
+    @EnvironmentObject private var store: NotebookStore
+
+    @State private var selectedNotebookId: Int64?
     @State private var showSettings = false
 
     var body: some View {
         NavigationSplitView {
-            sidebar
+            SidebarView(selection: $selectedNotebookId)
+                .environmentObject(settings)
+                .environmentObject(store)
         } detail: {
-            detailPlaceholder
+            detail
         }
         .navigationTitle(settings.text.string(.appName))
         .toolbar {
@@ -27,33 +32,22 @@ struct ContentView: View {
         }
     }
 
-    private var sidebar: some View {
-        VStack(alignment: .leading) {
-            Text(settings.text.string(.notebooks))
-                .font(.headline)
-                .padding()
-            Spacer()
+    @ViewBuilder
+    private var detail: some View {
+        if let id = selectedNotebookId,
+           let notebook = store.notebooks.first(where: { $0.id == id }) {
+            NotebookDetailView(notebook: notebook)
+                .environmentObject(settings)
+        } else {
+            VStack(spacing: 12) {
+                Image(systemName: "doc.text.magnifyingglass")
+                    .font(.system(size: 48))
+                    .foregroundStyle(.secondary)
+                Text(settings.text.string(.noNotebookSelected))
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(minWidth: 220)
     }
-
-    private var detailPlaceholder: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "doc.text.magnifyingglass")
-                .font(.system(size: 48))
-                .foregroundStyle(.secondary)
-            Text(settings.text.string(.noNotebookSelected))
-                .font(.title3)
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
-
-#Preview {
-    ContentView()
-        .environmentObject(AppSettings(
-            defaults: UserDefaults(suiteName: "preview")!,
-            preferredLanguages: ["en-US"]
-        ))
 }
