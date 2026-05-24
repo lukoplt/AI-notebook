@@ -9,7 +9,8 @@ struct ChatView: View {
     @EnvironmentObject private var store: NotebookStore
     @EnvironmentObject private var chatHolder: ChatEngineHolder
 
-    @State private var session: ChatSession?
+    @State private var sessions: [ChatSession] = []
+    @State private var selectedSessionId: Int64?
     @State private var messages: [ChatMessage] = []
     @State private var input: String = ""
     @State private var streamingDraft: String = ""
@@ -21,16 +22,58 @@ struct ChatView: View {
     private var t: AppText { settings.text }
 
     var body: some View {
+        HSplitView {
+            sessionsSidebar
+            chatSurface
+        }
+        .task(id: notebook.id) { await ensureSessions() }
+        .popover(item: $popoverCitation) { c in
+            CitationPopover(citation: c, sourceTitle: popoverSourceTitle)
+        }
+    }
+
+    private var sessionsSidebar: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(t.string(.chatSessionsLabel)).font(.title3).bold()
+                Spacer()
+                Button {
+                    Task { await newSession() }
+                } label: { Image(systemName: "plus") }
+                    .help(t.string(.chatNewSessionButton))
+            }
+            .padding(.horizontal, 12)
+            .padding(.top, 12)
+            List(selection: $selectedSessionId) {
+                ForEach(sessions) { s in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(s.title).font(.headline)
+                        Text(s.createdAt.formatted(date: .abbreviated, time: .shortened))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    .tag(s.id ?? -1)
+                    .contextMenu {
+                        Button(role: .destructive) {
+                            if let id = s.id { Task { await deleteSession(id) } }
+                        } label: { Text(t.string(.chatDeleteSessionButton)) }
+                    }
+                }
+            }
+            .listStyle(.sidebar)
+            .onChange(of: selectedSessionId) { _, _ in
+                Task { await reloadMessages() }
+            }
+        }
+        .frame(minWidth: 200, idealWidth: 240, maxWidth: 320)
+    }
+
+    private var chatSurface: some View {
         VStack(spacing: 0) {
             messagesList
             Divider()
             inputBar
         }
         .padding(16)
-        .task(id: notebook.id) { await ensureSession() }
-        .popover(item: $popoverCitation) { c in
-            CitationPopover(citation: c, sourceTitle: popoverSourceTitle)
-        }
     }
 
     @ViewBuilder
@@ -56,7 +99,7 @@ struct ChatView: View {
                     if !streamingDraft.isEmpty {
                         MessageBubble(
                             message: ChatMessage(
-                                sessionId: session?.id ?? 0,
+                                sessionId: selectedSessionId ?? 0,
                                 role: .assistant,
                                 content: streamingDraft
                             ),
@@ -92,16 +135,18 @@ struct ChatView: View {
     }
 
     @MainActor
-    private func ensureSession() async {
+    private func ensureSessions() async {
         do {
-            let existing = try store.chatSessions(notebookId: notebook.id!)
-            if let s = existing.first {
-                session = s
+            sessions = try store.chatSessions(notebookId: notebook.id!)
+            if let first = sessions.first {
+                selectedSessionId = first.id
             } else {
-                session = try store.createChatSession(
+                let new = try store.createChatSession(
                     notebookId: notebook.id!,
                     title: t.string(.chatNewSessionTitle)
                 )
+                sessions = [new]
+                selectedSessionId = new.id
             }
             await reloadMessages()
         } catch {
@@ -110,17 +155,43 @@ struct ChatView: View {
     }
 
     @MainActor
-    private func reloadMessages() async {
-        guard let s = session else { return }
+    private func newSession() async {
         do {
-            messages = try store.messages(sessionId: s.id!)
+            let s = try store.createChatSession(
+                notebookId: notebook.id!,
+                title: t.string(.chatNewSessionTitle)
+            )
+            sessions.insert(s, at: 0)
+            selectedSessionId = s.id
+            await reloadMessages()
+        } catch { errorMessage = String(describing: error) }
+    }
+
+    @MainActor
+    private func deleteSession(_ id: Int64) async {
+        do {
+            try store.deleteChatSession(id: id)
+            sessions.removeAll { $0.id == id }
+            selectedSessionId = sessions.first?.id
+            await reloadMessages()
+        } catch { errorMessage = String(describing: error) }
+    }
+
+    @MainActor
+    private func reloadMessages() async {
+        guard let sid = selectedSessionId else {
+            messages = []
+            return
+        }
+        do {
+            messages = try store.messages(sessionId: sid)
         } catch {
             errorMessage = String(describing: error)
         }
     }
 
     private func send() async {
-        guard let s = session else { return }
+        guard let sid = selectedSessionId else { return }
         let text = input.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
         input = ""
@@ -130,7 +201,7 @@ struct ChatView: View {
         defer { sending = false; streamingDraft = "" }
         do {
             _ = try await chatHolder.engine.send(
-                sessionId: s.id!,
+                sessionId: sid,
                 notebookId: notebook.id!,
                 userText: text
             ) { token in
