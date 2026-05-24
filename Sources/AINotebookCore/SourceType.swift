@@ -8,6 +8,7 @@ public enum SourceType: String, Codable, CaseIterable, Sendable {
     case docx
     case pptx
     case xlsx
+    case note
 
     /// Best-effort detection from a filename. Returns nil for unknown extensions.
     public static func detect(filename: String) -> SourceType? {

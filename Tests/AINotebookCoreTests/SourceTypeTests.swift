@@ -25,4 +25,16 @@ final class SourceTypeTests: XCTestCase {
         XCTAssertNil(SourceType.detect(filename: "image.png"))
         XCTAssertNil(SourceType.detect(filename: "noextension"))
     }
+
+    func testNoteRawValueIsStable() {
+        XCTAssertEqual(SourceType.note.rawValue, "note")
+    }
+
+    func testDetectReturnsNilForNoteExtension() {
+        XCTAssertNil(SourceType.detect(filename: "scratch.note"))
+    }
+
+    func testAllCasesContainsNote() {
+        XCTAssertTrue(SourceType.allCases.contains(.note))
+    }
 }

@@ -73,6 +73,9 @@ public final class IngestionService: @unchecked Sendable {
             case .web:
                 let e = try await web.extract(from: url, kind: kind)
                 return (e, Chunker.chunk(e.text))
+            case .note:
+                // .note sources are managed via Notebook notes, not file ingestion.
+                throw IngestionError.unsupportedExtension(url.pathExtension)
             }
         }
     }
