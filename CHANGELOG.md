@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.3.0] — 2026-05-25
+
+Notes graduate from passive note-taking to the primary authoring canvas
+of the app.
+
+### Added
+- Notes auto-indexing: every Note participates in RAG retrieval via a
+  hidden shadow Source row (`SourceType.note`, `NoteIndexer` actor).
+- Three-column Notes tab: list / editor / chat sidebar.
+- Chat sidebar injects the currently-open Note as bonus context (new
+  `currentNoteContent` parameter on `ChatEngine.send`).
+- Citation popover "Open note" action jumps to the cited Note.
+- `NoteJumpCoordinator` observable for citation → note navigation.
+
+### Schema
+- MigrationV6 adds `notes.auto_source_id` + `notes.note_uuid`; pre-existing
+  Notes get a backfilled UUID on first launch.
+- `NotebookStore.sources(notebookId:)` excludes `.note` shadow rows from
+  the user-facing Sources pane; `sourcesIncludingShadow(...)` exposes
+  the full list for internal use.
+
+### Tests
+- ~170 unit tests (was 159).
+
 ## [0.2.0] — 2026-05-25
 
 Deferred polish — closes all in-scope v1 gaps from M5/M6/M7.
