@@ -45,6 +45,7 @@ public actor ChatEngine {
         sessionId: Int64,
         notebookId: Int64,
         userText: String,
+        currentNoteContent: String? = nil,
         onToken: @escaping @Sendable (String) -> Void
     ) async throws -> ChatMessage {
         // 1) Persist the user message.
@@ -65,7 +66,7 @@ public actor ChatEngine {
         )
 
         // 3) Compose messages.
-        let systemContent = SystemPrompt.compose(hits: hits)
+        let systemContent = SystemPrompt.compose(hits: hits, currentNoteContent: currentNoteContent)
         let history = try await MainActor.run {
             try storeRef.messages(sessionId: sessionId)
         }

@@ -2,7 +2,10 @@ import Foundation
 
 public enum SystemPrompt {
 
-    public static func compose(hits: [RetrievalHit]) -> String {
+    public static func compose(
+        hits: [RetrievalHit],
+        currentNoteContent: String? = nil
+    ) -> String {
         let header = """
         You are a helpful assistant answering questions about the user's notebook.
         Use ONLY the provided CONTEXT to answer. If the answer isn't in the
@@ -11,14 +14,25 @@ public enum SystemPrompt {
         may appear in a single sentence: [1][3].
         """
 
+        var sections: [String] = [header]
+
         if hits.isEmpty {
-            return header + "\n\nCONTEXT:\n(none)"
+            sections.append("CONTEXT:\n(none)")
+        } else {
+            let blocks = hits.enumerated().map { (i, hit) in
+                "[\(i + 1)] \(hit.snippet)"
+            }.joined(separator: "\n")
+            sections.append("CONTEXT:\n" + blocks)
         }
 
-        let blocks = hits.enumerated().map { (i, hit) in
-            "[\(i + 1)] \(hit.snippet)"
-        }.joined(separator: "\n")
+        if let note = currentNoteContent,
+           !note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            sections.append(
+                "CURRENTLY OPEN NOTE (additional context — user may be asking about this):\n"
+                + note
+            )
+        }
 
-        return header + "\n\nCONTEXT:\n" + blocks
+        return sections.joined(separator: "\n\n")
     }
 }
