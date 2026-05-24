@@ -11,6 +11,7 @@ struct AINotebookAppEntry: App {
     @StateObject private var onboarding: OnboardingViewModel
     @StateObject private var chatHolder: ChatEngineHolder
     @StateObject private var transformationHolder: TransformationEngineHolder
+    @StateObject private var noteJump = NoteJumpCoordinator()
 
     init() {
         let settings = AppSettings()
@@ -75,6 +76,7 @@ struct AINotebookAppEntry: App {
                 .environmentObject(onboarding)
                 .environmentObject(chatHolder)
                 .environmentObject(transformationHolder)
+                .environmentObject(noteJump)
                 .frame(minWidth: 900, minHeight: 600)
         }
         .windowStyle(.titleBar)
