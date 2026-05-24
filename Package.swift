@@ -33,7 +33,10 @@ let package = Package(
         ),
         .executableTarget(
             name: "AINotebookApp",
-            dependencies: ["AINotebookCore"]
+            dependencies: ["AINotebookCore"],
+            resources: [
+                .copy("Resources/editor")
+            ]
         ),
         .testTarget(
             name: "AINotebookCoreTests",
