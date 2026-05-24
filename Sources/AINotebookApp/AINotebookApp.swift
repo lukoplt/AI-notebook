@@ -9,6 +9,7 @@ struct AINotebookAppEntry: App {
     @StateObject private var ingestion: IngestionServiceHolder
     @StateObject private var embedderHolder: EmbedderHolder
     @StateObject private var onboarding: OnboardingViewModel
+    @StateObject private var chatHolder: ChatEngineHolder
 
     init() {
         let settings = AppSettings()
@@ -42,6 +43,19 @@ struct AINotebookAppEntry: App {
             client: client,
             settings: settings
         ))
+
+        let retriever = Retriever(
+            store: store,
+            client: client,
+            model: settings.selectedEmbeddingModel
+        )
+        let engine = ChatEngine(
+            store: store,
+            retriever: retriever,
+            chat: client,
+            chatModel: settings.selectedChatModel
+        )
+        _chatHolder = StateObject(wrappedValue: ChatEngineHolder(engine: engine))
     }
 
     var body: some Scene {
@@ -53,6 +67,7 @@ struct AINotebookAppEntry: App {
                 .environmentObject(ingestion)
                 .environmentObject(embedderHolder)
                 .environmentObject(onboarding)
+                .environmentObject(chatHolder)
                 .frame(minWidth: 900, minHeight: 600)
         }
         .windowStyle(.titleBar)
