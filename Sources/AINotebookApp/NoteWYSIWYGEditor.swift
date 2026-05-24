@@ -7,6 +7,9 @@ struct NoteWYSIWYGEditor: View {
     @Binding var title: String
     @Binding var bodyMd: String
     let language: AppLanguage
+    let noteId: Int64
+    let noteUuid: String
+    let attachments: AttachmentStore?
     let onSave: @Sendable (String) -> Void
 
     @StateObject private var autoSave: AutoSaveController
@@ -18,11 +21,17 @@ struct NoteWYSIWYGEditor: View {
         title: Binding<String>,
         bodyMd: Binding<String>,
         language: AppLanguage,
+        noteId: Int64,
+        noteUuid: String,
+        attachments: AttachmentStore?,
         onSave: @escaping @Sendable (String) -> Void
     ) {
         self._title = title
         self._bodyMd = bodyMd
         self.language = language
+        self.noteId = noteId
+        self.noteUuid = noteUuid
+        self.attachments = attachments
         self.onSave = onSave
         self._autoSave = StateObject(wrappedValue: AutoSaveController(save: onSave))
     }
@@ -43,6 +52,9 @@ struct NoteWYSIWYGEditor: View {
             } else {
                 EditorWebView(
                     initialMarkdown: bodyMd,
+                    noteId: noteId,
+                    noteUuid: noteUuid,
+                    attachments: attachments,
                     onChange: { md in
                         bodyMd = md
                         autoSave.noteDidChange(md)
@@ -83,15 +95,28 @@ struct NoteWYSIWYGEditor: View {
 
 private struct EditorWebView: NSViewRepresentable {
     let initialMarkdown: String
+    let noteId: Int64
+    let noteUuid: String
+    let attachments: AttachmentStore?
     let onChange: (String) -> Void
     let onLoadFailed: () -> Void
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(onChange: onChange, onLoadFailed: onLoadFailed)
+        let c = Coordinator(onChange: onChange, onLoadFailed: onLoadFailed)
+        c.attachments = attachments
+        c.noteId = noteId
+        c.noteUuid = noteUuid
+        return c
     }
 
     func makeNSView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
+        if let attachments = attachments {
+            config.setURLSchemeHandler(
+                AttachmentURLSchemeHandler(attachments: attachments),
+                forURLScheme: "attachment"
+            )
+        }
         let userController = WKUserContentController()
         userController.add(context.coordinator, name: "aino")
         config.userContentController = userController
@@ -120,6 +145,9 @@ private struct EditorWebView: NSViewRepresentable {
         var onChange: (String) -> Void
         var onLoadFailed: () -> Void
         var initialMarkdown: String = ""
+        var attachments: AttachmentStore?
+        var noteId: Int64 = 0
+        var noteUuid: String = ""
 
         init(onChange: @escaping (String) -> Void,
              onLoadFailed: @escaping () -> Void) {
@@ -143,9 +171,35 @@ private struct EditorWebView: NSViewRepresentable {
                     onChange(md)
                 case .save(let md):
                     onChange(md)
-                case .attachmentRequest:
-                    // Handled in Task 9 wiring.
-                    break
+                case .attachmentRequest(let requestId, let filename, let mime, let base64):
+                    guard let attachments = attachments,
+                          let bytes = Data(base64Encoded: base64) else {
+                        webView?.evaluateJavaScript(
+                            "window.aino && window.aino.attachmentDenied && window.aino.attachmentDenied('\(requestId)')",
+                            completionHandler: nil
+                        )
+                        return
+                    }
+                    let noteIdLocal = noteId
+                    let noteUuidLocal = noteUuid
+                    let webViewLocal = webView
+                    Task { @MainActor in
+                        do {
+                            let att = try attachments.save(
+                                noteId: noteIdLocal,
+                                noteUuid: noteUuidLocal,
+                                filename: filename,
+                                mime: mime,
+                                bytes: bytes
+                            )
+                            let url = "attachment://\(noteUuidLocal)/\(att.filename)"
+                            let js = "window.aino && window.aino.attachmentSaved && window.aino.attachmentSaved('\(requestId)', '\(url)', '\(mime)')"
+                            webViewLocal?.evaluateJavaScript(js, completionHandler: nil)
+                        } catch {
+                            let js = "window.aino && window.aino.attachmentDenied && window.aino.attachmentDenied('\(requestId)')"
+                            webViewLocal?.evaluateJavaScript(js, completionHandler: nil)
+                        }
+                    }
                 }
             } catch {
                 // Unknown payloads ignored in v1.

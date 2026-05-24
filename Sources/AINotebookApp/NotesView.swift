@@ -7,6 +7,7 @@ struct NotesView: View {
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var store: NotebookStore
     @EnvironmentObject private var noteJump: NoteJumpCoordinator
+    @EnvironmentObject private var attachmentsHolder: AttachmentStoreHolder
 
     @State private var notes: [Note] = []
     @State private var selection: Int64?
@@ -90,6 +91,9 @@ struct NotesView: View {
                 title: $draftTitle,
                 bodyMd: $draftBody,
                 language: settings.language,
+                noteId: id,
+                noteUuid: notes.first(where: { $0.id == id })?.noteUuid ?? "",
+                attachments: attachmentsHolder.store,
                 onSave: { _ in
                     Task { @MainActor in await save(id: id) }
                 }

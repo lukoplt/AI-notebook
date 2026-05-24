@@ -11,6 +11,7 @@ struct AINotebookAppEntry: App {
     @StateObject private var onboarding: OnboardingViewModel
     @StateObject private var chatHolder: ChatEngineHolder
     @StateObject private var transformationHolder: TransformationEngineHolder
+    @StateObject private var attachmentsHolder: AttachmentStoreHolder
     @StateObject private var noteJump = NoteJumpCoordinator()
 
     init() {
@@ -71,6 +72,17 @@ struct AINotebookAppEntry: App {
             store: store, chat: client, chatModel: settings.selectedChatModel
         )
         _transformationHolder = StateObject(wrappedValue: TransformationEngineHolder(engine: txEngine))
+
+        let attachments = AttachmentStore(
+            store: store,
+            root: (try? AttachmentStore.defaultRoot()) ?? FileManager.default.temporaryDirectory
+        )
+        _attachmentsHolder = StateObject(wrappedValue: AttachmentStoreHolder(store: attachments))
+        store.onNoteDeleted = { uuid in
+            await MainActor.run {
+                try? attachments.deleteFolder(noteUuid: uuid)
+            }
+        }
     }
 
     var body: some Scene {
@@ -84,6 +96,7 @@ struct AINotebookAppEntry: App {
                 .environmentObject(onboarding)
                 .environmentObject(chatHolder)
                 .environmentObject(transformationHolder)
+                .environmentObject(attachmentsHolder)
                 .environmentObject(noteJump)
                 .frame(minWidth: 900, minHeight: 600)
         }
@@ -102,4 +115,10 @@ struct AINotebookAppEntry: App {
 final class OllamaClientHolder: ObservableObject {
     let client: OllamaClient
     init(client: OllamaClient) { self.client = client }
+}
+
+@MainActor
+final class AttachmentStoreHolder: ObservableObject {
+    let store: AttachmentStore
+    init(store: AttachmentStore) { self.store = store }
 }
