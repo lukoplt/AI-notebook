@@ -58,3 +58,16 @@ extension Source: FetchableRecord, MutablePersistableRecord {
         id = inserted.rowID
     }
 }
+
+/// In-memory chunk produced by the chunker, not yet persisted.
+public struct ChunkDraft: Equatable, Hashable, Sendable {
+    public var text: String
+    public var tokenCount: Int
+    public var pageHint: Int?
+
+    public init(text: String, tokenCount: Int, pageHint: Int? = nil) {
+        self.text = text
+        self.tokenCount = tokenCount
+        self.pageHint = pageHint
+    }
+}
