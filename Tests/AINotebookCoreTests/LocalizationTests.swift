@@ -56,4 +56,9 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppText(language: .english).string(.sourceStatusReady), "Ready")
         XCTAssertEqual(AppText(language: .czech).string(.sourceStatusReady),   "Hotovo")
     }
+
+    func testIndexingCompleteIsBilingual() {
+        XCTAssertEqual(AppText(language: .english).string(.indexingComplete), "Indexed")
+        XCTAssertEqual(AppText(language: .czech)  .string(.indexingComplete), "Indexováno")
+    }
 }

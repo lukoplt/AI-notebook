@@ -65,6 +65,12 @@ public struct AppText: Sendable {
         case noSourcesEmptyState
         case deleteSourceConfirm
         case deleteButton
+        case indexingInProgress
+        case indexingProgressFormat
+        case indexingComplete
+        case indexingError
+        case indexingPaused
+        case indexingIdle
     }
 
     public let language: AppLanguage
@@ -149,6 +155,12 @@ public struct AppText: Sendable {
         case .noSourcesEmptyState:         "No sources yet. Add one to get started."
         case .deleteSourceConfirm:         "Delete this source?"
         case .deleteButton:                "Delete"
+        case .indexingInProgress:          "Indexing %@…"
+        case .indexingProgressFormat:      "%d / %d chunks"
+        case .indexingComplete:            "Indexed"
+        case .indexingError:               "Indexing error"
+        case .indexingPaused:              "Indexing paused"
+        case .indexingIdle:                "Idle"
         }
     }
 
@@ -219,6 +231,12 @@ public struct AppText: Sendable {
         case .noSourcesEmptyState:         "Zatím žádné zdroje. Přidejte první, abyste mohli začít."
         case .deleteSourceConfirm:         "Smazat tento zdroj?"
         case .deleteButton:                "Smazat"
+        case .indexingInProgress:          "Indexuji %@…"
+        case .indexingProgressFormat:      "%d / %d částí"
+        case .indexingComplete:            "Indexováno"
+        case .indexingError:               "Chyba při indexaci"
+        case .indexingPaused:              "Indexace pozastavena"
+        case .indexingIdle:                "Nečinné"
         }
     }
 }
