@@ -21,11 +21,6 @@ public struct AppText: Sendable {
         case delete
         case confirmDeleteNotebook
         case cannotBeEmpty
-        case comingSoon
-        case sourcesTabComingSoon
-        case chatTabComingSoon
-        case notesTabComingSoon
-        case transformationsTabComingSoon
         case welcome
         case welcomeBody
         case continueLabel
@@ -134,11 +129,6 @@ public struct AppText: Sendable {
         case .delete:            "Delete"
         case .confirmDeleteNotebook: "Delete this notebook? This cannot be undone."
         case .cannotBeEmpty:     "Name cannot be empty."
-        case .comingSoon:        "Coming soon"
-        case .sourcesTabComingSoon: "Source ingestion arrives in milestone M3."
-        case .chatTabComingSoon:    "Chat arrives in milestone M5."
-        case .notesTabComingSoon:   "Notes arrive in milestone M6."
-        case .transformationsTabComingSoon: "Transformations arrive in milestone M6."
         case .welcome:                     "Welcome"
         case .welcomeBody:                 "AI Notebook keeps everything local. To run AI, we'll use Ollama on your Mac."
         case .continueLabel:               "Continue"
@@ -233,11 +223,6 @@ public struct AppText: Sendable {
         case .delete:            "Smazat"
         case .confirmDeleteNotebook: "Opravdu smazat tento blok? Akci nelze vrátit zpět."
         case .cannotBeEmpty:     "Název nesmí být prázdný."
-        case .comingSoon:        "Brzy"
-        case .sourcesTabComingSoon: "Načítání zdrojů přijde v milníku M3."
-        case .chatTabComingSoon:    "Chat přijde v milníku M5."
-        case .notesTabComingSoon:   "Poznámky přijdou v milníku M6."
-        case .transformationsTabComingSoon: "Transformace přijdou v milníku M6."
         case .welcome:                     "Vítejte"
         case .welcomeBody:                 "AI Notebook udržuje vše lokálně. K AI použijeme Ollamu spuštěnou na vašem Macu."
         case .continueLabel:               "Pokračovat"
