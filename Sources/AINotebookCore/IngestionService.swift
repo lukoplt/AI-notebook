@@ -54,10 +54,25 @@ public final class IngestionService: @unchecked Sendable {
         }
         return try await runPipeline(for: source) { [self] in
             switch kind {
-            case .pdf:                                  return try await pdf.extract(from: url, kind: kind)
-            case .text, .markdown:                      return try await plain.extract(from: url, kind: kind)
-            case .docx, .pptx, .xlsx:                   return try await office.extract(from: url, kind: kind)
-            case .web:                                  return try await web.extract(from: url, kind: kind)
+            case .pdf:
+                let extracted = try await pdf.extract(from: url, kind: kind)
+                let pages: [(String, Int)]
+                if let hints = extracted.pageHints {
+                    let split = extracted.text.split(separator: "\u{0C}", omittingEmptySubsequences: false)
+                    pages = zip(split, hints).map { (String($0.0), $0.1) }
+                } else {
+                    pages = [(extracted.text, 0)]
+                }
+                return (extracted, Chunker.chunkPaged(pages))
+            case .text, .markdown:
+                let e = try await plain.extract(from: url, kind: kind)
+                return (e, Chunker.chunk(e.text))
+            case .docx, .pptx, .xlsx:
+                let e = try await office.extract(from: url, kind: kind)
+                return (e, Chunker.chunk(e.text))
+            case .web:
+                let e = try await web.extract(from: url, kind: kind)
+                return (e, Chunker.chunk(e.text))
             }
         }
     }
@@ -74,7 +89,8 @@ public final class IngestionService: @unchecked Sendable {
             )
         }
         return try await runPipeline(for: source) {
-            ExtractedText(title: title, text: text)
+            let e = ExtractedText(title: title, text: text)
+            return (e, Chunker.chunk(text))
         }
     }
 
@@ -90,21 +106,21 @@ public final class IngestionService: @unchecked Sendable {
             )
         }
         return try await runPipeline(for: source) { [self] in
-            try await web.extract(from: url, kind: .web)
+            let e = try await web.extract(from: url, kind: .web)
+            return (e, Chunker.chunk(e.text))
         }
     }
 
     private func runPipeline(
         for sourceIn: Source,
-        extract: () async throws -> ExtractedText
+        extract: () async throws -> (ExtractedText, [ChunkDraft])
     ) async throws -> Source {
         var source = sourceIn
         do {
             try await MainActor.run {
                 try store.updateSourceStatus(id: source.id!, status: .chunking, error: nil)
             }
-            let extracted = try await extract()
-            let chunks = Chunker.chunk(extracted.text)
+            let (_, chunks) = try await extract()
             try await MainActor.run {
                 try store.replaceChunks(sourceId: source.id!, chunks: chunks)
                 try store.updateSourceStatus(id: source.id!, status: .ready, error: nil)

@@ -49,4 +49,21 @@ public enum Chunker {
     public static func estimateTokens(_ text: String) -> Int {
         max(1, (text.count + 3) / 4)
     }
+
+    /// Like `chunk(_:)` but takes (text, pageHint) pairs and tags chunks with
+    /// the page they came from.
+    public static func chunkPaged(
+        _ pages: [(text: String, pageHint: Int)],
+        windowChars: Int = 2048,
+        overlapChars: Int = 256
+    ) -> [ChunkDraft] {
+        var out: [ChunkDraft] = []
+        for page in pages {
+            let drafts = chunk(page.text, windowChars: windowChars, overlapChars: overlapChars)
+            for d in drafts {
+                out.append(ChunkDraft(text: d.text, tokenCount: d.tokenCount, pageHint: page.pageHint))
+            }
+        }
+        return out
+    }
 }
