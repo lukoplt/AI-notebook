@@ -46,4 +46,14 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(cs.string(.welcome), "Vítejte")
         XCTAssertEqual(cs.string(.openOllamaDownload), "Otevřít stránku ke stažení")
     }
+
+    func testAddSourceButtonIsBilingual() {
+        XCTAssertEqual(AppText(language: .english).string(.addSourceButton), "Add source")
+        XCTAssertEqual(AppText(language: .czech).string(.addSourceButton),   "Přidat zdroj")
+    }
+
+    func testSourceStatusReadyIsBilingual() {
+        XCTAssertEqual(AppText(language: .english).string(.sourceStatusReady), "Ready")
+        XCTAssertEqual(AppText(language: .czech).string(.sourceStatusReady),   "Hotovo")
+    }
 }

@@ -47,6 +47,24 @@ public struct AppText: Sendable {
         case onboardingDoneBody
         case ollamaUnreachable
         case startUsingApp
+        case sourcesSectionTitle
+        case addSourceButton
+        case addSourceSheetTitle
+        case addSourceFromFile
+        case addSourceFromURL
+        case addSourceFromText
+        case addSourceURLPlaceholder
+        case addSourceTitlePlaceholder
+        case addSourceTextPlaceholder
+        case addSourceConfirm
+        case cancelButton
+        case sourceStatusPending
+        case sourceStatusChunking
+        case sourceStatusReady
+        case sourceStatusError
+        case noSourcesEmptyState
+        case deleteSourceConfirm
+        case deleteButton
     }
 
     public let language: AppLanguage
@@ -113,6 +131,24 @@ public struct AppText: Sendable {
         case .onboardingDoneBody:          "You can now create your first notebook."
         case .ollamaUnreachable:           "Cannot reach Ollama. Is it running?"
         case .startUsingApp:               "Start using the app"
+        case .sourcesSectionTitle:         "Sources"
+        case .addSourceButton:             "Add source"
+        case .addSourceSheetTitle:         "Add a source"
+        case .addSourceFromFile:           "From file…"
+        case .addSourceFromURL:            "From URL"
+        case .addSourceFromText:           "Paste text"
+        case .addSourceURLPlaceholder:     "https://example.com/article"
+        case .addSourceTitlePlaceholder:   "Title"
+        case .addSourceTextPlaceholder:    "Paste content here"
+        case .addSourceConfirm:            "Add"
+        case .cancelButton:                "Cancel"
+        case .sourceStatusPending:         "Pending"
+        case .sourceStatusChunking:        "Processing"
+        case .sourceStatusReady:           "Ready"
+        case .sourceStatusError:           "Error"
+        case .noSourcesEmptyState:         "No sources yet. Add one to get started."
+        case .deleteSourceConfirm:         "Delete this source?"
+        case .deleteButton:                "Delete"
         }
     }
 
@@ -165,6 +201,24 @@ public struct AppText: Sendable {
         case .onboardingDoneBody:          "Teď můžete vytvořit svůj první poznámkový blok."
         case .ollamaUnreachable:           "Nelze se připojit k Ollamě. Je spuštěná?"
         case .startUsingApp:               "Začít používat aplikaci"
+        case .sourcesSectionTitle:         "Zdroje"
+        case .addSourceButton:             "Přidat zdroj"
+        case .addSourceSheetTitle:         "Přidat zdroj"
+        case .addSourceFromFile:           "Ze souboru…"
+        case .addSourceFromURL:            "Z URL adresy"
+        case .addSourceFromText:           "Vložit text"
+        case .addSourceURLPlaceholder:     "https://example.com/clanek"
+        case .addSourceTitlePlaceholder:   "Název"
+        case .addSourceTextPlaceholder:    "Vložte obsah sem"
+        case .addSourceConfirm:            "Přidat"
+        case .cancelButton:                "Zrušit"
+        case .sourceStatusPending:         "Čeká"
+        case .sourceStatusChunking:        "Zpracovává se"
+        case .sourceStatusReady:           "Hotovo"
+        case .sourceStatusError:           "Chyba"
+        case .noSourcesEmptyState:         "Zatím žádné zdroje. Přidejte první, abyste mohli začít."
+        case .deleteSourceConfirm:         "Smazat tento zdroj?"
+        case .deleteButton:                "Smazat"
         }
     }
 }
