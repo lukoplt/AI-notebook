@@ -101,4 +101,9 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppText(language: .english).string(.manageModelsButton), "Manage models…")
         XCTAssertEqual(AppText(language: .czech)  .string(.manageModelsButton), "Spravovat modely…")
     }
+
+    func testOpenNoteFromCitationBilingual() {
+        XCTAssertEqual(AppText(language: .english).string(.openNoteFromCitation), "Open note")
+        XCTAssertEqual(AppText(language: .czech)  .string(.openNoteFromCitation), "Otevřít poznámku")
+    }
 }

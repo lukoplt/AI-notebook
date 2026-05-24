@@ -111,6 +111,10 @@ public struct AppText: Sendable {
         case manageModelsRefreshButton
         case chatModelPickerLabel
         case embeddingModelPickerLabel
+        case openNoteFromCitation
+        case notesChatPanelTitle
+        case notesChatPanelEmpty
+        case notesChatCurrentNoteHint
     }
 
     public let language: AppLanguage
@@ -241,6 +245,10 @@ public struct AppText: Sendable {
         case .manageModelsRefreshButton:   "Refresh list"
         case .chatModelPickerLabel:        "Chat model"
         case .embeddingModelPickerLabel:   "Embedding model"
+        case .openNoteFromCitation:        "Open note"
+        case .notesChatPanelTitle:         "Chat"
+        case .notesChatPanelEmpty:         "Start a question about this notebook…"
+        case .notesChatCurrentNoteHint:    "Including the open note as bonus context"
         }
     }
 
@@ -357,6 +365,10 @@ public struct AppText: Sendable {
         case .manageModelsRefreshButton:   "Obnovit seznam"
         case .chatModelPickerLabel:        "Chatovací model"
         case .embeddingModelPickerLabel:   "Model pro vektorizaci"
+        case .openNoteFromCitation:        "Otevřít poznámku"
+        case .notesChatPanelTitle:         "Chat"
+        case .notesChatPanelEmpty:         "Zeptej se na něco z tohoto notebooku…"
+        case .notesChatCurrentNoteHint:    "Aktuální poznámka přidána jako kontext"
         }
     }
 }
