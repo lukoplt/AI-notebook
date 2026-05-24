@@ -8,6 +8,10 @@ struct CitationPopover: View {
     let sourceTitle: String
     let pageHint: Int?
     let pdfFileURL: URL?
+    let noteIdToOpen: Int64?
+
+    @EnvironmentObject private var settings: AppSettings
+    @EnvironmentObject private var noteJump: NoteJumpCoordinator
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -16,8 +20,13 @@ struct CitationPopover: View {
                 Text(sourceTitle).font(.headline)
                 Spacer()
                 if let page = pageHint, let url = pdfFileURL {
-                    Button("Open page \(page)") {
-                        NSWorkspace.shared.open(url)
+                    Button("Open page \(page)") { NSWorkspace.shared.open(url) }
+                        .buttonStyle(.borderless)
+                        .font(.caption)
+                }
+                if let nid = noteIdToOpen {
+                    Button(settings.text.string(.openNoteFromCitation)) {
+                        noteJump.request(noteId: nid)
                     }
                     .buttonStyle(.borderless)
                     .font(.caption)

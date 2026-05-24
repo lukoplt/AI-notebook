@@ -20,6 +20,7 @@ struct ChatView: View {
     @State private var popoverSourceTitle: String = ""
     @State private var popoverPageHint: Int?
     @State private var popoverPDFURL: URL?
+    @State private var popoverNoteId: Int64?
 
     private var t: AppText { settings.text }
 
@@ -34,7 +35,8 @@ struct ChatView: View {
                 citation: c,
                 sourceTitle: popoverSourceTitle,
                 pageHint: popoverPageHint,
-                pdfFileURL: popoverPDFURL
+                pdfFileURL: popoverPDFURL,
+                noteIdToOpen: popoverNoteId
             )
         }
     }
@@ -232,9 +234,15 @@ struct ChatView: View {
             let url: URL? = (isPDF && (source?.rawPath != nil))
                 ? URL(fileURLWithPath: source!.rawPath!)
                 : nil
+            var noteId: Int64? = nil
+            if source?.type == .note, let s = source {
+                let allNotes = (try? store.notes(notebookId: s.notebookId)) ?? []
+                noteId = allNotes.first(where: { $0.autoSourceId == s.id })?.id
+            }
             popoverSourceTitle = source?.title ?? ""
             popoverPageHint = hint
             popoverPDFURL = url
+            popoverNoteId = noteId
             popoverCitation = c
         }
     }
