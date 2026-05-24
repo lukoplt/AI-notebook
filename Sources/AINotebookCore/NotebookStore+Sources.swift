@@ -35,6 +35,16 @@ extension NotebookStore {
         try runOnDatabase { db in
             try Source
                 .filter(Source.Columns.notebookId.column == notebookId)
+                .filter(Source.Columns.type.column != SourceType.note.rawValue)
+                .order(Source.Columns.ingestedAt.column.desc)
+                .fetchAll(db)
+        }
+    }
+
+    public func sourcesIncludingShadow(notebookId: Int64) throws -> [Source] {
+        try runOnDatabase { db in
+            try Source
+                .filter(Source.Columns.notebookId.column == notebookId)
                 .order(Source.Columns.ingestedAt.column.desc)
                 .fetchAll(db)
         }

@@ -110,4 +110,23 @@ final class NotebookStoreSourcesTests: XCTestCase {
             XCTFail("wrong error: \(error)")
         }
     }
+
+    func testSourcesExcludesNoteShadowRows() throws {
+        let store = try NotebookStore(path: .inMemory)
+        let nb = try store.createNotebook(name: "NB")
+        _ = try store.createSource(
+            notebookId: nb.id!, type: .text, title: "Real",
+            uri: nil, rawPath: nil
+        )
+        _ = try store.createSource(
+            notebookId: nb.id!, type: .note, title: "Shadow",
+            uri: nil, rawPath: nil
+        )
+        let visible = try store.sources(notebookId: nb.id!)
+        XCTAssertEqual(visible.count, 1)
+        XCTAssertEqual(visible.first?.title, "Real")
+
+        let all = try store.sourcesIncludingShadow(notebookId: nb.id!)
+        XCTAssertEqual(all.count, 2)
+    }
 }
