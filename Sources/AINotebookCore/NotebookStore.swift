@@ -24,6 +24,7 @@ public final class NotebookStore: ObservableObject {
         var migrator = DatabaseMigrator()
         registerMigrationV1(on: &migrator)
         registerMigrationV2(on: &migrator)
+        registerMigrationV3(on: &migrator)
         try migrator.migrate(dbQueue)
         try refresh()
     }
