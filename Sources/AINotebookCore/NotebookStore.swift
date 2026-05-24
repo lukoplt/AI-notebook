@@ -15,6 +15,10 @@ public final class NotebookStore: ObservableObject {
 
     @Published public private(set) var notebooks: [Notebook] = []
 
+    /// Set by the app layer (typically after NoteIndexer is wired). Fires
+    /// on every createNote / updateNote with the affected note id.
+    public var onNoteSaved: (@Sendable (Int64) async -> Void)?
+
     public init(path: StorePath) throws {
         if let url = path.fileURL {
             self.dbQueue = try DatabaseQueue(path: url.path)

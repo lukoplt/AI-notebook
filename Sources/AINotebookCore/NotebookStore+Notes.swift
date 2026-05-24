@@ -24,6 +24,9 @@ extension NotebookStore {
         try runOnDatabase { db in
             try note.insert(db)
         }
+        if let id = note.id, let hook = onNoteSaved {
+            Task { await hook(id) }
+        }
         return note
     }
 
@@ -49,6 +52,9 @@ extension NotebookStore {
             n.bodyMd = bodyMd
             n.updatedAt = Date()
             try n.update(db)
+        }
+        if let hook = onNoteSaved {
+            Task { await hook(id) }
         }
     }
 
