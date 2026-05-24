@@ -120,6 +120,9 @@ public struct AppText: Sendable {
         case editorStatusUnsaved
         case editorStatusError
         case editorFailedToLoad
+        case attachmentBrokenLink
+        case attachmentSaveFailed
+        case attachmentOpenButton
     }
 
     public let language: AppLanguage
@@ -259,6 +262,9 @@ public struct AppText: Sendable {
         case .editorStatusUnsaved:         "Unsaved changes"
         case .editorStatusError:           "Save failed"
         case .editorFailedToLoad:          "Editor failed to load. Reopen the note."
+        case .attachmentBrokenLink:        "Attachment missing"
+        case .attachmentSaveFailed:        "Couldn't save attachment"
+        case .attachmentOpenButton:        "Open"
         }
     }
 
@@ -384,6 +390,9 @@ public struct AppText: Sendable {
         case .editorStatusUnsaved:         "Neuložené změny"
         case .editorStatusError:           "Uložení selhalo"
         case .editorFailedToLoad:          "Editor se nepodařilo načíst. Otevřete poznámku znovu."
+        case .attachmentBrokenLink:        "Příloha chybí"
+        case .attachmentSaveFailed:        "Nepodařilo se uložit přílohu"
+        case .attachmentOpenButton:        "Otevřít"
         }
     }
 }
