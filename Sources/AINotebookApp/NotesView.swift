@@ -90,9 +90,8 @@ struct NotesView: View {
                 title: $draftTitle,
                 bodyMd: $draftBody,
                 language: settings.language,
-                onSave: { latest in
-                    draftBody = latest
-                    Task { await save(id: id) }
+                onSave: { _ in
+                    Task { @MainActor in await save(id: id) }
                 }
             )
             .padding(16)
