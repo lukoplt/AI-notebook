@@ -6,6 +6,7 @@ struct NotesView: View {
 
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var store: NotebookStore
+    @EnvironmentObject private var noteJump: NoteJumpCoordinator
 
     @State private var notes: [Note] = []
     @State private var selection: Int64?
@@ -15,21 +16,33 @@ struct NotesView: View {
 
     private var t: AppText { settings.text }
 
+    private var currentNote: Note? {
+        guard let id = selection else { return nil }
+        return notes.first(where: { $0.id == id })
+    }
+
     var body: some View {
         HSplitView {
             list
-                .frame(minWidth: 220, idealWidth: 260, maxWidth: 320)
+                .frame(minWidth: 200, idealWidth: 240, maxWidth: 320)
             detail
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(minWidth: 320, maxWidth: .infinity, maxHeight: .infinity)
+            NotesChatPanel(notebook: notebook, currentNote: currentNote)
+                .frame(minWidth: 280, idealWidth: 340, maxWidth: 440)
         }
         .task(id: notebook.id) { await reload() }
+        .onReceive(noteJump.$target.compactMap { $0 }) { id in
+            if notes.contains(where: { $0.id == id }) {
+                selection = id
+                noteJump.clear()
+            }
+        }
     }
 
     private var list: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(t.string(.notesSectionTitle))
-                    .font(.title3).bold()
+                Text(t.string(.notesSectionTitle)).font(.title3).bold()
                 Spacer()
                 Button(t.string(.notesNewButton)) {
                     Task { await createBlank() }
@@ -83,8 +96,7 @@ struct NotesView: View {
         } else {
             VStack {
                 Spacer()
-                Text(t.string(.notesEmptyState))
-                    .foregroundStyle(.secondary)
+                Text(t.string(.notesEmptyState)).foregroundStyle(.secondary)
                 Spacer()
             }
         }
@@ -107,9 +119,7 @@ struct NotesView: View {
                 draftTitle = n.title
                 draftBody  = n.bodyMd
             }
-        } catch {
-            errorMessage = String(describing: error)
-        }
+        } catch { errorMessage = String(describing: error) }
     }
 
     private func createBlank() async {
@@ -123,17 +133,13 @@ struct NotesView: View {
             selection = n.id
             draftTitle = n.title
             draftBody = ""
-        } catch {
-            errorMessage = String(describing: error)
-        }
+        } catch { errorMessage = String(describing: error) }
     }
 
     private func save(id: Int64) async {
         do {
             try store.updateNote(id: id, title: draftTitle, bodyMd: draftBody)
             await reload()
-        } catch {
-            errorMessage = String(describing: error)
-        }
+        } catch { errorMessage = String(describing: error) }
     }
 }
