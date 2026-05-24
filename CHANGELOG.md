@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.6.0] — 2026-05-25
+
+Version history for Notes — final milestone of the v0.3-v0.6 "Notes as
+Blocks" release cycle.
+
+### Added
+- Every save snapshots the previous Note body into `note_versions`.
+- History button in the WYSIWYG editor (⇧⌘H) opens a sheet listing
+  prior revisions with timestamps and a read-only preview.
+- "Restore this version" rewrites the Note body and snapshots the
+  superseded content as a `restore`-tagged revision.
+- 50-version cap per Note; oldest snapshots pruned automatically.
+
+### Schema
+- MigrationV8 adds the `note_versions` table.
+
+### Tests
+- 193 unit tests (was 186).
+
 ## [0.5.0] — 2026-05-25
 
 Attachments + inline images land in the WYSIWYG editor.

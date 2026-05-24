@@ -3,7 +3,7 @@ import XCTest
 
 final class AINotebookVersionTests: XCTestCase {
     func testVersionMatchesExpected() {
-        XCTAssertEqual(AINotebookVersion, "0.5.0")
+        XCTAssertEqual(AINotebookVersion, "0.6.0")
     }
 
     func testVersionIsSemverShape() {
