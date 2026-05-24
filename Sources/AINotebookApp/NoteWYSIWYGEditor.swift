@@ -143,6 +143,9 @@ private struct EditorWebView: NSViewRepresentable {
                     onChange(md)
                 case .save(let md):
                     onChange(md)
+                case .attachmentRequest:
+                    // Handled in Task 9 wiring.
+                    break
                 }
             } catch {
                 // Unknown payloads ignored in v1.

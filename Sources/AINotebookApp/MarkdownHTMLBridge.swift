@@ -5,6 +5,7 @@ enum EditorMessage: Equatable {
     case ready
     case change(markdown: String)
     case save(markdown: String)
+    case attachmentRequest(requestId: String, filename: String, mime: String, base64: String)
 }
 
 enum EditorMessageDecodeError: Error, Equatable {
@@ -32,6 +33,14 @@ enum MarkdownHTMLBridge {
                 throw EditorMessageDecodeError.missingMarkdown
             }
             return .save(markdown: md)
+        case "attachment":
+            guard let requestId = dict["requestId"] as? String,
+                  let filename = dict["filename"] as? String,
+                  let mime = dict["mime"] as? String,
+                  let base64 = dict["base64"] as? String else {
+                throw EditorMessageDecodeError.invalidPayload
+            }
+            return .attachmentRequest(requestId: requestId, filename: filename, mime: mime, base64: base64)
         default:
             throw EditorMessageDecodeError.unknownKind(kind)
         }
