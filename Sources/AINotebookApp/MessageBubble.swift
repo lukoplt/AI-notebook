@@ -7,6 +7,19 @@ struct MessageBubble: View {
     let message: ChatMessage
     let language: AppLanguage
     let onCitationTapped: (Citation) -> Void
+    let onSaveAsNote: (() -> Void)?
+
+    init(
+        message: ChatMessage,
+        language: AppLanguage,
+        onCitationTapped: @escaping (Citation) -> Void,
+        onSaveAsNote: (() -> Void)? = nil
+    ) {
+        self.message = message
+        self.language = language
+        self.onCitationTapped = onCitationTapped
+        self.onSaveAsNote = onSaveAsNote
+    }
 
     private var t: AppText { AppText(language: language) }
 
@@ -21,6 +34,11 @@ struct MessageBubble: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 if !message.citations.isEmpty {
                     citationChips
+                }
+                if message.role == .assistant, let onSaveAsNote {
+                    Button(t.string(.chatSaveAsNoteButton)) { onSaveAsNote() }
+                        .buttonStyle(.borderless)
+                        .font(.caption)
                 }
             }
             if message.role != .user { Spacer(minLength: 40) }

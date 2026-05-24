@@ -86,4 +86,9 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppText(language: .english).string(.chatNewSessionButton), "New session")
         XCTAssertEqual(AppText(language: .czech)  .string(.chatNewSessionButton), "Nová konverzace")
     }
+
+    func testChatSaveAsNoteIsBilingual() {
+        XCTAssertEqual(AppText(language: .english).string(.chatSaveAsNoteButton), "Save as note")
+        XCTAssertEqual(AppText(language: .czech)  .string(.chatSaveAsNoteButton), "Uložit jako poznámku")
+    }
 }

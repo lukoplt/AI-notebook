@@ -18,6 +18,8 @@ struct ChatView: View {
     @State private var errorMessage: String?
     @State private var popoverCitation: Citation?
     @State private var popoverSourceTitle: String = ""
+    @State private var popoverPageHint: Int?
+    @State private var popoverPDFURL: URL?
 
     private var t: AppText { settings.text }
 
@@ -28,7 +30,12 @@ struct ChatView: View {
         }
         .task(id: notebook.id) { await ensureSessions() }
         .popover(item: $popoverCitation) { c in
-            CitationPopover(citation: c, sourceTitle: popoverSourceTitle)
+            CitationPopover(
+                citation: c,
+                sourceTitle: popoverSourceTitle,
+                pageHint: popoverPageHint,
+                pdfFileURL: popoverPDFURL
+            )
         }
     }
 
@@ -93,7 +100,8 @@ struct ChatView: View {
                         MessageBubble(
                             message: m,
                             language: settings.language,
-                            onCitationTapped: { c in showCitation(c) }
+                            onCitationTapped: { c in showCitation(c) },
+                            onSaveAsNote: { Task { await saveAsNote(m) } }
                         )
                     }
                     if !streamingDraft.isEmpty {
@@ -104,7 +112,8 @@ struct ChatView: View {
                                 content: streamingDraft
                             ),
                             language: settings.language,
-                            onCitationTapped: { _ in }
+                            onCitationTapped: { _ in },
+                            onSaveAsNote: nil
                         )
                     }
                     if let errorMessage {
@@ -216,9 +225,32 @@ struct ChatView: View {
 
     private func showCitation(_ c: Citation) {
         Task { @MainActor in
-            let source = (try? store.source(id: c.sourceId))?.title ?? ""
-            popoverSourceTitle = source
+            let source = try? store.source(id: c.sourceId)
+            let chunks = (try? store.chunks(sourceId: c.sourceId)) ?? []
+            let hint = chunks.first(where: { $0.id == c.chunkId })?.pageHint
+            let isPDF = (source?.type == .pdf)
+            let url: URL? = (isPDF && (source?.rawPath != nil))
+                ? URL(fileURLWithPath: source!.rawPath!)
+                : nil
+            popoverSourceTitle = source?.title ?? ""
+            popoverPageHint = hint
+            popoverPDFURL = url
             popoverCitation = c
+        }
+    }
+
+    @MainActor
+    private func saveAsNote(_ msg: ChatMessage) async {
+        do {
+            _ = try store.createNote(
+                notebookId: notebook.id!,
+                title: "Chat reply — \(msg.createdAt.formatted(date: .abbreviated, time: .shortened))",
+                bodyMd: msg.content,
+                origin: .chat,
+                originRef: msg.id
+            )
+        } catch {
+            errorMessage = String(describing: error)
         }
     }
 }

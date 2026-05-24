@@ -77,6 +77,7 @@ public struct AppText: Sendable {
         case chatSessionsLabel
         case chatNewSessionButton
         case chatDeleteSessionButton
+        case chatSaveAsNoteButton
         case notesSectionTitle
         case notesEmptyState
         case notesNewButton
@@ -194,6 +195,7 @@ public struct AppText: Sendable {
         case .chatSessionsLabel:           "Sessions"
         case .chatNewSessionButton:        "New session"
         case .chatDeleteSessionButton:     "Delete session"
+        case .chatSaveAsNoteButton:        "Save as note"
         case .notesSectionTitle:           "Notes"
         case .notesEmptyState:             "No notes yet. Create one or save from chat."
         case .notesNewButton:              "New note"
@@ -297,6 +299,7 @@ public struct AppText: Sendable {
         case .chatSessionsLabel:           "Konverzace"
         case .chatNewSessionButton:        "Nová konverzace"
         case .chatDeleteSessionButton:     "Smazat konverzaci"
+        case .chatSaveAsNoteButton:        "Uložit jako poznámku"
         case .notesSectionTitle:           "Poznámky"
         case .notesEmptyState:             "Zatím žádné poznámky. Vytvořte ji nebo uložte z chatu."
         case .notesNewButton:              "Nová poznámka"
