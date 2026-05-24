@@ -14,6 +14,8 @@ public struct Note: Identifiable, Equatable, Hashable, Codable, Sendable {
     public var bodyMd: String
     public var origin: NoteOrigin
     public var originRef: Int64?
+    public var autoSourceId: Int64?
+    public var noteUuid: String
     public var createdAt: Date
     public var updatedAt: Date
 
@@ -24,6 +26,8 @@ public struct Note: Identifiable, Equatable, Hashable, Codable, Sendable {
         bodyMd: String,
         origin: NoteOrigin = .manual,
         originRef: Int64? = nil,
+        autoSourceId: Int64? = nil,
+        noteUuid: String = UUID().uuidString.lowercased(),
         createdAt: Date = Date(),
         updatedAt: Date? = nil
     ) {
@@ -33,6 +37,8 @@ public struct Note: Identifiable, Equatable, Hashable, Codable, Sendable {
         self.bodyMd = bodyMd
         self.origin = origin
         self.originRef = originRef
+        self.autoSourceId = autoSourceId
+        self.noteUuid = noteUuid
         self.createdAt = createdAt
         self.updatedAt = updatedAt ?? createdAt
     }
@@ -45,13 +51,15 @@ extension Note: FetchableRecord, MutablePersistableRecord {
 
     public enum Columns: String {
         case id
-        case notebookId = "notebook_id"
+        case notebookId    = "notebook_id"
         case title
-        case bodyMd    = "body_md"
+        case bodyMd       = "body_md"
         case origin
-        case originRef = "origin_ref"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
+        case originRef    = "origin_ref"
+        case autoSourceId = "auto_source_id"
+        case noteUuid     = "note_uuid"
+        case createdAt    = "created_at"
+        case updatedAt    = "updated_at"
 
         var column: Column { Column(self.rawValue) }
     }

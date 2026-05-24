@@ -27,6 +27,7 @@ public final class NotebookStore: ObservableObject {
         registerMigrationV3(on: &migrator)
         registerMigrationV4(on: &migrator)
         registerMigrationV5(on: &migrator)
+        registerMigrationV6(on: &migrator)
         try migrator.migrate(dbQueue)
         try dbQueue.write { db in
             try BuiltinTransformations.seedIfNeeded(db)
