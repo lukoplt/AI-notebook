@@ -19,19 +19,25 @@ public actor ChatEngine {
     private let chat: ChatStreaming
     public let chatModel: String
     public let topK: Int
+    public let retryAttempts: Int
+    public let retryBackoffMillis: Int
 
     public init(
         store: NotebookStore,
         retriever: Retriever,
         chat: ChatStreaming,
         chatModel: String,
-        topK: Int = 8
+        topK: Int = 8,
+        retryAttempts: Int = 2,
+        retryBackoffMillis: Int = 250
     ) {
         self.store = store
         self.retriever = retriever
         self.chat = chat
         self.chatModel = chatModel
         self.topK = topK
+        self.retryAttempts = retryAttempts
+        self.retryBackoffMillis = retryBackoffMillis
     }
 
     @discardableResult
@@ -68,11 +74,24 @@ public actor ChatEngine {
             turns.append(ChatTurn(role: m.role, content: m.content))
         }
 
-        // 4) Stream tokens.
+        // 4) Stream tokens with retry + exponential backoff.
         var assembled = ""
-        for try await token in chat.stream(model: chatModel, messages: turns) {
-            assembled += token
-            onToken(token)
+        var attempt = 0
+        while true {
+            do {
+                var partial = ""
+                for try await token in chat.stream(model: chatModel, messages: turns) {
+                    partial += token
+                    onToken(token)
+                }
+                assembled = partial
+                break
+            } catch {
+                if attempt >= retryAttempts { throw error }
+                attempt += 1
+                let delayNs = UInt64(retryBackoffMillis * Int(pow(2.0, Double(attempt - 1)))) * 1_000_000
+                try? await Task.sleep(nanoseconds: delayNs)
+            }
         }
 
         // 5) Parse citation markers and resolve to chunks.
