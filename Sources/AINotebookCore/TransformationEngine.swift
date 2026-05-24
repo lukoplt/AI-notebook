@@ -18,7 +18,11 @@ public actor TransformationEngine {
     }
 
     @discardableResult
-    public func run(transformationId: Int64, sourceId: Int64) async throws -> Note {
+    public func run(
+        transformationId: Int64,
+        sourceId: Int64,
+        onToken: @escaping @Sendable (String) -> Void = { _ in }
+    ) async throws -> Note {
         let storeRef = store
 
         let prep: (Transformation, Source, [SourceChunk]) =
@@ -45,6 +49,7 @@ public actor TransformationEngine {
         var assembled = ""
         for try await token in chat.stream(model: chatModel, messages: turns) {
             assembled += token
+            onToken(token)
         }
 
         let noteTitle = "\(transformation.name) — \(source.title)"

@@ -106,8 +106,9 @@ struct TransformationsView: View {
         do {
             let note = try await transformationHolder.engine.run(
                 transformationId: tid, sourceId: sid
-            )
-            resultBody = note.bodyMd
+            ) { token in
+                Task { @MainActor in resultBody += token }
+            }
             resultNoteId = note.id
         } catch {
             errorMessage = String(describing: error)
