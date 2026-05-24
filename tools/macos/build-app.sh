@@ -41,6 +41,10 @@ cp tools/macos/AppIcon.icns "$RESOURCES/AppIcon.icns"
 BIN_DIR="$(dirname "$BIN")"
 shopt -s nullglob
 for b in "$BIN_DIR"/*.bundle; do
+    base="$(basename "$b")"
+    case "$base" in
+        *Tests.bundle|*Test.bundle) continue ;;
+    esac
     cp -R "$b" "$RESOURCES/"
 done
 shopt -u nullglob
