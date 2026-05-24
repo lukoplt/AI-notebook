@@ -3,6 +3,8 @@ import Foundation
 public enum StoreError: Error, Equatable, Sendable {
     case notebookNotFound(id: Int64)
     case invalidNotebookName(String)
+    case sourceNotFound(Int64)
+    case invalidSourceTitle(String)
 }
 
 extension StoreError: LocalizedError {
@@ -12,6 +14,10 @@ extension StoreError: LocalizedError {
             "Notebook \(id) not found."
         case .invalidNotebookName(let name):
             "Invalid notebook name: \"\(name)\"."
+        case .sourceNotFound(let id):
+            "Source #\(id) not found."
+        case .invalidSourceTitle(let title):
+            "Invalid source title: \"\(title)\"."
         }
     }
 }
