@@ -1,6 +1,10 @@
 import SwiftUI
 import AINotebookCore
 
+private struct NoteIdBox: Identifiable, Hashable {
+    let id: Int64
+}
+
 struct NotesView: View {
     let notebook: Notebook
 
@@ -14,6 +18,7 @@ struct NotesView: View {
     @State private var draftTitle: String = ""
     @State private var draftBody:  String = ""
     @State private var errorMessage: String?
+    @State private var historyNoteId: Int64?
 
     private var t: AppText { settings.text }
 
@@ -37,6 +42,21 @@ struct NotesView: View {
                 selection = id
                 noteJump.clear()
             }
+        }
+        .sheet(
+            item: Binding<NoteIdBox?>(
+                get: { historyNoteId.map { NoteIdBox(id: $0) } },
+                set: { historyNoteId = $0?.id }
+            ),
+            onDismiss: { Task { await reload() } }
+        ) { box in
+            NoteHistorySheet(
+                noteId: box.id,
+                isPresented: Binding(
+                    get: { historyNoteId != nil },
+                    set: { if !$0 { historyNoteId = nil } }
+                )
+            )
         }
     }
 
@@ -94,6 +114,7 @@ struct NotesView: View {
                 noteId: id,
                 noteUuid: notes.first(where: { $0.id == id })?.noteUuid ?? "",
                 attachments: attachmentsHolder.store,
+                onShowHistory: { historyNoteId = id },
                 onSave: { _ in
                     Task { @MainActor in await save(id: id) }
                 }

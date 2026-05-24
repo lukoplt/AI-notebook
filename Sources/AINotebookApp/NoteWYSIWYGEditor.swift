@@ -10,6 +10,7 @@ struct NoteWYSIWYGEditor: View {
     let noteId: Int64
     let noteUuid: String
     let attachments: AttachmentStore?
+    let onShowHistory: (() -> Void)?
     let onSave: @Sendable (String) -> Void
 
     @StateObject private var autoSave: AutoSaveController
@@ -24,6 +25,7 @@ struct NoteWYSIWYGEditor: View {
         noteId: Int64,
         noteUuid: String,
         attachments: AttachmentStore?,
+        onShowHistory: (() -> Void)? = nil,
         onSave: @escaping @Sendable (String) -> Void
     ) {
         self._title = title
@@ -32,6 +34,7 @@ struct NoteWYSIWYGEditor: View {
         self.noteId = noteId
         self.noteUuid = noteUuid
         self.attachments = attachments
+        self.onShowHistory = onShowHistory
         self.onSave = onSave
         self._autoSave = StateObject(wrappedValue: AutoSaveController(save: onSave))
     }
@@ -67,6 +70,10 @@ struct NoteWYSIWYGEditor: View {
             HStack {
                 statusLabel
                 Spacer()
+                if let onShowHistory {
+                    Button(AppText(language: language).string(.historyButton)) { onShowHistory() }
+                        .keyboardShortcut("h", modifiers: [.command, .shift])
+                }
                 Button("Save") { autoSave.manualSave() }
                     .keyboardShortcut("s", modifiers: [.command])
             }
