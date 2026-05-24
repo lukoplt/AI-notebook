@@ -123,6 +123,12 @@ public struct AppText: Sendable {
         case attachmentBrokenLink
         case attachmentSaveFailed
         case attachmentOpenButton
+        case historyButton
+        case historySheetTitle
+        case historyEmpty
+        case historyRestoreButton
+        case historyReasonAutosave
+        case historyReasonRestore
     }
 
     public let language: AppLanguage
@@ -265,6 +271,12 @@ public struct AppText: Sendable {
         case .attachmentBrokenLink:        "Attachment missing"
         case .attachmentSaveFailed:        "Couldn't save attachment"
         case .attachmentOpenButton:        "Open"
+        case .historyButton:               "History"
+        case .historySheetTitle:           "Version history"
+        case .historyEmpty:                "No earlier versions yet."
+        case .historyRestoreButton:        "Restore this version"
+        case .historyReasonAutosave:       "Auto-save"
+        case .historyReasonRestore:        "Restored"
         }
     }
 
@@ -393,6 +405,12 @@ public struct AppText: Sendable {
         case .attachmentBrokenLink:        "Příloha chybí"
         case .attachmentSaveFailed:        "Nepodařilo se uložit přílohu"
         case .attachmentOpenButton:        "Otevřít"
+        case .historyButton:               "Historie"
+        case .historySheetTitle:           "Historie verzí"
+        case .historyEmpty:                "Žádné dřívější verze."
+        case .historyRestoreButton:        "Obnovit tuto verzi"
+        case .historyReasonAutosave:       "Auto-uložení"
+        case .historyReasonRestore:        "Obnoveno"
         }
     }
 }
