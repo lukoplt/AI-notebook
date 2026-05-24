@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.0] — 2026-05-25
+
+WYSIWYG Markdown editor lands in the Notes pane.
+
+### Added
+- TipTap-based WYSIWYG editor inside a WKWebView, replacing the plain
+  TextEditor for Note bodies.
+- Auto-save: 2 s idle debounce + ⌘S explicit save.
+- Saved / Saving / Unsaved / Save failed status indicator.
+- Markdown remains the source of truth on disk; the editor round-trips
+  Markdown ↔ HTML via tiptap-markdown.
+
+### Build
+- `tools/editor/` ships TipTap source + esbuild script; `editor.js`
+  bundle is committed so end users don't need npm.
+- New SPM resource: `Sources/AINotebookApp/Resources/editor/`.
+
+### Tests
+- 179 unit tests (was 174).
+
 ## [0.3.0] — 2026-05-25
 
 Notes graduate from passive note-taking to the primary authoring canvas
