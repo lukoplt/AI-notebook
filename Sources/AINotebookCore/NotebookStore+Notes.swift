@@ -59,8 +59,18 @@ extension NotebookStore {
     }
 
     public func deleteNote(id: Int64) throws {
+        let uuid: String? = try runOnDatabase { db in
+            try String.fetchOne(
+                db,
+                sql: "SELECT note_uuid FROM notes WHERE id = ?",
+                arguments: [id]
+            )
+        }
         try runOnDatabase { db in
             _ = try Note.deleteOne(db, key: id)
+        }
+        if let uuid, let hook = onNoteDeleted {
+            Task { await hook(uuid) }
         }
     }
 

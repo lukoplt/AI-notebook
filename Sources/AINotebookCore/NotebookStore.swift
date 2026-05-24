@@ -19,6 +19,10 @@ public final class NotebookStore: ObservableObject {
     /// on every createNote / updateNote with the affected note id.
     public var onNoteSaved: (@Sendable (Int64) async -> Void)?
 
+    /// Fires after a note is deleted, with the deleted note's UUID. Used by
+    /// the app layer to clean up attachment folders on disk.
+    public var onNoteDeleted: (@Sendable (String) async -> Void)?
+
     public init(path: StorePath) throws {
         if let url = path.fileURL {
             self.dbQueue = try DatabaseQueue(path: url.path)
