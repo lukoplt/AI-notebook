@@ -86,11 +86,14 @@ struct NotesView: View {
     @ViewBuilder
     private var detail: some View {
         if let id = selection, notes.contains(where: { $0.id == id }) {
-            NoteEditor(
+            NoteWYSIWYGEditor(
                 title: $draftTitle,
                 bodyMd: $draftBody,
                 language: settings.language,
-                onSave: { Task { await save(id: id) } }
+                onSave: { latest in
+                    draftBody = latest
+                    Task { await save(id: id) }
+                }
             )
             .padding(16)
         } else {
