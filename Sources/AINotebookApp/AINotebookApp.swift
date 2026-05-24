@@ -10,6 +10,7 @@ struct AINotebookAppEntry: App {
     @StateObject private var embedderHolder: EmbedderHolder
     @StateObject private var onboarding: OnboardingViewModel
     @StateObject private var chatHolder: ChatEngineHolder
+    @StateObject private var transformationHolder: TransformationEngineHolder
 
     init() {
         let settings = AppSettings()
@@ -56,6 +57,11 @@ struct AINotebookAppEntry: App {
             chatModel: settings.selectedChatModel
         )
         _chatHolder = StateObject(wrappedValue: ChatEngineHolder(engine: engine))
+
+        let txEngine = TransformationEngine(
+            store: store, chat: client, chatModel: settings.selectedChatModel
+        )
+        _transformationHolder = StateObject(wrappedValue: TransformationEngineHolder(engine: txEngine))
     }
 
     var body: some Scene {
@@ -68,6 +74,7 @@ struct AINotebookAppEntry: App {
                 .environmentObject(embedderHolder)
                 .environmentObject(onboarding)
                 .environmentObject(chatHolder)
+                .environmentObject(transformationHolder)
                 .frame(minWidth: 900, minHeight: 600)
         }
         .windowStyle(.titleBar)
