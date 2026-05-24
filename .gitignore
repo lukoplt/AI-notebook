@@ -16,3 +16,6 @@ DerivedData/
 # App data
 dist/
 *.dmg
+
+# Editor build artifacts
+tools/editor/node_modules/

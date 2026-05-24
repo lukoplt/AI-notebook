@@ -1,0 +1,36 @@
+:root {
+  color-scheme: light dark;
+  --editor-fg: #1c1c1e;
+  --editor-bg: transparent;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --editor-fg: #f2f2f7; }
+}
+html, body { height: 100%; margin: 0; padding: 0; background: var(--editor-bg); }
+body {
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  color: var(--editor-fg);
+}
+#editor { padding: 16px; min-height: 100vh; }
+#editor .ProseMirror {
+  outline: none;
+  min-height: 100vh;
+  caret-color: var(--editor-fg);
+}
+#editor h1 { font-size: 1.6em; margin: 0.5em 0 0.4em; }
+#editor h2 { font-size: 1.35em; margin: 0.5em 0 0.4em; }
+#editor h3 { font-size: 1.15em; margin: 0.5em 0 0.4em; }
+#editor p  { margin: 0.4em 0; }
+#editor pre {
+  background: rgba(127,127,127,0.12);
+  padding: 8px 10px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font: 12.5px/1.45 ui-monospace, "SF Mono", Menlo, monospace;
+}
+#editor code { font: inherit; }
+#editor img { max-width: 100%; border-radius: 4px; }
+#editor blockquote {
+  border-left: 3px solid rgba(127,127,127,0.4);
+  margin: 0.5em 0; padding-left: 0.8em; color: rgba(127,127,127,0.95);
+}
