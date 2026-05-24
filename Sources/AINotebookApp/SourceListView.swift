@@ -18,6 +18,7 @@ struct SourceListView: View {
                 Text(settings.text.string(.sourcesSectionTitle))
                     .font(.title2).bold()
                 Spacer()
+                IndexingStatusBadge()
                 Button(settings.text.string(.addSourceButton)) {
                     showingAdd = true
                 }
