@@ -79,6 +79,21 @@ public struct AppText: Sendable {
         case chatCitationsSectionTitle
         case chatNoCitationsForMessage
         case chatRegenerateButton
+        case notesSectionTitle
+        case notesEmptyState
+        case notesNewButton
+        case noteUntitled
+        case noteTitlePlaceholder
+        case noteBodyPlaceholder
+        case noteOriginManual
+        case noteOriginChat
+        case noteOriginTransformation
+        case transformationsSectionTitle
+        case transformationPickerLabel
+        case transformationSourcePickerLabel
+        case transformationRunButton
+        case transformationResultTitle
+        case transformationRunningStatus
     }
 
     public let language: AppLanguage
@@ -177,6 +192,21 @@ public struct AppText: Sendable {
         case .chatCitationsSectionTitle:   "Citations"
         case .chatNoCitationsForMessage:   "No citations"
         case .chatRegenerateButton:        "Regenerate"
+        case .notesSectionTitle:           "Notes"
+        case .notesEmptyState:             "No notes yet. Create one or save from chat."
+        case .notesNewButton:              "New note"
+        case .noteUntitled:                "Untitled"
+        case .noteTitlePlaceholder:        "Title"
+        case .noteBodyPlaceholder:         "Write Markdown here…"
+        case .noteOriginManual:            "Manual"
+        case .noteOriginChat:              "From chat"
+        case .noteOriginTransformation:    "From transformation"
+        case .transformationsSectionTitle: "Transformations"
+        case .transformationPickerLabel:   "Transformation"
+        case .transformationSourcePickerLabel: "Source"
+        case .transformationRunButton:     "Run"
+        case .transformationResultTitle:   "Result"
+        case .transformationRunningStatus: "Running…"
         }
     }
 
@@ -261,6 +291,21 @@ public struct AppText: Sendable {
         case .chatCitationsSectionTitle:   "Citace"
         case .chatNoCitationsForMessage:   "Žádné citace"
         case .chatRegenerateButton:        "Znovu vygenerovat"
+        case .notesSectionTitle:           "Poznámky"
+        case .notesEmptyState:             "Zatím žádné poznámky. Vytvořte ji nebo uložte z chatu."
+        case .notesNewButton:              "Nová poznámka"
+        case .noteUntitled:                "Bez názvu"
+        case .noteTitlePlaceholder:        "Název"
+        case .noteBodyPlaceholder:         "Zde pište Markdown…"
+        case .noteOriginManual:            "Ruční"
+        case .noteOriginChat:              "Z chatu"
+        case .noteOriginTransformation:    "Z transformace"
+        case .transformationsSectionTitle: "Transformace"
+        case .transformationPickerLabel:   "Transformace"
+        case .transformationSourcePickerLabel: "Zdroj"
+        case .transformationRunButton:     "Spustit"
+        case .transformationResultTitle:   "Výsledek"
+        case .transformationRunningStatus: "Probíhá…"
         }
     }
 }
