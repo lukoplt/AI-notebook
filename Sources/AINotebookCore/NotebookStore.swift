@@ -23,6 +23,7 @@ public final class NotebookStore: ObservableObject {
         }
         var migrator = DatabaseMigrator()
         registerMigrationV1(on: &migrator)
+        registerMigrationV2(on: &migrator)
         try migrator.migrate(dbQueue)
         try refresh()
     }
@@ -82,5 +83,11 @@ public final class NotebookStore: ObservableObject {
             throw StoreError.notebookNotFound(id: id)
         }
         try refresh()
+    }
+
+    /// Test affordance: run a closure on the underlying DB. Production callers
+    /// must use the typed CRUD methods.
+    public func runOnDatabase<T>(_ block: (Database) throws -> T) throws -> T {
+        try dbQueue.write(block)
     }
 }
