@@ -4,11 +4,24 @@ import AINotebookCore
 struct ContentView: View {
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var store: NotebookStore
+    @EnvironmentObject private var ollama: OllamaClientHolder
+    @EnvironmentObject private var onboarding: OnboardingViewModel
 
     @State private var selectedNotebookId: Int64?
     @State private var showSettings = false
 
     var body: some View {
+        Group {
+            if settings.hasCompletedOnboarding {
+                mainUI
+            } else {
+                OnboardingView(viewModel: onboarding)
+                    .environmentObject(settings)
+            }
+        }
+    }
+
+    private var mainUI: some View {
         NavigationSplitView {
             SidebarView(selection: $selectedNotebookId)
                 .environmentObject(settings)

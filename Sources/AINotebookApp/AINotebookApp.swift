@@ -5,14 +5,13 @@ import AINotebookCore
 struct AINotebookAppEntry: App {
     @StateObject private var settings: AppSettings
     @StateObject private var store: NotebookStore
+    @StateObject private var ollama: OllamaClientHolder
+    @StateObject private var onboarding: OnboardingViewModel
 
     init() {
         let settings = AppSettings()
         _settings = StateObject(wrappedValue: settings)
 
-        // Crash fast on storage init failure — at this point the app cannot
-        // function. A future task can replace this with a friendly first-run
-        // error screen.
         let store: NotebookStore
         do {
             let path = try StorePath.production()
@@ -21,6 +20,13 @@ struct AINotebookAppEntry: App {
             fatalError("Failed to open AINotebook database: \(error)")
         }
         _store = StateObject(wrappedValue: store)
+
+        let client = OllamaClient()
+        _ollama = StateObject(wrappedValue: OllamaClientHolder(client: client))
+        _onboarding = StateObject(wrappedValue: OnboardingViewModel(
+            client: client,
+            settings: settings
+        ))
     }
 
     var body: some Scene {
@@ -28,6 +34,8 @@ struct AINotebookAppEntry: App {
             ContentView()
                 .environmentObject(settings)
                 .environmentObject(store)
+                .environmentObject(ollama)
+                .environmentObject(onboarding)
                 .frame(minWidth: 900, minHeight: 600)
         }
         .windowStyle(.titleBar)
@@ -37,4 +45,12 @@ struct AINotebookAppEntry: App {
             }
         }
     }
+}
+
+/// `OllamaClient` itself is a final class, so it can't be `@StateObject`'d
+/// directly without `ObservableObject` conformance — wrap it in a holder.
+@MainActor
+final class OllamaClientHolder: ObservableObject {
+    let client: OllamaClient
+    init(client: OllamaClient) { self.client = client }
 }
