@@ -1,0 +1,60 @@
+import Foundation
+import GRDB
+
+public struct Source: Identifiable, Equatable, Hashable, Codable, Sendable {
+    public var id: Int64?
+    public var notebookId: Int64
+    public var type: SourceType
+    public var title: String
+    public var uri: String?
+    public var rawPath: String?
+    public var status: SourceStatus
+    public var error: String?
+    public var ingestedAt: Date
+
+    public init(
+        id: Int64? = nil,
+        notebookId: Int64,
+        type: SourceType,
+        title: String,
+        uri: String? = nil,
+        rawPath: String? = nil,
+        status: SourceStatus = .pending,
+        error: String? = nil,
+        ingestedAt: Date = Date()
+    ) {
+        self.id = id
+        self.notebookId = notebookId
+        self.type = type
+        self.title = title
+        self.uri = uri
+        self.rawPath = rawPath
+        self.status = status
+        self.error = error
+        self.ingestedAt = ingestedAt
+    }
+}
+
+extension Source: FetchableRecord, MutablePersistableRecord {
+    public static let databaseTableName = "sources"
+    public static let databaseColumnEncodingStrategy = DatabaseColumnEncodingStrategy.convertToSnakeCase
+    public static let databaseColumnDecodingStrategy = DatabaseColumnDecodingStrategy.convertFromSnakeCase
+
+    public enum Columns: String {
+        case id
+        case notebookId  = "notebook_id"
+        case type
+        case title
+        case uri
+        case rawPath     = "raw_path"
+        case status
+        case error
+        case ingestedAt  = "ingested_at"
+
+        var column: Column { Column(self.rawValue) }
+    }
+
+    public mutating func didInsert(_ inserted: InsertionSuccess) {
+        id = inserted.rowID
+    }
+}
