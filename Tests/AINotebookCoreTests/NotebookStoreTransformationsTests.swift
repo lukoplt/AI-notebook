@@ -7,13 +7,13 @@ final class NotebookStoreTransformationsTests: XCTestCase {
     func testCreateAndListTransformations() throws {
         let store = try NotebookStore(path: .inMemory)
         _ = try store.createTransformation(
-            name: "Summary", promptTemplate: "Summarize:\n{{source_text}}", scope: .source, isBuiltin: true
+            name: "CustomA", promptTemplate: "Summarize:\n{{source_text}}", scope: .source, isBuiltin: false
         )
         _ = try store.createTransformation(
-            name: "Custom",  promptTemplate: "Do X", scope: .source, isBuiltin: false
+            name: "CustomB", promptTemplate: "Do X", scope: .source, isBuiltin: false
         )
-        let all = try store.transformations()
-        XCTAssertEqual(all.count, 2)
+        let nonBuiltin = try store.transformations().filter { !$0.isBuiltin }
+        XCTAssertEqual(nonBuiltin.count, 2)
     }
 
     func testUpdateAndDeleteCustomTransformation() throws {
@@ -26,7 +26,7 @@ final class NotebookStoreTransformationsTests: XCTestCase {
         XCTAssertEqual(reloaded.name, "C2")
         XCTAssertEqual(reloaded.promptTemplate, "new")
         try store.deleteTransformation(id: t.id!)
-        XCTAssertEqual(try store.transformations().count, 0)
+        XCTAssertEqual(try store.transformations().filter { !$0.isBuiltin }.count, 0)
     }
 
     func testRecordRunCreatesRow() throws {
