@@ -46,6 +46,8 @@ extension NotebookStore {
     }
 
     public func updateNote(id: Int64, title: String, bodyMd: String) throws {
+        try? snapshotNoteVersion(noteId: id, reason: .autosave)
+
         try runOnDatabase { db in
             guard var n = try Note.fetchOne(db, key: id) else { return }
             n.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
