@@ -1,0 +1,12 @@
+AI Notebook
+Copyright 2026 Lukáš Oplt
+
+Inspired by open-notebook (https://github.com/lfnovo/open-notebook), MIT.
+
+Dependencies:
+- GRDB.swift — MIT — https://github.com/groue/GRDB.swift
+- SwiftSoup — MIT — https://github.com/scinfu/SwiftSoup
+- ZIPFoundation — MIT — https://github.com/weichsel/ZIPFoundation
+
+Bundled at runtime via the user's local installation:
+- Ollama (https://ollama.com) — MIT
