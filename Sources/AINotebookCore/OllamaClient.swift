@@ -189,6 +189,26 @@ public final class OllamaClient: @unchecked Sendable {
         }
     }
 
+    /// `DELETE /api/delete` — removes a locally-installed model.
+    public func deleteModel(name: String) async throws {
+        let url = baseURL.appendingPathComponent("api/delete")
+        var req = URLRequest(url: url)
+        req.httpMethod = "DELETE"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.httpBody = try encoder.encode(["name": name])
+
+        let (data, response) = try await session.data(for: req)
+        guard let http = response as? HTTPURLResponse else {
+            throw OllamaError.httpStatus(code: 0, body: "")
+        }
+        if !(200..<300).contains(http.statusCode) {
+            throw OllamaError.httpStatus(
+                code: http.statusCode,
+                body: String(data: data, encoding: .utf8) ?? ""
+            )
+        }
+    }
+
     // MARK: - Helpers
 
     private func sendData(_ req: URLRequest) async throws -> (Data, URLResponse) {

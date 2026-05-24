@@ -36,6 +36,7 @@ final class StubURLProtocol: URLProtocol, @unchecked Sendable {
 
     private static let lock = NSLock()
     private static nonisolated(unsafe) var stubs: [Stub] = []
+    private static nonisolated(unsafe) var requests: [URLRequest] = []
 
     static func enqueue(_ stub: Stub) {
         lock.lock(); defer { lock.unlock() }
@@ -45,6 +46,22 @@ final class StubURLProtocol: URLProtocol, @unchecked Sendable {
     static func reset() {
         lock.lock(); defer { lock.unlock() }
         stubs.removeAll()
+        requests.removeAll()
+    }
+
+    static var lastRequest: URLRequest? {
+        lock.lock(); defer { lock.unlock() }
+        return requests.last
+    }
+
+    static var allRequests: [URLRequest] {
+        lock.lock(); defer { lock.unlock() }
+        return requests
+    }
+
+    private static func record(_ request: URLRequest) {
+        lock.lock(); defer { lock.unlock() }
+        requests.append(request)
     }
 
     private static func dequeue() -> Stub? {
@@ -62,6 +79,7 @@ final class StubURLProtocol: URLProtocol, @unchecked Sendable {
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
 
     override func startLoading() {
+        StubURLProtocol.record(request)
         guard let stub = StubURLProtocol.dequeue() else {
             client?.urlProtocol(self, didFailWithError: URLError(.cannotFindHost))
             return
