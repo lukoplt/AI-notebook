@@ -1,0 +1,41 @@
+name: macOS Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-dmg:
+    # macos-15 ships Xcode 16 by default, so we avoid an explicit xcode-select
+    # step. If we ever need to pin a specific Xcode version, switch to macos-14
+    # and re-add `sudo xcode-select -s /Applications/Xcode_16.0.app/...`.
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # actions/checkout@v4
+
+      - name: Cache SwiftPM build
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830  # actions/cache@v4
+        with:
+          path: .build
+          key: spm-${{ runner.os }}-${{ hashFiles('Package.resolved') }}
+
+      - name: Run tests
+        run: swift test --parallel
+
+      - name: Build .app + DMG
+        run: |
+          ./tools/macos/build-app.sh
+          ./tools/macos/build-dmg.sh
+          ls -lh dist/
+
+      - name: Upload DMG to GitHub Release
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # softprops/action-gh-release@v2
+        with:
+          files: dist/AINotebook-v*-macos.dmg
+          generate_release_notes: true
