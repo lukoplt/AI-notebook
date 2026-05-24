@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.5.0] — 2026-05-25
+
+Attachments + inline images land in the WYSIWYG editor.
+
+### Added
+- Drag/paste images and files into the editor; saved under
+  `~/Library/Application Support/AINotebook/attachments/<note-uuid>/`.
+- Inline image rendering via the new `attachment://` URL scheme handler
+  (`WKURLSchemeHandler`).
+- Non-image files insert as Markdown links inline.
+- Cascade cleanup: deleting a Note removes both its DB rows and its
+  attachments folder.
+- Filename collision handling: duplicates get ` (2)`, ` (3)` suffixes.
+
+### Schema
+- MigrationV7 adds the `attachments` table (note_id FK, cascade).
+
+### Tests
+- 186 unit tests (was 179).
+
 ## [0.4.0] — 2026-05-25
 
 WYSIWYG Markdown editor lands in the Notes pane.
