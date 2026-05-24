@@ -115,6 +115,11 @@ public struct AppText: Sendable {
         case notesChatPanelTitle
         case notesChatPanelEmpty
         case notesChatCurrentNoteHint
+        case editorStatusSaved
+        case editorStatusSaving
+        case editorStatusUnsaved
+        case editorStatusError
+        case editorFailedToLoad
     }
 
     public let language: AppLanguage
@@ -249,6 +254,11 @@ public struct AppText: Sendable {
         case .notesChatPanelTitle:         "Chat"
         case .notesChatPanelEmpty:         "Start a question about this notebook…"
         case .notesChatCurrentNoteHint:    "Including the open note as bonus context"
+        case .editorStatusSaved:           "Saved"
+        case .editorStatusSaving:          "Saving…"
+        case .editorStatusUnsaved:         "Unsaved changes"
+        case .editorStatusError:           "Save failed"
+        case .editorFailedToLoad:          "Editor failed to load. Reopen the note."
         }
     }
 
@@ -369,6 +379,11 @@ public struct AppText: Sendable {
         case .notesChatPanelTitle:         "Chat"
         case .notesChatPanelEmpty:         "Zeptej se na něco z tohoto notebooku…"
         case .notesChatCurrentNoteHint:    "Aktuální poznámka přidána jako kontext"
+        case .editorStatusSaved:           "Uloženo"
+        case .editorStatusSaving:          "Ukládám…"
+        case .editorStatusUnsaved:         "Neuložené změny"
+        case .editorStatusError:           "Uložení selhalo"
+        case .editorFailedToLoad:          "Editor se nepodařilo načíst. Otevřete poznámku znovu."
         }
     }
 }
