@@ -41,6 +41,14 @@ struct AINotebookAppEntry: App {
             await worker.kick()
         })
         _ingestion = StateObject(wrappedValue: IngestionServiceHolder(service: ingestion))
+
+        let indexer = NoteIndexer(store: store, onChunksWritten: { [worker] in
+            await worker.kick()
+        })
+        store.onNoteSaved = { [indexer] noteId in
+            do { try await indexer.index(noteId: noteId) }
+            catch { print("NoteIndexer error: \(error)") }
+        }
         _onboarding = StateObject(wrappedValue: OnboardingViewModel(
             client: client,
             settings: settings
