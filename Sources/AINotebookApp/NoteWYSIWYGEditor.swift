@@ -7,7 +7,7 @@ struct NoteWYSIWYGEditor: View {
     @Binding var title: String
     @Binding var bodyMd: String
     let language: AppLanguage
-    let onSave: (String) -> Void
+    let onSave: @Sendable (String) -> Void
 
     @StateObject private var autoSave: AutoSaveController
     @State private var loadFailed = false
@@ -18,14 +18,13 @@ struct NoteWYSIWYGEditor: View {
         title: Binding<String>,
         bodyMd: Binding<String>,
         language: AppLanguage,
-        onSave: @escaping (String) -> Void
+        onSave: @escaping @Sendable (String) -> Void
     ) {
         self._title = title
         self._bodyMd = bodyMd
         self.language = language
         self.onSave = onSave
-        let saveBox: @Sendable (String) -> Void = { body in onSave(body) }
-        self._autoSave = StateObject(wrappedValue: AutoSaveController(save: saveBox))
+        self._autoSave = StateObject(wrappedValue: AutoSaveController(save: onSave))
     }
 
     var body: some View {
@@ -164,7 +163,7 @@ private struct EditorWebView: NSViewRepresentable {
 
         func webView(_ webView: WKWebView,
                      decidePolicyFor navigationAction: WKNavigationAction,
-                     decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+                     decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy) -> Void) {
             if let url = navigationAction.request.url, url.scheme == "file" {
                 decisionHandler(.allow)
             } else if navigationAction.navigationType == .other {
