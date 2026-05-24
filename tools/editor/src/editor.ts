@@ -47,3 +47,75 @@ window.aino = {
 }
 
 postToSwift({ kind: "ready" })
+
+const pendingRequests = new Map<string, (url: string | null) => void>()
+
+const ainoExtra = {
+  attachmentSaved(requestId: string, url: string, _mime: string) {
+    const cb = pendingRequests.get(requestId); pendingRequests.delete(requestId)
+    if (cb) cb(url)
+  },
+  attachmentDenied(requestId: string) {
+    const cb = pendingRequests.get(requestId); pendingRequests.delete(requestId)
+    if (cb) cb(null)
+  }
+}
+Object.assign(window.aino as any, ainoExtra)
+
+function uploadFile(file: File): Promise<string | null> {
+  return new Promise(resolve => {
+    const reader = new FileReader()
+    reader.onerror = () => resolve(null)
+    reader.onload = () => {
+      const base64 = String(reader.result || "").split(",", 2)[1] || ""
+      const requestId = Math.random().toString(36).slice(2)
+      pendingRequests.set(requestId, resolve)
+      postToSwift({
+        kind: "attachment",
+        requestId,
+        filename: file.name || "attachment.bin",
+        mime: file.type || "application/octet-stream",
+        base64
+      })
+    }
+    reader.readAsDataURL(file)
+  })
+}
+
+async function insertFile(file: File) {
+  const url = await uploadFile(file)
+  if (!url) return
+  if ((file.type || "").startsWith("image/")) {
+    editor.chain().focus().setImage({ src: url, alt: file.name }).run()
+  } else {
+    editor.chain().focus().insertContent(`[${file.name}](${url})`).run()
+  }
+}
+
+mount.addEventListener("paste", (e) => {
+  const items = (e as ClipboardEvent).clipboardData?.items
+  if (!items) return
+  for (let i = 0; i < items.length; i++) {
+    const it = items[i]
+    if (it.kind === "file") {
+      const f = it.getAsFile()
+      if (f) {
+        e.preventDefault()
+        insertFile(f)
+      }
+    }
+  }
+})
+
+mount.addEventListener("drop", (e) => {
+  const dt = (e as DragEvent).dataTransfer
+  if (!dt || dt.files.length === 0) return
+  e.preventDefault()
+  for (let i = 0; i < dt.files.length; i++) {
+    insertFile(dt.files[i])
+  }
+})
+
+mount.addEventListener("dragover", (e) => {
+  e.preventDefault()
+})
