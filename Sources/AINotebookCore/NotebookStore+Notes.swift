@@ -57,4 +57,13 @@ extension NotebookStore {
             _ = try Note.deleteOne(db, key: id)
         }
     }
+
+    public func linkNoteToShadowSource(noteId: Int64, sourceId: Int64) throws {
+        try runOnDatabase { db in
+            try db.execute(
+                sql: "UPDATE notes SET auto_source_id = ? WHERE id = ?",
+                arguments: [sourceId, noteId]
+            )
+        }
+    }
 }
