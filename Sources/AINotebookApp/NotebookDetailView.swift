@@ -36,8 +36,10 @@ struct NotebookDetailView: View {
                     SourceListView(notebook: notebook)
                 case .chat:
                     ChatView(notebook: notebook)
-                case .notes, .transformations:
-                    placeholder
+                case .notes:
+                    NotesView(notebook: notebook)
+                case .transformations:
+                    TransformationsView(notebook: notebook)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -56,27 +58,6 @@ struct NotebookDetailView: View {
             Text(notebook.createdAt.formatted(date: .abbreviated, time: .shortened))
                 .font(.caption)
                 .foregroundStyle(.tertiary)
-        }
-    }
-
-    private var placeholder: some View {
-        VStack(spacing: 8) {
-            Text(settings.text.string(.comingSoon))
-                .font(.title3)
-                .foregroundStyle(.secondary)
-            Text(comingSoonMessage)
-                .font(.callout)
-                .foregroundStyle(.tertiary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-
-    private var comingSoonMessage: String {
-        switch selectedTab {
-        case .sources:         settings.text.string(.sourcesTabComingSoon)
-        case .chat:            settings.text.string(.chatTabComingSoon)
-        case .notes:           settings.text.string(.notesTabComingSoon)
-        case .transformations: settings.text.string(.transformationsTabComingSoon)
         }
     }
 }
