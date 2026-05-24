@@ -19,19 +19,22 @@ public final class IngestionService: @unchecked Sendable {
     private let pdf:    TextExtractor
     private let web:    TextExtractor
     private let office: TextExtractor
+    private let onChunksWritten: (@Sendable () async -> Void)?
 
     public init(
         store: NotebookStore,
         plain:  TextExtractor = PlainTextExtractor(),
         pdf:    TextExtractor = PDFExtractor(),
         web:    TextExtractor = WebExtractor(),
-        office: TextExtractor = OfficeExtractor()
+        office: TextExtractor = OfficeExtractor(),
+        onChunksWritten: (@Sendable () async -> Void)? = nil
     ) {
         self.store = store
         self.plain = plain
         self.pdf = pdf
         self.web = web
         self.office = office
+        self.onChunksWritten = onChunksWritten
     }
 
     @discardableResult
@@ -106,6 +109,7 @@ public final class IngestionService: @unchecked Sendable {
                 try store.replaceChunks(sourceId: source.id!, chunks: chunks)
                 try store.updateSourceStatus(id: source.id!, status: .ready, error: nil)
             }
+            await onChunksWritten?()
             source.status = .ready
             return source
         } catch {
