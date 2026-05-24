@@ -12,6 +12,7 @@ struct TransformationsView: View {
     @State private var sources: [Source] = []
     @State private var selectedTransformationId: Int64?
     @State private var selectedSourceId: Int64?
+    @State private var scope: TransformationScope = .source
     @State private var resultBody: String = ""
     @State private var resultNoteId: Int64?
     @State private var running = false
@@ -33,6 +34,14 @@ struct TransformationsView: View {
                     }
                     .labelsHidden()
                 }
+                pickerColumn(title: "Scope") {
+                    Picker("", selection: $scope) {
+                        Text("Source").tag(TransformationScope.source)
+                        Text("Notebook").tag(TransformationScope.notebook)
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                }
                 pickerColumn(title: t.string(.transformationSourcePickerLabel)) {
                     Picker("", selection: $selectedSourceId) {
                         ForEach(sources) { s in
@@ -40,6 +49,7 @@ struct TransformationsView: View {
                         }
                     }
                     .labelsHidden()
+                    .disabled(scope == .notebook)
                 }
                 Spacer()
                 Button(t.string(.transformationRunButton)) {
@@ -47,7 +57,13 @@ struct TransformationsView: View {
                 }
                 .disabled(running
                           || selectedTransformationId == nil
-                          || selectedSourceId == nil)
+                          || (scope == .source && selectedSourceId == nil))
+            }
+            .onChange(of: selectedTransformationId) { _, _ in
+                if let tid = selectedTransformationId,
+                   let tx = transformations.first(where: { $0.id == tid }) {
+                    scope = tx.scope
+                }
             }
 
             if running {
@@ -97,17 +113,25 @@ struct TransformationsView: View {
     }
 
     private func run() async {
-        guard let tid = selectedTransformationId, let sid = selectedSourceId else { return }
-        running = true
-        errorMessage = nil
-        resultBody = ""
-        resultNoteId = nil
+        guard let tid = selectedTransformationId else { return }
+        running = true; errorMessage = nil; resultBody = ""; resultNoteId = nil
         defer { running = false }
         do {
-            let note = try await transformationHolder.engine.run(
-                transformationId: tid, sourceId: sid
-            ) { token in
-                Task { @MainActor in resultBody += token }
+            let note: Note
+            switch scope {
+            case .source:
+                guard let sid = selectedSourceId else { return }
+                note = try await transformationHolder.engine.run(
+                    transformationId: tid, sourceId: sid
+                ) { token in
+                    Task { @MainActor in resultBody += token }
+                }
+            case .notebook:
+                note = try await transformationHolder.engine.runNotebookScope(
+                    transformationId: tid, notebookId: notebook.id!
+                ) { token in
+                    Task { @MainActor in resultBody += token }
+                }
             }
             resultNoteId = note.id
         } catch {
