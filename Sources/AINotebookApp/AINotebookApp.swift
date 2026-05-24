@@ -7,6 +7,7 @@ struct AINotebookAppEntry: App {
     @StateObject private var store: NotebookStore
     @StateObject private var ollama: OllamaClientHolder
     @StateObject private var ingestion: IngestionServiceHolder
+    @StateObject private var embedderHolder: EmbedderHolder
     @StateObject private var onboarding: OnboardingViewModel
 
     init() {
@@ -22,12 +23,21 @@ struct AINotebookAppEntry: App {
         }
         _store = StateObject(wrappedValue: store)
 
-        _ingestion = StateObject(wrappedValue: IngestionServiceHolder(
-            service: IngestionService(store: store)
-        ))
-
         let client = OllamaClient()
         _ollama = StateObject(wrappedValue: OllamaClientHolder(client: client))
+
+        let embedder = Embedder(
+            store: store,
+            client: client,
+            model: settings.selectedEmbeddingModel
+        )
+        let worker = EmbeddingWorker(embedder: embedder)
+        _embedderHolder = StateObject(wrappedValue: EmbedderHolder(embedder: embedder, worker: worker))
+
+        let ingestion = IngestionService(store: store, onChunksWritten: {
+            await worker.kick()
+        })
+        _ingestion = StateObject(wrappedValue: IngestionServiceHolder(service: ingestion))
         _onboarding = StateObject(wrappedValue: OnboardingViewModel(
             client: client,
             settings: settings
@@ -41,6 +51,7 @@ struct AINotebookAppEntry: App {
                 .environmentObject(store)
                 .environmentObject(ollama)
                 .environmentObject(ingestion)
+                .environmentObject(embedderHolder)
                 .environmentObject(onboarding)
                 .frame(minWidth: 900, minHeight: 600)
         }
