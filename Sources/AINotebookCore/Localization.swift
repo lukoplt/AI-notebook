@@ -99,6 +99,18 @@ public struct AppText: Sendable {
         case transformationEditorDelete
         case transformationEditorNamePlaceholder
         case transformationEditorTemplatePlaceholder
+        case reembedButton
+        case reembedConfirm
+        case reembedConfirmYes
+        case embeddingSectionTitle
+        case currentModelLabel
+        case manageModelsButton
+        case manageModelsTitle
+        case manageModelsPullPlaceholder
+        case manageModelsPullButton
+        case manageModelsRefreshButton
+        case chatModelPickerLabel
+        case embeddingModelPickerLabel
     }
 
     public let language: AppLanguage
@@ -217,6 +229,18 @@ public struct AppText: Sendable {
         case .transformationEditorDelete:  "Delete"
         case .transformationEditorNamePlaceholder:     "Template name"
         case .transformationEditorTemplatePlaceholder: "Prompt template (use {{source_text}})"
+        case .reembedButton:               "Re-embed all sources"
+        case .reembedConfirm:              "This deletes existing embeddings and re-runs them with the current model. Continue?"
+        case .reembedConfirmYes:           "Re-embed"
+        case .embeddingSectionTitle:       "Embedding"
+        case .currentModelLabel:           "Current model"
+        case .manageModelsButton:          "Manage models…"
+        case .manageModelsTitle:           "Installed Ollama models"
+        case .manageModelsPullPlaceholder: "Pull model name (e.g. mistral:7b)"
+        case .manageModelsPullButton:      "Pull"
+        case .manageModelsRefreshButton:   "Refresh list"
+        case .chatModelPickerLabel:        "Chat model"
+        case .embeddingModelPickerLabel:   "Embedding model"
         }
     }
 
@@ -321,6 +345,18 @@ public struct AppText: Sendable {
         case .transformationEditorDelete:  "Smazat"
         case .transformationEditorNamePlaceholder:     "Název šablony"
         case .transformationEditorTemplatePlaceholder: "Šablona promptu (použijte {{source_text}})"
+        case .reembedButton:               "Přeindexovat všechny zdroje"
+        case .reembedConfirm:              "Smaže stávající vektory a přepočte je aktuálním modelem. Pokračovat?"
+        case .reembedConfirmYes:           "Přeindexovat"
+        case .embeddingSectionTitle:       "Vektorizace"
+        case .currentModelLabel:           "Aktuální model"
+        case .manageModelsButton:          "Spravovat modely…"
+        case .manageModelsTitle:           "Nainstalované Ollama modely"
+        case .manageModelsPullPlaceholder: "Stáhnout model (např. mistral:7b)"
+        case .manageModelsPullButton:      "Stáhnout"
+        case .manageModelsRefreshButton:   "Obnovit seznam"
+        case .chatModelPickerLabel:        "Chatovací model"
+        case .embeddingModelPickerLabel:   "Model pro vektorizaci"
         }
     }
 }

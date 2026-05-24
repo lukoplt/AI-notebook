@@ -91,4 +91,14 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppText(language: .english).string(.chatSaveAsNoteButton), "Save as note")
         XCTAssertEqual(AppText(language: .czech)  .string(.chatSaveAsNoteButton), "Uložit jako poznámku")
     }
+
+    func testReembedButtonIsBilingual() {
+        XCTAssertEqual(AppText(language: .english).string(.reembedButton), "Re-embed all sources")
+        XCTAssertEqual(AppText(language: .czech)  .string(.reembedButton), "Přeindexovat všechny zdroje")
+    }
+
+    func testManageModelsButtonIsBilingual() {
+        XCTAssertEqual(AppText(language: .english).string(.manageModelsButton), "Manage models…")
+        XCTAssertEqual(AppText(language: .czech)  .string(.manageModelsButton), "Spravovat modely…")
+    }
 }

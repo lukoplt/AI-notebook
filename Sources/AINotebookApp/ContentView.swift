@@ -5,6 +5,7 @@ struct ContentView: View {
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var store: NotebookStore
     @EnvironmentObject private var ollama: OllamaClientHolder
+    @EnvironmentObject private var embedderHolder: EmbedderHolder
     @EnvironmentObject private var onboarding: OnboardingViewModel
 
     @State private var selectedNotebookId: Int64?
@@ -42,6 +43,9 @@ struct ContentView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView()
                 .environmentObject(settings)
+                .environmentObject(store)
+                .environmentObject(ollama)
+                .environmentObject(embedderHolder)
         }
     }
 
