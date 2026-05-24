@@ -30,8 +30,15 @@ struct NotebookDetailView: View {
             Divider()
                 .padding(.top, 12)
 
-            placeholder
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            Group {
+                switch selectedTab {
+                case .sources:
+                    SourceListView(notebook: notebook)
+                case .chat, .notes, .transformations:
+                    placeholder
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
