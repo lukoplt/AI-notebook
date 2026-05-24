@@ -17,6 +17,7 @@ struct TransformationsView: View {
     @State private var resultNoteId: Int64?
     @State private var running = false
     @State private var errorMessage: String?
+    @State private var showingEditor = false
 
     private var t: AppText { settings.text }
 
@@ -58,6 +59,7 @@ struct TransformationsView: View {
                 .disabled(running
                           || selectedTransformationId == nil
                           || (scope == .source && selectedSourceId == nil))
+                Button(t.string(.transformationEditButton)) { showingEditor = true }
             }
             .onChange(of: selectedTransformationId) { _, _ in
                 if let tid = selectedTransformationId,
@@ -87,6 +89,9 @@ struct TransformationsView: View {
         }
         .padding(20)
         .task(id: notebook.id) { await reload() }
+        .sheet(isPresented: $showingEditor, onDismiss: { Task { await reload() } }) {
+            TransformationEditorSheet(isPresented: $showingEditor, onChange: { Task { await reload() } })
+        }
     }
 
     @ViewBuilder

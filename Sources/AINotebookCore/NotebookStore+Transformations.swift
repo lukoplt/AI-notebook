@@ -46,6 +46,14 @@ extension NotebookStore {
         }
     }
 
+    public func updateTransformationScope(id: Int64, scope: TransformationScope) throws {
+        try runOnDatabase { db in
+            guard var t = try Transformation.fetchOne(db, key: id) else { return }
+            t.scope = scope
+            try t.update(db)
+        }
+    }
+
     public func deleteTransformation(id: Int64) throws {
         try runOnDatabase { db in
             _ = try Transformation.deleteOne(db, key: id)

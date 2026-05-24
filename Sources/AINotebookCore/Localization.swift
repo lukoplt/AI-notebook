@@ -89,6 +89,12 @@ public struct AppText: Sendable {
         case transformationRunButton
         case transformationResultTitle
         case transformationRunningStatus
+        case transformationEditButton
+        case transformationEditorTitle
+        case transformationEditorNew
+        case transformationEditorDelete
+        case transformationEditorNamePlaceholder
+        case transformationEditorTemplatePlaceholder
     }
 
     public let language: AppLanguage
@@ -197,6 +203,12 @@ public struct AppText: Sendable {
         case .transformationRunButton:     "Run"
         case .transformationResultTitle:   "Result"
         case .transformationRunningStatus: "Running…"
+        case .transformationEditButton:    "Edit templates"
+        case .transformationEditorTitle:   "Custom transformations"
+        case .transformationEditorNew:     "New"
+        case .transformationEditorDelete:  "Delete"
+        case .transformationEditorNamePlaceholder:     "Template name"
+        case .transformationEditorTemplatePlaceholder: "Prompt template (use {{source_text}})"
         }
     }
 
@@ -291,6 +303,12 @@ public struct AppText: Sendable {
         case .transformationRunButton:     "Spustit"
         case .transformationResultTitle:   "Výsledek"
         case .transformationRunningStatus: "Probíhá…"
+        case .transformationEditButton:    "Upravit šablony"
+        case .transformationEditorTitle:   "Vlastní transformace"
+        case .transformationEditorNew:     "Nový"
+        case .transformationEditorDelete:  "Smazat"
+        case .transformationEditorNamePlaceholder:     "Název šablony"
+        case .transformationEditorTemplatePlaceholder: "Šablona promptu (použijte {{source_text}})"
         }
     }
 }
