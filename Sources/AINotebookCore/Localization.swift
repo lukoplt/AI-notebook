@@ -71,6 +71,14 @@ public struct AppText: Sendable {
         case indexingError
         case indexingPaused
         case indexingIdle
+        case chatNewSessionTitle
+        case chatInputPlaceholder
+        case chatSendButton
+        case chatEmptyState
+        case chatErrorPrefix
+        case chatCitationsSectionTitle
+        case chatNoCitationsForMessage
+        case chatRegenerateButton
     }
 
     public let language: AppLanguage
@@ -161,6 +169,14 @@ public struct AppText: Sendable {
         case .indexingError:               "Indexing error"
         case .indexingPaused:              "Indexing paused"
         case .indexingIdle:                "Idle"
+        case .chatNewSessionTitle:         "New chat"
+        case .chatInputPlaceholder:        "Ask anything about your sources…"
+        case .chatSendButton:              "Send"
+        case .chatEmptyState:              "Start by asking a question."
+        case .chatErrorPrefix:             "Chat error: "
+        case .chatCitationsSectionTitle:   "Citations"
+        case .chatNoCitationsForMessage:   "No citations"
+        case .chatRegenerateButton:        "Regenerate"
         }
     }
 
@@ -237,6 +253,14 @@ public struct AppText: Sendable {
         case .indexingError:               "Chyba při indexaci"
         case .indexingPaused:              "Indexace pozastavena"
         case .indexingIdle:                "Nečinné"
+        case .chatNewSessionTitle:         "Nový chat"
+        case .chatInputPlaceholder:        "Zeptej se na cokoli ze svých zdrojů…"
+        case .chatSendButton:              "Odeslat"
+        case .chatEmptyState:              "Začněte položením otázky."
+        case .chatErrorPrefix:             "Chyba chatu: "
+        case .chatCitationsSectionTitle:   "Citace"
+        case .chatNoCitationsForMessage:   "Žádné citace"
+        case .chatRegenerateButton:        "Znovu vygenerovat"
         }
     }
 }
