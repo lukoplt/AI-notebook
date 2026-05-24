@@ -34,7 +34,9 @@ struct NotebookDetailView: View {
                 switch selectedTab {
                 case .sources:
                     SourceListView(notebook: notebook)
-                case .chat, .notes, .transformations:
+                case .chat:
+                    ChatView(notebook: notebook)
+                case .notes, .transformations:
                     placeholder
                 }
             }
