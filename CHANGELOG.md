@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.7.3] — 2026-05-25
+
+Notes editor: per-note isolation + unsaved-changes guard.
+
+### Fixed
+- Switching between Notes now reloads the editor with the target
+  note's content. `NoteWYSIWYGEditor` is keyed by `.id(noteId)` so
+  SwiftUI recreates the WebView and AutoSaveController per note,
+  preventing the prior body from bleeding into the next selection.
+- If the active note has unsaved edits, switching to another note
+  presents an alert with three options: **Save** (flush
+  AutoSaveController, then switch), **Discard** (switch without
+  saving), **Cancel** (stay on the current note). The "+" New note
+  button and citation jumps go through the same intercept.
+
+### Added
+- `NoteEditorCoordinator` (App-level) — lets `NotesView` observe
+  the editor's dirty state and trigger a flush from outside.
+- 4 new EN/CS localization keys for the unsaved-changes alert
+  (`unsavedChangesTitle`, `unsavedChangesMessage`, `unsavedSaveButton`,
+  `unsavedDiscardButton`).
+
 ## [0.7.2] — 2026-05-25
 
 NotesView 3-column layout fills the window correctly.

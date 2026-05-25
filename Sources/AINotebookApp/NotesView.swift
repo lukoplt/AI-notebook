@@ -19,6 +19,9 @@ struct NotesView: View {
     @State private var draftBody:  String = ""
     @State private var errorMessage: String?
     @State private var historyNoteId: Int64?
+    @StateObject private var editorCoord = NoteEditorCoordinator()
+    @State private var pendingSelection: Int64?
+    @State private var showUnsavedAlert = false
 
     private var t: AppText { settings.text }
 
@@ -40,9 +43,24 @@ struct NotesView: View {
         .task(id: notebook.id) { await reload() }
         .onReceive(noteJump.$target.compactMap { $0 }) { id in
             if notes.contains(where: { $0.id == id }) {
-                selection = id
+                attemptSelect(id)
                 noteJump.clear()
             }
+        }
+        .alert(t.string(.unsavedChangesTitle), isPresented: $showUnsavedAlert) {
+            Button(t.string(.unsavedSaveButton)) {
+                editorCoord.flushPendingSave?()
+                commitPendingSelection()
+            }
+            Button(t.string(.unsavedDiscardButton), role: .destructive) {
+                editorCoord.hasUnsavedChanges = false
+                commitPendingSelection()
+            }
+            Button(t.string(.cancelButton), role: .cancel) {
+                pendingSelection = nil
+            }
+        } message: {
+            Text(t.string(.unsavedChangesMessage))
         }
         .sheet(
             item: Binding<NoteIdBox?>(
@@ -91,7 +109,10 @@ struct NotesView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                List(selection: $selection) {
+                List(selection: Binding<Int64?>(
+                    get: { selection },
+                    set: { newValue in attemptSelect(newValue) }
+                )) {
                     ForEach(notes) { note in
                         VStack(alignment: .leading, spacing: 2) {
                             Text(note.title.isEmpty ? t.string(.noteUntitled) : note.title)
@@ -105,12 +126,6 @@ struct NotesView: View {
                 }
                 .listStyle(.sidebar)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onChange(of: selection) { _, newId in
-                    if let id = newId, let n = notes.first(where: { $0.id == id }) {
-                        draftTitle = n.title
-                        draftBody  = n.bodyMd
-                    }
-                }
             }
             if let errorMessage {
                 Text(errorMessage).font(.caption).foregroundStyle(.red).padding(.horizontal, 12)
@@ -129,6 +144,7 @@ struct NotesView: View {
                 noteId: id,
                 noteUuid: notes.first(where: { $0.id == id })?.noteUuid ?? "",
                 attachments: attachmentsHolder.store,
+                coordinator: editorCoord,
                 onShowHistory: { historyNoteId = id },
                 onSave: { _ in
                     Task { @MainActor in await save(id: id) }
@@ -136,6 +152,7 @@ struct NotesView: View {
             )
             .padding(16)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .id(id)
         } else {
             VStack(spacing: 10) {
                 Spacer()
@@ -179,9 +196,7 @@ struct NotesView: View {
                 bodyMd: ""
             )
             await reload()
-            selection = n.id
-            draftTitle = n.title
-            draftBody = ""
+            attemptSelect(n.id)
         } catch { errorMessage = String(describing: error) }
     }
 
@@ -190,5 +205,34 @@ struct NotesView: View {
             try store.updateNote(id: id, title: draftTitle, bodyMd: draftBody)
             await reload()
         } catch { errorMessage = String(describing: error) }
+    }
+
+    /// Intercept selection changes: if the active editor has unsaved
+    /// changes and the target differs, present the unsaved-changes alert
+    /// before switching.
+    private func attemptSelect(_ newValue: Int64?) {
+        if editorCoord.hasUnsavedChanges, newValue != selection {
+            pendingSelection = newValue
+            showUnsavedAlert = true
+            return
+        }
+        applySelection(newValue)
+    }
+
+    private func commitPendingSelection() {
+        let target = pendingSelection
+        pendingSelection = nil
+        applySelection(target)
+    }
+
+    private func applySelection(_ newValue: Int64?) {
+        selection = newValue
+        if let id = newValue, let n = notes.first(where: { $0.id == id }) {
+            draftTitle = n.title
+            draftBody  = n.bodyMd
+        } else if newValue == nil {
+            draftTitle = ""
+            draftBody = ""
+        }
     }
 }

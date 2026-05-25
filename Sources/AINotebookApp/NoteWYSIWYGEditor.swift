@@ -10,6 +10,7 @@ struct NoteWYSIWYGEditor: View {
     let noteId: Int64
     let noteUuid: String
     let attachments: AttachmentStore?
+    let coordinator: NoteEditorCoordinator?
     let onShowHistory: (() -> Void)?
     let onSave: @Sendable (String) -> Void
 
@@ -25,6 +26,7 @@ struct NoteWYSIWYGEditor: View {
         noteId: Int64,
         noteUuid: String,
         attachments: AttachmentStore?,
+        coordinator: NoteEditorCoordinator? = nil,
         onShowHistory: (() -> Void)? = nil,
         onSave: @escaping @Sendable (String) -> Void
     ) {
@@ -34,6 +36,7 @@ struct NoteWYSIWYGEditor: View {
         self.noteId = noteId
         self.noteUuid = noteUuid
         self.attachments = attachments
+        self.coordinator = coordinator
         self.onShowHistory = onShowHistory
         self.onSave = onSave
         self._autoSave = StateObject(wrappedValue: AutoSaveController(save: onSave))
@@ -79,6 +82,16 @@ struct NoteWYSIWYGEditor: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .onAppear {
+            coordinator?.flushPendingSave = { [weak autoSave] in autoSave?.manualSave() }
+            coordinator?.hasUnsavedChanges = (autoSave.status == .unsaved || autoSave.status == .saving)
+        }
+        .onDisappear {
+            coordinator?.flushPendingSave = nil
+        }
+        .onChange(of: autoSave.status) { _, newValue in
+            coordinator?.hasUnsavedChanges = (newValue == .unsaved || newValue == .saving)
+        }
     }
 
     @ViewBuilder

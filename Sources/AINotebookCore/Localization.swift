@@ -144,6 +144,10 @@ public struct AppText: Sendable {
         case aiToolsHistoryEmpty
         case aiToolsHistoryTitle
         case aiToolsDescriptionPlaceholder
+        case unsavedChangesTitle
+        case unsavedChangesMessage
+        case unsavedSaveButton
+        case unsavedDiscardButton
     }
 
     public let language: AppLanguage
@@ -307,6 +311,10 @@ public struct AppText: Sendable {
         case .aiToolsHistoryEmpty:         "No runs yet."
         case .aiToolsHistoryTitle:         "Run history"
         case .aiToolsDescriptionPlaceholder: "Short description (shown under the template name)"
+        case .unsavedChangesTitle: "Unsaved changes"
+        case .unsavedChangesMessage: "This note has unsaved edits. Save them before switching?"
+        case .unsavedSaveButton: "Save"
+        case .unsavedDiscardButton: "Discard"
         }
     }
 
@@ -456,6 +464,10 @@ public struct AppText: Sendable {
         case .aiToolsHistoryEmpty:         "Zatím žádné spuštění."
         case .aiToolsHistoryTitle:         "Historie spuštění"
         case .aiToolsDescriptionPlaceholder: "Krátký popis (zobrazí se pod názvem šablony)"
+        case .unsavedChangesTitle: "Neuložené změny"
+        case .unsavedChangesMessage: "Tato poznámka má neuložené úpravy. Uložit před přepnutím?"
+        case .unsavedSaveButton: "Uložit"
+        case .unsavedDiscardButton: "Zahodit"
         }
     }
 }
