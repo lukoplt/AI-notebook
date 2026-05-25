@@ -121,4 +121,24 @@ public actor TransformationEngine {
         }
         return note
     }
+
+    @discardableResult
+    public func runOnAllSources(
+        transformationId: Int64,
+        notebookId: Int64,
+        onProgress: @escaping @Sendable (Int, Int) -> Void = { _, _ in }
+    ) async throws -> [Note] {
+        let storeRef = store
+        let sources: [Source] = try await MainActor.run {
+            try storeRef.sources(notebookId: notebookId)
+        }
+        let total = sources.count
+        var results: [Note] = []
+        for (idx, s) in sources.enumerated() {
+            let note = try await run(transformationId: transformationId, sourceId: s.id!)
+            results.append(note)
+            onProgress(idx + 1, total)
+        }
+        return results
+    }
 }
