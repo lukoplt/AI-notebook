@@ -3,12 +3,22 @@ import AINotebookCore
 
 struct NotebookDetailView: View {
     @EnvironmentObject private var settings: AppSettings
+    @EnvironmentObject private var tabSwitch: TabSwitchCoordinator
 
     let notebook: Notebook
     @State private var selectedTab: Tab = .sources
 
     enum Tab: Hashable {
         case sources, chat, notes, transformations
+    }
+
+    private func mapTab(_ t: TabSwitchCoordinator.Tab) -> Tab {
+        switch t {
+        case .sources:         return .sources
+        case .chat:            return .chat
+        case .notes:           return .notes
+        case .transformations: return .transformations
+        }
     }
 
     var body: some View {
@@ -43,6 +53,10 @@ struct NotebookDetailView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .onReceive(tabSwitch.$target.compactMap { $0 }) { t in
+            selectedTab = mapTab(t)
+            tabSwitch.clear()
         }
     }
 

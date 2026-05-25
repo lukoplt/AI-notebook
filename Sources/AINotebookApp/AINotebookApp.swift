@@ -13,6 +13,7 @@ struct AINotebookAppEntry: App {
     @StateObject private var transformationHolder: TransformationEngineHolder
     @StateObject private var attachmentsHolder: AttachmentStoreHolder
     @StateObject private var noteJump = NoteJumpCoordinator()
+    @StateObject private var tabSwitch = TabSwitchCoordinator()
 
     init() {
         let settings = AppSettings()
@@ -98,6 +99,7 @@ struct AINotebookAppEntry: App {
                 .environmentObject(transformationHolder)
                 .environmentObject(attachmentsHolder)
                 .environmentObject(noteJump)
+                .environmentObject(tabSwitch)
                 .frame(minWidth: 900, minHeight: 600)
         }
         .windowStyle(.titleBar)
