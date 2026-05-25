@@ -12,6 +12,7 @@ struct TransformationEditorSheet: View {
     @State private var draftName: String = ""
     @State private var draftTemplate: String = ""
     @State private var draftScope: TransformationScope = .source
+    @State private var draftDescription: String = ""
     @State private var errorMessage: String?
 
     private var t: AppText { settings.text }
@@ -64,6 +65,7 @@ struct TransformationEditorSheet: View {
                     draftName = tx.name
                     draftTemplate = tx.promptTemplate
                     draftScope = tx.scope
+                    draftDescription = tx.description
                 }
             }
         }
@@ -74,6 +76,8 @@ struct TransformationEditorSheet: View {
         if selection != nil {
             VStack(alignment: .leading, spacing: 8) {
                 TextField(t.string(.transformationEditorNamePlaceholder), text: $draftName)
+                    .textFieldStyle(.roundedBorder)
+                TextField(t.string(.aiToolsDescriptionPlaceholder), text: $draftDescription)
                     .textFieldStyle(.roundedBorder)
                 Picker("Scope", selection: $draftScope) {
                     Text("Source").tag(TransformationScope.source)
@@ -112,6 +116,7 @@ struct TransformationEditorSheet: View {
                 draftName = tx.name
                 draftTemplate = tx.promptTemplate
                 draftScope = tx.scope
+                draftDescription = tx.description
             }
         } catch { errorMessage = String(describing: error) }
     }
@@ -133,7 +138,12 @@ struct TransformationEditorSheet: View {
     private func save() async {
         guard let id = selection else { return }
         do {
-            try store.updateTransformation(id: id, name: draftName, promptTemplate: draftTemplate)
+            try store.updateTransformation(
+                id: id,
+                name: draftName,
+                promptTemplate: draftTemplate,
+                description: draftDescription
+            )
             try store.updateTransformationScope(id: id, scope: draftScope)
             await reload()
             onChange()
