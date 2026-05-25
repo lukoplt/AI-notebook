@@ -121,4 +121,9 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppText(language: .english).string(.historyRestoreButton), "Restore this version")
         XCTAssertEqual(AppText(language: .czech)  .string(.historyRestoreButton), "Obnovit tuto verzi")
     }
+
+    func testAiToolsSectionTitleBilingual() {
+        XCTAssertEqual(AppText(language: .english).string(.aiToolsSectionTitle), "AI tools")
+        XCTAssertEqual(AppText(language: .czech)  .string(.aiToolsSectionTitle), "AI nástroje")
+    }
 }

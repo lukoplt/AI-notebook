@@ -129,6 +129,21 @@ public struct AppText: Sendable {
         case historyRestoreButton
         case historyReasonAutosave
         case historyReasonRestore
+        case aiToolsSectionTitle
+        case aiToolsEmptyTitle
+        case aiToolsEmptyBody
+        case aiToolsScopeAllSources
+        case aiToolsScopeHint
+        case aiToolsPreviewButton
+        case aiToolsHistoryButton
+        case aiToolsResultSavedFormat
+        case aiToolsOpenNoteButton
+        case aiToolsRunningFormat
+        case aiToolsBatchSavedFormat
+        case aiToolsPromptPreviewTitle
+        case aiToolsHistoryEmpty
+        case aiToolsHistoryTitle
+        case aiToolsDescriptionPlaceholder
     }
 
     public let language: AppLanguage
@@ -277,6 +292,21 @@ public struct AppText: Sendable {
         case .historyRestoreButton:        "Restore this version"
         case .historyReasonAutosave:       "Auto-save"
         case .historyReasonRestore:        "Restored"
+        case .aiToolsSectionTitle:         "AI tools"
+        case .aiToolsEmptyTitle:           "What are AI tools?"
+        case .aiToolsEmptyBody:            "Pick a template, pick a source, click Run. The output is saved as a new note in this notebook."
+        case .aiToolsScopeAllSources:      "All sources"
+        case .aiToolsScopeHint:            "Source = one item · Notebook = combined · All sources = one note per source"
+        case .aiToolsPreviewButton:        "Preview prompt"
+        case .aiToolsHistoryButton:        "History"
+        case .aiToolsResultSavedFormat:    "Saved as note: %@"
+        case .aiToolsOpenNoteButton:       "Open note"
+        case .aiToolsRunningFormat:        "Running %d / %d…"
+        case .aiToolsBatchSavedFormat:     "Saved %d notes"
+        case .aiToolsPromptPreviewTitle:   "Prompt preview"
+        case .aiToolsHistoryEmpty:         "No runs yet."
+        case .aiToolsHistoryTitle:         "Run history"
+        case .aiToolsDescriptionPlaceholder: "Short description (shown under the template name)"
         }
     }
 
@@ -411,6 +441,21 @@ public struct AppText: Sendable {
         case .historyRestoreButton:        "Obnovit tuto verzi"
         case .historyReasonAutosave:       "Auto-uložení"
         case .historyReasonRestore:        "Obnoveno"
+        case .aiToolsSectionTitle:         "AI nástroje"
+        case .aiToolsEmptyTitle:           "Co jsou AI nástroje?"
+        case .aiToolsEmptyBody:            "Vyber šablonu, vyber zdroj, klikni Spustit. Výstup se uloží jako nová poznámka v tomto notebooku."
+        case .aiToolsScopeAllSources:      "Všechny zdroje"
+        case .aiToolsScopeHint:            "Zdroj = jedna položka · Notebook = vše dohromady · Všechny zdroje = poznámka na každý zdroj"
+        case .aiToolsPreviewButton:        "Náhled promptu"
+        case .aiToolsHistoryButton:        "Historie"
+        case .aiToolsResultSavedFormat:    "Uloženo jako poznámka: %@"
+        case .aiToolsOpenNoteButton:       "Otevřít poznámku"
+        case .aiToolsRunningFormat:        "Probíhá %d / %d…"
+        case .aiToolsBatchSavedFormat:     "Uloženo %d poznámek"
+        case .aiToolsPromptPreviewTitle:   "Náhled promptu"
+        case .aiToolsHistoryEmpty:         "Zatím žádné spuštění."
+        case .aiToolsHistoryTitle:         "Historie spuštění"
+        case .aiToolsDescriptionPlaceholder: "Krátký popis (zobrazí se pod názvem šablony)"
         }
     }
 }
