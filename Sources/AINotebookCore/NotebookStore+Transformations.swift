@@ -8,13 +8,15 @@ extension NotebookStore {
         name: String,
         promptTemplate: String,
         scope: TransformationScope,
-        isBuiltin: Bool = false
+        isBuiltin: Bool = false,
+        description: String = ""
     ) throws -> Transformation {
         var t = Transformation(
             name: name,
             promptTemplate: promptTemplate,
             scope: scope,
-            isBuiltin: isBuiltin
+            isBuiltin: isBuiltin,
+            description: description
         )
         try runOnDatabase { db in
             try t.insert(db)
@@ -36,12 +38,14 @@ extension NotebookStore {
     public func updateTransformation(
         id: Int64,
         name: String,
-        promptTemplate: String
+        promptTemplate: String,
+        description: String = ""
     ) throws {
         try runOnDatabase { db in
             guard var t = try Transformation.fetchOne(db, key: id) else { return }
             t.name = name
             t.promptTemplate = promptTemplate
+            t.description = description
             try t.update(db)
         }
     }

@@ -12,19 +12,22 @@ public struct Transformation: Identifiable, Equatable, Hashable, Codable, Sendab
     public var promptTemplate: String
     public var scope: TransformationScope
     public var isBuiltin: Bool
+    public var description: String
 
     public init(
         id: Int64? = nil,
         name: String,
         promptTemplate: String,
         scope: TransformationScope = .source,
-        isBuiltin: Bool = false
+        isBuiltin: Bool = false,
+        description: String = ""
     ) {
         self.id = id
         self.name = name
         self.promptTemplate = promptTemplate
         self.scope = scope
         self.isBuiltin = isBuiltin
+        self.description = description
     }
 }
 
@@ -39,6 +42,7 @@ extension Transformation: FetchableRecord, MutablePersistableRecord {
         case promptTemplate = "prompt_template"
         case scope
         case isBuiltin      = "is_builtin"
+        case description
 
         var column: Column { Column(self.rawValue) }
     }
