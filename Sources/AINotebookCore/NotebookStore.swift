@@ -23,7 +23,7 @@ public final class NotebookStore: ObservableObject {
     /// the app layer to clean up attachment folders on disk.
     public var onNoteDeleted: (@Sendable (String) async -> Void)?
 
-    public init(path: StorePath) throws {
+    public init(path: StorePath, language: AppLanguage = .english) throws {
         if let url = path.fileURL {
             self.dbQueue = try DatabaseQueue(path: url.path)
         } else {
@@ -41,7 +41,7 @@ public final class NotebookStore: ObservableObject {
         registerMigrationV9(on: &migrator)
         try migrator.migrate(dbQueue)
         try dbQueue.write { db in
-            try BuiltinTransformations.seedIfNeeded(db)
+            try BuiltinTransformations.seedIfNeeded(db, language: language)
         }
         try refresh()
     }
