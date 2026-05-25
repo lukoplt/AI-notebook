@@ -25,9 +25,21 @@ struct SourceListView: View {
             }
 
             if sources.isEmpty {
-                Text(settings.text.string(.noSourcesEmptyState))
-                    .foregroundStyle(.secondary)
-                    .padding(.vertical, 24)
+                VStack(spacing: 12) {
+                    Spacer()
+                    Image(systemName: "tray")
+                        .font(.largeTitle)
+                        .foregroundStyle(.tertiary)
+                    Text(settings.text.string(.noSourcesEmptyState))
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                    Button(settings.text.string(.addSourceButton)) {
+                        showingAdd = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 List {
                     ForEach(sources) { source in
@@ -49,6 +61,7 @@ struct SourceListView: View {
                         .padding(.vertical, 4)
                     }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
 
             if let errorMessage {
@@ -58,6 +71,7 @@ struct SourceListView: View {
             }
         }
         .padding(20)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .task(id: notebook.id) { await reload() }
         .sheet(isPresented: $showingAdd, onDismiss: { Task { await reload() } }) {
             AddSourceSheet(

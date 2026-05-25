@@ -49,11 +49,13 @@ struct TransformationsView: View {
             scopeRow
             Divider()
             content
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             if let errorMessage {
                 Text(errorMessage).font(.caption).foregroundStyle(.red)
             }
         }
         .padding(20)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .task(id: notebook.id) { await reload() }
         .sheet(isPresented: $showingEditor, onDismiss: { Task { await reload() } }) {
             TransformationEditorSheet(isPresented: $showingEditor, onChange: { Task { await reload() } })
@@ -156,6 +158,18 @@ struct TransformationsView: View {
     @ViewBuilder
     private var content: some View {
         if running {
+            runningSection
+        } else if let savedCount = batchSavedCount, savedCount > 1 {
+            batchSavedToast(count: savedCount)
+        } else if let nid = resultNoteId {
+            singleSavedSection(noteId: nid)
+        } else {
+            emptyExplainer
+        }
+    }
+
+    private var runningSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
             if batchTotal > 0 {
                 ProgressView(
                     String(format: t.string(.aiToolsRunningFormat), batchCompleted, batchTotal),
@@ -172,15 +186,12 @@ struct TransformationsView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .textSelection(.enabled)
                 }
-                .frame(maxHeight: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                Spacer()
             }
-        } else if let savedCount = batchSavedCount, savedCount > 1 {
-            batchSavedToast(count: savedCount)
-        } else if let nid = resultNoteId {
-            singleSavedSection(noteId: nid)
-        } else {
-            emptyExplainer
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
     private var emptyExplainer: some View {
@@ -225,8 +236,9 @@ struct TransformationsView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
             }
-            .frame(maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
     private func batchSavedToast(count: Int) -> some View {

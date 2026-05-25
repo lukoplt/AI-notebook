@@ -79,10 +79,12 @@ struct ChatView: View {
     private var chatSurface: some View {
         VStack(spacing: 0) {
             messagesList
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             Divider()
             inputBar
         }
         .padding(16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     @ViewBuilder
@@ -125,7 +127,9 @@ struct ChatView: View {
                     }
                 }
                 .padding(.horizontal, 4)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 

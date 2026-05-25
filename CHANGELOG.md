@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.1] — 2026-05-25
+
+UI layout fixes — tab content panes now fill the full window.
+
+### Fixed
+- `TransformationsView` ("AI tools") now expands to fill the whole
+  detail area instead of collapsing to its intrinsic size.
+- `SourceListView` likewise fills the available space; the empty
+  state was redesigned as a centred call-to-action with a "tray"
+  icon, headline message, and prominent "Add source" button.
+- `ChatView.chatSurface` and `NotesChatPanel` body now have explicit
+  `.frame(maxWidth: .infinity, maxHeight: .infinity)` on their
+  outer VStack and inner `messagesList`, so the messages scroll and
+  input bar dock to the bottom correctly in both chat surfaces.
+- Streaming result pane in AI tools uses a dedicated
+  `runningSection` view with `Spacer()` so the progress bar sits at
+  the top while the area below stays reserved for content.
+
 ## [0.7.0] — 2026-05-25
 
 Transformations tab rebuilt as "AI tools" — more intuitive, with

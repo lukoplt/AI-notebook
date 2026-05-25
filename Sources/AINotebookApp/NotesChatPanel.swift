@@ -28,10 +28,12 @@ struct NotesChatPanel: View {
             header
             Divider()
             messagesList
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             Divider()
             inputBar
         }
         .padding(12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task(id: notebook.id) { await ensureSession() }
         .popover(item: $popoverCitation) { c in
             CitationPopover(
@@ -95,7 +97,9 @@ struct NotesChatPanel: View {
                     }
                 }
                 .padding(.horizontal, 2)
+                .frame(maxWidth: .infinity, alignment: .topLeading)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
