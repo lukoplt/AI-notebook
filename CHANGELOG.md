@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.7.0] — 2026-05-25
+
+Transformations tab rebuilt as "AI tools" — more intuitive, with
+descriptions, prompt preview, history, batch apply, and explicit
+"Open note" CTAs.
+
+### Added
+- Built-in template `Action items` (Markdown checklist of next-step
+  actions found in the source).
+- Locale-aware built-in seeding: Czech notebooks ship with
+  `Souhrn / Klíčové body / Entity / Úkoly` named built-ins.
+- `transformations.description` column populated for built-ins and
+  editable for custom templates.
+- Prompt preview sheet (eye icon) renders the actual prompt with
+  source text interpolated.
+- History sheet lists past runs and jumps back to the saved note.
+- "All sources" scope batches a source-template across every source,
+  with progress reporting and a "Saved N notes" summary.
+- `TabSwitchCoordinator` lets in-app actions switch tabs + jump.
+
+### Changed
+- UI label "Transformace" / "Transformations" renamed to "AI nástroje"
+  / "AI tools".
+- After each run, a green "Saved as note: …" badge with an "Open
+  note" button replaces the prior silent save.
+
+### Schema
+- MigrationV9 adds `transformations.description` (default `''`).
+
+### Tests
+- 204 unit tests (was 193).
+
 ## [0.6.0] — 2026-05-25
 
 Version history for Notes — final milestone of the v0.3-v0.6 "Notes as
