@@ -30,12 +30,13 @@ struct NotesView: View {
     var body: some View {
         HSplitView {
             list
-                .frame(minWidth: 200, idealWidth: 240, maxWidth: 320)
+                .frame(minWidth: 200, idealWidth: 240, maxWidth: 320, maxHeight: .infinity)
             detail
                 .frame(minWidth: 320, maxWidth: .infinity, maxHeight: .infinity)
             NotesChatPanel(notebook: notebook, currentNote: currentNote)
-                .frame(minWidth: 280, idealWidth: 340, maxWidth: 440)
+                .frame(minWidth: 280, idealWidth: 340, maxWidth: 440, maxHeight: .infinity)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task(id: notebook.id) { await reload() }
         .onReceive(noteJump.$target.compactMap { $0 }) { id in
             if notes.contains(where: { $0.id == id }) {
@@ -72,11 +73,23 @@ struct NotesView: View {
             .padding(.horizontal, 12)
             .padding(.top, 12)
             if notes.isEmpty {
-                Text(t.string(.notesEmptyState))
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 24)
+                VStack(spacing: 10) {
+                    Spacer()
+                    Image(systemName: "note.text")
+                        .font(.largeTitle)
+                        .foregroundStyle(.tertiary)
+                    Text(t.string(.notesEmptyState))
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 12)
+                    Button(t.string(.notesNewButton)) {
+                        Task { await createBlank() }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 List(selection: $selection) {
                     ForEach(notes) { note in
@@ -91,6 +104,7 @@ struct NotesView: View {
                     }
                 }
                 .listStyle(.sidebar)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .onChange(of: selection) { _, newId in
                     if let id = newId, let n = notes.first(where: { $0.id == id }) {
                         draftTitle = n.title
@@ -102,6 +116,7 @@ struct NotesView: View {
                 Text(errorMessage).font(.caption).foregroundStyle(.red).padding(.horizontal, 12)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
     @ViewBuilder
@@ -120,12 +135,19 @@ struct NotesView: View {
                 }
             )
             .padding(16)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
-            VStack {
+            VStack(spacing: 10) {
                 Spacer()
-                Text(t.string(.notesEmptyState)).foregroundStyle(.secondary)
+                Image(systemName: "doc.text")
+                    .font(.largeTitle)
+                    .foregroundStyle(.tertiary)
+                Text(t.string(.notesEmptyState))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
                 Spacer()
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.7.2] — 2026-05-25
+
+NotesView 3-column layout fills the window correctly.
+
+### Fixed
+- `NotesView` HSplitView + all three panes (`list`, `detail`,
+  `NotesChatPanel`) now have explicit `.frame(maxHeight: .infinity)`
+  so the layout stretches to the full notebook detail area.
+- `NoteWYSIWYGEditor` body's outer VStack expands to fill the
+  detail pane — the WKWebView no longer collapses to its intrinsic
+  height.
+- Notes list empty state and detail empty state redesigned as
+  centred call-to-action panels with icons and prominent buttons,
+  matching the Sources empty-state pattern.
+
 ## [0.7.1] — 2026-05-25
 
 UI layout fixes — tab content panes now fill the full window.
