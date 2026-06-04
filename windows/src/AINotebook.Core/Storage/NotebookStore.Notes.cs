@@ -19,7 +19,7 @@ public sealed partial class NotebookStore
     public Note CreateNote(long notebookId, string title, string bodyMd,
         NoteOrigin origin = NoteOrigin.Manual, long? originRef = null)
     {
-        var now = DateTime.UtcNow;
+        var now = Now();
         var uuid = Guid.NewGuid().ToString().ToLowerInvariant();
         var trimmed = title.Trim();
         var id = Connection.ExecuteScalar<long>(
@@ -55,7 +55,7 @@ public sealed partial class NotebookStore
         SnapshotNoteVersion(id, NoteVersionReason.Autosave);
         Connection.Execute(
             "UPDATE notes SET title=$title, body_md=$body, updated_at=$updated WHERE id=$id",
-            new { title = title.Trim(), body = bodyMd, updated = SqliteDate.ToDb(DateTime.UtcNow), id });
+            new { title = title.Trim(), body = bodyMd, updated = SqliteDate.ToDb(Now()), id });
         FireNoteSaved(id);
     }
 
