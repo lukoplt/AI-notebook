@@ -106,9 +106,3 @@ public sealed partial class NotebookStore : IDisposable
         if (rows == 0) throw new StoreException.NotebookNotFound(id);
     }
 }
-
-// Temporary stub until Task 11 implements builtin transformation seeding.
-internal static class BuiltinTransformations
-{
-    internal static void SeedIfNeeded(SqliteConnection c, AppLanguage l) { }
-}
