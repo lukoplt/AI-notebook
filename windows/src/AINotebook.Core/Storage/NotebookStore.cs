@@ -23,8 +23,12 @@ public sealed partial class NotebookStore : IDisposable
     public NotebookStore(StorePath path, AppLanguage language = AppLanguage.English)
     {
         _language = language;
+        // In-memory uses a connection-private DB (no shared cache) so each store
+        // instance is isolated; the kept-open _conn keeps it alive for the store
+        // lifetime. A unique name avoids the process-wide name collisions that a
+        // shared-cache in-memory DB would cause across concurrent test stores.
         var connStr = path.IsInMemory
-            ? "Data Source=InMemoryAINotebook;Mode=Memory;Cache=Shared"
+            ? $"Data Source=InMemoryAINotebook-{Guid.NewGuid():N};Mode=Memory;Cache=Private"
             : $"Data Source={path.FilePath}";
         _conn = new SqliteConnection(connStr);
         _conn.Open();
