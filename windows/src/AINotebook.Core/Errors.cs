@@ -52,4 +52,11 @@ public abstract class EmbedderException : Exception
             : base($"Embedding response size mismatch: expected {expected}, got {got}.")
         { Expected = expected; Got = got; }
     }
+
+    public sealed class MisalignedByteCount : EmbedderException
+    {
+        public int ByteCount { get; }
+        public MisalignedByteCount(int byteCount)
+            : base($"Embedding byte count {byteCount} is not a multiple of 4.") => ByteCount = byteCount;
+    }
 }
