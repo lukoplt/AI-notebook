@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL — read `~/.claude/skills/superpowers/skills/writing-plans/SKILL.md` and follow it exactly. Execute one task at a time, in order. Within a task, follow the numbered TDD steps verbatim: write the failing test, run the exact `dotnet test --filter` command shown (confirm **Expected: FAIL**), implement the production code, re-run (confirm **Expected: PASS**), then commit with the exact message given. Do NOT skip the failing-test step, do NOT batch tasks, and do NOT mark a step `[x]` until its command has actually been run and matches the stated expectation. All code in this plan is complete and final — type it as written; the constants, SQL, JSON shapes, byte layouts, and test assertions are ported 1:1 from the Swift `AINotebookCore` and must not be approximated.
 
-**Goal:** A faithful C# / .NET 8 port of the macOS `AINotebookCore` library — storage, ingestion, retrieval, chat, and transformations — delivered as a **headless, fully unit-tested** class library (`AINotebook.Core`) with **no UI dependency**. The port must be **byte-compatible** with the existing SQLite database (identical schema, FTS5 virtual tables + sync triggers, `grdb_migrations` tracking, TEXT date format, raw little-endian float32 embedding BLOBs) and reproduce the **identical algorithms** (deterministic chunker, RRF retrieval, citation parser, NDJSON Ollama protocol) so the two implementations can be diffed behaviorally.
+**Goal:** A faithful C# / .NET 10 port of the macOS `AINotebookCore` library — storage, ingestion, retrieval, chat, and transformations — delivered as a **headless, fully unit-tested** class library (`AINotebook.Core`) with **no UI dependency**. The port must be **byte-compatible** with the existing SQLite database (identical schema, FTS5 virtual tables + sync triggers, `grdb_migrations` tracking, TEXT date format, raw little-endian float32 embedding BLOBs) and reproduce the **identical algorithms** (deterministic chunker, RRF retrieval, citation parser, NDJSON Ollama protocol) so the two implementations can be diffed behaviorally.
 
 **Architecture:** `Microsoft.Data.Sqlite` (bundled SQLite with FTS5 via `SQLitePCLRaw.bundle_e_sqlite3`) for persistence, queries through **Dapper** and mutations through hand-written SQL in repositories on a `NotebookStore` that runs an ordered `Migrator` and seeds `BuiltinTransformations`. Text extraction is an `ITextExtractor` strategy (`PlainTextExtractor`, `PdfTextExtractor` over **PdfPig**, `OfficeTextExtractor` over `System.IO.Compression` + `System.Xml`, `WebTextExtractor` over `HttpClient` + **AngleSharp**). Ollama is reached through `OllamaClient` over `HttpClient` with line-streamed `IAsyncEnumerable<T>` NDJSON. Retrieval fuses vector cosine + FTS5 BM25 via Reciprocal Rank Fusion in `Retriever`. The library mirrors the Swift `AINotebookCore` 1:1.
 
-**Tech Stack:** C# / .NET 8 (`net8.0`); xUnit; Microsoft.Data.Sqlite 8.\*, SQLitePCLRaw.bundle_e_sqlite3 2.\*, Dapper 2.\*, UglyToad.PdfPig 0.1.\*, AngleSharp 1.\*.
+**Tech Stack:** C# / .NET 10 (`net10.0`); xUnit; Microsoft.Data.Sqlite 9.\*, SQLitePCLRaw.bundle_e_sqlite3 2.\*, Dapper 2.\*, UglyToad.PdfPig 0.1.\*, AngleSharp 1.\*. (Core is platform-neutral — builds/tests on macOS or Windows; only the Plan 2 WinUI app is Windows-only.)
 
 ---
 
@@ -16,7 +16,7 @@ All paths are relative to the repository root. The library lives under `windows/
 
 **Solution / projects**
 - `windows/AINotebook.sln` — solution tying the Core library and its test project together.
-- `windows/src/AINotebook.Core/AINotebook.Core.csproj` — `net8.0` class library; the production NuGet `PackageReference`s.
+- `windows/src/AINotebook.Core/AINotebook.Core.csproj` — `net10.0` class library; the production NuGet `PackageReference`s.
 - `windows/tests/AINotebook.Core.Tests/AINotebook.Core.Tests.csproj` — xUnit test project referencing `AINotebook.Core`.
 
 **Models/** (records, enums, exceptions — namespace `AINotebook.Core.Models`, errors in `AINotebook.Core`)
@@ -72,7 +72,7 @@ All paths are relative to the repository root. The library lives under `windows/
 
 Stand up the `windows/` solution with an empty Core library and an xUnit test project, wire up the NuGet dependencies, and prove the toolchain works end-to-end with a trivial passing test.
 
-> **Prerequisite:** the **.NET 8 SDK** must be installed (`dotnet --list-sdks` should show an `8.0.*` or newer SDK; this project targets `net8.0`). A newer SDK (9.x / 10.x) is fine as long as a `net8.0` target can be built.
+> **Prerequisite:** the **.NET 10 SDK** must be installed (`dotnet --list-sdks` should show a `10.0.*` SDK; this project targets `net10.0`). This machine has 9.0.100 + 10.0.103.
 
 **Files:**
 - Create: `windows/AINotebook.sln`
@@ -86,8 +86,8 @@ Stand up the `windows/` solution with an empty Core library and an xUnit test pr
   Run from the repository root:
   ```bash
   dotnet new sln -n AINotebook -o windows
-  dotnet new classlib -n AINotebook.Core -f net8.0 -o windows/src/AINotebook.Core
-  dotnet new xunit  -n AINotebook.Core.Tests -f net8.0 -o windows/tests/AINotebook.Core.Tests
+  dotnet new classlib -n AINotebook.Core -f net10.0 -o windows/src/AINotebook.Core
+  dotnet new xunit  -n AINotebook.Core.Tests -f net10.0 -o windows/tests/AINotebook.Core.Tests
   dotnet sln windows/AINotebook.sln add windows/src/AINotebook.Core/AINotebook.Core.csproj
   dotnet sln windows/AINotebook.sln add windows/tests/AINotebook.Core.Tests/AINotebook.Core.Tests.csproj
   dotnet add windows/tests/AINotebook.Core.Tests/AINotebook.Core.Tests.csproj reference windows/src/AINotebook.Core/AINotebook.Core.csproj
@@ -104,7 +104,7 @@ Stand up the `windows/` solution with an empty Core library and an xUnit test pr
   <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-      <TargetFramework>net8.0</TargetFramework>
+      <TargetFramework>net10.0</TargetFramework>
       <RootNamespace>AINotebook.Core</RootNamespace>
       <AssemblyName>AINotebook.Core</AssemblyName>
       <ImplicitUsings>enable</ImplicitUsings>
@@ -114,7 +114,7 @@ Stand up the `windows/` solution with an empty Core library and an xUnit test pr
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Data.Sqlite" Version="8.*" />
+      <PackageReference Include="Microsoft.Data.Sqlite" Version="9.*" />
       <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.*" />
       <PackageReference Include="Dapper" Version="2.*" />
       <PackageReference Include="UglyToad.PdfPig" Version="0.1.*" />
@@ -130,7 +130,7 @@ Stand up the `windows/` solution with an empty Core library and an xUnit test pr
   <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-      <TargetFramework>net8.0</TargetFramework>
+      <TargetFramework>net10.0</TargetFramework>
       <RootNamespace>AINotebook.Core.Tests</RootNamespace>
       <ImplicitUsings>enable</ImplicitUsings>
       <Nullable>enable</Nullable>
@@ -170,7 +170,7 @@ Stand up the `windows/` solution with an empty Core library and an xUnit test pr
   ```bash
   dotnet test windows/AINotebook.sln --filter "FullyQualifiedName~SmokeTest"
   ```
-  **Expected: PASS** (1 passed). If restore fails, confirm a `net8.0`-capable SDK is installed (Prerequisite above).
+  **Expected: PASS** (1 passed). If restore fails, confirm a `net10.0`-capable SDK is installed (Prerequisite above).
 
 - [ ] **Step 6: Add a `.gitignore` for build artifacts and commit.**
   Create `windows/.gitignore`:
@@ -187,7 +187,7 @@ Stand up the `windows/` solution with an empty Core library and an xUnit test pr
   git commit -m "$(cat <<'EOF'
   feat(windows): scaffold AINotebook.Core solution + xUnit test project
 
-  net8.0 class library with Microsoft.Data.Sqlite + SQLitePCLRaw.bundle_e_sqlite3
+  net10.0 class library with Microsoft.Data.Sqlite + SQLitePCLRaw.bundle_e_sqlite3
   (FTS5), Dapper, UglyToad.PdfPig, AngleSharp; xUnit test project references Core.
   Smoke test green.
 
