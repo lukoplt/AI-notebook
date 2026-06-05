@@ -117,7 +117,9 @@ public sealed partial class OnboardingViewModel : ObservableObject
                 if (ev.IsTerminalSuccess) EmbeddingPullFraction = 1.0;
             }
 
-            Advance(); // → Done
+            // Both models pulled: onboarding is complete regardless of the step
+            // the pull was kicked from — set Done absolutely (not a relative Advance).
+            Step = OnboardingStep.Done;
         }
         catch (Exception ex)
         {
