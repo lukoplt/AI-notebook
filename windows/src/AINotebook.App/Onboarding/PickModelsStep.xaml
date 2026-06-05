@@ -1,0 +1,24 @@
+<UserControl
+    x:Class="AINotebook.App.Onboarding.PickModelsStep"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Padding="40">
+        <StackPanel Spacing="20" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <TextBlock x:Name="TitleText" FontSize="28" FontWeight="Bold" />
+            <TextBlock x:Name="BodyText" TextWrapping="Wrap"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+            <ComboBox x:Name="ChatCombo" HorizontalAlignment="Stretch"
+                      SelectionChanged="OnChatChanged" />
+            <ComboBox x:Name="EmbedCombo" HorizontalAlignment="Stretch"
+                      SelectionChanged="OnEmbedChanged" />
+
+            <Button x:Name="ContinueButton" HorizontalAlignment="Right"
+                    Style="{ThemeResource AccentButtonStyle}" Click="OnContinue">
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Enter" />
+                </Button.KeyboardAccelerators>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
