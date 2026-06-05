@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AINotebook.App.Services;
 using AINotebook.Core.Models;
@@ -117,9 +118,11 @@ public sealed partial class EditorWebView : UserControl
         switch (msg)
         {
             case EditorMessage.Ready:
-                var escaped = MarkdownHtmlBridge.EscapeForTemplateLiteral(_initialMarkdown);
+                // Pass the markdown as a JSON-encoded string argument (fully escaped:
+                // quotes, backslashes, control chars, U+2028/U+2029) instead of
+                // interpolating into a template literal — no injection surface.
                 _ = Web.CoreWebView2.ExecuteScriptAsync(
-                    $"window.aino && window.aino.setContent(`{escaped}`)");
+                    $"window.aino && window.aino.setContent({JsonSerializer.Serialize(_initialMarkdown)})");
                 break;
             case EditorMessage.Change c:
                 OnChange?.Invoke(c.Markdown);
@@ -145,8 +148,15 @@ public sealed partial class EditorWebView : UserControl
         try
         {
             var att = _attachments.Save(NoteId, NoteUuid, a.Filename, a.Mime, bytes);
-            var url = $"attachment://{NoteUuid}/{att.Filename}";
-            var js = $"window.aino && window.aino.attachmentSaved && window.aino.attachmentSaved('{a.RequestId}', '{JsEscape(url)}', '{JsEscape(a.Mime)}')";
+            // att.Filename is user-controlled (the uploaded file name, possibly
+            // collision-renamed). JSON-encode every argument so an apostrophe or
+            // script payload in the name cannot break out of the JS call.
+            // NoteUuid is a safe lowercased GUID read back raw as uri.Host on the
+            // serving side, so it is not escaped. The filename is percent-escaped
+            // here and Uri.UnescapeDataString'd on serve (OnWebResourceRequested).
+            var url = $"attachment://{NoteUuid}/{Uri.EscapeDataString(att.Filename)}";
+            var js = "window.aino && window.aino.attachmentSaved && window.aino.attachmentSaved(" +
+                     $"{JsonSerializer.Serialize(a.RequestId)}, {JsonSerializer.Serialize(url)}, {JsonSerializer.Serialize(a.Mime)})";
             _ = Web.CoreWebView2.ExecuteScriptAsync(js);
         }
         catch
@@ -157,9 +167,7 @@ public sealed partial class EditorWebView : UserControl
 
     private void Deny(string requestId) =>
         _ = Web.CoreWebView2.ExecuteScriptAsync(
-            $"window.aino && window.aino.attachmentDenied && window.aino.attachmentDenied('{requestId}')");
-
-    private static string JsEscape(string s) => s.Replace("\\", "\\\\").Replace("'", "\\'");
+            $"window.aino && window.aino.attachmentDenied && window.aino.attachmentDenied({JsonSerializer.Serialize(requestId)})");
 
     private void OnWebResourceRequested(CoreWebView2 sender, CoreWebView2WebResourceRequestedEventArgs e)
     {
