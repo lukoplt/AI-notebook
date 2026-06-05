@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using AINotebook.Core;
+using AINotebook.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Windows.Globalization;
 using Windows.Storage;

@@ -1,4 +1,5 @@
 using AINotebook.Core;
+using AINotebook.Core.Models;
 using AINotebook.Core.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 

@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using AINotebook.Core;
+using AINotebook.Core.Models;
 using Microsoft.Windows.ApplicationModel.Resources;
 using Windows.Globalization;
 

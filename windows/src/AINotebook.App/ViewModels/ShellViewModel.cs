@@ -1,6 +1,7 @@
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.Core;
+using AINotebook.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AINotebook.App.ViewModels;

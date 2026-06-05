@@ -2,6 +2,7 @@ using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.App.Views.Dialogs;
 using AINotebook.Core;
+using AINotebook.Core.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;

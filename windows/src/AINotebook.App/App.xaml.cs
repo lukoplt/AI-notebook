@@ -99,6 +99,12 @@ public partial class App : Application
             new OllamaChatAdapter(sp.GetRequiredService<OllamaClient>()),
             sp.GetRequiredService<ISettingsService>().SelectedChatModel));
 
+        // 10b. Engine holders — thin wrappers so the current engine can be swapped
+        //      (e.g. on chat-model change in Settings) without re-resolving consumers.
+        //      DI injects the registered ChatEngine/TransformationEngine into the ctors.
+        services.AddSingleton<ChatEngineHolder>();
+        services.AddSingleton<TransformationEngineHolder>();
+
         // 11. AttachmentStore + OnNoteDeleted wiring.
         services.AddSingleton<AttachmentStore>(sp => new AttachmentStore(
             sp.GetRequiredService<NotebookStore>(), AttachmentStore.DefaultRoot()));

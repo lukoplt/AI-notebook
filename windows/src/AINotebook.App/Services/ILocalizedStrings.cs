@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using AINotebook.Core;
+using AINotebook.Core.Models;
 
 namespace AINotebook.App.Services;
 

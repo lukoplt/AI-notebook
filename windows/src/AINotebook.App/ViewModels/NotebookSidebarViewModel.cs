@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using AINotebook.App.Services;
 using AINotebook.Core;
+using AINotebook.Core.Models;
 using AINotebook.Core.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
