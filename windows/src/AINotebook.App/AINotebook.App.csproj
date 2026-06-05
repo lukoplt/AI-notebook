@@ -39,10 +39,9 @@
     <InternalsVisibleTo Include="AINotebook.App.Tests" />
   </ItemGroup>
 
-  <!-- Per-language .resw (M1) -->
-  <ItemGroup>
-    <PRIResource Include="Strings\**\*.resw" />
-  </ItemGroup>
+  <!-- Per-language .resw under Strings/ are auto-included as PRIResource by the
+       .NET SDK (EnableDefaultPriItems defaults true); do NOT also list them
+       explicitly or the build errors with NETSDK1022 (duplicate PRIResource). -->
 
   <ItemGroup>
     <!-- Reuse the mac-built editor bundle (editor.ts shim makes it cross-platform). -->
