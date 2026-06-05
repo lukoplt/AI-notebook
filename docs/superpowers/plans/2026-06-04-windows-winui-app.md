@@ -3897,7 +3897,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 ---
 
-## Task M5.1 — ChatViewModel + session/message logic
+### Task M5.1 — ChatViewModel + session/message logic
 
 **Files:**
 - Create `windows/src/AINotebook.App/ViewModels/ChatViewModel.cs`
@@ -4184,7 +4184,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 ---
 
-## Task M5.2 — ChatPage XAML + MessageBubble + citation Flyout
+### Task M5.2 — ChatPage XAML + MessageBubble + citation Flyout
 
 **Files:**
 - Create `windows/src/AINotebook.App/Views/ChatPage.xaml`
@@ -4530,7 +4530,7 @@ The bridge protocol (from `MarkdownHTMLBridge`/`editor.ts`):
 - **host → JS** (`ExecuteScriptAsync`): `window.aino.setContent(\`<escaped>\`)` (escape order: backslash → backtick → dollar), `window.aino.attachmentSaved(requestId,url,mime)`, `window.aino.attachmentDenied(requestId)`.
 - **Attachment URL scheme:** the editor builds `attachment://<noteUuid>/<filename>`. On WebView2 we serve it via a **second virtual-host mapping** is not possible for the `attachment://` scheme (virtual hosts are `https://`); instead use `AddWebResourceRequestedFilter("attachment://*", All)` + `WebResourceRequested` reading from `AttachmentStore.Read(noteUuid, filename)` (this keeps the editor's existing `attachment://` URLs unchanged, so the M7 editor.ts change is only the post-transport detection, not the attachment URL form). Document: chosen approach is `WebResourceRequested` (mirrors the mac `WKURLSchemeHandler`).
 
-## Task M6.1 — EditorWebView control (WebView2 host + bridge + attachments + autosave)
+### Task M6.1 — EditorWebView control (WebView2 host + bridge + attachments + autosave)
 
 **Files:**
 - Create `windows/src/AINotebook.App/Editor/EditorMessage.cs`
@@ -4981,7 +4981,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 ---
 
-## Task M6.2 — NotesViewModel + NotesPage (3-column) + NotesChatPanel + history dialog
+### Task M6.2 — NotesViewModel + NotesPage (3-column) + NotesChatPanel + history dialog
 
 **Files:**
 - Create `windows/src/AINotebook.App/ViewModels/NotesViewModel.cs`
@@ -5577,7 +5577,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 Applies the transport-detection shim to `tools/editor/src/editor.ts` (the single shared change that keeps mac on the WebKit branch), rebuilds `editor.js`, and wires the App build to copy `editor.html/css/js` from the mac `Resources/editor` into the App's output (`Resources/editor`). The `attachment://` URL form is unchanged (the editor already builds `attachment://<noteUuid>/<filename>` from the host-returned URL, served by `WebResourceRequested` in M6.1), so only the `postToSwift` transport changes.
 
-## Task M7.1 — postToSwift transport shim + rebuild editor.js
+### Task M7.1 — postToSwift transport shim + rebuild editor.js
 
 **Files:**
 - Modify `windows/.../` none — Modify `/Users/lukasoplt/Documents/AI_Notebook/tools/editor/src/editor.ts`
@@ -5652,7 +5652,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 ---
 
-## Task M7.2 — App build copies editor assets into the bundle
+### Task M7.2 — App build copies editor assets into the bundle
 
 **Files:**
 - Modify `windows/src/AINotebook.App/AINotebook.App.csproj`
@@ -5698,7 +5698,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 Mirrors `TransformationsView.swift`, `TransformationEditorSheet.swift`, `TransformationHistorySheet.swift`, `TransformationPromptPreviewSheet.swift`. Consumes `NotebookStore` (`Transformations`, `Sources`, `SourcesIncludingShadow`, `Chunks`, `CreateTransformation`, `UpdateTransformation`, `UpdateTransformationScope`, `DeleteTransformation`, `TransformationRuns`, `Notes`, `Note`) and the resolved `TransformationEngine` (via `TransformationEngineHolder`, Plan 1) with `RunAsync(transformationId, sourceId, onToken)`, `RunNotebookScopeAsync(transformationId, notebookId, onToken)`, `RunOnAllSourcesAsync(transformationId, notebookId, onProgress)`. Uses `TabSwitchCoordinator` + `NoteJumpCoordinator` for "Open note".
 
-## Task M8.1 — TransformationsViewModel
+### Task M8.1 — TransformationsViewModel
 
 **Files:**
 - Create `windows/src/AINotebook.App/ViewModels/TransformationsViewModel.cs`
@@ -5883,7 +5883,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 ---
 
-## Task M8.2 — TransformationsPage + editor/history/preview dialogs
+### Task M8.2 — TransformationsPage + editor/history/preview dialogs
 
 **Files:**
 - Create `windows/src/AINotebook.App/Views/TransformationsPage.xaml`
@@ -6334,7 +6334,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 Wires app-level keyboard accelerators and the menu equivalents, and provides the end-to-end smoke checklist. Plan 3 owns packaging (Inno Setup / self-contained publish) — out of scope here.
 
-## Task M10.1 — App-level KeyboardAccelerators + menu equivalents
+### Task M10.1 — App-level KeyboardAccelerators + menu equivalents
 
 **Files:**
 - Modify `windows/src/AINotebook.App/MainWindow.xaml`
@@ -6387,7 +6387,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 **Verify:** Build on a Windows machine and manually verify: with the Notes tab active and focus in the notes list (not the editor), Ctrl+S still saves the open note and Ctrl+Shift+H opens history; the Note menu items mirror these; the shortcuts are inert on other tabs.
 
-## Task M10.2 — End-to-end smoke checklist
+### Task M10.2 — End-to-end smoke checklist
 
 **Files:**
 - Create `windows/docs/smoke-checklist.md`
