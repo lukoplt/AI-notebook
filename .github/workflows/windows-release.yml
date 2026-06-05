@@ -1,0 +1,88 @@
+name: Windows Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-installer:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@3e891b0cb619bf60e2c25674b222b8940e2c1c25  # actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Read version from VERSION file
+        id: ver
+        shell: bash
+        run: echo "version=$(cat VERSION)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore
+        run: dotnet restore windows/AINotebook.sln
+
+      - name: Publish self-contained (win-x64)
+        run: >
+          dotnet publish windows/src/AINotebook.App/AINotebook.App.csproj
+          -c Release -r win-x64 --self-contained true
+          -o windows/installer/publish
+
+      - name: Download WebView2 Evergreen bootstrapper
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path windows/installer/redist | Out-Null
+          Invoke-WebRequest `
+            -Uri 'https://go.microsoft.com/fwlink/p/?LinkId=2124703' `
+            -OutFile windows/installer/redist/MicrosoftEdgeWebview2Setup.exe
+          if (-not (Test-Path windows/installer/redist/MicrosoftEdgeWebview2Setup.exe)) {
+            throw 'WebView2 bootstrapper download failed'
+          }
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --no-progress -y
+
+      - name: Compile installer (ISCC)
+        shell: pwsh
+        working-directory: windows/installer
+        run: |
+          $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
+          & $iscc "/DMyAppVersion=${{ steps.ver.outputs.version }}" installer.iss
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed with $LASTEXITCODE" }
+
+      # ---------------------------------------------------------------------
+      # OPTIONAL Authenticode signing (v1 ships UNSIGNED -> SmartScreen warning,
+      # same as the unsigned mac DMG). To enable: add repo secrets SIGN_CERT
+      # (base64 .pfx) and SIGN_PASS, then uncomment this block. Place it BEFORE
+      # the upload step so the signed .exe is what gets released.
+      # ---------------------------------------------------------------------
+      # - name: Sign installer (Authenticode)
+      #   if: ${{ secrets.SIGN_CERT != '' }}
+      #   shell: pwsh
+      #   env:
+      #     SIGN_CERT: ${{ secrets.SIGN_CERT }}
+      #     SIGN_PASS: ${{ secrets.SIGN_PASS }}
+      #   run: |
+      #     [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\cert.pfx",
+      #       [Convert]::FromBase64String($env:SIGN_CERT))
+      #     $signtool = (Get-ChildItem `
+      #       "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" |
+      #       Sort-Object FullName -Descending | Select-Object -First 1).FullName
+      #     & $signtool sign /f "$env:RUNNER_TEMP\cert.pfx" /p $env:SIGN_PASS `
+      #       /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 `
+      #       "windows/installer/Output/AINotebook-v${{ steps.ver.outputs.version }}-windows-setup.exe"
+
+      - name: Upload installer to GitHub Release
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # softprops/action-gh-release@v2
+        with:
+          files: windows/installer/Output/AINotebook-v${{ steps.ver.outputs.version }}-windows-setup.exe
+          generate_release_notes: true
+          fail_on_unmatched_files: true
