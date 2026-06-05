@@ -7,10 +7,20 @@ struct SourceListView: View {
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var store: NotebookStore
     @EnvironmentObject private var ingestion: IngestionServiceHolder
+    @EnvironmentObject private var ollama: OllamaClientHolder
 
     @State private var sources: [Source] = []
     @State private var showingAdd = false
     @State private var errorMessage: String?
+    @State private var summaries: [Int64: String] = [:]
+    @State private var summarizing: Set<Int64> = []
+
+    private var t: AppText { settings.text }
+
+    /// Built from the same chat model + Ollama client the app uses elsewhere.
+    private func makeSummarizer() -> SourceSummarizer {
+        SourceSummarizer(store: store, chat: ollama.client, chatModel: settings.selectedChatModel)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -43,22 +53,8 @@ struct SourceListView: View {
             } else {
                 List {
                     ForEach(sources) { source in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(source.title).font(.headline)
-                                Text(statusText(source.status))
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                            Spacer()
-                            Button(role: .destructive) {
-                                delete(source)
-                            } label: {
-                                Image(systemName: "trash")
-                            }
-                            .buttonStyle(.borderless)
-                        }
-                        .padding(.vertical, 4)
+                        sourceRow(source)
+                            .padding(.vertical, 4)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -83,6 +79,60 @@ struct SourceListView: View {
         }
     }
 
+    @ViewBuilder
+    private func sourceRow(_ source: Source) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(source.title).font(.headline)
+                    Text(statusText(source.status))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                summaryAffordance(source)
+                Button(role: .destructive) {
+                    delete(source)
+                } label: {
+                    Image(systemName: "trash")
+                }
+                .buttonStyle(.borderless)
+            }
+            if let id = source.id, let summary = summaries[id], !summary.isEmpty {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(t.string(.sourceSummaryLabel))
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                    Text(summary)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func summaryAffordance(_ source: Source) -> some View {
+        if let id = source.id {
+            if summarizing.contains(id) {
+                HStack(spacing: 4) {
+                    ProgressView().controlSize(.small)
+                    Text(t.string(.sourceSummarizingStatus))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            } else if summaries[id] == nil {
+                Button(t.string(.sourceSummarizeButton)) {
+                    Task { await summarize(source) }
+                }
+                .buttonStyle(.borderless)
+                .font(.caption)
+                .disabled(source.status != .ready)
+            }
+        }
+    }
+
     private func statusText(_ status: SourceStatus) -> String {
         switch status {
         case .pending:  return settings.text.string(.sourceStatusPending)
@@ -95,6 +145,28 @@ struct SourceListView: View {
     private func reload() async {
         do {
             sources = try store.sources(notebookId: notebook.id!)
+            var loaded: [Int64: String] = [:]
+            for source in sources {
+                guard let id = source.id else { continue }
+                if let summary = try store.sourceSummary(id: id), !summary.isEmpty {
+                    loaded[id] = summary
+                }
+            }
+            summaries = loaded
+        } catch {
+            errorMessage = String(describing: error)
+        }
+    }
+
+    @MainActor
+    private func summarize(_ source: Source) async {
+        guard let id = source.id, !summarizing.contains(id) else { return }
+        summarizing.insert(id)
+        defer { summarizing.remove(id) }
+        do {
+            let summarizer = makeSummarizer()
+            let summary = try await summarizer.summarize(sourceId: id)
+            if !summary.isEmpty { summaries[id] = summary }
         } catch {
             errorMessage = String(describing: error)
         }

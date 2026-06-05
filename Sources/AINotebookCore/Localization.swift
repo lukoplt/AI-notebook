@@ -148,6 +148,13 @@ public struct AppText: Sendable {
         case unsavedChangesMessage
         case unsavedSaveButton
         case unsavedDiscardButton
+        case chatFollowupsLabel
+        case sourceSummaryLabel
+        case sourceSummarizeButton
+        case sourceSummarizingStatus
+        case chatScopeButton
+        case chatScopeAllSources
+        case chatScopeTitle
     }
 
     public let language: AppLanguage
@@ -315,6 +322,13 @@ public struct AppText: Sendable {
         case .unsavedChangesMessage: "This note has unsaved edits. Save them before switching?"
         case .unsavedSaveButton: "Save"
         case .unsavedDiscardButton: "Discard"
+        case .chatFollowupsLabel:          "Suggested follow-ups"
+        case .sourceSummaryLabel:          "Summary"
+        case .sourceSummarizeButton:       "Summarize"
+        case .sourceSummarizingStatus:     "Summarizing…"
+        case .chatScopeButton:             "Sources"
+        case .chatScopeAllSources:         "All sources"
+        case .chatScopeTitle:              "Limit chat to sources"
         }
     }
 
@@ -468,6 +482,13 @@ public struct AppText: Sendable {
         case .unsavedChangesMessage: "Tato poznámka má neuložené úpravy. Uložit před přepnutím?"
         case .unsavedSaveButton: "Uložit"
         case .unsavedDiscardButton: "Zahodit"
+        case .chatFollowupsLabel:          "Návrhy navazujících otázek"
+        case .sourceSummaryLabel:          "Shrnutí"
+        case .sourceSummarizeButton:       "Shrnout"
+        case .sourceSummarizingStatus:     "Shrnuji…"
+        case .chatScopeButton:             "Zdroje"
+        case .chatScopeAllSources:         "Všechny zdroje"
+        case .chatScopeTitle:              "Omezit chat na zdroje"
         }
     }
 }
