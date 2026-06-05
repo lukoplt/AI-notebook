@@ -39,12 +39,12 @@
 
         <!-- Scope row -->
         <StackPanel Grid.Row="2" Spacing="6">
-            <muxc:Segmented x:Name="ScopeSeg" xmlns:muxc="using:CommunityToolkit.WinUI.Controls"
-                            SelectionChanged="OnScopeChanged">
-                <muxc:SegmentedItem x:Name="ScopeSource" Content="Source"/>
-                <muxc:SegmentedItem x:Name="ScopeNotebook" Content="Notebook"/>
-                <muxc:SegmentedItem x:Name="ScopeAll"/>
-            </muxc:Segmented>
+            <ComboBox x:Name="ScopeSeg" MinWidth="180"
+                      SelectionChanged="OnScopeChanged">
+                <ComboBoxItem x:Name="ScopeSource" Content="Source"/>
+                <ComboBoxItem x:Name="ScopeNotebook" Content="Notebook"/>
+                <ComboBoxItem x:Name="ScopeAll"/>
+            </ComboBox>
             <TextBlock x:Name="ScopeHint" Style="{ThemeResource CaptionTextBlockStyle}"
                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
         </StackPanel>

@@ -56,11 +56,11 @@
             <TextBox Grid.Row="1" x:Name="DescriptionBox"
                      Text="{x:Bind ViewModel.DraftDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <muxc:Segmented Grid.Row="2" x:Name="ScopeSeg" xmlns:muxc="using:CommunityToolkit.WinUI.Controls"
-                            SelectionChanged="OnScopeChanged">
-                <muxc:SegmentedItem x:Name="ScopeSource" Content="Source"/>
-                <muxc:SegmentedItem x:Name="ScopeNotebook" Content="Notebook"/>
-            </muxc:Segmented>
+            <ComboBox Grid.Row="2" x:Name="ScopeSeg" MinWidth="180"
+                      SelectionChanged="OnScopeChanged">
+                <ComboBoxItem x:Name="ScopeSource" Content="Source"/>
+                <ComboBoxItem x:Name="ScopeNotebook" Content="Notebook"/>
+            </ComboBox>
 
             <TextBox Grid.Row="3" x:Name="TemplateBox" AcceptsReturn="True" TextWrapping="Wrap"
                      FontFamily="Consolas" VerticalAlignment="Stretch"
