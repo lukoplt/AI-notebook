@@ -36,7 +36,9 @@ jobs:
         run: dotnet test windows/tests/AINotebook.Core.Tests/AINotebook.Core.Tests.csproj -c Release
 
       - name: Build App (WinUI 3, x64)
-        run: dotnet build windows/src/AINotebook.App/AINotebook.App.csproj -c Release -p:Platform=x64
+        # detailed verbosity so the XAML compiler (XamlCompiler.exe) surfaces its
+        # actual diagnostics — at normal verbosity it can exit 1 silently.
+        run: dotnet build windows/src/AINotebook.App/AINotebook.App.csproj -c Release -p:Platform=x64 -v detailed
 
       - name: Test App
         run: dotnet test windows/tests/AINotebook.App.Tests/AINotebook.App.Tests.csproj -c Release -p:Platform=x64
