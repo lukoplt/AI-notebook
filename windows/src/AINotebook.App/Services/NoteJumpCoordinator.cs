@@ -11,6 +11,11 @@ public sealed partial class NoteJumpCoordinator : ObservableObject
     [ObservableProperty]
     public partial long? Target { get; set; }
 
+    /// Raised whenever Target changes (Request/Clear). Consumers (NotesViewModel)
+    /// subscribe with an Action&lt;long?&gt; handler.
+    public event System.Action<long?>? TargetChanged;
+    partial void OnTargetChanged(long? value) => TargetChanged?.Invoke(value);
+
     public void Request(long noteId) => Target = noteId;
     public void Clear() => Target = null;
 }

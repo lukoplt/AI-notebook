@@ -21,7 +21,7 @@ public partial class RenameNotebookViewModel : ObservableObject
         _store = store;
         _id = nb.Id!.Value;
         _original = nb.Name;
-        _name = nb.Name;
+        Name = nb.Name;
     }
 
     partial void OnNameChanged(string value) => OnPropertyChanged(nameof(CanSave));

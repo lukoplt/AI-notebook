@@ -165,29 +165,7 @@ public partial class ChatViewModel : ObservableObject
     }
 
     // Mirrors ChatView.showCitation(): resolve source/page/note metadata for the Flyout.
-    public CitationViewModel BuildCitationViewModel(Citation c)
-    {
-        var source = _store.Source(c.SourceId);
-        var chunks = source is null ? Array.Empty<SourceChunk>() : _store.Chunks(c.SourceId).ToArray();
-        int? hint = chunks.FirstOrDefault(ch => ch.Id == c.ChunkId)?.PageHint;
-        var isPdf = source?.Type == SourceType.Pdf;
-        var pdfPath = (isPdf && source?.RawPath is { Length: > 0 }) ? source.RawPath : null;
-
-        long? noteId = null;
-        if (source?.Type == SourceType.Note && source is not null)
-        {
-            var notes = _store.Notes(source.NotebookId);
-            noteId = notes.FirstOrDefault(n => n.AutoSourceId == source.Id)?.Id;
-        }
-        return new CitationViewModel
-        {
-            Citation = c,
-            SourceTitle = source?.Title ?? "",
-            PageHint = hint,
-            PdfFilePath = pdfPath,
-            NoteIdToOpen = noteId
-        };
-    }
+    public CitationViewModel BuildCitationViewModel(Citation c) => CitationViewModel.Resolve(_store, c);
 
     public void RequestOpenNote(long noteId) => _noteJump.Request(noteId);
 }

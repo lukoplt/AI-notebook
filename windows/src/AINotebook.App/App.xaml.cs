@@ -1,4 +1,5 @@
 using AINotebook.App.Services;
+using AINotebook.App.ViewModels;
 using AINotebook.Core;
 using AINotebook.Core.Extractors;
 using AINotebook.Core.Ingestion;

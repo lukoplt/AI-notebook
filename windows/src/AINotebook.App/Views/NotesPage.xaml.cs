@@ -33,7 +33,7 @@ public sealed partial class NotesPage : Page
         ViewModel.PropertyChanged += OnVmPropertyChanged;
         ViewModel.UnsavedDialogRequested += async () => await ShowUnsavedDialog();
         ViewModel.HistoryRequested += async id => await ShowHistoryDialog(id);
-        ViewModel.Notes.VectorChanged += (_, _) => RefreshEmptyState();
+        ViewModel.Notes.CollectionChanged += (_, _) => RefreshEmptyState();
 
         ChatPanel.SetCurrentNoteProvider(() => ViewModel.CurrentNote);
     }
