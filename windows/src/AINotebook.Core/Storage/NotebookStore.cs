@@ -27,9 +27,15 @@ public sealed partial class NotebookStore : IDisposable
         // instance is isolated; the kept-open _conn keeps it alive for the store
         // lifetime. A unique name avoids the process-wide name collisions that a
         // shared-cache in-memory DB would cause across concurrent test stores.
+        // Pooling=False on the file DB: this store keeps ONE long-lived connection
+        // for its whole lifetime, so connection pooling buys nothing — and on
+        // Windows a pooled handle keeps the .sqlite file locked after Dispose(),
+        // which breaks reopening the same file (IOException "used by another
+        // process"). Disabling pooling makes Dispose() release the file handle
+        // immediately. (macOS file locking is lenient enough to mask this.)
         var connStr = path.IsInMemory
             ? $"Data Source=InMemoryAINotebook-{Guid.NewGuid():N};Mode=Memory;Cache=Private"
-            : $"Data Source={path.FilePath}";
+            : $"Data Source={path.FilePath};Pooling=False";
         _conn = new SqliteConnection(connStr);
         _conn.Open();
         Execute("PRAGMA foreign_keys=ON");
