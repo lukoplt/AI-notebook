@@ -49,14 +49,8 @@ public sealed partial class MainWindow : Window
         }
         else
         {
-            // M2.1 swaps this placeholder for new ShellPage().
             RootHost.Children.Clear();
-            RootHost.Children.Add(new TextBlock
-            {
-                Text = "Shell (M2)",
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            });
+            RootHost.Children.Add(new Views.ShellPage());
         }
     }
 }
