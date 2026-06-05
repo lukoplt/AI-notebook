@@ -8,7 +8,10 @@ final class BuiltinTransformationsTests: XCTestCase {
         let store = try NotebookStore(path: .inMemory)
         let all = try store.transformations()
         let builtinNames = Set(all.filter(\.isBuiltin).map(\.name))
-        XCTAssertEqual(builtinNames, ["Summary", "Key points", "Entities", "Action items"])
+        XCTAssertEqual(builtinNames, [
+            "Summary", "Key points", "Entities", "Action items",
+            "FAQ", "Study guide", "Timeline", "Briefing doc", "Glossary"
+        ])
     }
 
     func testReopeningDatabaseDoesNotDuplicateBuiltins() throws {
@@ -22,7 +25,7 @@ final class BuiltinTransformationsTests: XCTestCase {
         do {
             let store2 = try NotebookStore(path: StorePath(fileURL: url))
             let builtins = try store2.transformations().filter(\.isBuiltin)
-            XCTAssertEqual(builtins.count, 4, "should not re-seed on second open")
+            XCTAssertEqual(builtins.count, 9, "should not re-seed on second open")
         }
     }
 }

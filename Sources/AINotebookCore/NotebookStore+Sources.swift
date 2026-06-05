@@ -107,4 +107,24 @@ extension NotebookStore {
                 .fetchAll(db)
         }
     }
+
+    /// The persisted summary for a source, or `nil` if not yet computed.
+    public func sourceSummary(id: Int64) throws -> String? {
+        try runOnDatabase { db in
+            try String.fetchOne(
+                db,
+                sql: "SELECT summary FROM sources WHERE id = ?",
+                arguments: [id]
+            )
+        }
+    }
+
+    public func setSourceSummary(id: Int64, text: String) throws {
+        try runOnDatabase { db in
+            try db.execute(
+                sql: "UPDATE sources SET summary = ? WHERE id = ?",
+                arguments: [text, id]
+            )
+        }
+    }
 }

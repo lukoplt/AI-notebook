@@ -93,4 +93,43 @@ final class RetrieverTests: XCTestCase {
         )
         XCTAssertEqual(hits.first?.chunkId, chunks[0].id!, "fused hit ranks above single-source hits")
     }
+
+    func testSourceIdsFilterRestrictsToSelectedSources() async throws {
+        let store = try NotebookStore(path: .inMemory)
+        let nb = try store.createNotebook(name: "NB")
+        let a = try store.createSource(
+            notebookId: nb.id!, type: .text, title: "A", uri: nil, rawPath: nil
+        )
+        let b = try store.createSource(
+            notebookId: nb.id!, type: .text, title: "B", uri: nil, rawPath: nil
+        )
+        try store.replaceChunks(
+            sourceId: a.id!, chunks: [ChunkDraft(text: "fox in source A", tokenCount: 4)]
+        )
+        try store.replaceChunks(
+            sourceId: b.id!, chunks: [ChunkDraft(text: "fox in source B", tokenCount: 4)]
+        )
+        let aChunk = try store.chunks(sourceId: a.id!).first!.id!
+        let bChunk = try store.chunks(sourceId: b.id!).first!.id!
+        try store.storeEmbedding(chunkId: aChunk, model: "m", vector: EmbeddingVector(values: [1, 0]))
+        try store.storeEmbedding(chunkId: bChunk, model: "m", vector: EmbeddingVector(values: [1, 0]))
+
+        let client = MockEmbeddingClient(queryVector: [1, 0])
+        let retriever = Retriever(store: store, client: client, model: "m")
+
+        // No filter → both sources surface.
+        let allHits = try await retriever.search(
+            notebookId: nb.id!, query: "fox", topK: 5
+        )
+        let allSources = Set(allHits.map(\.sourceId))
+        XCTAssertTrue(allSources.contains(a.id!))
+        XCTAssertTrue(allSources.contains(b.id!))
+
+        // Filter to A → only A's chunk.
+        let filtered = try await retriever.search(
+            notebookId: nb.id!, query: "fox", topK: 5, sourceIds: [a.id!]
+        )
+        XCTAssertEqual(Set(filtered.map(\.sourceId)), [a.id!])
+        XCTAssertEqual(Set(filtered.map(\.chunkId)), [aChunk])
+    }
 }

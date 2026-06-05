@@ -20,10 +20,14 @@ public actor Retriever {
     }
 
     /// Hybrid retrieval: cosine top-K on vectors + FTS5 BM25 top-K → RRF.
+    ///
+    /// When `sourceIds` is non-empty, both branches are restricted to chunks in
+    /// those sources; an empty set (the default) means no filter.
     public func search(
         notebookId: Int64,
         query: String,
-        topK: Int = 8
+        topK: Int = 8,
+        sourceIds: Set<Int64> = []
     ) async throws -> [RetrievalHit] {
         // 1) Vector ranking — embed query, score against stored vectors.
         let queryVectors = try await client.embed(model: model, inputs: [query])
@@ -33,8 +37,11 @@ public actor Retriever {
         let allEmbeddings = try await MainActor.run {
             try storeRef.embeddings(notebookId: notebookId, model: modelRef)
         }
+        let candidateEmbeddings = sourceIds.isEmpty
+            ? allEmbeddings
+            : allEmbeddings.filter { sourceIds.contains($0.sourceId) }
         let scored: [(chunkId: Int64, sourceId: Int64, score: Float)] =
-            allEmbeddings.map { e in
+            candidateEmbeddings.map { e in
                 (
                     chunkId: e.chunkId,
                     sourceId: e.sourceId,
@@ -47,8 +54,15 @@ public actor Retriever {
         // 2) FTS ranking — BM25 top-K on chunks_fts within the notebook.
         let queryRef = query
         let topKRef = topK
+        let sourceIdsRef = sourceIds
         let ftsRanked = try await MainActor.run {
-            try Self.ftsTopK(store: storeRef, notebookId: notebookId, query: queryRef, k: topKRef)
+            try Self.ftsTopK(
+                store: storeRef,
+                notebookId: notebookId,
+                query: queryRef,
+                k: topKRef,
+                sourceIds: sourceIdsRef
+            )
         }
 
         // 3) Reciprocal Rank Fusion.
@@ -90,9 +104,18 @@ public actor Retriever {
         store: NotebookStore,
         notebookId: Int64,
         query: String,
-        k: Int
+        k: Int,
+        sourceIds: Set<Int64>
     ) throws -> [(chunkId: Int64, sourceId: Int64, snippet: String)] {
         try store.runOnDatabase { db in
+            var arguments: [DatabaseValueConvertible] = [Self.escapeFTS(query), notebookId]
+            var sourceFilter = ""
+            if !sourceIds.isEmpty {
+                let placeholders = sourceIds.map { _ in "?" }.joined(separator: ",")
+                sourceFilter = "AND sc.source_id IN (\(placeholders))"
+                arguments.append(contentsOf: sourceIds.map { $0 as DatabaseValueConvertible })
+            }
+            arguments.append(k)
             let rows = try Row.fetchAll(
                 db,
                 sql: """
@@ -100,11 +123,11 @@ public actor Retriever {
                 FROM chunks_fts f
                 JOIN source_chunks sc ON sc.id = f.chunk_id
                 JOIN sources s ON s.id = sc.source_id
-                WHERE f.text MATCH ? AND s.notebook_id = ?
+                WHERE f.text MATCH ? AND s.notebook_id = ? \(sourceFilter)
                 ORDER BY bm25(chunks_fts)
                 LIMIT ?
                 """,
-                arguments: [Self.escapeFTS(query), notebookId, k]
+                arguments: StatementArguments(arguments)
             )
             return rows.map { r in
                 let text: String = r["text"]

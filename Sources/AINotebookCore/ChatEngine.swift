@@ -46,6 +46,7 @@ public actor ChatEngine {
         notebookId: Int64,
         userText: String,
         currentNoteContent: String? = nil,
+        sourceIds: Set<Int64> = [],
         onToken: @escaping @Sendable (String) -> Void
     ) async throws -> ChatMessage {
         // 1) Persist the user message.
@@ -62,7 +63,8 @@ public actor ChatEngine {
         let hits = try await retriever.search(
             notebookId: notebookId,
             query: userText,
-            topK: topK
+            topK: topK,
+            sourceIds: sourceIds
         )
 
         // 3) Compose messages.

@@ -58,6 +58,86 @@ enum BuiltinTransformations {
             SOURCE TEXT:
             {{source_text}}
             """
+        ),
+        Spec(
+            name: "FAQ",
+            description: "Common questions and answers from the source.",
+            prompt: """
+            Write a FAQ of 6-10 questions a reader is likely to ask about the
+            following source text. Each answer must be concise and grounded only
+            in the text — do not invent facts. Output Markdown with each question
+            in bold, then its answer on the next line.
+
+            SOURCE TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "Study guide",
+            description: "Review questions and key terms for studying.",
+            prompt: """
+            Produce a study guide from the following source text using only what
+            it contains. Output two Markdown sections:
+
+            ## Key terms
+            - term — short definition
+
+            ## Review questions
+            8-12 questions a student should be able to answer (questions only, no
+            answers).
+
+            SOURCE TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "Timeline",
+            description: "Chronological list of events and dates.",
+            prompt: """
+            Build a chronological timeline from the following source text, ordered
+            earliest to latest. Output a Markdown list where each line is
+            '**<date/time>** — <event>'. Include only events and dates literally
+            present in the text and omit anything undated.
+
+            SOURCE TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "Briefing doc",
+            description: "Executive briefing of the source.",
+            prompt: """
+            Write an executive briefing of the following source text, grounded in
+            the text with no speculation. Output these Markdown sections:
+
+            ## Overview
+            2-3 sentences.
+
+            ## Key points
+            bullets.
+
+            ## Notable details
+            bullets.
+
+            ## Open questions
+            bullets, if any.
+
+            SOURCE TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "Glossary",
+            description: "Key terms and definitions.",
+            prompt: """
+            Build a glossary from the following source text. Output a Markdown list
+            where each line is '**<term>** — <definition>'. Define each term only
+            from the text, include only terms that appear in the text, and sort the
+            list alphabetically.
+
+            SOURCE TEXT:
+            {{source_text}}
+            """
         )
     ]
 
@@ -104,6 +184,86 @@ enum BuiltinTransformations {
             Vypiš všechny úkoly nebo další kroky uvedené v následujícím zdrojovém
             textu. Výstup jako Markdown checklist (- [ ]). Jeden úkol na řádek.
             Zahrň pouze úkoly doslova přítomné v textu.
+
+            ZDROJOVÝ TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "FAQ",
+            description: "Časté otázky a odpovědi ze zdroje.",
+            prompt: """
+            Sestav FAQ se 6–10 otázkami, které čtenáře nejspíš k následujícímu
+            zdrojovému textu napadnou. Každá odpověď musí být stručná a založená
+            pouze na textu — nic si nevymýšlej. Výstup v Markdownu: každá otázka
+            tučně, odpověď na dalším řádku.
+
+            ZDROJOVÝ TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "Studijní příručka",
+            description: "Opakovací otázky a klíčové pojmy ke studiu.",
+            prompt: """
+            Vytvoř studijní příručku z následujícího zdrojového textu pouze z toho,
+            co obsahuje. Výstup dvě Markdown sekce:
+
+            ## Klíčové pojmy
+            - pojem — krátká definice
+
+            ## Opakovací otázky
+            8–12 otázek, na které by měl student umět odpovědět (pouze otázky, bez
+            odpovědí).
+
+            ZDROJOVÝ TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "Časová osa",
+            description: "Chronologický seznam událostí a dat.",
+            prompt: """
+            Sestav chronologickou časovou osu z následujícího zdrojového textu,
+            seřazenou od nejstarší po nejnovější. Výstup jako Markdown seznam, kde
+            každý řádek je '**<datum/čas>** — <událost>'. Zahrň pouze události a
+            data doslova přítomná v textu a vynech cokoli bez data.
+
+            ZDROJOVÝ TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "Briefing",
+            description: "Stručný přehled zdroje.",
+            prompt: """
+            Napiš stručný přehled následujícího zdrojového textu, vycházej pouze
+            z textu a nespekuluj. Výstup tyto Markdown sekce:
+
+            ## Přehled
+            2–3 věty.
+
+            ## Klíčové body
+            odrážky.
+
+            ## Zajímavé detaily
+            odrážky.
+
+            ## Otevřené otázky
+            odrážky, pokud nějaké jsou.
+
+            ZDROJOVÝ TEXT:
+            {{source_text}}
+            """
+        ),
+        Spec(
+            name: "Slovníček",
+            description: "Klíčové pojmy a definice.",
+            prompt: """
+            Sestav slovníček z následujícího zdrojového textu. Výstup jako Markdown
+            seznam, kde každý řádek je '**<pojem>** — <definice>'. Každý pojem
+            definuj pouze z textu, zahrň jen pojmy, které se v textu objevují, a
+            seřaď seznam abecedně.
 
             ZDROJOVÝ TEXT:
             {{source_text}}
