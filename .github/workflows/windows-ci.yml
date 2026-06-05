@@ -2,7 +2,10 @@ name: Windows CI
 
 on:
   push:
-    branches: [windows-port]
+    branches: [main]
+    paths:
+      - 'windows/**'
+      - '.github/workflows/windows-ci.yml'
   workflow_dispatch:
 
 permissions:
