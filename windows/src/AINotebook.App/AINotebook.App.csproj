@@ -33,6 +33,11 @@
     <ProjectReference Include="..\AINotebook.Core\AINotebook.Core.csproj" />
   </ItemGroup>
 
+  <!-- Expose internal test-only ctors (e.g. OnboardingViewModel) to the test project. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="AINotebook.App.Tests" />
+  </ItemGroup>
+
   <!-- Per-language .resw (M1) -->
   <ItemGroup>
     <PRIResource Include="Strings\**\*.resw" />
