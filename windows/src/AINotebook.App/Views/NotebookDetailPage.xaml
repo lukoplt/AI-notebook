@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="AINotebook.App.Views.NotebookDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Padding="24,24,24,16" Spacing="4">
+            <TextBlock Text="{x:Bind ViewModel.Notebook.Name, Mode=OneWay}"
+                       Style="{StaticResource TitleTextBlockStyle}" />
+            <TextBlock Text="{x:Bind ViewModel.Notebook.Description, Mode=OneWay}"
+                       Opacity="0.8"
+                       Visibility="{x:Bind ViewModel.Notebook.Description, Mode=OneWay, Converter={StaticResource NullToCollapsed}}" />
+            <TextBlock Text="{x:Bind ViewModel.Notebook.CreatedAt, Mode=OneWay}"
+                       Opacity="0.6" Style="{StaticResource CaptionTextBlockStyle}" />
+        </StackPanel>
+
+        <!-- 4-tab switcher fills remaining space -->
+        <Pivot Grid.Row="1" x:Name="Tabs"
+               SelectedIndex="{x:Bind TabIndex, Mode=TwoWay}"
+               Margin="16,0,16,16">
+            <PivotItem Header="{x:Bind ViewModel.SourcesText, Mode=OneWay}">
+                <Grid x:Name="SourcesHost"><TextBlock Text="Sources (Plan 3)" Opacity="0.5"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid>
+            </PivotItem>
+            <PivotItem Header="{x:Bind ViewModel.ChatText, Mode=OneWay}">
+                <Grid x:Name="ChatHost"><TextBlock Text="Chat (Plan 3)" Opacity="0.5"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid>
+            </PivotItem>
+            <PivotItem Header="{x:Bind ViewModel.NotesText, Mode=OneWay}">
+                <Grid x:Name="NotesHost"><TextBlock Text="Notes (Plan 3)" Opacity="0.5"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid>
+            </PivotItem>
+            <PivotItem Header="{x:Bind ViewModel.TransformationsText, Mode=OneWay}">
+                <Grid x:Name="TransformationsHost"><TextBlock Text="Transformations (Plan 3)" Opacity="0.5"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</Page>

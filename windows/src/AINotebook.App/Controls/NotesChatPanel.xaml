@@ -1,0 +1,65 @@
+<UserControl
+    x:Class="AINotebook.App.Controls.NotesChatPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:AINotebook.App.Controls"
+    xmlns:vm="using:AINotebook.App.ViewModels"
+    mc:Ignorable="d"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
+    <Grid Padding="12" Background="{ThemeResource LayerFillColorDefaultBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Spacing="2" Margin="0,0,0,8">
+            <TextBlock x:Name="PanelTitle" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+            <TextBlock x:Name="CurrentNoteHint" Style="{ThemeResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       Visibility="Collapsed"/>
+        </StackPanel>
+
+        <!-- Messages -->
+        <TextBlock Grid.Row="1" x:Name="EmptyState"
+                   Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   TextWrapping="Wrap" TextAlignment="Center"
+                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+
+        <ScrollViewer Grid.Row="1" x:Name="MessagesScroller"
+                      Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}">
+            <StackPanel Spacing="6">
+                <ItemsControl ItemsSource="{x:Bind ViewModel.Messages, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MessageViewModel">
+                            <ctrl:MessageBubble ViewModel="{x:Bind}"
+                                                CitationTapped="OnCitationTapped"
+                                                SaveAsNoteRequested="OnSaveAsNote"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Border x:Name="StreamingBubble" CornerRadius="10" Padding="10"
+                        Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                        HorizontalAlignment="Left"
+                        Visibility="{x:Bind ViewModel.StreamingDraft, Mode=OneWay, Converter={StaticResource StringToVisibility}}">
+                    <TextBlock Text="{x:Bind ViewModel.StreamingDraft, Mode=OneWay}" TextWrapping="Wrap"/>
+                </Border>
+                <TextBlock x:Name="ErrorText" Foreground="Red" TextWrapping="Wrap"
+                           Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource StringToVisibility}}"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Input -->
+        <TextBox Grid.Row="2" x:Name="InputBox" Margin="0,8,0,0"
+                 Text="{x:Bind ViewModel.Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="120"
+                 IsEnabled="{x:Bind ViewModel.Sending, Mode=OneWay, Converter={StaticResource InvertBool}}">
+            <TextBox.KeyboardAccelerators>
+                <KeyboardAccelerator Modifiers="Control" Key="Enter" Invoked="OnSendAccelerator"/>
+            </TextBox.KeyboardAccelerators>
+        </TextBox>
+    </Grid>
+</UserControl>

@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence><xsd:attribute name="name" use="required" type="xsd:string" /><xsd:attribute name="type" type="xsd:string" /><xsd:attribute name="mimetype" type="xsd:string" /><xsd:attribute ref="xml:space" /></xsd:complexType></xsd:element>
+          <xsd:element name="assembly"><xsd:complexType><xsd:attribute name="alias" type="xsd:string" /><xsd:attribute name="name" type="xsd:string" /></xsd:complexType></xsd:element>
+          <xsd:element name="data"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /><xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" /><xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" /><xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" /><xsd:attribute ref="xml:space" /></xsd:complexType></xsd:element>
+          <xsd:element name="resheader"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" /></xsd:complexType></xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="appName" xml:space="preserve">
+    <value>AI Notebook</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="notebooks" xml:space="preserve">
+    <value>Notebooks</value>
+  </data>
+  <data name="sources" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+  <data name="chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="transformations" xml:space="preserve">
+    <value>Transformations</value>
+  </data>
+  <data name="noNotebookSelected" xml:space="preserve">
+    <value>No notebook selected</value>
+  </data>
+  <data name="createNotebook" xml:space="preserve">
+    <value>Create notebook</value>
+  </data>
+  <data name="renameNotebook" xml:space="preserve">
+    <value>Rename notebook</value>
+  </data>
+  <data name="deleteNotebook" xml:space="preserve">
+    <value>Delete notebook</value>
+  </data>
+  <data name="notebookName" xml:space="preserve">
+    <value>Notebook name</value>
+  </data>
+  <data name="notebookDescription" xml:space="preserve">
+    <value>Description (optional)</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="confirmDeleteNotebook" xml:space="preserve">
+    <value>Delete this notebook? This cannot be undone.</value>
+  </data>
+  <data name="cannotBeEmpty" xml:space="preserve">
+    <value>Name cannot be empty.</value>
+  </data>
+  <data name="welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="welcomeBody" xml:space="preserve">
+    <value>AI Notebook keeps everything local. To run AI, we&#x27;ll use Ollama on your Mac.</value>
+  </data>
+  <data name="continueLabel" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="onboardingDetectTitle" xml:space="preserve">
+    <value>Check Ollama</value>
+  </data>
+  <data name="onboardingDetectBody" xml:space="preserve">
+    <value>We&#x27;re looking for a running Ollama on your Mac.</value>
+  </data>
+  <data name="onboardingDetectChecking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="onboardingDetectFound" xml:space="preserve">
+    <value>Ollama is running.</value>
+  </data>
+  <data name="openOllamaDownload" xml:space="preserve">
+    <value>Open download page</value>
+  </data>
+  <data name="onboardingDetectWaiting" xml:space="preserve">
+    <value>Waiting for Ollama to start…</value>
+  </data>
+  <data name="onboardingPickModelsTitle" xml:space="preserve">
+    <value>Pick models</value>
+  </data>
+  <data name="onboardingPickModelsBody" xml:space="preserve">
+    <value>Defaults are fine for most people. You can change them later in Settings.</value>
+  </data>
+  <data name="chatModel" xml:space="preserve">
+    <value>Chat model</value>
+  </data>
+  <data name="embeddingModel" xml:space="preserve">
+    <value>Embedding model</value>
+  </data>
+  <data name="onboardingPullTitle" xml:space="preserve">
+    <value>Downloading models</value>
+  </data>
+  <data name="onboardingPullBody" xml:space="preserve">
+    <value>This is a one-time download. Keep the app open.</value>
+  </data>
+  <data name="onboardingPullingChat" xml:space="preserve">
+    <value>Chat model</value>
+  </data>
+  <data name="onboardingPullingEmbedding" xml:space="preserve">
+    <value>Embedding model</value>
+  </data>
+  <data name="onboardingDoneTitle" xml:space="preserve">
+    <value>All set</value>
+  </data>
+  <data name="onboardingDoneBody" xml:space="preserve">
+    <value>You can now create your first notebook.</value>
+  </data>
+  <data name="ollamaUnreachable" xml:space="preserve">
+    <value>Cannot reach Ollama. Is it running?</value>
+  </data>
+  <data name="startUsingApp" xml:space="preserve">
+    <value>Start using the app</value>
+  </data>
+  <data name="sourcesSectionTitle" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+  <data name="addSourceButton" xml:space="preserve">
+    <value>Add source</value>
+  </data>
+  <data name="addSourceSheetTitle" xml:space="preserve">
+    <value>Add a source</value>
+  </data>
+  <data name="addSourceFromFile" xml:space="preserve">
+    <value>From file…</value>
+  </data>
+  <data name="addSourceFromURL" xml:space="preserve">
+    <value>From URL</value>
+  </data>
+  <data name="addSourceFromText" xml:space="preserve">
+    <value>Paste text</value>
+  </data>
+  <data name="addSourceURLPlaceholder" xml:space="preserve">
+    <value>https://example.com/article</value>
+  </data>
+  <data name="addSourceTitlePlaceholder" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="addSourceTextPlaceholder" xml:space="preserve">
+    <value>Paste content here</value>
+  </data>
+  <data name="addSourceConfirm" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="cancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="sourceStatusPending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="sourceStatusChunking" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="sourceStatusReady" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="sourceStatusError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="noSourcesEmptyState" xml:space="preserve">
+    <value>No sources yet. Add one to get started.</value>
+  </data>
+  <data name="deleteSourceConfirm" xml:space="preserve">
+    <value>Delete this source?</value>
+  </data>
+  <data name="deleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="indexingInProgress" xml:space="preserve">
+    <value>Indexing {0}…</value>
+  </data>
+  <data name="indexingProgressFormat" xml:space="preserve">
+    <value>{0} / {1} chunks</value>
+  </data>
+  <data name="indexingComplete" xml:space="preserve">
+    <value>Indexed</value>
+  </data>
+  <data name="indexingError" xml:space="preserve">
+    <value>Indexing error</value>
+  </data>
+  <data name="indexingPaused" xml:space="preserve">
+    <value>Indexing paused</value>
+  </data>
+  <data name="indexingIdle" xml:space="preserve">
+    <value>Idle</value>
+  </data>
+  <data name="chatNewSessionTitle" xml:space="preserve">
+    <value>New chat</value>
+  </data>
+  <data name="chatInputPlaceholder" xml:space="preserve">
+    <value>Ask anything about your sources…</value>
+  </data>
+  <data name="chatSendButton" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="chatEmptyState" xml:space="preserve">
+    <value>Start by asking a question.</value>
+  </data>
+  <data name="chatErrorPrefix" xml:space="preserve">
+    <value>Chat error: </value>
+  </data>
+  <data name="chatCitationsSectionTitle" xml:space="preserve">
+    <value>Citations</value>
+  </data>
+  <data name="chatNoCitationsForMessage" xml:space="preserve">
+    <value>No citations</value>
+  </data>
+  <data name="chatRegenerateButton" xml:space="preserve">
+    <value>Regenerate</value>
+  </data>
+  <data name="chatSessionsLabel" xml:space="preserve">
+    <value>Sessions</value>
+  </data>
+  <data name="chatNewSessionButton" xml:space="preserve">
+    <value>New session</value>
+  </data>
+  <data name="chatDeleteSessionButton" xml:space="preserve">
+    <value>Delete session</value>
+  </data>
+  <data name="chatSaveAsNoteButton" xml:space="preserve">
+    <value>Save as note</value>
+  </data>
+  <data name="notesSectionTitle" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="notesEmptyState" xml:space="preserve">
+    <value>No notes yet. Create one or save from chat.</value>
+  </data>
+  <data name="notesNewButton" xml:space="preserve">
+    <value>New note</value>
+  </data>
+  <data name="noteUntitled" xml:space="preserve">
+    <value>Untitled</value>
+  </data>
+  <data name="noteTitlePlaceholder" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="noteBodyPlaceholder" xml:space="preserve">
+    <value>Write Markdown here…</value>
+  </data>
+  <data name="noteOriginManual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="noteOriginChat" xml:space="preserve">
+    <value>From chat</value>
+  </data>
+  <data name="noteOriginTransformation" xml:space="preserve">
+    <value>From transformation</value>
+  </data>
+  <data name="transformationsSectionTitle" xml:space="preserve">
+    <value>Transformations</value>
+  </data>
+  <data name="transformationPickerLabel" xml:space="preserve">
+    <value>Transformation</value>
+  </data>
+  <data name="transformationSourcePickerLabel" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="transformationRunButton" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="transformationResultTitle" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="transformationRunningStatus" xml:space="preserve">
+    <value>Running…</value>
+  </data>
+  <data name="transformationEditButton" xml:space="preserve">
+    <value>Edit templates</value>
+  </data>
+  <data name="transformationEditorTitle" xml:space="preserve">
+    <value>Custom transformations</value>
+  </data>
+  <data name="transformationEditorNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="transformationEditorDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="transformationEditorNamePlaceholder" xml:space="preserve">
+    <value>Template name</value>
+  </data>
+  <data name="transformationEditorTemplatePlaceholder" xml:space="preserve">
+    <value>Prompt template (use {{source_text}})</value>
+  </data>
+  <data name="reembedButton" xml:space="preserve">
+    <value>Re-embed all sources</value>
+  </data>
+  <data name="reembedConfirm" xml:space="preserve">
+    <value>This deletes existing embeddings and re-runs them with the current model. Continue?</value>
+  </data>
+  <data name="reembedConfirmYes" xml:space="preserve">
+    <value>Re-embed</value>
+  </data>
+  <data name="embeddingSectionTitle" xml:space="preserve">
+    <value>Embedding</value>
+  </data>
+  <data name="currentModelLabel" xml:space="preserve">
+    <value>Current model</value>
+  </data>
+  <data name="manageModelsButton" xml:space="preserve">
+    <value>Manage models…</value>
+  </data>
+  <data name="manageModelsTitle" xml:space="preserve">
+    <value>Installed Ollama models</value>
+  </data>
+  <data name="manageModelsPullPlaceholder" xml:space="preserve">
+    <value>Pull model name (e.g. mistral:7b)</value>
+  </data>
+  <data name="manageModelsPullButton" xml:space="preserve">
+    <value>Pull</value>
+  </data>
+  <data name="manageModelsRefreshButton" xml:space="preserve">
+    <value>Refresh list</value>
+  </data>
+  <data name="chatModelPickerLabel" xml:space="preserve">
+    <value>Chat model</value>
+  </data>
+  <data name="embeddingModelPickerLabel" xml:space="preserve">
+    <value>Embedding model</value>
+  </data>
+  <data name="openNoteFromCitation" xml:space="preserve">
+    <value>Open note</value>
+  </data>
+  <data name="notesChatPanelTitle" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="notesChatPanelEmpty" xml:space="preserve">
+    <value>Start a question about this notebook…</value>
+  </data>
+  <data name="notesChatCurrentNoteHint" xml:space="preserve">
+    <value>Including the open note as bonus context</value>
+  </data>
+  <data name="editorStatusSaved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="editorStatusSaving" xml:space="preserve">
+    <value>Saving…</value>
+  </data>
+  <data name="editorStatusUnsaved" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
+  <data name="editorStatusError" xml:space="preserve">
+    <value>Save failed</value>
+  </data>
+  <data name="editorFailedToLoad" xml:space="preserve">
+    <value>Editor failed to load. Reopen the note.</value>
+  </data>
+  <data name="attachmentBrokenLink" xml:space="preserve">
+    <value>Attachment missing</value>
+  </data>
+  <data name="attachmentSaveFailed" xml:space="preserve">
+    <value>Couldn&#x27;t save attachment</value>
+  </data>
+  <data name="attachmentOpenButton" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="historyButton" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="historySheetTitle" xml:space="preserve">
+    <value>Version history</value>
+  </data>
+  <data name="historyEmpty" xml:space="preserve">
+    <value>No earlier versions yet.</value>
+  </data>
+  <data name="historyRestoreButton" xml:space="preserve">
+    <value>Restore this version</value>
+  </data>
+  <data name="historyReasonAutosave" xml:space="preserve">
+    <value>Auto-save</value>
+  </data>
+  <data name="historyReasonRestore" xml:space="preserve">
+    <value>Restored</value>
+  </data>
+  <data name="aiToolsSectionTitle" xml:space="preserve">
+    <value>AI tools</value>
+  </data>
+  <data name="aiToolsEmptyTitle" xml:space="preserve">
+    <value>What are AI tools?</value>
+  </data>
+  <data name="aiToolsEmptyBody" xml:space="preserve">
+    <value>Pick a template, pick a source, click Run. The output is saved as a new note in this notebook.</value>
+  </data>
+  <data name="aiToolsScopeAllSources" xml:space="preserve">
+    <value>All sources</value>
+  </data>
+  <data name="aiToolsScopeHint" xml:space="preserve">
+    <value>Source = one item · Notebook = combined · All sources = one note per source</value>
+  </data>
+  <data name="aiToolsPreviewButton" xml:space="preserve">
+    <value>Preview prompt</value>
+  </data>
+  <data name="aiToolsHistoryButton" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="aiToolsResultSavedFormat" xml:space="preserve">
+    <value>Saved as note: {0}</value>
+  </data>
+  <data name="aiToolsOpenNoteButton" xml:space="preserve">
+    <value>Open note</value>
+  </data>
+  <data name="aiToolsRunningFormat" xml:space="preserve">
+    <value>Running {0} / {1}…</value>
+  </data>
+  <data name="aiToolsBatchSavedFormat" xml:space="preserve">
+    <value>Saved {0} notes</value>
+  </data>
+  <data name="aiToolsPromptPreviewTitle" xml:space="preserve">
+    <value>Prompt preview</value>
+  </data>
+  <data name="aiToolsHistoryEmpty" xml:space="preserve">
+    <value>No runs yet.</value>
+  </data>
+  <data name="aiToolsHistoryTitle" xml:space="preserve">
+    <value>Run history</value>
+  </data>
+  <data name="aiToolsDescriptionPlaceholder" xml:space="preserve">
+    <value>Short description (shown under the template name)</value>
+  </data>
+  <data name="unsavedChangesTitle" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
+  <data name="unsavedChangesMessage" xml:space="preserve">
+    <value>This note has unsaved edits. Save them before switching?</value>
+  </data>
+  <data name="unsavedSaveButton" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="unsavedDiscardButton" xml:space="preserve">
+    <value>Discard</value>
+  </data>
+</root>

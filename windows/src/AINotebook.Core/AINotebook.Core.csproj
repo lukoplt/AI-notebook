@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>AINotebook.Core</RootNamespace>
+    <AssemblyName>AINotebook.Core</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AINotebook.Core.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.*" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.*" />
+    <PackageReference Include="Dapper" Version="2.*" />
+    <PackageReference Include="PdfPig" Version="0.1.*" />
+    <PackageReference Include="AngleSharp" Version="1.*" />
+  </ItemGroup>
+
+</Project>

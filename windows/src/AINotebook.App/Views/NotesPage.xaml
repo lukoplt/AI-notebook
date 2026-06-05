@@ -1,0 +1,62 @@
+<Page
+    x:Class="AINotebook.App.Views.NotesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:editor="using:AINotebook.App.Editor"
+    xmlns:ctrl="using:AINotebook.App.Controls"
+    xmlns:models="using:AINotebook.Core.Models">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="360"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Notes list -->
+        <Grid Grid.Column="0" Padding="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBlock x:Name="NotesTitle" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <Button x:Name="NewButtonTop" HorizontalAlignment="Right"
+                        Command="{x:Bind ViewModel.CreateBlankCommand}"/>
+            </Grid>
+            <ListView Grid.Row="1" x:Name="NotesList"
+                      ItemsSource="{x:Bind ViewModel.Notes, Mode=OneWay}"
+                      SelectionChanged="OnNotesSelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Note">
+                        <StackPanel Spacing="2">
+                            <TextBlock Text="{x:Bind Title}" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                       Text="{x:Bind Origin}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel Grid.Row="1" x:Name="EmptyNotes" Visibility="Collapsed"
+                        VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
+                <FontIcon Glyph="&#xE70B;" FontSize="32"/>
+                <TextBlock x:Name="EmptyNotesText" TextWrapping="Wrap" TextAlignment="Center"/>
+                <Button x:Name="NewButtonEmpty" Command="{x:Bind ViewModel.CreateBlankCommand}"
+                        Style="{ThemeResource AccentButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Editor -->
+        <Grid Grid.Column="1" Padding="16">
+            <editor:EditorWebView x:Name="Editor" Title="{x:Bind ViewModel.DraftTitle, Mode=TwoWay}"
+                                  Visibility="Collapsed"/>
+            <StackPanel x:Name="NoSelection" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
+                <FontIcon Glyph="&#xE7C3;" FontSize="32"/>
+                <TextBlock x:Name="NoSelectionText"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Chat panel -->
+        <ctrl:NotesChatPanel Grid.Column="2" x:Name="ChatPanel"/>
+    </Grid>
+</Page>

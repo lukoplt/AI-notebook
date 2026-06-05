@@ -10,6 +10,10 @@ declare global {
         aino?: { postMessage: (m: unknown) => void }
       }
     }
+    // WebView2 (Windows) host bridge — present only under Microsoft Edge WebView2.
+    chrome?: {
+      webview?: { postMessage: (m: unknown) => void }
+    }
     aino?: {
       setContent: (md: string) => void
       requestSave: () => void
@@ -17,7 +21,17 @@ declare global {
   }
 }
 
+// Transport-agnostic JS -> native send. WebView2 (Windows) delivers the object
+// as JSON via window.chrome.webview.postMessage; WKWebView (macOS) delivers a
+// native dict via window.webkit.messageHandlers.aino.postMessage. The same
+// payload object is sent either way, so the native side decodes the identical
+// { kind: ... } shape. macOS falls through to the webkit branch unchanged.
 function postToSwift(payload: unknown) {
+  const wv2 = window.chrome?.webview
+  if (wv2 && typeof wv2.postMessage === "function") {
+    wv2.postMessage(payload)
+    return
+  }
   window.webkit?.messageHandlers?.aino?.postMessage(payload)
 }
 

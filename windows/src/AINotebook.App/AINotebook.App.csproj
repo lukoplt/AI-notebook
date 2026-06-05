@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>AINotebook.App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseWinUI>true</UseWinUI>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Unpackaged + fully self-contained (no WASDK runtime install, no .NET install) -->
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
+    <EnableMsixTooling>true</EnableMsixTooling>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.*" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AINotebook.Core\AINotebook.Core.csproj" />
+  </ItemGroup>
+
+  <!-- Expose internal test-only ctors (e.g. OnboardingViewModel) to the test project. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="AINotebook.App.Tests" />
+  </ItemGroup>
+
+  <!-- Per-language .resw under Strings/ are auto-included as PRIResource by the
+       .NET SDK (EnableDefaultPriItems defaults true); do NOT also list them
+       explicitly or the build errors with NETSDK1022 (duplicate PRIResource). -->
+
+  <ItemGroup>
+    <!-- Reuse the mac-built editor bundle (editor.ts shim makes it cross-platform). -->
+    <Content Include="..\..\..\Sources\AINotebookApp\Resources\editor\editor.html">
+      <Link>Resources\editor\editor.html</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\Sources\AINotebookApp\Resources\editor\editor.css">
+      <Link>Resources\editor\editor.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\Sources\AINotebookApp\Resources\editor\editor.js">
+      <Link>Resources\editor\editor.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

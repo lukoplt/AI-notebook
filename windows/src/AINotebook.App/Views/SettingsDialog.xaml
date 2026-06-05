@@ -1,0 +1,56 @@
+<ContentDialog
+    x:Class="AINotebook.App.Views.SettingsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer Width="460" Height="540">
+        <StackPanel Spacing="20" Padding="4">
+            <TextBlock x:Name="TitleText" FontSize="20" FontWeight="Bold" />
+
+            <ComboBox x:Name="LanguageCombo" HorizontalAlignment="Stretch"
+                      SelectionChanged="OnLanguageChanged" />
+
+            <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+            <StackPanel Spacing="8">
+                <ComboBox x:Name="ChatModelCombo" HorizontalAlignment="Stretch"
+                          SelectionChanged="OnChatModelChanged" />
+                <ComboBox x:Name="EmbedModelCombo" HorizontalAlignment="Stretch"
+                          SelectionChanged="OnEmbedModelChanged" />
+                <TextBlock x:Name="ModelsUnavailableText" Visibility="Collapsed" FontSize="12"
+                           TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <Button x:Name="ManageModelsButton" Click="OnManageModels" />
+            </StackPanel>
+
+            <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+            <StackPanel Spacing="8">
+                <TextBlock x:Name="EmbeddingSectionTitle" FontWeight="SemiBold" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="CurrentModelLabel" Grid.Column="0" />
+                    <TextBlock x:Name="CurrentModelValue" Grid.Column="1" HorizontalAlignment="Right"
+                               FontFamily="Consolas"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </Grid>
+                <Button x:Name="ReembedButton" Click="OnReembed"
+                        Style="{ThemeResource AccentButtonStyle}" />
+            </StackPanel>
+
+            <InfoBar x:Name="ErrorBar" Severity="Error" IsClosable="True" IsOpen="False" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="VersionLabel" Grid.Column="0"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <TextBlock x:Name="VersionValue" Grid.Column="1" HorizontalAlignment="Right"
+                           FontFamily="Consolas" />
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>

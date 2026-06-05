@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="AINotebook.App.Views.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:core="using:AINotebook.Core.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    mc:Ignorable="d">
+
+    <muxc:NavigationView x:Name="Nav"
+        PaneDisplayMode="Left"
+        IsBackButtonVisible="Collapsed"
+        IsSettingsVisible="False"
+        OpenPaneLength="260">
+
+        <muxc:NavigationView.PaneHeader>
+            <TextBlock Text="{Binding [notebooks]}" Style="{StaticResource BodyStrongTextBlockStyle}"
+                       Margin="12,8" />
+        </muxc:NavigationView.PaneHeader>
+
+        <muxc:NavigationView.PaneCustomContent>
+            <ListView x:Name="NotebookList"
+                      ItemsSource="{x:Bind ViewModel.Sidebar.Notebooks}"
+                      SelectionMode="Single"
+                      SelectionChanged="NotebookList_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="core:Notebook">
+                        <Grid Padding="4,2" RightTapped="NotebookItem_RightTapped">
+                            <TextBlock Text="{x:Bind Name}" />
+                            <FlyoutBase.AttachedFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="{Binding DataContext.RenameText, ElementName=Nav}"
+                                                    Click="Rename_Click" />
+                                    <MenuFlyoutItem Text="{Binding DataContext.DeleteText, ElementName=Nav}"
+                                                    Click="Delete_Click" />
+                                </MenuFlyout>
+                            </FlyoutBase.AttachedFlyout>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </muxc:NavigationView.PaneCustomContent>
+
+        <muxc:NavigationView.PaneFooter>
+            <Button x:Name="NewButton" Click="New_Click" Margin="12,4"
+                    ToolTipService.ToolTip="{Binding [createNotebook]}">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE710;" FontSize="14" />
+                    <TextBlock Text="{Binding [createNotebook]}" />
+                </StackPanel>
+            </Button>
+        </muxc:NavigationView.PaneFooter>
+
+        <!-- Detail content -->
+        <Grid x:Name="DetailHost" Padding="0">
+            <StackPanel x:Name="EmptyState"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
+                <FontIcon Glyph="&#xE721;" FontSize="48" Opacity="0.5" />
+                <TextBlock Text="{Binding [noNotebookSelected]}" Opacity="0.7"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+    </muxc:NavigationView>
+</Page>

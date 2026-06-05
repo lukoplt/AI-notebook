@@ -1,0 +1,12 @@
+<Page
+    x:Class="AINotebook.App.Onboarding.OnboardingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Padding="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <ContentControl x:Name="StepHost"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch" />
+    </Grid>
+</Page>

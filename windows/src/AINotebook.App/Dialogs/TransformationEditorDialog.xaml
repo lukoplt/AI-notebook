@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="AINotebook.App.Dialogs.TransformationEditorDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AINotebook.App.ViewModels"
+    xmlns:models="using:AINotebook.Core.Models"
+    DefaultButton="Close">
+    <Grid Width="760" Height="480" ColumnSpacing="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Custom transformations list + New -->
+        <Grid Grid.Column="0" RowSpacing="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ListView Grid.Row="0"
+                      ItemsSource="{x:Bind ViewModel.Customs, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Transformation">
+                        <StackPanel Spacing="2" Padding="0,4">
+                            <TextBlock Text="{x:Bind Name}" Style="{ThemeResource BodyStrongTextBlockStyle}"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Text="{x:Bind Description}" Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Grid.Row="1" x:Name="NewButton" HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.CreateBlankCommand}"/>
+        </Grid>
+
+        <!-- Draft editor -->
+        <Grid Grid.Column="1" RowSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBox Grid.Row="0" x:Name="NameBox"
+                     Text="{x:Bind ViewModel.DraftName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox Grid.Row="1" x:Name="DescriptionBox"
+                     Text="{x:Bind ViewModel.DraftDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ComboBox Grid.Row="2" x:Name="ScopeSeg" MinWidth="180"
+                      SelectionChanged="OnScopeChanged">
+                <ComboBoxItem x:Name="ScopeSource" Content="Source"/>
+                <ComboBoxItem x:Name="ScopeNotebook" Content="Notebook"/>
+            </ComboBox>
+
+            <TextBox Grid.Row="3" x:Name="TemplateBox" AcceptsReturn="True" TextWrapping="Wrap"
+                     FontFamily="Consolas" VerticalAlignment="Stretch"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     Text="{x:Bind ViewModel.DraftTemplate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                <Button x:Name="DeleteButton" Command="{x:Bind ViewModel.DeleteCommand}"/>
+                <Button x:Name="SaveButton" Style="{ThemeResource AccentButtonStyle}"
+                        Command="{x:Bind ViewModel.SaveCommand}">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                    </Button.KeyboardAccelerators>
+                </Button>
+            </StackPanel>
+
+            <TextBlock Grid.Row="5" x:Name="ErrorText"
+                       Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                       Foreground="Red" TextWrapping="Wrap"/>
+        </Grid>
+    </Grid>
+</ContentDialog>

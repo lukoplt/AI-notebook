@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" /></xsd:sequence><xsd:attribute name="name" use="required" type="xsd:string" /><xsd:attribute name="type" type="xsd:string" /><xsd:attribute name="mimetype" type="xsd:string" /><xsd:attribute ref="xml:space" /></xsd:complexType></xsd:element>
+          <xsd:element name="assembly"><xsd:complexType><xsd:attribute name="alias" type="xsd:string" /><xsd:attribute name="name" type="xsd:string" /></xsd:complexType></xsd:element>
+          <xsd:element name="data"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /><xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" /><xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" /><xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" /><xsd:attribute ref="xml:space" /></xsd:complexType></xsd:element>
+          <xsd:element name="resheader"><xsd:complexType><xsd:sequence><xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" /></xsd:sequence><xsd:attribute name="name" type="xsd:string" use="required" /></xsd:complexType></xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="appName" xml:space="preserve">
+    <value>AI Notebook</value>
+  </data>
+  <data name="settings" xml:space="preserve">
+    <value>Nastavení</value>
+  </data>
+  <data name="language" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="version" xml:space="preserve">
+    <value>Verze</value>
+  </data>
+  <data name="notebooks" xml:space="preserve">
+    <value>Poznámkové bloky</value>
+  </data>
+  <data name="sources" xml:space="preserve">
+    <value>Zdroje</value>
+  </data>
+  <data name="chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="notes" xml:space="preserve">
+    <value>Poznámky</value>
+  </data>
+  <data name="transformations" xml:space="preserve">
+    <value>Transformace</value>
+  </data>
+  <data name="noNotebookSelected" xml:space="preserve">
+    <value>Žádný blok není vybrán</value>
+  </data>
+  <data name="createNotebook" xml:space="preserve">
+    <value>Vytvořit blok</value>
+  </data>
+  <data name="renameNotebook" xml:space="preserve">
+    <value>Přejmenovat blok</value>
+  </data>
+  <data name="deleteNotebook" xml:space="preserve">
+    <value>Smazat blok</value>
+  </data>
+  <data name="notebookName" xml:space="preserve">
+    <value>Název bloku</value>
+  </data>
+  <data name="notebookDescription" xml:space="preserve">
+    <value>Popis (volitelný)</value>
+  </data>
+  <data name="cancel" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="create" xml:space="preserve">
+    <value>Vytvořit</value>
+  </data>
+  <data name="save" xml:space="preserve">
+    <value>Uložit</value>
+  </data>
+  <data name="delete" xml:space="preserve">
+    <value>Smazat</value>
+  </data>
+  <data name="confirmDeleteNotebook" xml:space="preserve">
+    <value>Opravdu smazat tento blok? Akci nelze vrátit zpět.</value>
+  </data>
+  <data name="cannotBeEmpty" xml:space="preserve">
+    <value>Název nesmí být prázdný.</value>
+  </data>
+  <data name="welcome" xml:space="preserve">
+    <value>Vítejte</value>
+  </data>
+  <data name="welcomeBody" xml:space="preserve">
+    <value>AI Notebook udržuje vše lokálně. K AI použijeme Ollamu spuštěnou na vašem Macu.</value>
+  </data>
+  <data name="continueLabel" xml:space="preserve">
+    <value>Pokračovat</value>
+  </data>
+  <data name="onboardingDetectTitle" xml:space="preserve">
+    <value>Kontrola Ollamy</value>
+  </data>
+  <data name="onboardingDetectBody" xml:space="preserve">
+    <value>Hledáme spuštěnou Ollamu na vašem Macu.</value>
+  </data>
+  <data name="onboardingDetectChecking" xml:space="preserve">
+    <value>Hledám…</value>
+  </data>
+  <data name="onboardingDetectFound" xml:space="preserve">
+    <value>Ollama běží.</value>
+  </data>
+  <data name="openOllamaDownload" xml:space="preserve">
+    <value>Otevřít stránku ke stažení</value>
+  </data>
+  <data name="onboardingDetectWaiting" xml:space="preserve">
+    <value>Čekám, až se Ollama spustí…</value>
+  </data>
+  <data name="onboardingPickModelsTitle" xml:space="preserve">
+    <value>Vyberte modely</value>
+  </data>
+  <data name="onboardingPickModelsBody" xml:space="preserve">
+    <value>Výchozí hodnoty vyhovují většině uživatelů. Změnit je můžete později v Nastavení.</value>
+  </data>
+  <data name="chatModel" xml:space="preserve">
+    <value>Model pro chat</value>
+  </data>
+  <data name="embeddingModel" xml:space="preserve">
+    <value>Model pro embeddingy</value>
+  </data>
+  <data name="onboardingPullTitle" xml:space="preserve">
+    <value>Stahuji modely</value>
+  </data>
+  <data name="onboardingPullBody" xml:space="preserve">
+    <value>Tohle je jednorázové stažení. Nechte aplikaci spuštěnou.</value>
+  </data>
+  <data name="onboardingPullingChat" xml:space="preserve">
+    <value>Model pro chat</value>
+  </data>
+  <data name="onboardingPullingEmbedding" xml:space="preserve">
+    <value>Model pro embeddingy</value>
+  </data>
+  <data name="onboardingDoneTitle" xml:space="preserve">
+    <value>Hotovo</value>
+  </data>
+  <data name="onboardingDoneBody" xml:space="preserve">
+    <value>Teď můžete vytvořit svůj první poznámkový blok.</value>
+  </data>
+  <data name="ollamaUnreachable" xml:space="preserve">
+    <value>Nelze se připojit k Ollamě. Je spuštěná?</value>
+  </data>
+  <data name="startUsingApp" xml:space="preserve">
+    <value>Začít používat aplikaci</value>
+  </data>
+  <data name="sourcesSectionTitle" xml:space="preserve">
+    <value>Zdroje</value>
+  </data>
+  <data name="addSourceButton" xml:space="preserve">
+    <value>Přidat zdroj</value>
+  </data>
+  <data name="addSourceSheetTitle" xml:space="preserve">
+    <value>Přidat zdroj</value>
+  </data>
+  <data name="addSourceFromFile" xml:space="preserve">
+    <value>Ze souboru…</value>
+  </data>
+  <data name="addSourceFromURL" xml:space="preserve">
+    <value>Z URL adresy</value>
+  </data>
+  <data name="addSourceFromText" xml:space="preserve">
+    <value>Vložit text</value>
+  </data>
+  <data name="addSourceURLPlaceholder" xml:space="preserve">
+    <value>https://example.com/clanek</value>
+  </data>
+  <data name="addSourceTitlePlaceholder" xml:space="preserve">
+    <value>Název</value>
+  </data>
+  <data name="addSourceTextPlaceholder" xml:space="preserve">
+    <value>Vložte obsah sem</value>
+  </data>
+  <data name="addSourceConfirm" xml:space="preserve">
+    <value>Přidat</value>
+  </data>
+  <data name="cancelButton" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="sourceStatusPending" xml:space="preserve">
+    <value>Čeká</value>
+  </data>
+  <data name="sourceStatusChunking" xml:space="preserve">
+    <value>Zpracovává se</value>
+  </data>
+  <data name="sourceStatusReady" xml:space="preserve">
+    <value>Hotovo</value>
+  </data>
+  <data name="sourceStatusError" xml:space="preserve">
+    <value>Chyba</value>
+  </data>
+  <data name="noSourcesEmptyState" xml:space="preserve">
+    <value>Zatím žádné zdroje. Přidejte první, abyste mohli začít.</value>
+  </data>
+  <data name="deleteSourceConfirm" xml:space="preserve">
+    <value>Smazat tento zdroj?</value>
+  </data>
+  <data name="deleteButton" xml:space="preserve">
+    <value>Smazat</value>
+  </data>
+  <data name="indexingInProgress" xml:space="preserve">
+    <value>Indexuji {0}…</value>
+  </data>
+  <data name="indexingProgressFormat" xml:space="preserve">
+    <value>{0} / {1} částí</value>
+  </data>
+  <data name="indexingComplete" xml:space="preserve">
+    <value>Indexováno</value>
+  </data>
+  <data name="indexingError" xml:space="preserve">
+    <value>Chyba při indexaci</value>
+  </data>
+  <data name="indexingPaused" xml:space="preserve">
+    <value>Indexace pozastavena</value>
+  </data>
+  <data name="indexingIdle" xml:space="preserve">
+    <value>Nečinné</value>
+  </data>
+  <data name="chatNewSessionTitle" xml:space="preserve">
+    <value>Nový chat</value>
+  </data>
+  <data name="chatInputPlaceholder" xml:space="preserve">
+    <value>Zeptej se na cokoli ze svých zdrojů…</value>
+  </data>
+  <data name="chatSendButton" xml:space="preserve">
+    <value>Odeslat</value>
+  </data>
+  <data name="chatEmptyState" xml:space="preserve">
+    <value>Začněte položením otázky.</value>
+  </data>
+  <data name="chatErrorPrefix" xml:space="preserve">
+    <value>Chyba chatu: </value>
+  </data>
+  <data name="chatCitationsSectionTitle" xml:space="preserve">
+    <value>Citace</value>
+  </data>
+  <data name="chatNoCitationsForMessage" xml:space="preserve">
+    <value>Žádné citace</value>
+  </data>
+  <data name="chatRegenerateButton" xml:space="preserve">
+    <value>Znovu vygenerovat</value>
+  </data>
+  <data name="chatSessionsLabel" xml:space="preserve">
+    <value>Konverzace</value>
+  </data>
+  <data name="chatNewSessionButton" xml:space="preserve">
+    <value>Nová konverzace</value>
+  </data>
+  <data name="chatDeleteSessionButton" xml:space="preserve">
+    <value>Smazat konverzaci</value>
+  </data>
+  <data name="chatSaveAsNoteButton" xml:space="preserve">
+    <value>Uložit jako poznámku</value>
+  </data>
+  <data name="notesSectionTitle" xml:space="preserve">
+    <value>Poznámky</value>
+  </data>
+  <data name="notesEmptyState" xml:space="preserve">
+    <value>Zatím žádné poznámky. Vytvořte ji nebo uložte z chatu.</value>
+  </data>
+  <data name="notesNewButton" xml:space="preserve">
+    <value>Nová poznámka</value>
+  </data>
+  <data name="noteUntitled" xml:space="preserve">
+    <value>Bez názvu</value>
+  </data>
+  <data name="noteTitlePlaceholder" xml:space="preserve">
+    <value>Název</value>
+  </data>
+  <data name="noteBodyPlaceholder" xml:space="preserve">
+    <value>Zde pište Markdown…</value>
+  </data>
+  <data name="noteOriginManual" xml:space="preserve">
+    <value>Ruční</value>
+  </data>
+  <data name="noteOriginChat" xml:space="preserve">
+    <value>Z chatu</value>
+  </data>
+  <data name="noteOriginTransformation" xml:space="preserve">
+    <value>Z transformace</value>
+  </data>
+  <data name="transformationsSectionTitle" xml:space="preserve">
+    <value>Transformace</value>
+  </data>
+  <data name="transformationPickerLabel" xml:space="preserve">
+    <value>Transformace</value>
+  </data>
+  <data name="transformationSourcePickerLabel" xml:space="preserve">
+    <value>Zdroj</value>
+  </data>
+  <data name="transformationRunButton" xml:space="preserve">
+    <value>Spustit</value>
+  </data>
+  <data name="transformationResultTitle" xml:space="preserve">
+    <value>Výsledek</value>
+  </data>
+  <data name="transformationRunningStatus" xml:space="preserve">
+    <value>Probíhá…</value>
+  </data>
+  <data name="transformationEditButton" xml:space="preserve">
+    <value>Upravit šablony</value>
+  </data>
+  <data name="transformationEditorTitle" xml:space="preserve">
+    <value>Vlastní transformace</value>
+  </data>
+  <data name="transformationEditorNew" xml:space="preserve">
+    <value>Nový</value>
+  </data>
+  <data name="transformationEditorDelete" xml:space="preserve">
+    <value>Smazat</value>
+  </data>
+  <data name="transformationEditorNamePlaceholder" xml:space="preserve">
+    <value>Název šablony</value>
+  </data>
+  <data name="transformationEditorTemplatePlaceholder" xml:space="preserve">
+    <value>Šablona promptu (použijte {{source_text}})</value>
+  </data>
+  <data name="reembedButton" xml:space="preserve">
+    <value>Přeindexovat všechny zdroje</value>
+  </data>
+  <data name="reembedConfirm" xml:space="preserve">
+    <value>Smaže stávající vektory a přepočte je aktuálním modelem. Pokračovat?</value>
+  </data>
+  <data name="reembedConfirmYes" xml:space="preserve">
+    <value>Přeindexovat</value>
+  </data>
+  <data name="embeddingSectionTitle" xml:space="preserve">
+    <value>Vektorizace</value>
+  </data>
+  <data name="currentModelLabel" xml:space="preserve">
+    <value>Aktuální model</value>
+  </data>
+  <data name="manageModelsButton" xml:space="preserve">
+    <value>Spravovat modely…</value>
+  </data>
+  <data name="manageModelsTitle" xml:space="preserve">
+    <value>Nainstalované Ollama modely</value>
+  </data>
+  <data name="manageModelsPullPlaceholder" xml:space="preserve">
+    <value>Stáhnout model (např. mistral:7b)</value>
+  </data>
+  <data name="manageModelsPullButton" xml:space="preserve">
+    <value>Stáhnout</value>
+  </data>
+  <data name="manageModelsRefreshButton" xml:space="preserve">
+    <value>Obnovit seznam</value>
+  </data>
+  <data name="chatModelPickerLabel" xml:space="preserve">
+    <value>Chatovací model</value>
+  </data>
+  <data name="embeddingModelPickerLabel" xml:space="preserve">
+    <value>Model pro vektorizaci</value>
+  </data>
+  <data name="openNoteFromCitation" xml:space="preserve">
+    <value>Otevřít poznámku</value>
+  </data>
+  <data name="notesChatPanelTitle" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="notesChatPanelEmpty" xml:space="preserve">
+    <value>Zeptej se na něco z tohoto notebooku…</value>
+  </data>
+  <data name="notesChatCurrentNoteHint" xml:space="preserve">
+    <value>Aktuální poznámka přidána jako kontext</value>
+  </data>
+  <data name="editorStatusSaved" xml:space="preserve">
+    <value>Uloženo</value>
+  </data>
+  <data name="editorStatusSaving" xml:space="preserve">
+    <value>Ukládám…</value>
+  </data>
+  <data name="editorStatusUnsaved" xml:space="preserve">
+    <value>Neuložené změny</value>
+  </data>
+  <data name="editorStatusError" xml:space="preserve">
+    <value>Uložení selhalo</value>
+  </data>
+  <data name="editorFailedToLoad" xml:space="preserve">
+    <value>Editor se nepodařilo načíst. Otevřete poznámku znovu.</value>
+  </data>
+  <data name="attachmentBrokenLink" xml:space="preserve">
+    <value>Příloha chybí</value>
+  </data>
+  <data name="attachmentSaveFailed" xml:space="preserve">
+    <value>Nepodařilo se uložit přílohu</value>
+  </data>
+  <data name="attachmentOpenButton" xml:space="preserve">
+    <value>Otevřít</value>
+  </data>
+  <data name="historyButton" xml:space="preserve">
+    <value>Historie</value>
+  </data>
+  <data name="historySheetTitle" xml:space="preserve">
+    <value>Historie verzí</value>
+  </data>
+  <data name="historyEmpty" xml:space="preserve">
+    <value>Žádné dřívější verze.</value>
+  </data>
+  <data name="historyRestoreButton" xml:space="preserve">
+    <value>Obnovit tuto verzi</value>
+  </data>
+  <data name="historyReasonAutosave" xml:space="preserve">
+    <value>Auto-uložení</value>
+  </data>
+  <data name="historyReasonRestore" xml:space="preserve">
+    <value>Obnoveno</value>
+  </data>
+  <data name="aiToolsSectionTitle" xml:space="preserve">
+    <value>AI nástroje</value>
+  </data>
+  <data name="aiToolsEmptyTitle" xml:space="preserve">
+    <value>Co jsou AI nástroje?</value>
+  </data>
+  <data name="aiToolsEmptyBody" xml:space="preserve">
+    <value>Vyber šablonu, vyber zdroj, klikni Spustit. Výstup se uloží jako nová poznámka v tomto notebooku.</value>
+  </data>
+  <data name="aiToolsScopeAllSources" xml:space="preserve">
+    <value>Všechny zdroje</value>
+  </data>
+  <data name="aiToolsScopeHint" xml:space="preserve">
+    <value>Zdroj = jedna položka · Notebook = vše dohromady · Všechny zdroje = poznámka na každý zdroj</value>
+  </data>
+  <data name="aiToolsPreviewButton" xml:space="preserve">
+    <value>Náhled promptu</value>
+  </data>
+  <data name="aiToolsHistoryButton" xml:space="preserve">
+    <value>Historie</value>
+  </data>
+  <data name="aiToolsResultSavedFormat" xml:space="preserve">
+    <value>Uloženo jako poznámka: {0}</value>
+  </data>
+  <data name="aiToolsOpenNoteButton" xml:space="preserve">
+    <value>Otevřít poznámku</value>
+  </data>
+  <data name="aiToolsRunningFormat" xml:space="preserve">
+    <value>Probíhá {0} / {1}…</value>
+  </data>
+  <data name="aiToolsBatchSavedFormat" xml:space="preserve">
+    <value>Uloženo {0} poznámek</value>
+  </data>
+  <data name="aiToolsPromptPreviewTitle" xml:space="preserve">
+    <value>Náhled promptu</value>
+  </data>
+  <data name="aiToolsHistoryEmpty" xml:space="preserve">
+    <value>Zatím žádné spuštění.</value>
+  </data>
+  <data name="aiToolsHistoryTitle" xml:space="preserve">
+    <value>Historie spuštění</value>
+  </data>
+  <data name="aiToolsDescriptionPlaceholder" xml:space="preserve">
+    <value>Krátký popis (zobrazí se pod názvem šablony)</value>
+  </data>
+  <data name="unsavedChangesTitle" xml:space="preserve">
+    <value>Neuložené změny</value>
+  </data>
+  <data name="unsavedChangesMessage" xml:space="preserve">
+    <value>Tato poznámka má neuložené úpravy. Uložit před přepnutím?</value>
+  </data>
+  <data name="unsavedSaveButton" xml:space="preserve">
+    <value>Uložit</value>
+  </data>
+  <data name="unsavedDiscardButton" xml:space="preserve">
+    <value>Zahodit</value>
+  </data>
+</root>
