@@ -47,6 +47,9 @@ public partial class TransformationsViewModel : ObservableObject
         _noteJump = noteJump; _tabSwitch = tabSwitch; _t = t; _dispatcher = dispatcher;
     }
 
+    // Exposed so TransformationsPage can pass the active notebook to the history dialog (M8.2).
+    public long NotebookIdForHistory => _notebookId;
+
     public string? SelectedTransformationDescription =>
         string.IsNullOrEmpty(SelectedTransformation?.Description) ? null : SelectedTransformation!.Description;
 

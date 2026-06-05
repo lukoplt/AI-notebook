@@ -1,0 +1,75 @@
+<Page
+    x:Class="AINotebook.App.Views.TransformationsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:AINotebook.Core.Models">
+    <Grid Padding="20" RowSpacing="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <TextBlock x:Name="HeaderTitle" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                <Button x:Name="HistoryBtn" Click="OnHistory"/>
+                <Button x:Name="EditBtn" Click="OnEdit"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Template row -->
+        <StackPanel Grid.Row="1" Spacing="6">
+            <Grid>
+                <TextBlock x:Name="PickerLabel" Style="{ThemeResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <HyperlinkButton x:Name="PreviewBtn" HorizontalAlignment="Right" Click="OnPreview"/>
+            </Grid>
+            <ComboBox x:Name="TemplateCombo" HorizontalAlignment="Stretch"
+                      ItemsSource="{x:Bind ViewModel.Transformations, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.SelectedTransformation, Mode=TwoWay}"
+                      DisplayMemberPath="Name"/>
+            <TextBlock Text="{x:Bind ViewModel.SelectedTransformationDescription, Mode=OneWay}"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- Scope row -->
+        <StackPanel Grid.Row="2" Spacing="6">
+            <muxc:Segmented x:Name="ScopeSeg" xmlns:muxc="using:CommunityToolkit.WinUI.Controls"
+                            SelectionChanged="OnScopeChanged">
+                <muxc:SegmentedItem x:Name="ScopeSource" Content="Source"/>
+                <muxc:SegmentedItem x:Name="ScopeNotebook" Content="Notebook"/>
+                <muxc:SegmentedItem x:Name="ScopeAll"/>
+            </muxc:Segmented>
+            <TextBlock x:Name="ScopeHint" Style="{ThemeResource CaptionTextBlockStyle}"
+                       Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+        </StackPanel>
+
+        <!-- Source picker + Run -->
+        <Grid Grid.Row="3" ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="SourceCombo" Grid.Column="0" MaxWidth="360" HorizontalAlignment="Left"
+                      ItemsSource="{x:Bind ViewModel.Sources, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.SelectedSource, Mode=TwoWay}"
+                      DisplayMemberPath="Title"/>
+            <Button x:Name="RunBtn" Grid.Column="1" Command="{x:Bind ViewModel.RunCommand}"
+                    Style="{ThemeResource AccentButtonStyle}">
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Modifiers="Control" Key="Enter"/>
+                </Button.KeyboardAccelerators>
+            </Button>
+        </Grid>
+
+        <!-- Content (managed in code-behind via visibility) -->
+        <Grid Grid.Row="4" x:Name="ContentHost"/>
+
+        <TextBlock Grid.Row="5" x:Name="ErrorText" Foreground="Red" TextWrapping="Wrap"/>
+    </Grid>
+</Page>
