@@ -105,6 +105,19 @@ public class NotebookStoreSourcesTests
     }
 
     [Fact]
+    public void SourceSummaryDefaultsToNullThenRoundTrips()
+    {
+        var (store, nb) = Fresh();
+        using (store)
+        {
+            var s = store.CreateSource(nb, SourceType.Text, "t", null, null);
+            Assert.Null(store.SourceSummary(s.Id!.Value));
+            store.SetSourceSummary(s.Id!.Value, "A short summary.");
+            Assert.Equal("A short summary.", store.SourceSummary(s.Id!.Value));
+        }
+    }
+
+    [Fact]
     public void SourcesExcludesShadowNotesButIncludingShadowReturnsThem()
     {
         var (store, nb) = Fresh();

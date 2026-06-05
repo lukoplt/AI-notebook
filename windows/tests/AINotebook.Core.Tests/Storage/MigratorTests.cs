@@ -41,7 +41,7 @@ public class MigratorTests
     }
 
     [Fact]
-    public void TracksAllNineIdentifiersInOrder()
+    public void TracksAllTenIdentifiersInOrder()
     {
         using var c = OpenMigrated();
         using var cmd = c.CreateCommand();
@@ -54,7 +54,8 @@ public class MigratorTests
             "v1_notebooks", "v2_sources_and_chunks", "v3_chunk_embeddings",
             "v4_chat_sessions_and_messages", "v5_notes_and_transformations",
             "v6_notes_auto_source_and_uuid", "v7_attachments",
-            "v8_note_versions", "v9_transformations_description"
+            "v8_note_versions", "v9_transformations_description",
+            "v10_source_summary"
         }, ids);
     }
 
@@ -65,7 +66,7 @@ public class MigratorTests
         Migrator.Migrate(c); // second run is a no-op
         using var cmd = c.CreateCommand();
         cmd.CommandText = "SELECT count(*) FROM grdb_migrations";
-        Assert.Equal(9L, (long)cmd.ExecuteScalar()!);
+        Assert.Equal(10L, (long)cmd.ExecuteScalar()!);
     }
 
     [Fact]
@@ -197,5 +198,23 @@ public class MigratorTests
         using var cmd = c.CreateCommand();
         cmd.CommandText = "SELECT description FROM transformations WHERE name='x'";
         Assert.Equal("", (string)cmd.ExecuteScalar()!);
+    }
+
+    [Fact]
+    public void V10_AddsSummaryColumnToSources()
+    {
+        using var c = OpenMigrated();
+        Assert.Contains("summary", Columns(c, "sources"));
+    }
+
+    [Fact]
+    public void V10_ExistingRowsGetNullSummary()
+    {
+        using var c = OpenMigrated();
+        SeedNotebook(c);
+        Exec(c, "INSERT INTO sources(notebook_id,type,title,status,ingested_at) VALUES(1,'text','t','ready','2026-01-01 00:00:00.000')");
+        using var cmd = c.CreateCommand();
+        cmd.CommandText = "SELECT summary FROM sources WHERE id=1";
+        Assert.IsType<DBNull>(cmd.ExecuteScalar());
     }
 }

@@ -29,14 +29,14 @@ public sealed class ChatEngine
 
     public async Task<ChatMessage> SendAsync(
         long sessionId, long notebookId, string userText,
-        string? currentNoteContent = null, Action<string>? onToken = null,
-        CancellationToken ct = default)
+        string? currentNoteContent = null, IReadOnlyCollection<long>? sourceIds = null,
+        Action<string>? onToken = null, CancellationToken ct = default)
     {
         // 1) Persist the user message.
         _store.AppendMessage(new ChatMessage(null, sessionId, ChatRole.User, userText, Array.Empty<Citation>(), DateTime.UtcNow));
 
         // 2) Retrieve context.
-        var hits = await _retriever.SearchAsync(notebookId, userText, TopK, ct);
+        var hits = await _retriever.SearchAsync(notebookId, userText, TopK, sourceIds, ct);
 
         // 3) Compose messages: system + full history.
         var systemContent = SystemPrompt.Compose(hits, currentNoteContent);

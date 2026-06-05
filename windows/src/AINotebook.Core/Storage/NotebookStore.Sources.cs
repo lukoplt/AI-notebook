@@ -106,4 +106,13 @@ public sealed partial class NotebookStore
                 (long)r.id, (long)r.source_id, (int)(long)r.ord, (string)r.text,
                 (int)(long)r.token_count, r.page_hint is null ? (int?)null : (int)(long)r.page_hint))
             .ToList();
+
+    /// <summary>The persisted summary for a source, or null if not yet computed.</summary>
+    public string? SourceSummary(long id) =>
+        Connection.ExecuteScalar<string?>(
+            "SELECT summary FROM sources WHERE id=$id", new { id });
+
+    public void SetSourceSummary(long id, string text) =>
+        Connection.Execute(
+            "UPDATE sources SET summary=$text WHERE id=$id", new { text, id });
 }

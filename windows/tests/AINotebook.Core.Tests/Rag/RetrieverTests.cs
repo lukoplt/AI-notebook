@@ -89,4 +89,34 @@ public class RetrieverTests
 
         Assert.Equal(aId, hits[0].ChunkId);
     }
+
+    // RetrieverTests.testSourceIdsFilterRestrictsToSelectedSources
+    [Fact]
+    public async Task SourceIdsFilterRestrictsToSelectedSources()
+    {
+        var store = new NotebookStore(StorePath.InMemory);
+        var nb = store.CreateNotebook("NB", "");
+        var a = store.CreateSource(nb.Id!.Value, SourceType.Text, "A", null, null);
+        var b = store.CreateSource(nb.Id!.Value, SourceType.Text, "B", null, null);
+        store.ReplaceChunks(a.Id!.Value, new[] { new ChunkDraft("fox in source A", 4, null) });
+        store.ReplaceChunks(b.Id!.Value, new[] { new ChunkDraft("fox in source B", 4, null) });
+        var aChunk = store.Chunks(a.Id!.Value)[0].Id!.Value;
+        var bChunk = store.Chunks(b.Id!.Value)[0].Id!.Value;
+        store.StoreEmbedding(aChunk, "m", new EmbeddingVector(new[] { 1f, 0f }));
+        store.StoreEmbedding(bChunk, "m", new EmbeddingVector(new[] { 1f, 0f }));
+
+        var client = new MockEmbeddingClient(_ => new[] { 1f, 0f });
+        var retriever = new Retriever(store, client, "m");
+
+        // No filter → both sources surface.
+        var allHits = await retriever.SearchAsync(nb.Id!.Value, "fox", topK: 5);
+        var allSources = allHits.Select(h => h.SourceId).ToHashSet();
+        Assert.Contains(a.Id!.Value, allSources);
+        Assert.Contains(b.Id!.Value, allSources);
+
+        // Filter to A → only A's chunk.
+        var filtered = await retriever.SearchAsync(nb.Id!.Value, "fox", topK: 5, sourceIds: new[] { a.Id!.Value });
+        Assert.Equal(new[] { a.Id!.Value }, filtered.Select(h => h.SourceId).Distinct().ToArray());
+        Assert.Equal(new[] { aChunk }, filtered.Select(h => h.ChunkId).Distinct().ToArray());
+    }
 }

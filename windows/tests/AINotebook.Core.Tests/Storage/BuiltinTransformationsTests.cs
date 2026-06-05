@@ -7,11 +7,11 @@ namespace AINotebook.Core.Tests.Storage;
 public class BuiltinTransformationsTests
 {
     [Fact]
-    public void EnglishSeedsFourBuiltinsWithExpectedNamesAndDescriptions()
+    public void EnglishSeedsNineBuiltinsWithExpectedNamesAndDescriptions()
     {
         using var store = new NotebookStore(StorePath.InMemory, AppLanguage.English);
         var builtins = store.Transformations().Where(t => t.IsBuiltin).ToList();
-        Assert.Equal(4, builtins.Count);
+        Assert.Equal(9, builtins.Count);
         Assert.All(builtins, b =>
         {
             Assert.Equal(TransformationScope.Source, b.Scope);
@@ -22,14 +22,21 @@ public class BuiltinTransformationsTests
         Assert.Equal("5–10 most important takeaways.", byName["Key points"].Description);
         Assert.Equal("People, organizations, places, dates.", byName["Entities"].Description);
         Assert.Equal("Concrete next-step actions found in the text.", byName["Action items"].Description);
+        Assert.Equal("Common questions and answers from the source.", byName["FAQ"].Description);
+        Assert.Equal("Review questions and key terms for studying.", byName["Study guide"].Description);
+        Assert.Equal("Chronological list of events and dates.", byName["Timeline"].Description);
+        Assert.Equal("Executive briefing of the source.", byName["Briefing doc"].Description);
+        Assert.Equal("Key terms and definitions.", byName["Glossary"].Description);
     }
 
     [Fact]
-    public void CzechSeedsFourBuiltinsWithCzechNames()
+    public void CzechSeedsNineBuiltinsWithCzechNames()
     {
         using var store = new NotebookStore(StorePath.InMemory, AppLanguage.Czech);
         var names = store.Transformations().Where(t => t.IsBuiltin).Select(t => t.Name).OrderBy(n => n).ToArray();
-        Assert.Equal(new[] { "Entity", "Klíčové body", "Souhrn", "Úkoly" }, names);
+        Assert.Equal(
+            new[] { "Briefing", "Časová osa", "Entity", "FAQ", "Klíčové body", "Slovníček", "Souhrn", "Studijní příručka", "Úkoly" }.OrderBy(n => n).ToArray(),
+            names);
     }
 
     [Fact]
@@ -41,9 +48,9 @@ public class BuiltinTransformationsTests
         try
         {
             using (var s1 = new NotebookStore(path, AppLanguage.English))
-                Assert.Equal(4, s1.Transformations().Count(t => t.IsBuiltin));
+                Assert.Equal(9, s1.Transformations().Count(t => t.IsBuiltin));
             using (var s2 = new NotebookStore(path, AppLanguage.English))
-                Assert.Equal(4, s2.Transformations().Count(t => t.IsBuiltin)); // no duplicates
+                Assert.Equal(9, s2.Transformations().Count(t => t.IsBuiltin)); // no duplicates
         }
         finally { Directory.Delete(dir, recursive: true); }
     }

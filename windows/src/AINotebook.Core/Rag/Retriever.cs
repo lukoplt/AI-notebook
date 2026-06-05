@@ -20,22 +20,33 @@ public sealed class Retriever
         RrfK = rrfK;
     }
 
+    /// <summary>
+    /// Hybrid retrieval: cosine top-K on vectors + FTS5 BM25 top-K → RRF.
+    ///
+    /// When <paramref name="sourceIds"/> is non-empty, both branches are
+    /// restricted to chunks in those sources; an empty/null set (the default)
+    /// means no filter.
+    /// </summary>
     public async Task<IReadOnlyList<RetrievalHit>> SearchAsync(
-        long notebookId, string query, int topK = 8, CancellationToken ct = default)
+        long notebookId, string query, int topK = 8,
+        IReadOnlyCollection<long>? sourceIds = null, CancellationToken ct = default)
     {
         // 1) Vector ranking — embed query, brute-force cosine over all embeddings.
         var queryVectors = await _client.EmbedAsync(Model, new[] { query }, ct);
         var queryVector = queryVectors.Length > 0 ? queryVectors[0] : Array.Empty<float>();
 
         var allEmbeddings = _store.Embeddings(notebookId, Model);
-        var vectorRanked = allEmbeddings
+        var candidateEmbeddings = sourceIds is null || sourceIds.Count == 0
+            ? allEmbeddings
+            : allEmbeddings.Where(e => sourceIds.Contains(e.SourceId));
+        var vectorRanked = candidateEmbeddings
             .Select(e => (e.ChunkId, e.SourceId, Score: Cosine.Similarity(queryVector, e.Vector.Values)))
             .OrderByDescending(x => x.Score)
             .Take(topK)
             .ToList();
 
         // 2) FTS ranking — BM25 top-K within the notebook.
-        var ftsRanked = FtsTopK(notebookId, query, topK);
+        var ftsRanked = FtsTopK(notebookId, query, topK, sourceIds);
 
         // 3) Reciprocal Rank Fusion over BOTH lists.
         var rrfScores = new Dictionary<long, float>();
@@ -70,21 +81,33 @@ public sealed class Retriever
             .ToList();
     }
 
-    private List<(long ChunkId, long SourceId, string Snippet)> FtsTopK(long notebookId, string query, int k)
+    private List<(long ChunkId, long SourceId, string Snippet)> FtsTopK(
+        long notebookId, string query, int k, IReadOnlyCollection<long>? sourceIds)
     {
         var conn = _store.Connection;
         using var cmd = conn.CreateCommand();
-        cmd.CommandText = """
+        var sourceFilter = "";
+        if (sourceIds is not null && sourceIds.Count > 0)
+        {
+            var placeholders = string.Join(",", sourceIds.Select((_, i) => "$s" + i));
+            sourceFilter = $"AND sc.source_id IN ({placeholders})";
+        }
+        cmd.CommandText = $"""
             SELECT sc.id AS chunk_id, sc.source_id AS source_id, sc.text AS text
             FROM chunks_fts f
             JOIN source_chunks sc ON sc.id = f.chunk_id
             JOIN sources s ON s.id = sc.source_id
-            WHERE f.text MATCH $q AND s.notebook_id = $nb
+            WHERE f.text MATCH $q AND s.notebook_id = $nb {sourceFilter}
             ORDER BY bm25(chunks_fts)
             LIMIT $k
             """;
         cmd.Parameters.AddWithValue("$q", EscapeFts(query));
         cmd.Parameters.AddWithValue("$nb", notebookId);
+        if (sourceIds is not null && sourceIds.Count > 0)
+        {
+            var i = 0;
+            foreach (var sid in sourceIds) cmd.Parameters.AddWithValue("$s" + i++, sid);
+        }
         cmd.Parameters.AddWithValue("$k", k);
 
         var rows = new List<(long, long, string)>();

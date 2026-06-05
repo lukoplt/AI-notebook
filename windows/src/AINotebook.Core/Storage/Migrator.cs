@@ -4,7 +4,7 @@ using Microsoft.Data.Sqlite;
 namespace AINotebook.Core.Storage;
 
 /// <summary>
-/// Runs the 9 versioned migrations, tracked by identifier string in
+/// Runs the 10 versioned migrations, tracked by identifier string in
 /// grdb_migrations(identifier TEXT PK) — faithful to GRDB DatabaseMigrator.
 /// DDL is verbatim from the live production DB schema.
 /// </summary>
@@ -21,6 +21,7 @@ public static class Migrator
         ("v7_attachments", V7),
         ("v8_note_versions", V8),
         ("v9_transformations_description", V9),
+        ("v10_source_summary", V10),
     };
 
     public static void Migrate(SqliteConnection conn)
@@ -199,5 +200,9 @@ public static class Migrator
 
     private const string V9 = """
         ALTER TABLE transformations ADD COLUMN "description" TEXT NOT NULL DEFAULT '';
+        """;
+
+    private const string V10 = """
+        ALTER TABLE sources ADD COLUMN "summary" TEXT;
         """;
 }
