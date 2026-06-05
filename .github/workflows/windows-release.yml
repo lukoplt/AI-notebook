@@ -3,7 +3,9 @@ name: Windows Release
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'        # unified release (also triggers the macOS DMG workflow)
+      - 'win-v*'    # Windows-only installer release (the macOS 'v*' filter does not match 'win-v*')
+  workflow_dispatch:
 
 permissions:
   contents: write
