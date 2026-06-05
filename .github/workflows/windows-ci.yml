@@ -36,9 +36,22 @@ jobs:
         run: dotnet test windows/tests/AINotebook.Core.Tests/AINotebook.Core.Tests.csproj -c Release
 
       - name: Build App (WinUI 3, x64)
-        # detailed verbosity so the XAML compiler (XamlCompiler.exe) surfaces its
-        # actual diagnostics — at normal verbosity it can exit 1 silently.
-        run: dotnet build windows/src/AINotebook.App/AINotebook.App.csproj -c Release -p:Platform=x64 -v detailed
+        run: dotnet build windows/src/AINotebook.App/AINotebook.App.csproj -c Release -p:Platform=x64
+
+      # XamlCompiler.exe can exit 1 without surfacing diagnostics in the MSBuild
+      # log; the real errors land in obj\...\output.json. Dump it on failure.
+      - name: Dump XAML compiler diagnostics on failure
+        if: failure()
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse windows/src/AINotebook.App/obj -Filter output.json -ErrorAction SilentlyContinue | ForEach-Object {
+            Write-Host "===== $($_.FullName) ====="
+            Get-Content -Raw $_.FullName
+          }
+          Get-ChildItem -Recurse windows/src/AINotebook.App/obj -Filter input.json -ErrorAction SilentlyContinue | ForEach-Object {
+            Write-Host "===== INPUT $($_.FullName) ====="
+            Get-Content -Raw $_.FullName
+          }
 
       - name: Test App
         run: dotnet test windows/tests/AINotebook.App.Tests/AINotebook.App.Tests.csproj -c Release -p:Platform=x64
