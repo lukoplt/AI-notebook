@@ -3,5 +3,25 @@
     x:Class="AINotebook.App.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid x:Name="RootHost" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <MenuBar x:Name="AppMenuBar" Grid.Row="0">
+            <MenuBarItem x:Name="NoteMenu">
+                <MenuFlyoutItem x:Name="MenuSave" Click="OnMenuSave">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem x:Name="MenuHistory" Click="OnMenuHistory">
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control,Shift" Key="H"/>
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+        </MenuBar>
+        <Grid x:Name="RootHost" Grid.Row="1" />
+    </Grid>
 </Window>

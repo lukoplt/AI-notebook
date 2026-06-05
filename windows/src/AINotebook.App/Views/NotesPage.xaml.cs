@@ -38,6 +38,12 @@ public sealed partial class NotesPage : Page
         ChatPanel.SetCurrentNoteProvider(() => ViewModel.CurrentNote);
     }
 
+    /// Window-level Ctrl+S forwarding (M10.1): force a synchronous manual save of the open note.
+    public void TriggerManualSave() => Editor.FlushPendingSave();
+
+    /// Window-level Ctrl+Shift+H forwarding (M10.1): open the note history.
+    public void TriggerHistory() => ViewModel.ShowHistoryCommand.Execute(null);
+
     public async void Load(long notebookId)
     {
         await ViewModel.LoadAsync(notebookId);
