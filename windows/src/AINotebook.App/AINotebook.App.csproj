@@ -43,4 +43,20 @@
     <PRIResource Include="Strings\**\*.resw" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Reuse the mac-built editor bundle (editor.ts shim makes it cross-platform). -->
+    <Content Include="..\..\..\Sources\AINotebookApp\Resources\editor\editor.html">
+      <Link>Resources\editor\editor.html</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\Sources\AINotebookApp\Resources\editor\editor.css">
+      <Link>Resources\editor\editor.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\Sources\AINotebookApp\Resources\editor\editor.js">
+      <Link>Resources\editor\editor.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
