@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AINotebook.Core.Models;
+using AINotebook.Core.Ollama;           // OllamaClient, OllamaChatAdapter (Stage C followups)
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using AINotebook.App.Services;          // ILocalizedStrings, ChatEngineHolder, coordinators (Plan 1)
@@ -19,12 +21,19 @@ public partial class ChatViewModel : ObservableObject
     private readonly NoteJumpCoordinator _noteJump;
     private readonly TabSwitchCoordinator _tabSwitch;
     private readonly ILocalizedStrings _t;
+    private readonly OllamaClient _ollama;       // Stage C: build FollowupSuggester on demand
+    private readonly ISettingsService _settings; // Stage C: current chat model
     private readonly DispatcherQueue _dispatcher;
 
     private long _notebookId;
 
     public ObservableCollection<ChatSession> Sessions { get; } = new();
     public ObservableCollection<MessageViewModel> Messages { get; } = new();
+
+    // Tier 3: checkable source-scope picker (default = all selected = unscoped).
+    public ObservableCollection<ScopeSourceItem> ScopeSources { get; } = new();
+    // Tier 2a: up to 3 suggested follow-up questions shown after an answer streams in.
+    public ObservableCollection<string> Followups { get; } = new();
 
     [ObservableProperty] public partial ChatSession? SelectedSession { get; set; }
     [ObservableProperty] public partial string Input { get; set; } = "";
@@ -33,14 +42,29 @@ public partial class ChatViewModel : ObservableObject
     [ObservableProperty] public partial string? ErrorMessage { get; set; }
     [ObservableProperty] public partial bool ShowEmptyState { get; set; } = true;
 
+    // Bound to the Sources scope flyout button label ("Sources" / "Sources (2)").
+    public string ScopeButtonText
+    {
+        get
+        {
+            var selected = ScopeSources.Count(s => s.IsSelected);
+            var label = _t.Get(StringKey.ChatScopeButton);
+            return (ScopeSources.Count == 0 || selected == ScopeSources.Count)
+                ? label : $"{label} ({selected})";
+        }
+    }
+
+    public bool HasFollowups => Followups.Count > 0;
+
     public ChatViewModel(
         NotebookStore store, ChatEngineHolder chatHolder,
         NoteJumpCoordinator noteJump, TabSwitchCoordinator tabSwitch,
-        ILocalizedStrings t, DispatcherQueue dispatcher)
+        ILocalizedStrings t, OllamaClient ollama, ISettingsService settings,
+        DispatcherQueue dispatcher)
     {
         _store = store; _chatHolder = chatHolder;
         _noteJump = noteJump; _tabSwitch = tabSwitch;
-        _t = t; _dispatcher = dispatcher;
+        _t = t; _ollama = ollama; _settings = settings; _dispatcher = dispatcher;
     }
 
     // Bound to title text + send-enabled gating (mirrors `.disabled(sending || input.isEmpty)`).
@@ -56,7 +80,42 @@ public partial class ChatViewModel : ObservableObject
     public async Task LoadAsync(long notebookId)
     {
         _notebookId = notebookId;
+        LoadScopeSources();
         await EnsureSessionsAsync();
+    }
+
+    // Tier 3: populate the scope picker with this notebook's Ready sources (all selected).
+    private void LoadScopeSources()
+    {
+        foreach (var s in ScopeSources) s.PropertyChanged -= OnScopeItemChanged;
+        ScopeSources.Clear();
+        try
+        {
+            foreach (var src in _store.Sources(_notebookId))
+            {
+                if (src.Status != SourceStatus.Ready || src.Id is not { } id) continue;
+                var item = new ScopeSourceItem(id, src.Title);
+                item.PropertyChanged += OnScopeItemChanged;
+                ScopeSources.Add(item);
+            }
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        OnPropertyChanged(nameof(ScopeButtonText));
+    }
+
+    private void OnScopeItemChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ScopeSourceItem.IsSelected))
+            OnPropertyChanged(nameof(ScopeButtonText));
+    }
+
+    // null => unscoped (all or none selected); otherwise the explicit subset of source ids.
+    private IReadOnlyCollection<long>? SelectedSourceIds()
+    {
+        if (ScopeSources.Count == 0) return null;
+        var ids = ScopeSources.Where(s => s.IsSelected).Select(s => s.Id).ToList();
+        if (ids.Count == 0 || ids.Count == ScopeSources.Count) return null;
+        return ids;
     }
 
     // Mirrors ChatView.ensureSessions(): load sessions; if none, create one.
@@ -129,13 +188,15 @@ public partial class ChatViewModel : ObservableObject
         Sending = true;
         ErrorMessage = null;
         StreamingDraft = "";
+        ClearFollowups();
         try
         {
             await _chatHolder.Engine.SendAsync(
                 sid, _notebookId, text,
-                currentNoteContent: null,
+                currentNoteContent: null, sourceIds: SelectedSourceIds(),
                 onToken: token => _dispatcher.TryEnqueue(() => StreamingDraft += token));
             await ReloadMessagesAsync();
+            await GenerateFollowupsAsync(text);
         }
         catch (Exception ex)
         {
@@ -148,6 +209,43 @@ public partial class ChatViewModel : ObservableObject
             StreamingDraft = "";
             RefreshEmptyState();
         }
+    }
+
+    // Tier 2a: after the answer lands, ask FollowupSuggester for up to 3 next questions.
+    // Best-effort — never surfaces an error (the chat answer already succeeded).
+    private async Task GenerateFollowupsAsync(string userText)
+    {
+        var answer = Messages.LastOrDefault(m => m.IsAssistant)?.Content;
+        if (string.IsNullOrWhiteSpace(answer)) return;
+        try
+        {
+            var suggester = new FollowupSuggester(
+                new OllamaChatAdapter(_ollama), _settings.SelectedChatModel);
+            var suggestions = await Task.Run(() => suggester.GenerateAsync(userText, answer));
+            void Apply()
+            {
+                Followups.Clear();
+                foreach (var q in suggestions.Take(3)) Followups.Add(q);
+                OnPropertyChanged(nameof(HasFollowups));
+            }
+            if (!_dispatcher.HasThreadAccess) _dispatcher.TryEnqueue(Apply); else Apply();
+        }
+        catch { /* follow-ups are optional; ignore failures */ }
+    }
+
+    private void ClearFollowups()
+    {
+        Followups.Clear();
+        OnPropertyChanged(nameof(HasFollowups));
+    }
+
+    // Tier 2a: tapping a follow-up chip drops it into the input box ready to send.
+    [RelayCommand]
+    private void UseFollowup(string? question)
+    {
+        if (string.IsNullOrWhiteSpace(question)) return;
+        Input = question;
+        ClearFollowups();
     }
 
     // Mirrors MessageBubble "Save as note": title "Chat reply — <date>", origin=Chat, originRef=msg.id.

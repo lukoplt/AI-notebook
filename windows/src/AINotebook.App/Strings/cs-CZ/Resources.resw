@@ -461,4 +461,25 @@
   <data name="unsavedDiscardButton" xml:space="preserve">
     <value>Zahodit</value>
   </data>
+  <data name="chatFollowupsLabel" xml:space="preserve">
+    <value>Návrhy navazujících otázek</value>
+  </data>
+  <data name="sourceSummaryLabel" xml:space="preserve">
+    <value>Shrnutí</value>
+  </data>
+  <data name="sourceSummarizeButton" xml:space="preserve">
+    <value>Shrnout</value>
+  </data>
+  <data name="sourceSummarizingStatus" xml:space="preserve">
+    <value>Shrnuji…</value>
+  </data>
+  <data name="chatScopeButton" xml:space="preserve">
+    <value>Zdroje</value>
+  </data>
+  <data name="chatScopeAllSources" xml:space="preserve">
+    <value>Všechny zdroje</value>
+  </data>
+  <data name="chatScopeTitle" xml:space="preserve">
+    <value>Omezit chat na zdroje</value>
+  </data>
 </root>

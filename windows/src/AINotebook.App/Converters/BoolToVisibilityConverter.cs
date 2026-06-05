@@ -36,3 +36,13 @@ public sealed class InvertBoolConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, string language)
         => !(value is bool b && b);
 }
+
+/// Maps a bool to <see cref="Visibility"/>: <c>true</c> -> Visible, <c>false</c> -> Collapsed.
+public sealed class BoolToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+        => (value is bool b && b) ? Visibility.Visible : Visibility.Collapsed;
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+        => value is Visibility v && v == Visibility.Visible;
+}

@@ -14,6 +14,7 @@
             <conv:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibility" />
             <conv:StringToVisibilityConverter x:Key="StringToVisibility" />
             <conv:InvertBoolConverter x:Key="InvertBool" />
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibility" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

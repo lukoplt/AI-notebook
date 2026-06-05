@@ -79,6 +79,45 @@
                 </StackPanel>
             </ScrollViewer>
 
+            <!-- Tier 2a follow-up chips + Tier 3 source-scope picker -->
+            <StackPanel Grid.Row="1" Spacing="6" Margin="0,8,0,0">
+                <StackPanel Spacing="4"
+                            Visibility="{x:Bind ViewModel.HasFollowups, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                    <TextBlock x:Name="FollowupsLabel" Style="{ThemeResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <ItemsControl ItemsSource="{x:Bind ViewModel.Followups, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button Margin="0,0,0,4" HorizontalAlignment="Left"
+                                        HorizontalContentAlignment="Left"
+                                        Click="OnFollowupTapped" Tag="{x:Bind}">
+                                    <TextBlock Text="{x:Bind}" TextWrapping="Wrap"/>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <Button x:Name="ScopeButton" HorizontalAlignment="Left"
+                        Content="{x:Bind ViewModel.ScopeButtonText, Mode=OneWay}">
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel Spacing="6" MinWidth="220">
+                                <TextBlock x:Name="ScopeTitle" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                <ItemsControl ItemsSource="{x:Bind ViewModel.ScopeSources, Mode=OneWay}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:ScopeSourceItem">
+                                            <CheckBox Content="{x:Bind Title}"
+                                                      IsChecked="{x:Bind IsSelected, Mode=TwoWay}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+
             <TextBox Grid.Row="2" x:Name="InputBox" Margin="0,8,0,0"
                      Text="{x:Bind ViewModel.Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="120"

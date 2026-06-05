@@ -23,7 +23,11 @@ public sealed partial class SourceListPage : UserControl
         _ingestion = sp.GetRequiredService<IngestionService>();
         _strings = sp.GetRequiredService<LocalizedStrings>();
         var store = sp.GetRequiredService<NotebookStore>();
-        ViewModel = new SourcesViewModel(store, _strings) { NotebookId = notebook.Id!.Value };
+        ViewModel = new SourcesViewModel(
+            store, _strings,
+            sp.GetRequiredService<AINotebook.Core.Ollama.OllamaClient>(),
+            sp.GetRequiredService<ISettingsService>())
+        { NotebookId = notebook.Id!.Value };
 
         HeaderTitle.Text = _strings.Get(StringKey.SourcesSectionTitle);
         AddButton.Content = _strings.Get(StringKey.AddSourceButton);
@@ -56,5 +60,11 @@ public sealed partial class SourceListPage : UserControl
     {
         if (sender is Button { Tag: long id })
             await ViewModel.DeleteAsync(id);
+    }
+
+    private async void OnSummarizeRow(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: SourceItem item })
+            await ViewModel.SummarizeAsync(item);
     }
 }

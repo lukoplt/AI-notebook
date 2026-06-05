@@ -41,4 +41,7 @@ public enum StringKey
     AiToolsPromptPreviewTitle, AiToolsHistoryEmpty, AiToolsHistoryTitle,
     AiToolsDescriptionPlaceholder, UnsavedChangesTitle, UnsavedChangesMessage,
     UnsavedSaveButton, UnsavedDiscardButton,
+    // NotebookLM Stage C: follow-up chips, per-source summary, chat source scope.
+    ChatFollowupsLabel, SourceSummaryLabel, SourceSummarizeButton, SourceSummarizingStatus,
+    ChatScopeButton, ChatScopeAllSources, ChatScopeTitle,
 }

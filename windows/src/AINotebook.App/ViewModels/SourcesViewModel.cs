@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
 using AINotebook.App.Services;
+using AINotebook.Core.Ollama;
+using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,6 +13,8 @@ public sealed partial class SourcesViewModel : ObservableObject
 {
     private readonly NotebookStore _store;
     private readonly LocalizedStrings _strings;
+    private readonly OllamaClient _ollama;
+    private readonly ISettingsService _settings;
     private readonly DispatcherQueue _dispatcher;
 
     public long NotebookId { get; set; }
@@ -26,10 +30,13 @@ public sealed partial class SourcesViewModel : ObservableObject
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
     partial void OnErrorMessageChanged(string? value) => OnPropertyChanged(nameof(HasError));
 
-    public SourcesViewModel(NotebookStore store, LocalizedStrings strings)
+    public SourcesViewModel(NotebookStore store, LocalizedStrings strings,
+                            OllamaClient ollama, ISettingsService settings)
     {
         _store = store;
         _strings = strings;
+        _ollama = ollama;
+        _settings = settings;
         _dispatcher = DispatcherQueue.GetForCurrentThread();
     }
 
@@ -38,11 +45,16 @@ public sealed partial class SourcesViewModel : ObservableObject
         try
         {
             // Store access is synchronous + single-connection; run off the UI thread.
-            var rows = await Task.Run(() => _store.Sources(NotebookId));
+            // Pair each source with its persisted summary (Tier 2b).
+            var rows = await Task.Run(() =>
+                _store.Sources(NotebookId)
+                      .Select(s => (Source: s, Summary: _store.SourceSummary(s.Id!.Value)))
+                      .ToList());
             void Apply()
             {
                 Sources.Clear();
-                foreach (var s in rows) Sources.Add(new SourceItem(s, _strings));
+                foreach (var (s, summary) in rows)
+                    Sources.Add(new SourceItem(s, _strings) { Summary = summary });
                 IsEmpty = Sources.Count == 0;
                 ErrorMessage = null;
             }
@@ -65,6 +77,31 @@ public sealed partial class SourcesViewModel : ObservableObject
         catch (Exception ex)
         {
             ErrorMessage = ex.ToString();
+        }
+    }
+
+    // Tier 2b: lazily generate + persist a per-source summary on demand.
+    [RelayCommand]
+    public async Task SummarizeAsync(SourceItem? item)
+    {
+        if (item is null || item.IsSummarizing || item.HasSummary) return;
+        item.IsSummarizing = true;
+        try
+        {
+            var summarizer = new SourceSummarizer(
+                _store, new OllamaChatAdapter(_ollama), _settings.SelectedChatModel);
+            var text = await Task.Run(() => summarizer.SummarizeAsync(item.Id));
+            void Apply() { item.Summary = text; }
+            if (!_dispatcher.HasThreadAccess) _dispatcher.TryEnqueue(Apply); else Apply();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.ToString();
+        }
+        finally
+        {
+            void Done() { item.IsSummarizing = false; }
+            if (!_dispatcher.HasThreadAccess) _dispatcher.TryEnqueue(Done); else Done();
         }
     }
 }

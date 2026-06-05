@@ -25,6 +25,8 @@ public sealed partial class ChatPage : Page
         EmptyState.Text = _t.Get("chatEmptyState");
         InputBox.PlaceholderText = _t.Get("chatInputPlaceholder");
         ToolTipService.SetToolTip(NewSessionButton, _t.Get("chatNewSessionButton"));
+        FollowupsLabel.Text = _t.Get("chatFollowupsLabel");
+        ScopeTitle.Text = _t.Get("chatScopeTitle");
         ViewModel.Messages.CollectionChanged += (_, _) => ScrollToBottom();
         ViewModel.PropertyChanged += (_, e) =>
         {
@@ -43,6 +45,12 @@ public sealed partial class ChatPage : Page
     {
         if (ViewModel.SendCommand.CanExecute(null)) ViewModel.SendCommand.Execute(null);
         args.Handled = true;
+    }
+
+    private void OnFollowupTapped(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement { Tag: string question })
+            ViewModel.UseFollowupCommand.Execute(question);
     }
 
     private void OnDeleteSession(object sender, RoutedEventArgs e)

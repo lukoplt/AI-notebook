@@ -461,4 +461,25 @@
   <data name="unsavedDiscardButton" xml:space="preserve">
     <value>Discard</value>
   </data>
+  <data name="chatFollowupsLabel" xml:space="preserve">
+    <value>Suggested follow-ups</value>
+  </data>
+  <data name="sourceSummaryLabel" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="sourceSummarizeButton" xml:space="preserve">
+    <value>Summarize</value>
+  </data>
+  <data name="sourceSummarizingStatus" xml:space="preserve">
+    <value>Summarizing…</value>
+  </data>
+  <data name="chatScopeButton" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+  <data name="chatScopeAllSources" xml:space="preserve">
+    <value>All sources</value>
+  </data>
+  <data name="chatScopeTitle" xml:space="preserve">
+    <value>Limit chat to sources</value>
+  </data>
 </root>
