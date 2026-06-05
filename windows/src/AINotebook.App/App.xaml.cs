@@ -108,6 +108,9 @@ public partial class App : Application
         services.AddTransient<NotebookSidebarViewModel>();
         services.AddTransient<NotebookDetailViewModel>();
         services.AddTransient<ChatViewModel>();   // M5.2: fresh per notebook-switch page
+        services.AddTransient<NotesViewModel>();           // M6.2
+        services.AddTransient<NotesChatPanelViewModel>();  // M6.2
+        services.AddTransient<NoteHistoryViewModel>();     // M6.2
 
         return services.BuildServiceProvider();
     }
