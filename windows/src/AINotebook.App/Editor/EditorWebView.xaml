@@ -1,0 +1,42 @@
+<UserControl
+    x:Class="AINotebook.App.Editor.EditorWebView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:wv2="using:Microsoft.UI.Xaml.Controls">
+    <Grid RowSpacing="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0" x:Name="TitleBox"
+                 Text="{x:Bind Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 FontSize="18"/>
+
+        <Grid Grid.Row="1">
+            <wv2:WebView2 x:Name="Web" DefaultBackgroundColor="Transparent"/>
+            <TextBlock x:Name="LoadFailed" Visibility="Collapsed" Foreground="Red"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <StackPanel Orientation="Horizontal" Spacing="6" x:Name="StatusPanel">
+                <FontIcon x:Name="StatusIcon" FontSize="14"/>
+                <TextBlock x:Name="StatusText" Style="{ThemeResource CaptionTextBlockStyle}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                <Button x:Name="HistoryButton" Click="OnHistoryClick">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control,Shift" Key="H"/>
+                    </Button.KeyboardAccelerators>
+                </Button>
+                <Button x:Name="SaveButton" Content="Save" Click="OnSaveClick">
+                    <Button.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="S"/>
+                    </Button.KeyboardAccelerators>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
