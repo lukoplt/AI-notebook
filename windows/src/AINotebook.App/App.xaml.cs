@@ -111,6 +111,7 @@ public partial class App : Application
         services.AddTransient<NotesViewModel>();           // M6.2
         services.AddTransient<NotesChatPanelViewModel>();  // M6.2
         services.AddTransient<NoteHistoryViewModel>();     // M6.2
+        services.AddTransient<TransformationsViewModel>(); // M8.1
 
         return services.BuildServiceProvider();
     }
