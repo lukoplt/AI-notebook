@@ -23,6 +23,9 @@ public sealed partial class SourcesViewModel : ObservableObject
     [ObservableProperty]
     public partial string? ErrorMessage { get; set; }
 
+    public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+    partial void OnErrorMessageChanged(string? value) => OnPropertyChanged(nameof(HasError));
+
     public SourcesViewModel(NotebookStore store, LocalizedStrings strings)
     {
         _store = store;
