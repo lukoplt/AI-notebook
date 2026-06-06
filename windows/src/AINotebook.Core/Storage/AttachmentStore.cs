@@ -32,7 +32,7 @@ public sealed class AttachmentStore
     {
         var folder = Path.Combine(Root, noteUuid);
         Directory.CreateDirectory(folder);
-        var resolved = UniqueFilename(folder, filename);
+        var resolved = UniqueFilename(folder, SafeFilename(filename));
         File.WriteAllBytes(Path.Combine(folder, resolved), bytes);
 
         var now = DateTime.UtcNow;
@@ -47,7 +47,20 @@ public sealed class AttachmentStore
     }
 
     public byte[] Read(string noteUuid, string filename) =>
-        File.ReadAllBytes(Path.Combine(Root, noteUuid, filename));
+        File.ReadAllBytes(Path.Combine(Root, noteUuid, SafeFilename(filename)));
+
+    /// <summary>
+    /// Reduces an attachment name to a single safe path component, defeating
+    /// path traversal: Path.GetFileName strips any directory parts (including
+    /// ".." segments and absolute/rooted paths such as C:\...), so the file can
+    /// only ever resolve inside the note folder.
+    /// </summary>
+    private static string SafeFilename(string requested)
+    {
+        var name = Path.GetFileName(requested);
+        if (string.IsNullOrEmpty(name) || name == "." || name == "..") return "attachment.bin";
+        return name;
+    }
 
     public IReadOnlyList<NoteAttachment> List(long noteId) =>
         _store.Connection.Query(

@@ -34,7 +34,7 @@ public final class AttachmentStore {
     ) throws -> NoteAttachment {
         let folder = root.appendingPathComponent(noteUuid, isDirectory: true)
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        let resolved = uniqueFilename(in: folder, requested: filename)
+        let resolved = uniqueFilename(in: folder, requested: Self.safeFilename(filename))
         let url = folder.appendingPathComponent(resolved)
         try bytes.write(to: url)
         var att = NoteAttachment(
@@ -53,8 +53,17 @@ public final class AttachmentStore {
     public func read(noteUuid: String, filename: String) throws -> Data {
         let url = root
             .appendingPathComponent(noteUuid, isDirectory: true)
-            .appendingPathComponent(filename)
+            .appendingPathComponent(Self.safeFilename(filename))
         return try Data(contentsOf: url)
+    }
+
+    /// Reduces an attachment name to a single safe path component, defeating
+    /// path traversal: any directory parts (including ".." and absolute roots)
+    /// are stripped so the file can only ever resolve inside the note folder.
+    static func safeFilename(_ requested: String) -> String {
+        let base = (requested as NSString).lastPathComponent
+        if base.isEmpty || base == "." || base == ".." { return "attachment.bin" }
+        return base
     }
 
     public func list(noteId: Int64) throws -> [NoteAttachment] {
