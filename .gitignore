@@ -19,3 +19,6 @@ dist/
 
 # Editor build artifacts
 tools/editor/node_modules/
+
+# Local security audit reports (keep out of the repo)
+.gstack/

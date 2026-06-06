@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Defense in depth for the editor WebView. No default-src so the local
+         editor.css/editor.js (file:// on macOS, https://appassets on Windows)
+         load unchanged; connect-src 'none' blocks any fetch/XHR/beacon/WebSocket
+         exfiltration, and img-src restricts images to local + attachment scheme,
+         denying remote image beacons. The native bridge JSON-escapes all
+         evaluateJavaScript arguments; this CSP backstops that. -->
+    <meta http-equiv="Content-Security-Policy"
+          content="connect-src 'none'; img-src 'self' attachment: data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'" />
     <link rel="stylesheet" href="editor.css" />
     <title>Editor</title>
   </head>

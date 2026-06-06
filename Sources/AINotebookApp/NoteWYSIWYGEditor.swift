@@ -176,6 +176,19 @@ private struct EditorWebView: NSViewRepresentable {
             self.onLoadFailed = onLoadFailed
         }
 
+        /// Encodes a Swift string as a JS string literal (double-quoted) with all
+        /// breaking characters escaped, so untrusted values (e.g. attachment file
+        /// names) can be safely embedded in an evaluateJavaScript call. Uses JSON
+        /// encoding, which is a valid subset of JS string literals.
+        static func jsString(_ s: String) -> String {
+            guard let data = try? JSONSerialization.data(withJSONObject: [s]),
+                  let json = String(data: data, encoding: .utf8) else {
+                return "\"\""
+            }
+            // json is `["<escaped>"]`; strip the surrounding array brackets.
+            return String(json.dropFirst().dropLast())
+        }
+
         func userContentController(_ uc: WKUserContentController,
                                    didReceive message: WKScriptMessage) {
             do {
@@ -196,7 +209,7 @@ private struct EditorWebView: NSViewRepresentable {
                     guard let attachments = attachments,
                           let bytes = Data(base64Encoded: base64) else {
                         webView?.evaluateJavaScript(
-                            "window.aino && window.aino.attachmentDenied && window.aino.attachmentDenied('\(requestId)')",
+                            "window.aino && window.aino.attachmentDenied && window.aino.attachmentDenied(\(Self.jsString(requestId)))",
                             completionHandler: nil
                         )
                         return
@@ -213,11 +226,17 @@ private struct EditorWebView: NSViewRepresentable {
                                 mime: mime,
                                 bytes: bytes
                             )
+                            // att.filename is user-controlled (the uploaded file name).
+                            // JSON-encode every argument so an apostrophe or script
+                            // payload in the name cannot break out of the JS call and
+                            // execute in the editor WebView. Mirrors the Windows
+                            // EditorWebView JsonSerializer.Serialize handling.
                             let url = "attachment://\(noteUuidLocal)/\(att.filename)"
-                            let js = "window.aino && window.aino.attachmentSaved && window.aino.attachmentSaved('\(requestId)', '\(url)', '\(mime)')"
+                            let js = "window.aino && window.aino.attachmentSaved && window.aino.attachmentSaved("
+                                + "\(Self.jsString(requestId)), \(Self.jsString(url)), \(Self.jsString(mime)))"
                             webViewLocal?.evaluateJavaScript(js, completionHandler: nil)
                         } catch {
-                            let js = "window.aino && window.aino.attachmentDenied && window.aino.attachmentDenied('\(requestId)')"
+                            let js = "window.aino && window.aino.attachmentDenied && window.aino.attachmentDenied(\(Self.jsString(requestId)))"
                             webViewLocal?.evaluateJavaScript(js, completionHandler: nil)
                         }
                     }
