@@ -29,7 +29,9 @@ jobs:
         run: echo "version=$(cat VERSION)" >> "$GITHUB_OUTPUT"
 
       - name: Restore
-        run: dotnet restore windows/AINotebook.sln
+        # --locked-mode pins the dependency graph to the committed packages.lock.json
+        # files so the shipped installer is built from an audited dependency set.
+        run: dotnet restore windows/AINotebook.sln --locked-mode
 
       - name: Publish self-contained (win-x64)
         run: >

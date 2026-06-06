@@ -1,0 +1,15 @@
+<Project>
+  <!--
+    Reproducible NuGet restores for all projects under windows/.
+
+    The csproj files use floating version ranges (e.g. AngleSharp 1.*, Dapper 2.*).
+    Without a lockfile, `dotnet restore` resolves the newest matching version at
+    build time, so a compromised patch/minor release of any direct or transitive
+    dependency would silently enter the next installer. Committing packages.lock.json
+    pins the exact resolved graph; CI restores in locked mode to fail the build
+    if the lockfile and csproj drift apart.
+  -->
+  <PropertyGroup>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+</Project>

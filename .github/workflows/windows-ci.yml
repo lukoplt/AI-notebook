@@ -28,9 +28,11 @@ jobs:
         run: dotnet --info
 
       - name: Restore (Core + App)
+        # --locked-mode fails the build if packages.lock.json is out of date with
+        # the csproj, so a floating dependency cannot silently change the graph.
         run: |
-          dotnet restore windows/src/AINotebook.Core/AINotebook.Core.csproj
-          dotnet restore windows/src/AINotebook.App/AINotebook.App.csproj
+          dotnet restore windows/src/AINotebook.Core/AINotebook.Core.csproj --locked-mode
+          dotnet restore windows/src/AINotebook.App/AINotebook.App.csproj --locked-mode
 
       - name: Build Core (Release)
         run: dotnet build windows/src/AINotebook.Core/AINotebook.Core.csproj -c Release --no-restore
