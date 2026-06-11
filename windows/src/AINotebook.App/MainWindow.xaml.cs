@@ -1,3 +1,4 @@
+using AINotebook.App.Onboarding;
 using AINotebook.App.Services;
 using AINotebook.App.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,14 +46,8 @@ public sealed partial class MainWindow : Window
     {
         if (!_settings.HasCompletedOnboarding)
         {
-            // Plan 3 swaps this placeholder for OnboardingPage.
             RootHost.Children.Clear();
-            RootHost.Children.Add(new TextBlock
-            {
-                Text = "Onboarding (Plan 3)",
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            });
+            RootHost.Children.Add(new OnboardingPage());
         }
         else
         {

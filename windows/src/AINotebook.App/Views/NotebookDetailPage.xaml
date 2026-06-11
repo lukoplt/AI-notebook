@@ -26,20 +26,16 @@
                SelectedIndex="{x:Bind TabIndex, Mode=TwoWay}"
                Margin="16,0,16,16">
             <PivotItem Header="{x:Bind ViewModel.SourcesText, Mode=OneWay}">
-                <Grid x:Name="SourcesHost"><TextBlock Text="Sources (Plan 3)" Opacity="0.5"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid>
+                <Grid x:Name="SourcesHost" />
             </PivotItem>
             <PivotItem Header="{x:Bind ViewModel.ChatText, Mode=OneWay}">
-                <Grid x:Name="ChatHost"><TextBlock Text="Chat (Plan 3)" Opacity="0.5"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid>
+                <Grid x:Name="ChatHost" />
             </PivotItem>
             <PivotItem Header="{x:Bind ViewModel.NotesText, Mode=OneWay}">
-                <Grid x:Name="NotesHost"><TextBlock Text="Notes (Plan 3)" Opacity="0.5"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid>
+                <Grid x:Name="NotesHost" />
             </PivotItem>
             <PivotItem Header="{x:Bind ViewModel.TransformationsText, Mode=OneWay}">
-                <Grid x:Name="TransformationsHost"><TextBlock Text="Transformations (Plan 3)" Opacity="0.5"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"/></Grid>
+                <Grid x:Name="TransformationsHost" />
             </PivotItem>
         </Pivot>
     </Grid>

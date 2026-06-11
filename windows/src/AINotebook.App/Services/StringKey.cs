@@ -30,6 +30,7 @@ public enum StringKey
     TransformationEditorTemplatePlaceholder, ReembedButton, ReembedConfirm, ReembedConfirmYes,
     EmbeddingSectionTitle, CurrentModelLabel, ManageModelsButton, ManageModelsTitle,
     ManageModelsPullPlaceholder, ManageModelsPullButton, ManageModelsRefreshButton,
+    ManageModelsDeleteTitle, ManageModelsDeleteConfirm,
     ChatModelPickerLabel, EmbeddingModelPickerLabel, OpenNoteFromCitation, NotesChatPanelTitle,
     NotesChatPanelEmpty, NotesChatCurrentNoteHint, EditorStatusSaved, EditorStatusSaving,
     EditorStatusUnsaved, EditorStatusError, EditorFailedToLoad, AttachmentBrokenLink,

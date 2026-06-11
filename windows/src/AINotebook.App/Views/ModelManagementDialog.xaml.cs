@@ -11,9 +11,11 @@ namespace AINotebook.App.Views;
 public sealed partial class ModelManagementDialog : ContentDialog
 {
     public ModelManagementViewModel ViewModel { get; }
+    private readonly LocalizedStrings _strings;
 
     public ModelManagementDialog(LocalizedStrings strings)
     {
+        _strings = strings;
         this.InitializeComponent();
         var sp = App.Current.Services;
         ViewModel = new ModelManagementViewModel(sp.GetRequiredService<OllamaClient>());
@@ -55,7 +57,18 @@ public sealed partial class ModelManagementDialog : ContentDialog
 
     private async void OnDeleteRow(object sender, RoutedEventArgs e)
     {
-        if (sender is Button { Tag: string name }) await ViewModel.DeleteAsync(name);
+        if (sender is not Button { Tag: string name }) return;
+        var confirm = new ContentDialog
+        {
+            XamlRoot = XamlRoot,
+            Title = _strings.Get(StringKey.ManageModelsDeleteTitle),
+            Content = _strings.Get(StringKey.ManageModelsDeleteConfirm),
+            PrimaryButtonText = _strings.Get(StringKey.Delete),
+            CloseButtonText = _strings.Get(StringKey.Cancel),
+            DefaultButton = ContentDialogButton.Close
+        };
+        if (await confirm.ShowAsync() == ContentDialogResult.Primary)
+            await ViewModel.DeleteAsync(name);
     }
 
     private void OnClose(ContentDialog sender, ContentDialogButtonClickEventArgs args) { }

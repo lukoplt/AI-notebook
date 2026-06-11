@@ -25,6 +25,23 @@ public sealed partial class NotebookDetailPage : Page
         ViewModel = new NotebookDetailViewModel(notebook, tabSwitch, l);
         InitializeComponent();
 
+        var id = notebook.Id!.Value;
+
+        var sources = new SourceListPage(notebook);
+        SourcesHost.Children.Add(sources);
+
+        var chat = new ChatPage();
+        ChatHost.Children.Add(chat);
+        chat.Load(id);
+
+        var notes = new NotesPage();
+        NotesHost.Children.Add(notes);
+        notes.Load(id);
+
+        var transformations = new TransformationsPage();
+        TransformationsHost.Children.Add(transformations);
+        transformations.Load(id);
+
         ViewModel.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(NotebookDetailViewModel.SelectedTab))

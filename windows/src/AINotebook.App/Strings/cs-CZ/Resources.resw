@@ -344,6 +344,12 @@
   <data name="manageModelsRefreshButton" xml:space="preserve">
     <value>Obnovit seznam</value>
   </data>
+  <data name="manageModelsDeleteTitle" xml:space="preserve">
+    <value>Smazat model?</value>
+  </data>
+  <data name="manageModelsDeleteConfirm" xml:space="preserve">
+    <value>Smazat tento model? Tuto akci nelze vrátit zpět.</value>
+  </data>
   <data name="chatModelPickerLabel" xml:space="preserve">
     <value>Chatovací model</value>
   </data>

@@ -344,6 +344,12 @@
   <data name="manageModelsRefreshButton" xml:space="preserve">
     <value>Refresh list</value>
   </data>
+  <data name="manageModelsDeleteTitle" xml:space="preserve">
+    <value>Delete model?</value>
+  </data>
+  <data name="manageModelsDeleteConfirm" xml:space="preserve">
+    <value>Delete this model? This cannot be undone.</value>
+  </data>
   <data name="chatModelPickerLabel" xml:space="preserve">
     <value>Chat model</value>
   </data>

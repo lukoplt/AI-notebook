@@ -265,5 +265,9 @@ public partial class ChatViewModel : ObservableObject
     // Mirrors ChatView.showCitation(): resolve source/page/note metadata for the Flyout.
     public CitationViewModel BuildCitationViewModel(Citation c) => CitationViewModel.Resolve(_store, c);
 
-    public void RequestOpenNote(long noteId) => _noteJump.Request(noteId);
+    public void RequestOpenNote(long noteId)
+    {
+        _tabSwitch.Request(TabSwitchCoordinator.Tab.Notes);
+        _noteJump.Request(noteId);
+    }
 }
