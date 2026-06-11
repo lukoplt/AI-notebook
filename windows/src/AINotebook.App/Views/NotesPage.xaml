@@ -16,6 +16,7 @@
         <Grid Grid.Column="0" Padding="12">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -23,8 +24,14 @@
                 <Button x:Name="NewButtonTop" HorizontalAlignment="Right"
                         Command="{x:Bind ViewModel.CreateBlankCommand}"/>
             </Grid>
-            <ListView Grid.Row="1" x:Name="NotesList"
-                      ItemsSource="{x:Bind ViewModel.Notes, Mode=OneWay}"
+            <!-- B9: search box -->
+            <TextBox Grid.Row="1" Margin="0,6,0,6"
+                     x:Name="SearchBox"
+                     Text="{x:Bind ViewModel.SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     PlaceholderText="{x:Bind SearchPlaceholder}"
+                     ClearButtonEnabled="True"/>
+            <ListView Grid.Row="2" x:Name="NotesList"
+                      ItemsSource="{x:Bind ViewModel.FilteredNotes, Mode=OneWay}"
                       SelectionChanged="OnNotesSelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Note">
@@ -37,7 +44,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackPanel Grid.Row="1" x:Name="EmptyNotes" Visibility="Collapsed"
+            <StackPanel Grid.Row="2" x:Name="EmptyNotes" Visibility="Collapsed"
                         VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
                 <FontIcon Glyph="&#xE70B;" FontSize="32"/>
                 <TextBlock x:Name="EmptyNotesText" TextWrapping="Wrap" TextAlignment="Center"/>

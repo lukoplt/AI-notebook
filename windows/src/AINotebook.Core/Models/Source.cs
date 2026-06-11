@@ -32,16 +32,11 @@ public static class SourceTypeExtensions
         _ => throw new ArgumentOutOfRangeException(nameof(raw), raw, "Unknown SourceType raw value")
     };
 
-    // DB-mapper aliases (consumed by NotebookStore partials in Tasks 7-11).
     public static string ToDb(this SourceType v) => v.RawValue();
     public static SourceType FromDb(string raw) => FromRawValue(raw);
 
-    /// <summary>Best-effort detection from a filename. Returns null for unknown extensions.
-    /// Mirrors Swift SourceType.detect(filename:). Note: ".note" is never detected here.</summary>
     public static SourceType? Detect(string filename)
     {
-        // Path.GetExtension returns ".md" (with the dot); trim it and lowercase to match
-        // (filename as NSString).pathExtension.lowercased().
         var ext = Path.GetExtension(filename).TrimStart('.').ToLowerInvariant();
         return ext switch
         {
@@ -78,11 +73,9 @@ public static class SourceStatusExtensions
         _ => throw new ArgumentOutOfRangeException(nameof(raw), raw, "Unknown SourceStatus raw value")
     };
 
-    // DB-mapper aliases (consumed by NotebookStore partials in Tasks 7-11).
     public static string ToDb(this SourceStatus v) => v.RawValue();
     public static SourceStatus FromDb(string raw) => FromRawValue(raw);
 
-    /// <summary>true for Ready/Error; false for Pending/Chunking (Swift SourceStatus.isTerminal).</summary>
     public static bool IsTerminal(this SourceStatus status) =>
         status is SourceStatus.Ready or SourceStatus.Error;
 }
@@ -96,4 +89,6 @@ public record Source(
     string? RawPath,
     SourceStatus Status,
     string? Error,
-    DateTime IngestedAt);
+    DateTime IngestedAt,
+    DateTime? LastSyncedAt = null,
+    string? ContentHash = null);

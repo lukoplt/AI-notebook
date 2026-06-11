@@ -6,7 +6,8 @@ public record SourceChunk(
     int Ord,
     string Text,
     int TokenCount,
-    int? PageHint);
+    int? PageHint,
+    string? Context = null);
 
 public sealed record ChunkDraft(
     string Text,

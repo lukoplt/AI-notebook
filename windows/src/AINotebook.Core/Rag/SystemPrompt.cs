@@ -13,9 +13,12 @@ public static class SystemPrompt
         "cite it inline as [N] where N is the block number. Multiple citations\n" +
         "may appear in a single sentence: [1][3].";
 
-    public static string Compose(IReadOnlyList<RetrievalHit> hits, string? currentNoteContent = null)
+    public static string Compose(IReadOnlyList<RetrievalHit> hits, string? currentNoteContent = null, string? notebookInstructions = null)
     {
-        var sections = new List<string> { Header };
+        var sections = new List<string>();
+        if (!string.IsNullOrWhiteSpace(notebookInstructions))
+            sections.Add("NOTEBOOK INSTRUCTIONS:\n" + notebookInstructions.Trim());
+        sections.Add(Header);
 
         if (hits.Count == 0)
         {

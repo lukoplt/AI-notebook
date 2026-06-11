@@ -113,6 +113,54 @@ public sealed class IngestionService
         });
     }
 
+    /// <summary>Re-ingests an existing source from its stored raw path (for folder watch / URL refresh).</summary>
+    public async Task<Source> ReIngestAsync(long sourceId, CancellationToken ct = default)
+    {
+        var source = _store.Source(sourceId)
+            ?? throw new IngestionException.UnsupportedExtension("(unknown — source not found)");
+        var url = source.RawPath is not null
+            ? new Uri(source.RawPath)
+            : source.Uri is not null ? new Uri(source.Uri) : null;
+        if (url is null) throw new InvalidOperationException($"Source {sourceId} has no URI or path to re-ingest.");
+
+        return await RunPipelineAsync(source, async () =>
+        {
+            switch (source.Type)
+            {
+                case SourceType.Pdf:
+                {
+                    var extracted = await _pdf.ExtractAsync(url, source.Type);
+                    List<(string text, int pageHint)> pages;
+                    if (extracted.PageHints != null)
+                    {
+                        var split = extracted.Text.Split(FormFeed);
+                        var hints = extracted.PageHints;
+                        int n = Math.Min(split.Length, hints.Length);
+                        pages = new List<(string, int)>(n);
+                        for (int i = 0; i < n; i++) pages.Add((split[i], hints[i]));
+                    }
+                    else
+                    {
+                        pages = new List<(string, int)> { (extracted.Text, 0) };
+                    }
+                    return (extracted, Chunker.ChunkPaged(pages));
+                }
+                case SourceType.Web:
+                {
+                    var e = await _web.ExtractAsync(url, source.Type);
+                    return (e, Chunker.Chunk(e.Text));
+                }
+                default:
+                {
+                    var e = source.Type is SourceType.Docx or SourceType.Pptx or SourceType.Xlsx
+                        ? await _office.ExtractAsync(url, source.Type)
+                        : await _plain.ExtractAsync(url, source.Type);
+                    return (e, Chunker.Chunk(e.Text));
+                }
+            }
+        });
+    }
+
     public async Task<Source> IngestUrlAsync(Uri url, long notebookId)
     {
         string title = url.Host.Length != 0 ? url.Host : url.AbsoluteUri;

@@ -3,12 +3,11 @@ using Microsoft.Data.Sqlite;
 
 namespace AINotebook.Core.Storage;
 
-public partial class NotebookStore
+public sealed partial class NotebookStore
 {
     public IReadOnlyList<ProviderConfig> Providers()
     {
-        using var conn = Open();
-        using var cmd = conn.CreateCommand();
+        using var cmd = Connection.CreateCommand();
         cmd.CommandText = "SELECT id, type, name, base_url, enabled, privacy_acknowledged, created_at FROM providers ORDER BY created_at";
         using var r = cmd.ExecuteReader();
         var result = new List<ProviderConfig>();
@@ -19,8 +18,7 @@ public partial class NotebookStore
 
     public ProviderConfig? Provider(string id)
     {
-        using var conn = Open();
-        using var cmd = conn.CreateCommand();
+        using var cmd = Connection.CreateCommand();
         cmd.CommandText = "SELECT id, type, name, base_url, enabled, privacy_acknowledged, created_at FROM providers WHERE id = $id";
         cmd.Parameters.AddWithValue("$id", id);
         using var r = cmd.ExecuteReader();
@@ -29,8 +27,7 @@ public partial class NotebookStore
 
     public ProviderConfig SaveProvider(ProviderConfig p)
     {
-        using var conn = Open();
-        using var cmd = conn.CreateCommand();
+        using var cmd = Connection.CreateCommand();
         cmd.CommandText = """
             INSERT INTO providers(id, type, name, base_url, enabled, privacy_acknowledged, created_at)
             VALUES($id, $type, $name, $url, $enabled, $priv, $at)
@@ -47,7 +44,7 @@ public partial class NotebookStore
         cmd.Parameters.AddWithValue("$url", p.BaseUrl);
         cmd.Parameters.AddWithValue("$enabled", p.Enabled ? 1 : 0);
         cmd.Parameters.AddWithValue("$priv", p.PrivacyAcknowledged ? 1 : 0);
-        cmd.Parameters.AddWithValue("$at", SqliteDate.Format(p.CreatedAt));
+        cmd.Parameters.AddWithValue("$at", SqliteDate.ToDb(p.CreatedAt));
         cmd.ExecuteNonQuery();
         return p;
     }
@@ -55,8 +52,7 @@ public partial class NotebookStore
     public void DeleteProvider(string id)
     {
         if (id == ProviderConfig.OllamaId) return; // built-in cannot be deleted
-        using var conn = Open();
-        using var cmd = conn.CreateCommand();
+        using var cmd = Connection.CreateCommand();
         cmd.CommandText = "DELETE FROM providers WHERE id = $id";
         cmd.Parameters.AddWithValue("$id", id);
         cmd.ExecuteNonQuery();
@@ -64,8 +60,7 @@ public partial class NotebookStore
 
     public void AcknowledgePrivacy(string providerId)
     {
-        using var conn = Open();
-        using var cmd = conn.CreateCommand();
+        using var cmd = Connection.CreateCommand();
         cmd.CommandText = "UPDATE providers SET privacy_acknowledged = 1 WHERE id = $id";
         cmd.Parameters.AddWithValue("$id", providerId);
         cmd.ExecuteNonQuery();
@@ -78,5 +73,5 @@ public partial class NotebookStore
         BaseUrl: r.GetString(3),
         Enabled: r.GetInt64(4) != 0,
         PrivacyAcknowledged: r.GetInt64(5) != 0,
-        CreatedAt: SqliteDate.Parse(r.GetString(6)));
+        CreatedAt: SqliteDate.FromDb(r.GetString(6)));
 }

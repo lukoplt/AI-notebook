@@ -42,6 +42,16 @@ public partial class ChatViewModel : ObservableObject
     [ObservableProperty] public partial string? ErrorMessage { get; set; }
     [ObservableProperty] public partial bool ShowEmptyState { get; set; } = true;
 
+    // C3: edit/regenerate last exchange
+    [ObservableProperty] public partial bool CanEditLast { get; set; }
+    [ObservableProperty] public partial string EditInput { get; set; } = "";
+    [ObservableProperty] public partial bool IsEditMode { get; set; }
+
+    // C4: citation panel
+    [ObservableProperty] public partial bool IsCitationPanelOpen { get; set; }
+    [ObservableProperty] public partial CitationViewModel? SelectedCitation { get; set; }
+    public ObservableCollection<CitationViewModel> PanelCitations { get; } = new();
+
     // Bound to the Sources scope flyout button label ("Sources" / "Sources (2)").
     public string ScopeButtonText
     {
@@ -167,16 +177,75 @@ public partial class ChatViewModel : ObservableObject
     private Task ReloadMessagesAsync()
     {
         Messages.Clear();
-        if (SelectedSession?.Id is not { } sid) { RefreshEmptyState(); return Task.CompletedTask; }
+        PanelCitations.Clear();
+        if (SelectedSession?.Id is not { } sid) { RefreshEmptyState(); CanEditLast = false; return Task.CompletedTask; }
         try
         {
             foreach (var m in _store.Messages(sid))
                 Messages.Add(new MessageViewModel { Message = m });
+            // C4: collect all citations from last assistant message for the panel
+            var lastAssistant = Messages.LastOrDefault(m => m.IsAssistant);
+            if (lastAssistant?.Message?.Citations is { Count: > 0 } cits)
+                foreach (var c in cits) PanelCitations.Add(BuildCitationViewModel(c));
         }
         catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        CanEditLast = Messages.Count >= 2;
         RefreshEmptyState();
         return Task.CompletedTask;
     }
+
+    // C3: start edit mode for the last user message
+    [RelayCommand]
+    private void EditLast()
+    {
+        var lastUser = Messages.LastOrDefault(m => m.Message?.Role == ChatRole.User);
+        if (lastUser?.Message is null) return;
+        EditInput = lastUser.Message.Content;
+        IsEditMode = true;
+    }
+
+    // C3: regenerate — delete last exchange, re-send same question
+    [RelayCommand]
+    private async Task RegenerateAsync()
+    {
+        if (SelectedSession?.Id is not { } sid) return;
+        var lastUser = Messages.LastOrDefault(m => m.Message?.Role == ChatRole.User);
+        if (lastUser?.Message is null) return;
+        var text = lastUser.Message.Content;
+        _store.DeleteLastExchange(sid);
+        Input = text;
+        IsEditMode = false;
+        await SendAsync();
+    }
+
+    // C3: commit edit — delete last exchange then send new text
+    [RelayCommand]
+    private async Task CommitEditAsync()
+    {
+        if (SelectedSession?.Id is not { } sid) return;
+        var text = EditInput.Trim();
+        if (text.Length == 0) return;
+        _store.DeleteLastExchange(sid);
+        Input = text;
+        IsEditMode = false;
+        await SendAsync();
+    }
+
+    [RelayCommand]
+    private void CancelEdit() => IsEditMode = false;
+
+    // C4: open citation panel populated from a specific message's citations
+    [RelayCommand]
+    private void ShowCitations(MessageViewModel? vm)
+    {
+        if (vm?.Message?.Citations is not { Count: > 0 } cits) return;
+        PanelCitations.Clear();
+        foreach (var c in cits) PanelCitations.Add(BuildCitationViewModel(c));
+        IsCitationPanelOpen = true;
+    }
+
+    [RelayCommand]
+    private void CloseCitationPanel() => IsCitationPanelOpen = false;
 
     [RelayCommand(CanExecute = nameof(CanSend))]
     private async Task SendAsync()

@@ -16,6 +16,9 @@ public sealed partial class ChatPage : Page
     public ChatViewModel ViewModel { get; }
     private readonly ILocalizedStrings _t;
 
+    public string CitationPanelWidth =>
+        ViewModel.IsCitationPanelOpen ? "300" : "0";
+
     public ChatPage()
     {
         ViewModel = App.Current.Services.GetRequiredService<ChatViewModel>();
@@ -27,10 +30,16 @@ public sealed partial class ChatPage : Page
         ToolTipService.SetToolTip(NewSessionButton, _t.Get("chatNewSessionButton"));
         FollowupsLabel.Text = _t.Get("chatFollowupsLabel");
         ScopeTitle.Text = _t.Get("chatScopeTitle");
+        CitationPanelTitle.Text = _t.Get(StringKey.CitationPanelTitle);
+        ToolTipService.SetToolTip(EditLastButton, _t.Get(StringKey.ChatEditButton));
+        ToolTipService.SetToolTip(RegenerateButton, _t.Get(StringKey.ChatRegenerateButton));
+        CommitEditButton.Content = _t.Get(StringKey.UnsavedSaveButton);
+        CancelEditButton.Content = _t.Get(StringKey.CancelButton);
         ViewModel.Messages.CollectionChanged += (_, _) => ScrollToBottom();
         ViewModel.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(ChatViewModel.StreamingDraft)) ScrollToBottom();
+            if (e.PropertyName == nameof(ChatViewModel.IsCitationPanelOpen)) Bindings.Update();
             if (e.PropertyName == nameof(ChatViewModel.ErrorMessage))
                 ErrorText.Text = (ViewModel.ErrorMessage is null) ? "" : _t.Get("chatErrorPrefix") + ViewModel.ErrorMessage;
         };
@@ -68,6 +77,15 @@ public sealed partial class ChatPage : Page
 
     private void OnSaveAsNote(object? sender, MessageViewModel vm) =>
         ViewModel.SaveAsNoteCommand.Execute(vm);
+
+    private void OnToggleCitationPanel(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.IsCitationPanelOpen)
+            ViewModel.CloseCitationPanelCommand.Execute(null);
+        else
+            ViewModel.IsCitationPanelOpen = true;
+        Bindings.Update();
+    }
 
     private void ShowCitationFlyout(FrameworkElement anchor, CitationViewModel cvm)
     {

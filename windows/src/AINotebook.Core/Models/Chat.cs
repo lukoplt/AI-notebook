@@ -43,4 +43,5 @@ public record ChatMessage(
     ChatRole Role,
     string Content,
     IReadOnlyList<Citation> Citations,
-    DateTime CreatedAt);
+    DateTime CreatedAt,
+    string? Model = null);

@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using AINotebook.Core.Models;
 using AINotebook.Core.Providers;
+using AINotebook.Core.Ollama;
 using Xunit;
 
 namespace AINotebook.Core.Tests.Providers;

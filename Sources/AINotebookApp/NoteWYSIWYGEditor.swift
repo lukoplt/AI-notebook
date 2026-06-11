@@ -77,7 +77,7 @@ struct NoteWYSIWYGEditor: View {
                     Button(AppText(language: language).string(.historyButton)) { onShowHistory() }
                         .keyboardShortcut("h", modifiers: [.command, .shift])
                 }
-                Button("Save") { autoSave.manualSave() }
+                Button(t.string(.save)) { autoSave.manualSave() }
                     .keyboardShortcut("s", modifiers: [.command])
             }
         }

@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using AINotebook.App.Services;
+using AINotebook.Core.Ingestion;
 using AINotebook.Core.Ollama;  // IChatStreaming
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
@@ -16,6 +17,8 @@ public sealed partial class SourcesViewModel : ObservableObject
     private readonly IChatStreaming _chatStreaming;
     private readonly ISettingsService _settings;
     private readonly DispatcherQueue _dispatcher;
+    private readonly IngestionService _ingestion;
+    private readonly FolderWatchService _folderWatch;
 
     public long NotebookId { get; set; }
 
@@ -27,16 +30,28 @@ public sealed partial class SourcesViewModel : ObservableObject
     [ObservableProperty]
     public partial string? ErrorMessage { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsBulkMode { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsFolderWatchActive { get; set; }
+
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
     partial void OnErrorMessageChanged(string? value) => OnPropertyChanged(nameof(HasError));
 
+    public IReadOnlyList<long> SelectedSourceIds =>
+        Sources.Where(s => s.IsSelected).Select(s => s.Id).ToList();
+
     public SourcesViewModel(NotebookStore store, LocalizedStrings strings,
-                            IChatStreaming chatStreaming, ISettingsService settings)
+                            IChatStreaming chatStreaming, ISettingsService settings,
+                            IngestionService ingestion, FolderWatchService folderWatch)
     {
         _store = store;
         _strings = strings;
         _chatStreaming = chatStreaming;
         _settings = settings;
+        _ingestion = ingestion;
+        _folderWatch = folderWatch;
         _dispatcher = DispatcherQueue.GetForCurrentThread();
     }
 
@@ -78,6 +93,79 @@ public sealed partial class SourcesViewModel : ObservableObject
         {
             ErrorMessage = ex.ToString();
         }
+    }
+
+    [RelayCommand]
+    private void ToggleBulkMode()
+    {
+        IsBulkMode = !IsBulkMode;
+        if (!IsBulkMode)
+            foreach (var s in Sources) s.IsSelected = false;
+    }
+
+    [RelayCommand]
+    private async Task BulkDeleteAsync()
+    {
+        var ids = SelectedSourceIds.ToList();
+        if (ids.Count == 0) return;
+        try
+        {
+            await Task.Run(() => { foreach (var id in ids) _store.DeleteSource(id); });
+            IsBulkMode = false;
+            await LoadAsync();
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+    }
+
+    // E2: re-crawl a URL source.
+    [RelayCommand]
+    public async Task RefreshUrlAsync(SourceItem? item)
+    {
+        if (item is null || !item.IsUrl) return;
+        item.IsRefreshing = true;
+        try
+        {
+            await Task.Run(() => _ingestion.ReIngestAsync(item.Id));
+            var hash = await ComputeHashAsync(item.Source.Uri!);
+            _store.UpdateSourceSyncInfo(item.Id, DateTime.UtcNow, hash);
+            await LoadAsync();
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        finally { item.IsRefreshing = false; }
+    }
+
+    // E1: toggle folder watch.
+    [RelayCommand]
+    public async Task ToggleFolderWatchAsync()
+    {
+        if (_folderWatch.IsActive)
+        {
+            _folderWatch.Disable();
+            IsFolderWatchActive = false;
+        }
+        else
+        {
+            // Pick a folder via Windows file picker in the View; this is a no-op if no folder was chosen.
+            FolderWatchRequested?.Invoke();
+        }
+        await Task.CompletedTask;
+    }
+
+    public Action? FolderWatchRequested { get; set; }
+
+    public void EnableFolderWatch(string folder)
+    {
+        _folderWatch.Enable(NotebookId, folder);
+        IsFolderWatchActive = true;
+    }
+
+    private static async Task<string> ComputeHashAsync(string uriOrPath)
+    {
+        if (uriOrPath.StartsWith("http", StringComparison.OrdinalIgnoreCase))
+            return uriOrPath; // URL: use URI as identity (no local file to hash)
+        using var fs = new System.IO.FileStream(uriOrPath, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.ReadWrite);
+        var hash = await System.Security.Cryptography.MD5.HashDataAsync(fs);
+        return Convert.ToHexString(hash);
     }
 
     // Tier 2b: lazily generate + persist a per-source summary on demand.

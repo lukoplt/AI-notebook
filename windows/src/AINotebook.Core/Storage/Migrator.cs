@@ -23,6 +23,10 @@ public static class Migrator
         ("v9_transformations_description", V9),
         ("v10_source_summary", V10),
         ("v11_providers", V11),
+        ("v12_tags_and_notes_fts", V12),
+        ("v13_instructions_and_sourcesets", V13),
+        ("v14_chunk_context", V14),
+        ("v15_live_sources", V15),
     };
 
     public static void Migrate(SqliteConnection conn)
@@ -106,6 +110,14 @@ public static class Migrator
                 upd.Parameters.AddWithValue("$id", noteId);
                 upd.ExecuteNonQuery();
             }
+        }
+        else if (id == "v12_tags_and_notes_fts")
+        {
+            // Backfill notes_fts for all existing notes
+            using var ins = conn.CreateCommand();
+            ins.Transaction = tx;
+            ins.CommandText = "INSERT INTO notes_fts(rowid, title, body_md, note_id) SELECT id, title, body_md, id FROM notes";
+            ins.ExecuteNonQuery();
         }
         else if (id == "v11_providers")
         {
@@ -232,5 +244,53 @@ public static class Migrator
           "privacy_acknowledged" INTEGER NOT NULL DEFAULT 0,
           "created_at" TEXT NOT NULL
         );
+        """;
+
+    private const string V12 = """
+        CREATE TABLE IF NOT EXISTS "tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "name" TEXT NOT NULL UNIQUE);
+        @@
+        CREATE TABLE IF NOT EXISTS "note_tags" ("note_id" INTEGER NOT NULL REFERENCES "notes"("id") ON DELETE CASCADE, "tag_id" INTEGER NOT NULL REFERENCES "tags"("id") ON DELETE CASCADE, PRIMARY KEY (note_id, tag_id));
+        @@
+        CREATE TABLE IF NOT EXISTS "source_tags" ("source_id" INTEGER NOT NULL REFERENCES "sources"("id") ON DELETE CASCADE, "tag_id" INTEGER NOT NULL REFERENCES "tags"("id") ON DELETE CASCADE, PRIMARY KEY (source_id, tag_id));
+        @@
+        CREATE INDEX "idx_note_tags_tag" ON "note_tags"("tag_id");
+        @@
+        CREATE INDEX "idx_source_tags_tag" ON "source_tags"("tag_id");
+        @@
+        CREATE VIRTUAL TABLE notes_fts USING fts5(title, body_md, note_id UNINDEXED, tokenize = 'porter unicode61');
+        @@
+        CREATE TRIGGER notes_ai AFTER INSERT ON notes BEGIN
+          INSERT INTO notes_fts(rowid, title, body_md, note_id) VALUES (new.id, new.title, new.body_md, new.id);
+        END;
+        @@
+        CREATE TRIGGER notes_ad AFTER DELETE ON notes BEGIN
+          DELETE FROM notes_fts WHERE rowid = old.id;
+        END;
+        @@
+        CREATE TRIGGER notes_au AFTER UPDATE ON notes BEGIN
+          UPDATE notes_fts SET title = new.title, body_md = new.body_md WHERE rowid = old.id;
+        END;
+        """;
+
+    private const string V13 = """
+        ALTER TABLE notebooks ADD COLUMN "instructions" TEXT NOT NULL DEFAULT '';
+        @@
+        ALTER TABLE messages ADD COLUMN "model" TEXT;
+        @@
+        CREATE TABLE IF NOT EXISTS "source_sets" ("id" INTEGER PRIMARY KEY AUTOINCREMENT, "notebook_id" INTEGER NOT NULL REFERENCES "notebooks"("id") ON DELETE CASCADE, "name" TEXT NOT NULL, "created_at" DATETIME NOT NULL);
+        @@
+        CREATE TABLE IF NOT EXISTS "source_set_members" ("set_id" INTEGER NOT NULL REFERENCES "source_sets"("id") ON DELETE CASCADE, "source_id" INTEGER NOT NULL REFERENCES "sources"("id") ON DELETE CASCADE, PRIMARY KEY (set_id, source_id));
+        @@
+        CREATE INDEX "idx_source_sets_notebook" ON "source_sets"("notebook_id");
+        """;
+
+    private const string V14 = """
+        ALTER TABLE source_chunks ADD COLUMN "context" TEXT;
+        """;
+
+    private const string V15 = """
+        ALTER TABLE sources ADD COLUMN "last_synced_at" TEXT;
+        @@
+        ALTER TABLE sources ADD COLUMN "content_hash" TEXT;
         """;
 }

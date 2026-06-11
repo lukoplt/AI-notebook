@@ -542,4 +542,151 @@
   <data name="embeddingProviderPickerLabel" xml:space="preserve">
     <value>Poskytovatel embeddingů</value>
   </data>
+  <data name="noteSearchPlaceholder" xml:space="preserve">
+    <value>Hledat poznámky…</value>
+  </data>
+  <data name="sourcePreviewTitle" xml:space="preserve">
+    <value>Náhled zdroje</value>
+  </data>
+  <data name="sourcePreviewChunksLabel" xml:space="preserve">
+    <value>Extrahovaný obsah</value>
+  </data>
+  <data name="sourcePreviewNoContent" xml:space="preserve">
+    <value>Žádný obsah</value>
+  </data>
+  <data name="sourcePreviewButton" xml:space="preserve">
+    <value>Náhled</value>
+  </data>
+  <data name="exportNoteButton" xml:space="preserve">
+    <value>Exportovat poznámku</value>
+  </data>
+  <data name="exportNoteMarkdown" xml:space="preserve">
+    <value>Exportovat jako Markdown</value>
+  </data>
+  <data name="exportNotebookButton" xml:space="preserve">
+    <value>Exportovat notebook</value>
+  </data>
+  <data name="exportNotebookZip" xml:space="preserve">
+    <value>Exportovat jako ZIP</value>
+  </data>
+  <data name="backupButton" xml:space="preserve">
+    <value>Zálohovat databázi</value>
+  </data>
+  <data name="backupRestoreButton" xml:space="preserve">
+    <value>Obnovit zálohu</value>
+  </data>
+  <data name="backupRestoreConfirm" xml:space="preserve">
+    <value>Obnovení nahradí aktuální databázi. Pokračovat?</value>
+  </data>
+  <data name="exportSuccess" xml:space="preserve">
+    <value>Export dokončen</value>
+  </data>
+  <data name="globalSearchTitle" xml:space="preserve">
+    <value>Hledat</value>
+  </data>
+  <data name="globalSearchPlaceholder" xml:space="preserve">
+    <value>Hledat poznámky a zdroje…</value>
+  </data>
+  <data name="globalSearchEmpty" xml:space="preserve">
+    <value>Žádné výsledky</value>
+  </data>
+  <data name="globalSearchSectionNotes" xml:space="preserve">
+    <value>Poznámky</value>
+  </data>
+  <data name="globalSearchSectionSources" xml:space="preserve">
+    <value>Zdroje</value>
+  </data>
+  <data name="bulkSelectButton" xml:space="preserve">
+    <value>Vybrat</value>
+  </data>
+  <data name="bulkDeleteSelectedButton" xml:space="preserve">
+    <value>Smazat vybrané</value>
+  </data>
+  <data name="bulkDeleteConfirmFormat" xml:space="preserve">
+    <value>Smazat {0} položek? Tuto akci nelze vrátit.</value>
+  </data>
+  <data name="bulkSummarizeSelectedButton" xml:space="preserve">
+    <value>Shrnout vybrané</value>
+  </data>
+  <data name="tagsSectionTitle" xml:space="preserve">
+    <value>Štítky</value>
+  </data>
+  <data name="addTagButton" xml:space="preserve">
+    <value>Přidat štítek</value>
+  </data>
+  <data name="tagNamePlaceholder" xml:space="preserve">
+    <value>Název štítku</value>
+  </data>
+  <data name="filterByTagLabel" xml:space="preserve">
+    <value>Filtrovat dle štítku</value>
+  </data>
+  <data name="allTagsOption" xml:space="preserve">
+    <value>Vše</value>
+  </data>
+  <data name="deleteTagTitle" xml:space="preserve">
+    <value>Odebrat štítek?</value>
+  </data>
+  <data name="notebookInstructionsLabel" xml:space="preserve">
+    <value>Vlastní AI instrukce</value>
+  </data>
+  <data name="notebookInstructionsPlaceholder" xml:space="preserve">
+    <value>Instrukce vložené do každého chatu a transformace v tomto notebooku…</value>
+  </data>
+  <data name="notebookInstructionsSaved" xml:space="preserve">
+    <value>Instrukce uloženy</value>
+  </data>
+  <data name="sourceSetsSectionTitle" xml:space="preserve">
+    <value>Sady zdrojů</value>
+  </data>
+  <data name="addSourceSetButton" xml:space="preserve">
+    <value>Přidat sadu</value>
+  </data>
+  <data name="sourceSetNamePlaceholder" xml:space="preserve">
+    <value>Název sady</value>
+  </data>
+  <data name="deleteSourceSetTitle" xml:space="preserve">
+    <value>Smazat sadu?</value>
+  </data>
+  <data name="chatEditButton" xml:space="preserve">
+    <value>Upravit</value>
+  </data>
+  <data name="chatRegenerateButton" xml:space="preserve">
+    <value>Znovu vygenerovat</value>
+  </data>
+  <data name="chatRegenerateWithButton" xml:space="preserve">
+    <value>Znovu vygenerovat s…</value>
+  </data>
+  <data name="citationPanelTitle" xml:space="preserve">
+    <value>Citace</value>
+  </data>
+  <data name="citationPanelEmpty" xml:space="preserve">
+    <value>Tato zpráva nemá citace</value>
+  </data>
+  <data name="contextualEnrichmentLabel" xml:space="preserve">
+    <value>Kontextuální obohacení</value>
+  </data>
+  <data name="contextualEnrichmentHint" xml:space="preserve">
+    <value>Přidá kontext dokumentu do každého chunku před embeddingem (pomalejší)</value>
+  </data>
+  <data name="folderWatchButton" xml:space="preserve">
+    <value>Sledovat složku</value>
+  </data>
+  <data name="folderWatchActiveLabel" xml:space="preserve">
+    <value>Sledováno</value>
+  </data>
+  <data name="urlRefreshButton" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="urlRefreshingStatus" xml:space="preserve">
+    <value>Obnovovám…</value>
+  </data>
+  <data name="webSearchToggleLabel" xml:space="preserve">
+    <value>Webové vyhledávání</value>
+  </data>
+  <data name="webSearchResultsTitle" xml:space="preserve">
+    <value>Výsledky z webu</value>
+  </data>
+  <data name="webSearchEmpty" xml:space="preserve">
+    <value>Žádné výsledky z webu</value>
+  </data>
 </root>

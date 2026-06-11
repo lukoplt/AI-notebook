@@ -38,8 +38,12 @@ public sealed class ChatEngine
         // 2) Retrieve context.
         var hits = await _retriever.SearchAsync(notebookId, userText, TopK, sourceIds, ct);
 
-        // 3) Compose messages: system + full history.
-        var systemContent = SystemPrompt.Compose(hits, currentNoteContent);
+        // 3) Compose messages: system (with per-notebook instructions) + full history.
+        var notebooks = _store.Notebooks();
+        var nb = notebooks.FirstOrDefault(n => n.Id == notebookId);
+        var instructions = nb?.Instructions;
+
+        var systemContent = SystemPrompt.Compose(hits, currentNoteContent, instructions);
         var history = _store.Messages(sessionId);
         var turns = new List<ChatTurn> { new(ChatRole.System, systemContent) };
         foreach (var m in history) turns.Add(new ChatTurn(m.Role, m.Content));
@@ -81,8 +85,8 @@ public sealed class ChatEngine
             citations.Add(new Citation(m, h.ChunkId, h.SourceId, h.Snippet));
         }
 
-        // 6) Persist the assistant message.
-        var stored = new ChatMessage(null, sessionId, ChatRole.Assistant, assembled, citations, DateTime.UtcNow);
+        // 6) Persist the assistant message with the active chat model.
+        var stored = new ChatMessage(null, sessionId, ChatRole.Assistant, assembled, citations, DateTime.UtcNow, ChatModel);
         _store.AppendMessage(stored);
         return stored;
     }

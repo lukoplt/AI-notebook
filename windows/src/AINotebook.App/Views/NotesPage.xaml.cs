@@ -17,6 +17,8 @@ public sealed partial class NotesPage : Page
     private readonly ILocalizedStrings _t;
     private bool _suppressSelection;
 
+    public string SearchPlaceholder => _t.Get(StringKey.NoteSearchPlaceholder);
+
     public NotesPage()
     {
         ViewModel = App.Current.Services.GetRequiredService<NotesViewModel>();
@@ -34,6 +36,7 @@ public sealed partial class NotesPage : Page
         ViewModel.UnsavedDialogRequested += async () => await ShowUnsavedDialog();
         ViewModel.HistoryRequested += async id => await ShowHistoryDialog(id);
         ViewModel.Notes.CollectionChanged += (_, _) => RefreshEmptyState();
+        ViewModel.FilteredNotes.CollectionChanged += (_, _) => RefreshEmptyState();
 
         ChatPanel.SetCurrentNoteProvider(() => ViewModel.CurrentNote);
     }
@@ -98,7 +101,7 @@ public sealed partial class NotesPage : Page
 
     private void RefreshEmptyState()
     {
-        var empty = ViewModel.Notes.Count == 0;
+        var empty = ViewModel.FilteredNotes.Count == 0;
         EmptyNotes.Visibility = empty ? Visibility.Visible : Visibility.Collapsed;
         NotesList.Visibility = empty ? Visibility.Collapsed : Visibility.Visible;
     }

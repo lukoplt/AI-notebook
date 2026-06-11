@@ -21,11 +21,13 @@ public partial class NotesViewModel : ObservableObject
     private long _notebookId;
 
     public ObservableCollection<Note> Notes { get; } = new();
+    public ObservableCollection<Note> FilteredNotes { get; } = new();
 
     [ObservableProperty] public partial Note? SelectedNote { get; set; }
     [ObservableProperty] public partial string DraftTitle { get; set; } = "";
     [ObservableProperty] public partial string DraftBody { get; set; } = "";
     [ObservableProperty] public partial string? ErrorMessage { get; set; }
+    [ObservableProperty] public partial string SearchQuery { get; set; } = "";
 
     // Unsaved-changes gate.
     private long? _pendingSelectionId;
@@ -60,6 +62,7 @@ public partial class NotesViewModel : ObservableObject
             var current = SelectedNote?.Id;
             Notes.Clear();
             foreach (var n in _store.Notes(_notebookId)) Notes.Add(n);
+            ApplySearchFilter();
             // keep selection by id; else pick first.
             SelectedNote = Notes.FirstOrDefault(n => n.Id == current) ?? Notes.FirstOrDefault();
             SyncDraftFromSelection();
@@ -67,6 +70,38 @@ public partial class NotesViewModel : ObservableObject
         catch (Exception ex) { ErrorMessage = ex.ToString(); }
         await Task.CompletedTask;
     }
+
+    partial void OnSearchQueryChanged(string value) => ApplySearchFilter();
+
+    private void ApplySearchFilter()
+    {
+        FilteredNotes.Clear();
+        var q = SearchQuery?.Trim() ?? "";
+        if (string.IsNullOrEmpty(q))
+        {
+            foreach (var n in Notes) FilteredNotes.Add(n);
+        }
+        else
+        {
+            try
+            {
+                var hits = _store.SearchNotes(_notebookId, q);
+                var hitIds = hits.Select(h => h.NoteId).ToHashSet();
+                foreach (var n in Notes.Where(n => hitIds.Contains(n.Id!.Value))) FilteredNotes.Add(n);
+            }
+            catch
+            {
+                // FTS not available — fall back to in-memory LIKE
+                foreach (var n in Notes.Where(n =>
+                    n.Title.Contains(q, StringComparison.OrdinalIgnoreCase) ||
+                    n.BodyMd.Contains(q, StringComparison.OrdinalIgnoreCase)))
+                    FilteredNotes.Add(n);
+            }
+        }
+    }
+
+    [RelayCommand]
+    private void ClearSearch() => SearchQuery = "";
 
     private void SyncDraftFromSelection()
     {

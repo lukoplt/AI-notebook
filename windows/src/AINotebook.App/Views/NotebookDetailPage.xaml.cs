@@ -1,7 +1,7 @@
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
-using AINotebook.Core;
 using AINotebook.Core.Models;
+using AINotebook.Core.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml.Controls;
 
@@ -11,7 +11,7 @@ public sealed partial class NotebookDetailPage : Page
 {
     public NotebookDetailViewModel ViewModel { get; }
 
-    /// Bridge TabSwitchCoordinator.Tab <-> Pivot SelectedIndex (Sources=0..Transformations=3).
+    /// Bridge TabSwitchCoordinator.Tab <-> Pivot SelectedIndex (Sources=0..Settings=4).
     public int TabIndex
     {
         get => (int)ViewModel.SelectedTab;
@@ -20,9 +20,11 @@ public sealed partial class NotebookDetailPage : Page
 
     public NotebookDetailPage(Notebook notebook)
     {
-        var tabSwitch = App.Current.Services.GetRequiredService<TabSwitchCoordinator>();
-        var l = App.Current.Services.GetRequiredService<ILocalizedStrings>();
-        ViewModel = new NotebookDetailViewModel(notebook, tabSwitch, l);
+        var sp = App.Current.Services;
+        var tabSwitch = sp.GetRequiredService<TabSwitchCoordinator>();
+        var l = sp.GetRequiredService<ILocalizedStrings>();
+        var store = sp.GetRequiredService<NotebookStore>();
+        ViewModel = new NotebookDetailViewModel(notebook, tabSwitch, l, store);
         InitializeComponent();
 
         var id = notebook.Id!.Value;
@@ -41,6 +43,11 @@ public sealed partial class NotebookDetailPage : Page
         var transformations = new TransformationsPage();
         TransformationsHost.Children.Add(transformations);
         transformations.Load(id);
+
+        // C1: localize instructions tab
+        InstructionsLabel.Text = l.Get(StringKey.NotebookInstructionsLabel);
+        InstructionsHint.Text = l.Get(StringKey.NotebookInstructionsPlaceholder);
+        SaveInstructionsButton.Content = l.Get(StringKey.UnsavedSaveButton);
 
         ViewModel.PropertyChanged += (_, e) =>
         {

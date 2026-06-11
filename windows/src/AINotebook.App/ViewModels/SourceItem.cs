@@ -22,9 +22,18 @@ public sealed partial class SourceItem : ObservableObject
     [ObservableProperty]
     public partial bool IsSummarizing { get; set; }
 
+    [ObservableProperty]
+    public partial bool IsSelected { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsRefreshing { get; set; }
+
     public bool HasSummary => !string.IsNullOrWhiteSpace(Summary);
     // Offer "Summarize" only for a ready source that has no summary yet and isn't already running.
     public bool CanSummarize => Status == SourceStatus.Ready && !HasSummary && !IsSummarizing;
+    public bool IsUrl => Source.Type == SourceType.Web && Source.Uri is not null;
+
+    public Source Source { get; }
 
     // Localized labels surfaced as bindable properties (DataTemplate can't x:Name per item).
     public string SummarizeButtonText => _strings.Get(StringKey.SourceSummarizeButton);
@@ -33,6 +42,7 @@ public sealed partial class SourceItem : ObservableObject
     public SourceItem(Source source, LocalizedStrings strings)
     {
         _strings = strings;
+        Source = source;
         Id = source.Id!.Value;
         Title = source.Title;
         Status = source.Status;

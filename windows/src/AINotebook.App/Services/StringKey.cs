@@ -53,4 +53,24 @@ public enum StringKey
     ProviderDeleteTitle, ProviderDeleteConfirm,
     PrivacyGateTitle, PrivacyGateBody, PrivacyGateAcknowledge,
     ChatProviderPickerLabel, EmbeddingProviderPickerLabel,
+    // Epic B: export, search, drag&drop, tags, bulk ops.
+    NoteSearchPlaceholder,
+    SourcePreviewTitle, SourcePreviewChunksLabel, SourcePreviewNoContent, SourcePreviewButton,
+    ExportNoteButton, ExportNoteMarkdown, ExportNotebookButton, ExportNotebookZip,
+    BackupButton, BackupRestoreButton, BackupRestoreConfirm, ExportSuccess,
+    GlobalSearchTitle, GlobalSearchPlaceholder, GlobalSearchEmpty,
+    GlobalSearchSectionNotes, GlobalSearchSectionSources,
+    BulkSelectButton, BulkDeleteSelectedButton, BulkDeleteConfirmFormat, BulkSummarizeSelectedButton,
+    TagsSectionTitle, AddTagButton, TagNamePlaceholder, FilterByTagLabel, AllTagsOption, DeleteTagTitle,
+    // Epic C: chat quality.
+    NotebookInstructionsLabel, NotebookInstructionsPlaceholder, NotebookInstructionsSaved,
+    SourceSetsSectionTitle, AddSourceSetButton, SourceSetNamePlaceholder, DeleteSourceSetTitle,
+    ChatEditButton, ChatRegenerateButton, ChatRegenerateWithButton,
+    CitationPanelTitle, CitationPanelEmpty,
+    // Epic D: retrieval quality.
+    ContextualEnrichmentLabel, ContextualEnrichmentHint,
+    // Epic E: live sources.
+    FolderWatchButton, FolderWatchActiveLabel,
+    UrlRefreshButton, UrlRefreshingStatus,
+    WebSearchToggleLabel, WebSearchResultsTitle, WebSearchEmpty,
 }

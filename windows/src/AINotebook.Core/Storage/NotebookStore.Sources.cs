@@ -13,7 +13,9 @@ public sealed partial class NotebookStore
         r.raw_path is null ? null : (string)r.raw_path,
         SourceStatusExtensions.FromDb((string)r.status),
         r.error is null ? null : (string)r.error,
-        SqliteDate.FromDb((string)r.ingested_at));
+        SqliteDate.FromDb((string)r.ingested_at),
+        r.last_synced_at is null ? (DateTime?)null : SqliteDate.FromDb((string)r.last_synced_at),
+        r.content_hash is null ? null : (string)r.content_hash);
 
     public Source CreateSource(long notebookId, SourceType type, string title, string? uri, string? rawPath)
     {
@@ -35,7 +37,7 @@ public sealed partial class NotebookStore
     }
 
     private const string SourceCols =
-        "id, notebook_id, type, title, uri, raw_path, status, error, ingested_at";
+        "id, notebook_id, type, title, uri, raw_path, status, error, ingested_at, last_synced_at, content_hash";
 
     public IReadOnlyList<Source> Sources(long notebookId) =>
         Connection.Query(
@@ -73,6 +75,13 @@ public sealed partial class NotebookStore
         cmd.ExecuteNonQuery();
     }
 
+    public void UpdateSourceSyncInfo(long id, DateTime lastSyncedAt, string contentHash)
+    {
+        Connection.Execute(
+            "UPDATE sources SET last_synced_at=$ts, content_hash=$hash WHERE id=$id",
+            new { ts = SqliteDate.ToDb(lastSyncedAt), hash = contentHash, id });
+    }
+
     public void DeleteSource(long id)
     {
         var rows = Connection.Execute("DELETE FROM sources WHERE id=$id", new { id });
@@ -100,12 +109,22 @@ public sealed partial class NotebookStore
 
     public IReadOnlyList<SourceChunk> Chunks(long sourceId) =>
         Connection.Query(
-            "SELECT id, source_id, ord, text, token_count, page_hint FROM source_chunks WHERE source_id=$sid ORDER BY ord ASC",
+            "SELECT id, source_id, ord, text, token_count, page_hint, context FROM source_chunks WHERE source_id=$sid ORDER BY ord ASC",
             new { sid = sourceId })
             .Select(r => new SourceChunk(
                 (long)r.id, (long)r.source_id, (int)(long)r.ord, (string)r.text,
-                (int)(long)r.token_count, r.page_hint is null ? (int?)null : (int)(long)r.page_hint))
+                (int)(long)r.token_count,
+                r.page_hint is null ? (int?)null : (int)(long)r.page_hint,
+                r.context is null ? null : (string)r.context))
             .ToList();
+
+    public void SetChunkContext(long sourceId, long? chunkId, string context)
+    {
+        if (chunkId is null) return;
+        Connection.Execute(
+            "UPDATE source_chunks SET context=$ctx WHERE id=$id",
+            new { ctx = context, id = chunkId });
+    }
 
     /// <summary>The persisted summary for a source, or null if not yet computed.</summary>
     public string? SourceSummary(long id) =>

@@ -6,6 +6,7 @@ using AINotebook.Core.Ollama;
 using AINotebook.Core.Providers;
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
+using AINotebook.Core.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -132,6 +133,26 @@ public partial class App : Application
         services.AddSingleton<AttachmentStore>(sp => new AttachmentStore(
             sp.GetRequiredService<NotebookStore>(), AttachmentStore.DefaultRoot()));
 
+        // Epic D1: contextual enricher (opt-in setting).
+        services.AddSingleton<ContextualEnricher>(sp =>
+        {
+            var settings = sp.GetRequiredService<ISettingsService>();
+            return new ContextualEnricher(
+                sp.GetRequiredService<NotebookStore>(),
+                sp.GetRequiredService<ProviderRouter>(),
+                () => settings.SelectedChatModel);
+        });
+
+        // Epic E1: folder watch per-notebook (singleton, notebookId set at runtime).
+        services.AddSingleton<FolderWatchService>(sp =>
+            new FolderWatchService(
+                sp.GetRequiredService<NotebookStore>(),
+                sp.GetRequiredService<IngestionService>()));
+
+        // Epic E3: web search.
+        services.AddSingleton<IWebSearch>(sp =>
+            new DuckDuckGoWebSearch(sp.GetRequiredService<HttpClient>()));
+
         // ViewModels.
         services.AddTransient<ShellViewModel>();
         services.AddTransient<NotebookSidebarViewModel>();
@@ -143,6 +164,8 @@ public partial class App : Application
         services.AddTransient<TransformationsViewModel>();
         services.AddTransient<TransformationEditorViewModel>();
         services.AddTransient<TransformationHistoryViewModel>();
+        services.AddTransient<GlobalSearchViewModel>();
+        services.AddTransient<SourcePreviewViewModel>();
 
         return services.BuildServiceProvider();
     }

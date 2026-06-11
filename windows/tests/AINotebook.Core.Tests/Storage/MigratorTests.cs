@@ -55,7 +55,9 @@ public class MigratorTests
             "v4_chat_sessions_and_messages", "v5_notes_and_transformations",
             "v6_notes_auto_source_and_uuid", "v7_attachments",
             "v8_note_versions", "v9_transformations_description",
-            "v10_source_summary"
+            "v10_source_summary", "v11_providers",
+            "v12_tags_and_notes_fts", "v13_instructions_and_sourcesets",
+            "v14_chunk_context", "v15_live_sources"
         }, ids);
     }
 
@@ -66,7 +68,7 @@ public class MigratorTests
         Migrator.Migrate(c); // second run is a no-op
         using var cmd = c.CreateCommand();
         cmd.CommandText = "SELECT count(*) FROM grdb_migrations";
-        Assert.Equal(10L, (long)cmd.ExecuteScalar()!);
+        Assert.Equal(15L, (long)cmd.ExecuteScalar()!);
     }
 
     [Fact]
@@ -75,7 +77,7 @@ public class MigratorTests
         using var c = OpenMigrated();
         Assert.Contains("notebooks", Tables(c));
         Assert.Equal(
-            new[] { "created_at", "description", "id", "name", "updated_at" },
+            new[] { "created_at", "description", "id", "instructions", "name", "updated_at" },
             Columns(c, "notebooks"));
     }
 

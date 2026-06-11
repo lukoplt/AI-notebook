@@ -5,4 +5,5 @@ public record Notebook(
     string Name,
     string Description,
     DateTime CreatedAt,
-    DateTime UpdatedAt);
+    DateTime UpdatedAt,
+    string Instructions = "");

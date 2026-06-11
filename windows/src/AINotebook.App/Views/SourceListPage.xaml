@@ -4,27 +4,53 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:AINotebook.App.ViewModels"
     xmlns:views="using:AINotebook.App.Views">
-    <Grid Padding="20" RowSpacing="12">
+    <Grid Padding="20" RowSpacing="12"
+          AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" ColumnSpacing="12">
+        <!-- Header row -->
+        <Grid Grid.Row="0" ColumnSpacing="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="HeaderTitle" Grid.Column="0" FontSize="20" FontWeight="Bold"
                        VerticalAlignment="Center" />
             <views:IndexingStatusBadge Grid.Column="1" VerticalAlignment="Center" />
-            <Button x:Name="AddButton" Grid.Column="2" Click="OnAdd" />
+            <!-- E1: folder watch toggle -->
+            <Button x:Name="FolderWatchButton" Grid.Column="2" Click="OnFolderWatch"
+                    Visibility="{x:Bind ViewModel.IsFolderWatchActive, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}"/>
+            <Button x:Name="FolderWatchActiveButton" Grid.Column="2" Click="OnFolderWatchDisable"
+                    Visibility="{x:Bind ViewModel.IsFolderWatchActive, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+            <!-- B6: bulk mode -->
+            <Button x:Name="BulkButton" Grid.Column="3"
+                    Command="{x:Bind ViewModel.ToggleBulkModeCommand}"/>
+            <Button x:Name="AddButton" Grid.Column="4" Click="OnAdd" />
+        </Grid>
+
+        <!-- B6: bulk action bar -->
+        <Grid Grid.Row="1" ColumnSpacing="8"
+              Visibility="{x:Bind ViewModel.IsBulkMode, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="BulkSelectedLabel" Grid.Column="0" VerticalAlignment="Center"/>
+            <Button x:Name="BulkDeleteButton" Grid.Column="1"
+                    Command="{x:Bind ViewModel.BulkDeleteCommand}"
+                    Style="{ThemeResource AccentButtonStyle}"/>
         </Grid>
 
         <!-- Empty state -->
-        <StackPanel x:Name="EmptyPanel" Grid.Row="1" Spacing="12"
+        <StackPanel x:Name="EmptyPanel" Grid.Row="2" Spacing="12"
                     HorizontalAlignment="Center" VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.IsEmpty, Mode=OneWay}">
             <FontIcon Glyph="&#xE8F1;" FontSize="40" HorizontalAlignment="Center"
@@ -36,21 +62,25 @@
         </StackPanel>
 
         <!-- List -->
-        <ListView x:Name="SourceList" Grid.Row="1"
+        <ListView x:Name="SourceList" Grid.Row="2"
                   ItemsSource="{x:Bind ViewModel.Sources, Mode=OneWay}"
                   SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:SourceItem">
                     <Grid ColumnSpacing="8" Padding="0,4">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Spacing="2">
+                        <!-- B6: bulk checkbox -->
+                        <CheckBox Grid.Column="0" IsChecked="{x:Bind IsSelected, Mode=TwoWay}"
+                                  Visibility="{Binding DataContext.IsBulkMode, ElementName=SourceList, Converter={StaticResource BoolToVisibility}}"/>
+                        <StackPanel Grid.Column="1" Spacing="2">
                             <TextBlock Text="{x:Bind Title}" FontWeight="SemiBold" />
                             <TextBlock Text="{x:Bind StatusText, Mode=OneWay}" FontSize="12"
                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                            <!-- Tier 2b: per-source summary -->
                             <TextBlock Text="{x:Bind Summary, Mode=OneWay}" TextWrapping="Wrap" FontSize="12"
                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                        Visibility="{x:Bind Summary, Mode=OneWay, Converter={StaticResource NullToCollapsed}}" />
@@ -63,9 +93,26 @@
                                 <TextBlock Text="{x:Bind SummarizingText}" VerticalAlignment="Center" FontSize="12"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                            Visibility="{x:Bind IsSummarizing, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
+                                <!-- E2: re-crawl for URL sources -->
+                                <Button x:Name="RefreshUrlBtn" Click="OnRefreshUrl" Tag="{x:Bind}"
+                                        Padding="8,2" FontSize="12"
+                                        Visibility="{x:Bind IsUrl, Converter={StaticResource BoolToVisibility}}">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon Glyph="&#xE72C;" FontSize="12"/>
+                                        <TextBlock x:Name="RefreshUrlText" FontSize="12"/>
+                                    </StackPanel>
+                                </Button>
+                                <ProgressRing Width="16" Height="16"
+                                              IsActive="{x:Bind IsRefreshing, Mode=OneWay}"
+                                              Visibility="{x:Bind IsRefreshing, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
                             </StackPanel>
                         </StackPanel>
-                        <Button Grid.Column="1" Background="Transparent" BorderThickness="0"
+                        <!-- B7: preview chunks -->
+                        <Button Grid.Column="2" Background="Transparent" BorderThickness="0"
+                                Click="OnPreviewRow" Tag="{x:Bind}" VerticalAlignment="Top">
+                            <FontIcon Glyph="&#xE8A5;" FontSize="16" />
+                        </Button>
+                        <Button Grid.Column="3" Background="Transparent" BorderThickness="0"
                                 Click="OnDeleteRow" Tag="{x:Bind Id}" VerticalAlignment="Top">
                             <FontIcon Glyph="&#xE74D;" FontSize="16" />
                         </Button>
@@ -74,7 +121,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <InfoBar x:Name="ErrorBar" Grid.Row="2" Severity="Error" IsClosable="True"
+        <InfoBar x:Name="ErrorBar" Grid.Row="3" Severity="Error" IsClosable="True"
                  IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}"
                  Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" />
     </Grid>

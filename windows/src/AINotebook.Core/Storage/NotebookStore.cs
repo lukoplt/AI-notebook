@@ -88,10 +88,11 @@ public sealed partial class NotebookStore : IDisposable
     public IReadOnlyList<Notebook> Notebooks()
     {
         return _conn.Query(
-            "SELECT id, name, description, created_at, updated_at FROM notebooks ORDER BY updated_at DESC")
+            "SELECT id, name, description, created_at, updated_at, instructions FROM notebooks ORDER BY updated_at DESC")
             .Select(r => new Notebook(
                 (long)r.id, (string)r.name, (string)r.description,
-                SqliteDate.FromDb((string)r.created_at), SqliteDate.FromDb((string)r.updated_at)))
+                SqliteDate.FromDb((string)r.created_at), SqliteDate.FromDb((string)r.updated_at),
+                r.instructions is null ? "" : (string)r.instructions))
             .ToList();
     }
 
@@ -105,9 +106,19 @@ public sealed partial class NotebookStore : IDisposable
             new { name = trimmed, updated = SqliteDate.ToDb(now), id });
         if (rows == 0) throw new StoreException.NotebookNotFound(id);
         var row = _conn.QuerySingle(
-            "SELECT id, name, description, created_at, updated_at FROM notebooks WHERE id=$id", new { id });
+            "SELECT id, name, description, created_at, updated_at, instructions FROM notebooks WHERE id=$id", new { id });
         return new Notebook((long)row.id, (string)row.name, (string)row.description,
-            SqliteDate.FromDb((string)row.created_at), SqliteDate.FromDb((string)row.updated_at));
+            SqliteDate.FromDb((string)row.created_at), SqliteDate.FromDb((string)row.updated_at),
+            row.instructions is null ? "" : (string)row.instructions);
+    }
+
+    public void UpdateNotebookInstructions(long id, string instructions)
+    {
+        var now = Now();
+        var rows = _conn.Execute(
+            "UPDATE notebooks SET instructions=$ins, updated_at=$updated WHERE id=$id",
+            new { ins = instructions, updated = SqliteDate.ToDb(now), id });
+        if (rows == 0) throw new StoreException.NotebookNotFound(id);
     }
 
     public void DeleteNotebook(long id)
