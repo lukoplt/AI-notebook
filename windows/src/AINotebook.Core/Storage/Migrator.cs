@@ -22,6 +22,7 @@ public static class Migrator
         ("v8_note_versions", V8),
         ("v9_transformations_description", V9),
         ("v10_source_summary", V10),
+        ("v11_providers", V11),
     };
 
     public static void Migrate(SqliteConnection conn)
@@ -83,26 +84,41 @@ public static class Migrator
         }
     }
 
-    /// <summary>v6 backfills note_uuid for any pre-existing NULL rows.</summary>
+    /// <summary>v6 backfills note_uuid; v11 seeds the default Ollama provider.</summary>
     private static void RunCustom(SqliteConnection conn, SqliteTransaction tx, string id)
     {
-        if (id != "v6_notes_auto_source_and_uuid") return;
-        var ids = new List<long>();
-        using (var sel = conn.CreateCommand())
+        if (id == "v6_notes_auto_source_and_uuid")
         {
-            sel.Transaction = tx;
-            sel.CommandText = "SELECT id FROM notes WHERE note_uuid IS NULL";
-            using var r = sel.ExecuteReader();
-            while (r.Read()) ids.Add(r.GetInt64(0));
+            var ids = new List<long>();
+            using (var sel = conn.CreateCommand())
+            {
+                sel.Transaction = tx;
+                sel.CommandText = "SELECT id FROM notes WHERE note_uuid IS NULL";
+                using var r = sel.ExecuteReader();
+                while (r.Read()) ids.Add(r.GetInt64(0));
+            }
+            foreach (var noteId in ids)
+            {
+                using var upd = conn.CreateCommand();
+                upd.Transaction = tx;
+                upd.CommandText = "UPDATE notes SET note_uuid = $u WHERE id = $id";
+                upd.Parameters.AddWithValue("$u", Guid.NewGuid().ToString().ToLowerInvariant());
+                upd.Parameters.AddWithValue("$id", noteId);
+                upd.ExecuteNonQuery();
+            }
         }
-        foreach (var noteId in ids)
+        else if (id == "v11_providers")
         {
-            using var upd = conn.CreateCommand();
-            upd.Transaction = tx;
-            upd.CommandText = "UPDATE notes SET note_uuid = $u WHERE id = $id";
-            upd.Parameters.AddWithValue("$u", Guid.NewGuid().ToString().ToLowerInvariant());
-            upd.Parameters.AddWithValue("$id", noteId);
-            upd.ExecuteNonQuery();
+            // Seed the built-in Ollama provider with the well-known fixed ID.
+            using var ins = conn.CreateCommand();
+            ins.Transaction = tx;
+            ins.CommandText = """
+                INSERT OR IGNORE INTO providers(id, type, name, base_url, enabled, privacy_acknowledged, created_at)
+                VALUES($id, 'ollama', 'Ollama (local)', 'http://127.0.0.1:11434', 1, 1, $now)
+                """;
+            ins.Parameters.AddWithValue("$id", "00000000-0000-0000-0000-000000000000");
+            ins.Parameters.AddWithValue("$now", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
+            ins.ExecuteNonQuery();
         }
     }
 
@@ -204,5 +220,17 @@ public static class Migrator
 
     private const string V10 = """
         ALTER TABLE sources ADD COLUMN "summary" TEXT;
+        """;
+
+    private const string V11 = """
+        CREATE TABLE IF NOT EXISTS "providers" (
+          "id" TEXT NOT NULL PRIMARY KEY,
+          "type" TEXT NOT NULL,
+          "name" TEXT NOT NULL,
+          "base_url" TEXT NOT NULL,
+          "enabled" INTEGER NOT NULL DEFAULT 1,
+          "privacy_acknowledged" INTEGER NOT NULL DEFAULT 0,
+          "created_at" TEXT NOT NULL
+        );
         """;
 }

@@ -45,4 +45,12 @@ public enum StringKey
     // NotebookLM Stage C: follow-up chips, per-source summary, chat source scope.
     ChatFollowupsLabel, SourceSummaryLabel, SourceSummarizeButton, SourceSummarizingStatus,
     ChatScopeButton, ChatScopeAllSources, ChatScopeTitle,
+    // Epic A: multi-provider AI support.
+    ProvidersSectionTitle, AddProviderButton, AddProviderTitle, EditProviderTitle,
+    ProviderTypeLabel, ProviderNameLabel, ProviderUrlLabel,
+    ProviderApiKeyLabel, ProviderApiKeyPlaceholder,
+    ProviderTestButton, ProviderTestSuccess,
+    ProviderDeleteTitle, ProviderDeleteConfirm,
+    PrivacyGateTitle, PrivacyGateBody, PrivacyGateAcknowledge,
+    ChatProviderPickerLabel, EmbeddingProviderPickerLabel,
 }

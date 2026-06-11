@@ -9,6 +9,8 @@ public interface ISettingsService : INotifyPropertyChanged
 {
     AppLanguage Language { get; set; }
     bool HasCompletedOnboarding { get; set; }
-    string SelectedChatModel { get; set; }      // default "llama3.2:3b"
-    string SelectedEmbeddingModel { get; set; } // default "nomic-embed-text"
+    string SelectedChatModel { get; set; }           // model name within selected chat provider
+    string SelectedEmbeddingModel { get; set; }      // model name within selected embedding provider
+    string SelectedChatProviderId { get; set; }      // default = Ollama well-known ID
+    string SelectedEmbeddingProviderId { get; set; } // default = Ollama well-known ID
 }

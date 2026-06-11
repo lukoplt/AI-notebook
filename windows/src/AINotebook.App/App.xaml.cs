@@ -1,9 +1,9 @@
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.Core;
-using AINotebook.Core.Extractors;
 using AINotebook.Core.Ingestion;
 using AINotebook.Core.Ollama;
+using AINotebook.Core.Providers;
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,52 +18,75 @@ public partial class App : Application
     public IServiceProvider Services { get; }
     public static Window MainWindow { get; private set; } = null!;
 
-    // Captured so background Core callbacks can marshal to the UI thread.
     public static DispatcherQueue Ui { get; private set; } = null!;
 
     public App()
     {
         InitializeComponent();
-        Services = ConfigureServices();
+        // Capture UI dispatcher before any background work starts.
+        var uiQueue = DispatcherQueue.GetForCurrentThread();
+        Services = ConfigureServices(uiQueue);
     }
 
-    private static IServiceProvider ConfigureServices()
+    private static IServiceProvider ConfigureServices(DispatcherQueue uiQueue)
     {
         var services = new ServiceCollection();
 
-        // --- App-layer services (singletons) ---
-        services.AddSingleton<ISettingsService, SettingsService>();          // M1
-        services.AddSingleton<LocalizedStrings>();                           // M1 (concrete)
-        services.AddSingleton<ILocalizedStrings>(sp => sp.GetRequiredService<LocalizedStrings>()); // same singleton via the interface
-        services.AddSingleton<IDialogService, DialogService>();              // M2
-        services.AddSingleton<TabSwitchCoordinator>();   // class defined in M3.4
-        services.AddSingleton<NoteJumpCoordinator>();    // class defined in M3.4
-        services.AddSingleton<NoteEditorCoordinator>();  // class defined in M3.4
+        // --- App-layer services ---
+        services.AddSingleton<DispatcherQueue>(_ => uiQueue);
+        services.AddSingleton<ISettingsService, SettingsService>();
+        services.AddSingleton<LocalizedStrings>();
+        services.AddSingleton<ILocalizedStrings>(sp => sp.GetRequiredService<LocalizedStrings>());
+        services.AddSingleton<IDialogService, DialogService>();
+        services.AddSingleton<ISecretStore, WindowsPasswordVaultSecretStore>();
+        services.AddSingleton<TabSwitchCoordinator>();
+        services.AddSingleton<NoteJumpCoordinator>();
+        services.AddSingleton<NoteEditorCoordinator>();
 
-        // --- Core service graph, in AINotebookApp.swift init() order ---
+        // Shared HttpClient for all cloud provider requests.
+        services.AddSingleton<HttpClient>(_ =>
+        {
+            var http = new HttpClient();
+            http.Timeout = TimeSpan.FromSeconds(120);
+            return http;
+        });
 
-        // 2. Data store (fatal on failure, like the mac fatalError).
-        //    Pass the persisted language so Core's BuiltinTransformations.SeedIfNeeded
-        //    seeds the built-in transformations localized (NotebookStore's optional
-        //    `language` ctor arg; defaults to English if omitted).
+        // --- Core service graph ---
+
         services.AddSingleton<NotebookStore>(sp =>
         {
             try { return new NotebookStore(StorePath.Production(), sp.GetRequiredService<ISettingsService>().Language); }
             catch (Exception ex) { throw new StartupException("Failed to open AINotebook database.", ex); }
         });
 
-        // 3. One shared OllamaClient reused by every consumer below.
         services.AddSingleton<OllamaClient>();
 
-        // 4. Embedder + EmbeddingWorker (bind the ADAPTER, not the raw client).
-        services.AddSingleton<Embedder>(sp => new Embedder(
+        // ProviderRouter: the single IChatStreaming + IEmbeddingProducing implementation.
+        // All engines get the router — it reads the active provider/model at each call.
+        services.AddSingleton<ProviderRouter>(sp => new ProviderRouter(
+            sp.GetRequiredService<ISettingsService>(),
             sp.GetRequiredService<NotebookStore>(),
-            new OllamaEmbeddingAdapter(sp.GetRequiredService<OllamaClient>()),
-            sp.GetRequiredService<ISettingsService>().SelectedEmbeddingModel));
+            sp.GetRequiredService<ISecretStore>(),
+            sp.GetRequiredService<OllamaClient>(),
+            sp.GetRequiredService<HttpClient>()));
+
+        // Register as the interfaces so consumers can inject IChatStreaming / IEmbeddingProducing directly.
+        services.AddSingleton<IChatStreaming>(sp => sp.GetRequiredService<ProviderRouter>());
+        services.AddSingleton<IEmbeddingProducing>(sp => sp.GetRequiredService<ProviderRouter>());
+
+        // Embedder + EmbeddingWorker — model key comes from router at runtime.
+        services.AddSingleton<Embedder>(sp =>
+        {
+            var router = sp.GetRequiredService<ProviderRouter>();
+            return new Embedder(
+                sp.GetRequiredService<NotebookStore>(),
+                router,
+                () => router.CurrentEmbeddingKey);
+        });
         services.AddSingleton<EmbeddingWorker>(sp =>
             new EmbeddingWorker(sp.GetRequiredService<Embedder>()));
 
-        // 5. Ingestion -> kick the worker after chunks are written.
+        // Ingestion.
         services.AddSingleton<IngestionService>(sp =>
         {
             var worker = sp.GetRequiredService<EmbeddingWorker>();
@@ -72,7 +95,7 @@ public partial class App : Application
                 onChunksWritten: () => { worker.Kick(); return Task.CompletedTask; });
         });
 
-        // 6. NoteIndexer -> kick worker; wire store.OnNoteSaved.
+        // NoteIndexer.
         services.AddSingleton<NoteIndexer>(sp =>
         {
             var worker = sp.GetRequiredService<EmbeddingWorker>();
@@ -81,59 +104,55 @@ public partial class App : Application
                 onChunksWritten: () => { worker.Kick(); return Task.CompletedTask; });
         });
 
-        // 8. Retriever (adapter again).
-        services.AddSingleton<Retriever>(sp => new Retriever(
-            sp.GetRequiredService<NotebookStore>(),
-            new OllamaEmbeddingAdapter(sp.GetRequiredService<OllamaClient>()),
-            sp.GetRequiredService<ISettingsService>().SelectedEmbeddingModel));
+        // Retriever — model key also comes from router at runtime.
+        services.AddSingleton<Retriever>(sp =>
+        {
+            var router = sp.GetRequiredService<ProviderRouter>();
+            return new Retriever(
+                sp.GetRequiredService<NotebookStore>(),
+                router,
+                () => router.CurrentEmbeddingKey);
+        });
 
-        // 9. ChatEngine (chat adapter).
+        // Engines pass the router; router ignores the chatModel param and uses live settings.
         services.AddSingleton<ChatEngine>(sp => new ChatEngine(
             sp.GetRequiredService<NotebookStore>(),
             sp.GetRequiredService<Retriever>(),
-            new OllamaChatAdapter(sp.GetRequiredService<OllamaClient>()),
+            sp.GetRequiredService<ProviderRouter>(),
             sp.GetRequiredService<ISettingsService>().SelectedChatModel));
 
-        // 10. TransformationEngine (chat adapter).
         services.AddSingleton<TransformationEngine>(sp => new TransformationEngine(
             sp.GetRequiredService<NotebookStore>(),
-            new OllamaChatAdapter(sp.GetRequiredService<OllamaClient>()),
+            sp.GetRequiredService<ProviderRouter>(),
             sp.GetRequiredService<ISettingsService>().SelectedChatModel));
 
-        // 10b. Engine holders — thin wrappers so the current engine can be swapped
-        //      (e.g. on chat-model change in Settings) without re-resolving consumers.
-        //      DI injects the registered ChatEngine/TransformationEngine into the ctors.
         services.AddSingleton<ChatEngineHolder>();
         services.AddSingleton<TransformationEngineHolder>();
 
-        // 11. AttachmentStore + OnNoteDeleted wiring.
         services.AddSingleton<AttachmentStore>(sp => new AttachmentStore(
             sp.GetRequiredService<NotebookStore>(), AttachmentStore.DefaultRoot()));
 
-        // ViewModels (fresh per request).
+        // ViewModels.
         services.AddTransient<ShellViewModel>();
         services.AddTransient<NotebookSidebarViewModel>();
         services.AddTransient<NotebookDetailViewModel>();
-        services.AddTransient<ChatViewModel>();   // M5.2: fresh per notebook-switch page
-        services.AddTransient<NotesViewModel>();           // M6.2
-        services.AddTransient<NotesChatPanelViewModel>();  // M6.2
-        services.AddTransient<NoteHistoryViewModel>();     // M6.2
-        services.AddTransient<TransformationsViewModel>(); // M8.1
-        services.AddTransient<TransformationEditorViewModel>();   // M8.2
-        services.AddTransient<TransformationHistoryViewModel>();  // M8.2
+        services.AddTransient<ChatViewModel>();
+        services.AddTransient<NotesViewModel>();
+        services.AddTransient<NotesChatPanelViewModel>();
+        services.AddTransient<NoteHistoryViewModel>();
+        services.AddTransient<TransformationsViewModel>();
+        services.AddTransient<TransformationEditorViewModel>();
+        services.AddTransient<TransformationHistoryViewModel>();
 
         return services.BuildServiceProvider();
     }
 
-    /// Resolve, then wire the cross-service store callbacks once
-    /// (NoteIndexer/AttachmentStore depend on the store the callbacks reference).
     private void WireStoreCallbacks()
     {
         var store = Services.GetRequiredService<NotebookStore>();
         var indexer = Services.GetRequiredService<NoteIndexer>();
         var attachments = Services.GetRequiredService<AttachmentStore>();
 
-        // Fired un-awaited off any thread; IndexAsync touches the store, so marshal.
         store.OnNoteSaved = noteId =>
         {
             Ui.TryEnqueue(async () =>
@@ -145,11 +164,10 @@ public partial class App : Application
         };
         store.OnNoteDeleted = uuid =>
         {
-            Ui.TryEnqueue(() => { try { attachments.DeleteFolder(uuid); } catch { /* best effort */ } });
+            Ui.TryEnqueue(() => { try { attachments.DeleteFolder(uuid); } catch { } });
             return Task.CompletedTask;
         };
 
-        // Touch the worker/ingestion graph so singletons are constructed eagerly.
         _ = Services.GetRequiredService<EmbeddingWorker>();
         _ = Services.GetRequiredService<IngestionService>();
     }
@@ -163,7 +181,6 @@ public partial class App : Application
     }
 }
 
-/// Wraps a fatal startup failure (the mac fatalError equivalent).
 public sealed class StartupException : Exception
 {
     public StartupException(string message, Exception inner) : base(message, inner) { }

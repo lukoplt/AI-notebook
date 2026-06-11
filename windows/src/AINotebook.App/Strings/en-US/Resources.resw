@@ -488,4 +488,58 @@
   <data name="chatScopeTitle" xml:space="preserve">
     <value>Limit chat to sources</value>
   </data>
+  <data name="providersSectionTitle" xml:space="preserve">
+    <value>AI Providers</value>
+  </data>
+  <data name="addProviderButton" xml:space="preserve">
+    <value>Add Provider</value>
+  </data>
+  <data name="addProviderTitle" xml:space="preserve">
+    <value>Add AI Provider</value>
+  </data>
+  <data name="editProviderTitle" xml:space="preserve">
+    <value>Edit AI Provider</value>
+  </data>
+  <data name="providerTypeLabel" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="providerNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="providerUrlLabel" xml:space="preserve">
+    <value>Base URL</value>
+  </data>
+  <data name="providerApiKeyLabel" xml:space="preserve">
+    <value>API Key</value>
+  </data>
+  <data name="providerApiKeyPlaceholder" xml:space="preserve">
+    <value>Paste key…</value>
+  </data>
+  <data name="providerTestButton" xml:space="preserve">
+    <value>Test connection</value>
+  </data>
+  <data name="providerTestSuccess" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="providerDeleteTitle" xml:space="preserve">
+    <value>Remove provider?</value>
+  </data>
+  <data name="providerDeleteConfirm" xml:space="preserve">
+    <value>This provider and its stored API key will be permanently removed.</value>
+  </data>
+  <data name="privacyGateTitle" xml:space="preserve">
+    <value>Cloud AI provider</value>
+  </data>
+  <data name="privacyGateBody" xml:space="preserve">
+    <value>Queries and note content will be sent to this provider's servers. Only enable if you trust the provider and accept their privacy policy.</value>
+  </data>
+  <data name="privacyGateAcknowledge" xml:space="preserve">
+    <value>I understand</value>
+  </data>
+  <data name="chatProviderPickerLabel" xml:space="preserve">
+    <value>Chat provider</value>
+  </data>
+  <data name="embeddingProviderPickerLabel" xml:space="preserve">
+    <value>Embedding provider</value>
+  </data>
 </root>

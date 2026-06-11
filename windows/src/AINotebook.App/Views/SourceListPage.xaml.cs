@@ -25,7 +25,7 @@ public sealed partial class SourceListPage : UserControl
         var store = sp.GetRequiredService<NotebookStore>();
         ViewModel = new SourcesViewModel(
             store, _strings,
-            sp.GetRequiredService<AINotebook.Core.Ollama.OllamaClient>(),
+            sp.GetRequiredService<ProviderRouter>(),
             sp.GetRequiredService<ISettingsService>())
         { NotebookId = notebook.Id!.Value };
 

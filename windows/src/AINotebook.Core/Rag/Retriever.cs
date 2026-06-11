@@ -9,14 +9,20 @@ public sealed class Retriever
 {
     private readonly NotebookStore _store;
     private readonly IEmbeddingProducing _client;
-    public string Model { get; }
+    private readonly Func<string> _modelGetter;
+    public string Model => _modelGetter();
     public int RrfK { get; }
 
+    // Backward-compatible overload: fixed model string.
     public Retriever(NotebookStore store, IEmbeddingProducing client, string model, int rrfK = 60)
+        : this(store, client, () => model, rrfK) { }
+
+    // Primary constructor: live model key via getter.
+    public Retriever(NotebookStore store, IEmbeddingProducing client, Func<string> modelGetter, int rrfK = 60)
     {
         _store = store;
         _client = client;
-        Model = model;
+        _modelGetter = modelGetter;
         RrfK = rrfK;
     }
 

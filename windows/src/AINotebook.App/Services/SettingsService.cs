@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using AINotebook.Core;
 using AINotebook.Core.Models;
+using AINotebook.Core.Providers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Windows.Globalization;
 using Windows.Storage;
@@ -15,10 +16,11 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
     private const string KeyOnboarding = "hasCompletedOnboarding";
     private const string KeyChatModel = "selectedChatModel";
     private const string KeyEmbeddingModel = "selectedEmbeddingModel";
+    private const string KeyChatProviderId = "selectedChatProviderId";
+    private const string KeyEmbeddingProviderId = "selectedEmbeddingProviderId";
 
     public SettingsService()
     {
-        // Initial language: stored value, else Core locale detection over preferred langs.
         var stored = _store.Values[KeyLanguage] as string;
         _language = AppLanguageExtensions.FromRawValue(stored ?? "")
             ?? LocaleDetection.DetectInitialLanguage(ApplicationLanguages.Languages);
@@ -26,6 +28,8 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
         _hasCompletedOnboarding = _store.Values[KeyOnboarding] as bool? ?? false;
         _selectedChatModel = _store.Values[KeyChatModel] as string ?? "llama3.2:3b";
         _selectedEmbeddingModel = _store.Values[KeyEmbeddingModel] as string ?? "nomic-embed-text";
+        _selectedChatProviderId = _store.Values[KeyChatProviderId] as string ?? ProviderConfig.OllamaId;
+        _selectedEmbeddingProviderId = _store.Values[KeyEmbeddingProviderId] as string ?? ProviderConfig.OllamaId;
     }
 
     private AppLanguage _language;
@@ -54,6 +58,20 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
     {
         get => _selectedEmbeddingModel;
         set { if (SetField(ref _selectedEmbeddingModel, value)) _store.Values[KeyEmbeddingModel] = value; }
+    }
+
+    private string _selectedChatProviderId;
+    public string SelectedChatProviderId
+    {
+        get => _selectedChatProviderId;
+        set { if (SetField(ref _selectedChatProviderId, value)) _store.Values[KeyChatProviderId] = value; }
+    }
+
+    private string _selectedEmbeddingProviderId;
+    public string SelectedEmbeddingProviderId
+    {
+        get => _selectedEmbeddingProviderId;
+        set { if (SetField(ref _selectedEmbeddingProviderId, value)) _store.Values[KeyEmbeddingProviderId] = value; }
     }
 
     private bool SetField<T>(ref T field, T value, [CallerMemberName] string? name = null)

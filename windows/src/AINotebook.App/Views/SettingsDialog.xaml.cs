@@ -2,12 +2,12 @@ using System.ComponentModel;
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.Core.Models;
-using AINotebook.Core.Ollama;
+using AINotebook.Core.Providers;
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace AINotebook.App.Views;
 
@@ -25,13 +25,12 @@ public sealed partial class SettingsDialog : ContentDialog
         ViewModel = new SettingsViewModel(
             sp.GetRequiredService<ISettingsService>(),
             sp.GetRequiredService<NotebookStore>(),
-            sp.GetRequiredService<OllamaClient>(),
+            sp.GetRequiredService<ProviderRouter>(),
             sp.GetRequiredService<EmbeddingWorker>());
 
         CloseButtonText = "Done";
         ApplyLocalizedText();
 
-        // Language combo: the two AppLanguage display names.
         LanguageCombo.ItemsSource = ViewModel.Languages.Select(l => l.DisplayName()).ToList();
         LanguageCombo.SelectedIndex = ViewModel.Language == AppLanguage.Czech ? 1 : 0;
 
@@ -39,13 +38,17 @@ public sealed partial class SettingsDialog : ContentDialog
         CurrentModelValue.Text = ViewModel.SelectedEmbeddingModel;
 
         ViewModel.PropertyChanged += OnVmChanged;
-        Opened += async (_, _) => await LoadModelsAsync();
+        Opened += async (_, _) => await LoadAllAsync();
     }
 
     private void ApplyLocalizedText()
     {
         Title = _strings.Get(StringKey.Settings);
         TitleText.Text = _strings.Get(StringKey.Settings);
+        ProvidersSectionTitleText.Text = _strings.Get(StringKey.ProvidersSectionTitle);
+        AddProviderButton.Content = _strings.Get(StringKey.AddProviderButton);
+        ChatProviderCombo.Header = _strings.Get(StringKey.ChatProviderPickerLabel);
+        EmbedProviderCombo.Header = _strings.Get(StringKey.EmbeddingProviderPickerLabel);
         ChatModelCombo.Header = _strings.Get(StringKey.ChatModelPickerLabel);
         EmbedModelCombo.Header = _strings.Get(StringKey.EmbeddingModelPickerLabel);
         ModelsUnavailableText.Text = "Models unavailable — start Ollama or refresh in Manage models.";
@@ -56,31 +59,44 @@ public sealed partial class SettingsDialog : ContentDialog
         VersionLabel.Text = _strings.Get(StringKey.Version);
     }
 
-    private async Task LoadModelsAsync()
+    private async Task LoadAllAsync()
     {
-        await ViewModel.RefreshModelsAsync();
+        await ViewModel.RefreshAllAsync();
+        PopulateProviderCombos();
         PopulateModelCombos();
+        ProvidersList.ItemsSource = ViewModel.Providers;
+    }
+
+    private void PopulateProviderCombos()
+    {
+        _suppress = true;
+        var names = ViewModel.Providers.Select(p => p.Name).ToList();
+
+        ChatProviderCombo.ItemsSource = names;
+        var chatIdx = ViewModel.Providers.ToList().FindIndex(p => p.Id == ViewModel.SelectedChatProviderId);
+        ChatProviderCombo.SelectedIndex = chatIdx >= 0 ? chatIdx : 0;
+
+        EmbedProviderCombo.ItemsSource = new List<string>(names); // separate list
+        var embedIdx = ViewModel.Providers.ToList().FindIndex(p => p.Id == ViewModel.SelectedEmbeddingProviderId);
+        EmbedProviderCombo.SelectedIndex = embedIdx >= 0 ? embedIdx : 0;
+        _suppress = false;
     }
 
     private void PopulateModelCombos()
     {
         _suppress = true;
 
-        // Keep the current selection selectable even if Ollama doesn't list it.
-        var chatItems = ViewModel.AvailableModels.ToList();
-        if (!chatItems.Contains(ViewModel.SelectedChatModel)) chatItems.Add(ViewModel.SelectedChatModel);
-        var embedItems = ViewModel.AvailableModels.ToList();
-        if (!embedItems.Contains(ViewModel.SelectedEmbeddingModel)) embedItems.Add(ViewModel.SelectedEmbeddingModel);
-
-        var any = ViewModel.AvailableModels.Count > 0;
+        var any = ViewModel.ChatModelsAvailable;
         ChatModelCombo.Visibility = any ? Visibility.Visible : Visibility.Collapsed;
-        EmbedModelCombo.Visibility = any ? Visibility.Visible : Visibility.Collapsed;
-        ModelsUnavailableText.Visibility = any ? Visibility.Collapsed : Visibility.Visible;
-
-        ChatModelCombo.ItemsSource = chatItems;
-        EmbedModelCombo.ItemsSource = embedItems;
+        ChatModelCombo.ItemsSource = ViewModel.AvailableChatModels.ToList();
         ChatModelCombo.SelectedItem = ViewModel.SelectedChatModel;
+
+        var embedAny = ViewModel.EmbeddingModelsAvailable;
+        EmbedModelCombo.Visibility = embedAny ? Visibility.Visible : Visibility.Collapsed;
+        EmbedModelCombo.ItemsSource = ViewModel.AvailableEmbeddingModels.ToList();
         EmbedModelCombo.SelectedItem = ViewModel.SelectedEmbeddingModel;
+
+        ModelsUnavailableText.Visibility = (!any && !embedAny) ? Visibility.Visible : Visibility.Collapsed;
 
         _suppress = false;
     }
@@ -100,8 +116,27 @@ public sealed partial class SettingsDialog : ContentDialog
     {
         if (_suppress) return;
         ViewModel.Language = LanguageCombo.SelectedIndex == 1 ? AppLanguage.Czech : AppLanguage.English;
-        // Re-localize this dialog live.
         ApplyLocalizedText();
+    }
+
+    private async void OnChatProviderChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_suppress) return;
+        var idx = ChatProviderCombo.SelectedIndex;
+        if (idx < 0 || idx >= ViewModel.Providers.Count) return;
+        ViewModel.SelectedChatProviderId = ViewModel.Providers[idx].Id;
+        await ViewModel.RefreshChatModelsAsync();
+        PopulateModelCombos();
+    }
+
+    private async void OnEmbedProviderChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_suppress) return;
+        var idx = EmbedProviderCombo.SelectedIndex;
+        if (idx < 0 || idx >= ViewModel.Providers.Count) return;
+        ViewModel.SelectedEmbeddingProviderId = ViewModel.Providers[idx].Id;
+        await ViewModel.RefreshEmbeddingModelsAsync();
+        PopulateModelCombos();
     }
 
     private void OnChatModelChanged(object sender, SelectionChangedEventArgs e)
@@ -119,11 +154,31 @@ public sealed partial class SettingsDialog : ContentDialog
     private async void OnManageModels(object sender, RoutedEventArgs e)
     {
         var dialog = new ModelManagementDialog(_strings) { XamlRoot = this.XamlRoot };
-        // ContentDialogs are one-per-thread; hide this one while the child is open.
         this.Hide();
         await dialog.ShowAsync();
-        await this.ShowAsync();        // re-open settings
-        await LoadModelsAsync();       // refresh on return (mirrors .sheet onDismiss)
+        await this.ShowAsync();
+        await LoadAllAsync();
+    }
+
+    private async void OnAddProvider(object sender, RoutedEventArgs e)
+    {
+        var dialog = new AddProviderDialog(_strings) { XamlRoot = this.XamlRoot };
+        this.Hide();
+        await dialog.ShowAsync();
+        await this.ShowAsync();
+        await LoadAllAsync();
+    }
+
+    private async void OnEditProvider(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: ProviderConfig cfg })
+        {
+            var dialog = new AddProviderDialog(_strings, cfg) { XamlRoot = this.XamlRoot };
+            this.Hide();
+            await dialog.ShowAsync();
+            await this.ShowAsync();
+            await LoadAllAsync();
+        }
     }
 
     private async void OnReembed(object sender, RoutedEventArgs e)

@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using AINotebook.App.Services;
-using AINotebook.Core.Ollama;
+using AINotebook.Core.Ollama;  // IChatStreaming
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,7 +13,7 @@ public sealed partial class SourcesViewModel : ObservableObject
 {
     private readonly NotebookStore _store;
     private readonly LocalizedStrings _strings;
-    private readonly OllamaClient _ollama;
+    private readonly IChatStreaming _chatStreaming;
     private readonly ISettingsService _settings;
     private readonly DispatcherQueue _dispatcher;
 
@@ -31,11 +31,11 @@ public sealed partial class SourcesViewModel : ObservableObject
     partial void OnErrorMessageChanged(string? value) => OnPropertyChanged(nameof(HasError));
 
     public SourcesViewModel(NotebookStore store, LocalizedStrings strings,
-                            OllamaClient ollama, ISettingsService settings)
+                            IChatStreaming chatStreaming, ISettingsService settings)
     {
         _store = store;
         _strings = strings;
-        _ollama = ollama;
+        _chatStreaming = chatStreaming;
         _settings = settings;
         _dispatcher = DispatcherQueue.GetForCurrentThread();
     }
@@ -89,7 +89,7 @@ public sealed partial class SourcesViewModel : ObservableObject
         try
         {
             var summarizer = new SourceSummarizer(
-                _store, new OllamaChatAdapter(_ollama), _settings.SelectedChatModel);
+                _store, _chatStreaming, _settings.SelectedChatModel);
             var text = await Task.Run(() => summarizer.SummarizeAsync(item.Id));
             void Apply() { item.Summary = text; }
             if (!_dispatcher.HasThreadAccess) _dispatcher.TryEnqueue(Apply); else Apply();

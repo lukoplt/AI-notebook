@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AINotebook.Core.Models;
-using AINotebook.Core.Ollama;           // OllamaClient, OllamaChatAdapter (Stage C followups)
+using AINotebook.Core.Ollama;
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using AINotebook.App.Services;          // ILocalizedStrings, ChatEngineHolder, coordinators (Plan 1)
@@ -21,8 +21,8 @@ public partial class ChatViewModel : ObservableObject
     private readonly NoteJumpCoordinator _noteJump;
     private readonly TabSwitchCoordinator _tabSwitch;
     private readonly ILocalizedStrings _t;
-    private readonly OllamaClient _ollama;       // Stage C: build FollowupSuggester on demand
-    private readonly ISettingsService _settings; // Stage C: current chat model
+    private readonly IChatStreaming _chatStreaming;
+    private readonly ISettingsService _settings;
     private readonly DispatcherQueue _dispatcher;
 
     private long _notebookId;
@@ -59,12 +59,12 @@ public partial class ChatViewModel : ObservableObject
     public ChatViewModel(
         NotebookStore store, ChatEngineHolder chatHolder,
         NoteJumpCoordinator noteJump, TabSwitchCoordinator tabSwitch,
-        ILocalizedStrings t, OllamaClient ollama, ISettingsService settings,
+        ILocalizedStrings t, IChatStreaming chatStreaming, ISettingsService settings,
         DispatcherQueue dispatcher)
     {
         _store = store; _chatHolder = chatHolder;
         _noteJump = noteJump; _tabSwitch = tabSwitch;
-        _t = t; _ollama = ollama; _settings = settings; _dispatcher = dispatcher;
+        _t = t; _chatStreaming = chatStreaming; _settings = settings; _dispatcher = dispatcher;
     }
 
     // Bound to title text + send-enabled gating (mirrors `.disabled(sending || input.isEmpty)`).
@@ -219,8 +219,7 @@ public partial class ChatViewModel : ObservableObject
         if (string.IsNullOrWhiteSpace(answer)) return;
         try
         {
-            var suggester = new FollowupSuggester(
-                new OllamaChatAdapter(_ollama), _settings.SelectedChatModel);
+            var suggester = new FollowupSuggester(_chatStreaming, _settings.SelectedChatModel);
             var suggestions = await Task.Run(() => suggester.GenerateAsync(userText, answer));
             void Apply()
             {

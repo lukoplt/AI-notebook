@@ -13,13 +13,13 @@ public class LocalizedStringsTests
 
     // NOTE: requires WinUI? No — pure XML. Runs anywhere with .NET (incl. Windows CI).
     [Fact]
-    public void Both_languages_have_the_same_157_keys()
+    public void Both_languages_have_the_same_175_keys()
     {
         var en = Names("en.resw");
         var cs = Names("cs.resw");
 
-        Assert.Equal(157, en.Count);
-        Assert.Equal(157, cs.Count);
+        Assert.Equal(175, en.Count);
+        Assert.Equal(175, cs.Count);
         Assert.True(en.SetEquals(cs), "en-US and cs-CZ must define the identical key set");
     }
 

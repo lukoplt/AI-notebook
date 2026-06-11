@@ -488,4 +488,58 @@
   <data name="chatScopeTitle" xml:space="preserve">
     <value>Omezit chat na zdroje</value>
   </data>
+  <data name="providersSectionTitle" xml:space="preserve">
+    <value>AI Poskytovatelé</value>
+  </data>
+  <data name="addProviderButton" xml:space="preserve">
+    <value>Přidat poskytovatele</value>
+  </data>
+  <data name="addProviderTitle" xml:space="preserve">
+    <value>Přidat AI poskytovatele</value>
+  </data>
+  <data name="editProviderTitle" xml:space="preserve">
+    <value>Upravit AI poskytovatele</value>
+  </data>
+  <data name="providerTypeLabel" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="providerNameLabel" xml:space="preserve">
+    <value>Název</value>
+  </data>
+  <data name="providerUrlLabel" xml:space="preserve">
+    <value>Základní URL</value>
+  </data>
+  <data name="providerApiKeyLabel" xml:space="preserve">
+    <value>API klíč</value>
+  </data>
+  <data name="providerApiKeyPlaceholder" xml:space="preserve">
+    <value>Vložte klíč…</value>
+  </data>
+  <data name="providerTestButton" xml:space="preserve">
+    <value>Otestovat připojení</value>
+  </data>
+  <data name="providerTestSuccess" xml:space="preserve">
+    <value>Připojeno</value>
+  </data>
+  <data name="providerDeleteTitle" xml:space="preserve">
+    <value>Odebrat poskytovatele?</value>
+  </data>
+  <data name="providerDeleteConfirm" xml:space="preserve">
+    <value>Tento poskytovatel a jeho uložený API klíč budou trvale odstraněny.</value>
+  </data>
+  <data name="privacyGateTitle" xml:space="preserve">
+    <value>Cloudový AI poskytovatel</value>
+  </data>
+  <data name="privacyGateBody" xml:space="preserve">
+    <value>Dotazy a obsah poznámek budou odesílány na servery tohoto poskytovatele. Aktivujte pouze tehdy, pokud mu důvěřujete a přijímáte jeho zásady ochrany soukromí.</value>
+  </data>
+  <data name="privacyGateAcknowledge" xml:space="preserve">
+    <value>Rozumím</value>
+  </data>
+  <data name="chatProviderPickerLabel" xml:space="preserve">
+    <value>Poskytovatel chatu</value>
+  </data>
+  <data name="embeddingProviderPickerLabel" xml:space="preserve">
+    <value>Poskytovatel embeddingů</value>
+  </data>
 </root>
