@@ -146,14 +146,28 @@
                                             <ItemsControl ItemsSource="{x:Bind ViewModel.SourceSets, Mode=OneWay}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate x:DataType="models:SourceSet">
-                                                        <Button Content="{x:Bind Name}" Tag="{x:Bind}"
-                                                                HorizontalAlignment="Stretch"
-                                                                HorizontalContentAlignment="Left"
-                                                                Click="OnApplySourceSet"
-                                                                Padding="6,4" Margin="0,2"/>
+                                                        <Grid Margin="0,2" ColumnSpacing="4">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Button Grid.Column="0" Content="{x:Bind Name}" Tag="{x:Bind}"
+                                                                    HorizontalAlignment="Stretch"
+                                                                    HorizontalContentAlignment="Left"
+                                                                    Click="OnApplySourceSet"
+                                                                    Padding="6,4"/>
+                                                            <Button Grid.Column="1" Tag="{x:Bind}"
+                                                                    Click="OnDeleteSourceSet"
+                                                                    Background="Transparent" BorderThickness="0"
+                                                                    Padding="6,4">
+                                                                <FontIcon Glyph="&#xE74D;" FontSize="12"/>
+                                                            </Button>
+                                                        </Grid>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
+                                            <Button x:Name="AddSourceSetButton" Click="OnCreateSourceSet"
+                                                    Margin="0,4,0,0" Padding="6,4"/>
                                         </StackPanel>
                                     </Border>
                                 </StackPanel>

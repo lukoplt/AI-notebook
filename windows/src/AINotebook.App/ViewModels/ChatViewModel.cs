@@ -124,6 +124,36 @@ public partial class ChatViewModel : ObservableObject
         catch (Exception ex) { ErrorMessage = ex.ToString(); }
     }
 
+    // C2: delete a saved source set.
+    [RelayCommand]
+    private void DeleteSourceSet(SourceSet? set)
+    {
+        if (set?.Id is not { } id) return;
+        try
+        {
+            _store.DeleteSourceSet(id);
+            var existing = SourceSets.FirstOrDefault(s => s.Id == id);
+            if (existing is not null) SourceSets.Remove(existing);
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+    }
+
+    // C2: save the current selection as a named source set.
+    [RelayCommand]
+    private void CreateSourceSet(string? name)
+    {
+        var trimmed = name?.Trim();
+        if (string.IsNullOrEmpty(trimmed)) return;
+        try
+        {
+            var selectedIds = ScopeSources.Where(s => s.IsSelected).Select(s => s.Id).ToList();
+            var set = _store.CreateSourceSet(_notebookId, trimmed);
+            _store.SetSourceSetMembers(set.Id!.Value, selectedIds);
+            SourceSets.Add(set);
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+    }
+
     // Tier 3: populate the scope picker with this notebook's Ready sources (all selected).
     private void LoadScopeSources()
     {

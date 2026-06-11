@@ -48,6 +48,13 @@ public sealed partial class NotebookStore : IDisposable
 
     private int Execute(string sql, object? param = null) => _conn.Execute(sql, param);
 
+    /// <summary>B3: flush WAL and copy the DB file to destPath.</summary>
+    public void BackupTo(string destPath)
+    {
+        _conn.Execute("PRAGMA wal_checkpoint(FULL)");
+        File.Copy(_conn.DataSource, destPath, overwrite: true);
+    }
+
     // Swift's Date() stores sub-millisecond precision so created_at/updated_at
     // never collide; the SqliteDate TEXT format truncates to milliseconds, so
     // back-to-back writes could tie and make `ORDER BY updated_at DESC`

@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using AINotebook.App.Services;
 using AINotebook.Core.Ingestion;
+using AINotebook.Core.Models;
 using AINotebook.Core.Ollama;  // IChatStreaming
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
@@ -39,6 +40,9 @@ public sealed partial class SourcesViewModel : ObservableObject
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
     partial void OnErrorMessageChanged(string? value) => OnPropertyChanged(nameof(HasError));
 
+    // B8: global tag list for the manage-tags dialog.
+    public ObservableCollection<Tag> AllTags { get; } = new();
+
     public IReadOnlyList<long> SelectedSourceIds =>
         Sources.Where(s => s.IsSelected).Select(s => s.Id).ToList();
 
@@ -66,6 +70,7 @@ public sealed partial class SourcesViewModel : ObservableObject
                       .Select(s => (Source: s, Summary: _store.SourceSummary(s.Id!.Value),
                                    Tags: _store.TagsForSource(s.Id!.Value).ToList()))
                       .ToList());
+            var allTagRows = await Task.Run(() => _store.Tags().ToList());
             void Apply()
             {
                 Sources.Clear();
@@ -76,6 +81,8 @@ public sealed partial class SourcesViewModel : ObservableObject
                     Sources.Add(item);
                 }
                 IsEmpty = Sources.Count == 0;
+                AllTags.Clear();
+                foreach (var t in allTagRows) AllTags.Add(t);
                 ErrorMessage = null;
             }
             if (!_dispatcher.HasThreadAccess) _dispatcher.TryEnqueue(Apply); else Apply();
@@ -84,6 +91,34 @@ public sealed partial class SourcesViewModel : ObservableObject
         {
             ErrorMessage = ex.ToString();
         }
+    }
+
+    // B8: toggle a tag on a source; create it first if it doesn't exist yet.
+    public Tag GetOrCreateTag(string name)
+    {
+        var trimmed = name.Trim();
+        var existing = AllTags.FirstOrDefault(t =>
+            string.Equals(t.Name, trimmed, StringComparison.OrdinalIgnoreCase));
+        if (existing is not null) return existing;
+        var created = _store.CreateTag(trimmed);
+        AllTags.Add(created);
+        return created;
+    }
+
+    // B8: toggle a tag on/off for a source and persist.
+    public void ToggleSourceTag(SourceItem item, Tag tag)
+    {
+        var had = item.Tags.Any(t => t.Id == tag.Id);
+        if (had) item.Tags.Remove(item.Tags.First(t => t.Id == tag.Id));
+        else item.Tags.Add(tag);
+        _store.SetSourceTags(item.Id, item.Tags.Select(t => t.Id!.Value).ToList());
+    }
+
+    // B8: refresh the tag list for one source from the store (after bulk edits).
+    public void RefreshSourceTags(SourceItem item)
+    {
+        item.Tags.Clear();
+        foreach (var t in _store.TagsForSource(item.Id)) item.Tags.Add(t);
     }
 
     [RelayCommand]

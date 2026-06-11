@@ -16,6 +16,7 @@ public partial class NotebookDetailViewModel : ObservableObject
     [ObservableProperty] public partial TabSwitchCoordinator.Tab SelectedTab { get; set; } = TabSwitchCoordinator.Tab.Sources;
     [ObservableProperty] public partial string Instructions { get; set; } = "";
     [ObservableProperty] public partial string? InstructionsSavedMessage { get; set; }
+    [ObservableProperty] public partial string? BackupStatus { get; set; }
 
     public string SourcesText => _l["sources"];
     public string ChatText => _l["chat"];

@@ -37,6 +37,7 @@ public sealed partial class ChatPage : Page
         CommitEditButton.Content = _t.Get(StringKey.UnsavedSaveButton);
         CancelEditButton.Content = _t.Get(StringKey.CancelButton);
         SourceSetsLabel.Text = _t.Get(StringKey.SourceSetsSectionTitle);
+        AddSourceSetButton.Content = _t.Get(StringKey.AddSourceSetButton);
         ToolTipService.SetToolTip(WebSearchToggle, _t.Get(StringKey.WebSearchToggleLabel));
         ViewModel.Messages.CollectionChanged += (_, _) => ScrollToBottom();
         ViewModel.PropertyChanged += (_, e) =>
@@ -86,6 +87,30 @@ public sealed partial class ChatPage : Page
     {
         if (sender is FrameworkElement { Tag: SourceSet set })
             ViewModel.ApplySourceSetCommand.Execute(set);
+    }
+
+    // C2: delete a saved source set.
+    private void OnDeleteSourceSet(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement { Tag: SourceSet set })
+            ViewModel.DeleteSourceSetCommand.Execute(set);
+    }
+
+    // C2: save current source selection as a named set.
+    private async void OnCreateSourceSet(object sender, RoutedEventArgs e)
+    {
+        var input = new TextBox { PlaceholderText = _t.Get(StringKey.SourceSetNamePlaceholder) };
+        var dialog = new ContentDialog
+        {
+            XamlRoot = this.XamlRoot,
+            Title = _t.Get(StringKey.AddSourceSetButton),
+            Content = input,
+            PrimaryButtonText = _t.Get(StringKey.UnsavedSaveButton),
+            CloseButtonText = _t.Get(StringKey.CancelButton),
+            DefaultButton = ContentDialogButton.Primary
+        };
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            ViewModel.CreateSourceSetCommand.Execute(input.Text);
     }
 
     private void OnToggleCitationPanel(object sender, RoutedEventArgs e)

@@ -56,6 +56,21 @@
                                        Visibility="{x:Bind ViewModel.InstructionsSavedMessage, Mode=OneWay, Converter={StaticResource NullToCollapsed}}"
                                        Foreground="{ThemeResource SystemFillColorSuccessBrush}"/>
                         </StackPanel>
+                        <!-- B3: database backup / restore -->
+                        <Border BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                                BorderThickness="0,1,0,0" Padding="0,12,0,0" Margin="0,12,0,0">
+                            <StackPanel Spacing="8">
+                                <TextBlock x:Name="BackupSectionLabel" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Button x:Name="BackupButton" Click="OnBackup"/>
+                                    <Button x:Name="RestoreButton" Click="OnRestore"/>
+                                </StackPanel>
+                                <TextBlock x:Name="BackupStatusLabel"
+                                           Style="{ThemeResource CaptionTextBlockStyle}"
+                                           Text="{x:Bind ViewModel.BackupStatus, Mode=OneWay}"
+                                           Visibility="{x:Bind ViewModel.BackupStatus, Mode=OneWay, Converter={StaticResource NullToCollapsed}}"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>

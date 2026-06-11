@@ -1,3 +1,4 @@
+using System.Linq;
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.Core.Ingestion;
@@ -145,6 +146,77 @@ public sealed partial class SourceListPage : UserControl
         }
         await ViewModel.LoadAsync();
         ApplyEmptyState();
+    }
+
+    // B8: manage tags for a source via ContentDialog.
+    private async void OnManageSourceTags(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { Tag: SourceItem item }) return;
+
+        // Build dialog body: existing tag chips + text input for new tag.
+        var panel = new StackPanel { Spacing = 8 };
+
+        var tagPanel = new ItemsControl();
+        tagPanel.ItemsPanel = new ItemsPanelTemplate();
+        var tagRow = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6 };
+
+        void RebuildChips()
+        {
+            tagRow.Children.Clear();
+            foreach (var tag in item.Tags)
+            {
+                var chip = new Button
+                {
+                    Content = $"{tag.Name} ×",
+                    Padding = new Microsoft.UI.Xaml.Thickness(8, 2, 8, 2),
+                    Tag = tag
+                };
+                chip.Click += (_, _) =>
+                {
+                    ViewModel.ToggleSourceTag(item, tag);
+                    RebuildChips();
+                };
+                tagRow.Children.Add(chip);
+            }
+        }
+        RebuildChips();
+        panel.Children.Add(tagRow);
+
+        // Quick-pick existing tags not yet applied.
+        var quickRow = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
+        foreach (var t in ViewModel.AllTags.Where(t => !item.Tags.Any(it => it.Id == t.Id)))
+        {
+            var btn = new Button { Content = $"+ {t.Name}", Padding = new Microsoft.UI.Xaml.Thickness(6, 2, 6, 2), Tag = t };
+            btn.Click += (_, _) =>
+            {
+                ViewModel.ToggleSourceTag(item, (Tag)btn.Tag);
+                RebuildChips();
+            };
+            quickRow.Children.Add(btn);
+        }
+        if (quickRow.Children.Count > 0) panel.Children.Add(quickRow);
+
+        var input = new TextBox { PlaceholderText = _strings.Get(StringKey.TagNamePlaceholder) };
+        panel.Children.Add(input);
+
+        var dialog = new ContentDialog
+        {
+            XamlRoot = this.XamlRoot,
+            Title = _strings.Get(StringKey.TagsSectionTitle),
+            Content = panel,
+            PrimaryButtonText = _strings.Get(StringKey.AddTagButton),
+            CloseButtonText = _strings.Get(StringKey.CancelButton),
+            DefaultButton = ContentDialogButton.Close
+        };
+        dialog.PrimaryButtonClick += (_, _) =>
+        {
+            var name = input.Text?.Trim();
+            if (string.IsNullOrEmpty(name)) return;
+            var tag = ViewModel.GetOrCreateTag(name);
+            if (!item.Tags.Any(t => t.Id == tag.Id))
+                ViewModel.ToggleSourceTag(item, tag);
+        };
+        await dialog.ShowAsync();
     }
 
     // E1: pick a folder and start watching
