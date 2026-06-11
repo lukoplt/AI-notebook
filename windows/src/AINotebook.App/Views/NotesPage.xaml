@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:editor="using:AINotebook.App.Editor"
     xmlns:ctrl="using:AINotebook.App.Controls"
-    xmlns:models="using:AINotebook.Core.Models">
+    xmlns:models="using:AINotebook.Core.Models"
+    xmlns:vm="using:AINotebook.App.ViewModels">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260"/>
@@ -17,20 +18,60 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <TextBlock x:Name="NotesTitle" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <Button x:Name="NewButtonTop" HorizontalAlignment="Right"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" x:Name="NotesTitle" Style="{ThemeResource SubtitleTextBlockStyle}"
+                           VerticalAlignment="Center"/>
+                <!-- B1: export selected note -->
+                <Button Grid.Column="1" x:Name="ExportNoteButton" Margin="4,0,0,0"
+                        Click="OnExportNote"
+                        Visibility="{x:Bind ViewModel.HasSelectedNote, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                    <FontIcon Glyph="&#xEDE1;" FontSize="14"/>
+                </Button>
+                <Button Grid.Column="2" x:Name="NewButtonTop" Margin="4,0,0,0"
                         Command="{x:Bind ViewModel.CreateBlankCommand}"/>
             </Grid>
             <!-- B9: search box -->
-            <TextBox Grid.Row="1" Margin="0,6,0,6"
+            <TextBox Grid.Row="1" Margin="0,6,0,4"
                      x:Name="SearchBox"
                      Text="{x:Bind ViewModel.SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      PlaceholderText="{x:Bind SearchPlaceholder}"
                      ClearButtonEnabled="True"/>
-            <ListView Grid.Row="2" x:Name="NotesList"
+            <!-- B8: tags for selected note -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,4" Spacing="4"
+                        Visibility="{x:Bind ViewModel.HasSelectedNote, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentNoteTags, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="4"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="models:Tag">
+                            <Button Padding="6,2" FontSize="11" Click="OnRemoveNoteTag" Tag="{x:Bind}">
+                                <StackPanel Orientation="Horizontal" Spacing="3">
+                                    <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center"/>
+                                    <FontIcon Glyph="&#xE711;" FontSize="9"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button x:Name="AddTagButton" Padding="6,2" FontSize="11" Click="OnAddNoteTag">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon Glyph="&#xE710;" FontSize="11"/>
+                        <TextBlock x:Name="AddTagText" FontSize="11"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <ListView Grid.Row="3" x:Name="NotesList"
                       ItemsSource="{x:Bind ViewModel.FilteredNotes, Mode=OneWay}"
                       SelectionChanged="OnNotesSelectionChanged">
                 <ListView.ItemTemplate>
@@ -44,7 +85,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackPanel Grid.Row="2" x:Name="EmptyNotes" Visibility="Collapsed"
+            <StackPanel Grid.Row="3" x:Name="EmptyNotes" Visibility="Collapsed"
                         VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
                 <FontIcon Glyph="&#xE70B;" FontSize="32"/>
                 <TextBlock x:Name="EmptyNotesText" TextWrapping="Wrap" TextAlignment="Center"/>

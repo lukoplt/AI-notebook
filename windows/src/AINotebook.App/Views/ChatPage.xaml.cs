@@ -6,6 +6,7 @@ using AINotebook.Core.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Windows.System;
 
@@ -35,6 +36,8 @@ public sealed partial class ChatPage : Page
         ToolTipService.SetToolTip(RegenerateButton, _t.Get(StringKey.ChatRegenerateButton));
         CommitEditButton.Content = _t.Get(StringKey.UnsavedSaveButton);
         CancelEditButton.Content = _t.Get(StringKey.CancelButton);
+        SourceSetsLabel.Text = _t.Get(StringKey.SourceSetsSectionTitle);
+        ToolTipService.SetToolTip(WebSearchToggle, _t.Get(StringKey.WebSearchToggleLabel));
         ViewModel.Messages.CollectionChanged += (_, _) => ScrollToBottom();
         ViewModel.PropertyChanged += (_, e) =>
         {
@@ -77,6 +80,13 @@ public sealed partial class ChatPage : Page
 
     private void OnSaveAsNote(object? sender, MessageViewModel vm) =>
         ViewModel.SaveAsNoteCommand.Execute(vm);
+
+    // C2: apply a source set as the chat scope preset.
+    private void OnApplySourceSet(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement { Tag: SourceSet set })
+            ViewModel.ApplySourceSetCommand.Execute(set);
+    }
 
     private void OnToggleCitationPanel(object sender, RoutedEventArgs e)
     {

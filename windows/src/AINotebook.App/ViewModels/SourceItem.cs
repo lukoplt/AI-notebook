@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using AINotebook.App.Services;
 using AINotebook.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -34,6 +35,9 @@ public sealed partial class SourceItem : ObservableObject
     public bool IsUrl => Source.Type == SourceType.Web && Source.Uri is not null;
 
     public Source Source { get; }
+
+    // B8: tags assigned to this source.
+    public ObservableCollection<Tag> Tags { get; } = new();
 
     // Localized labels surfaced as bindable properties (DataTemplate can't x:Name per item).
     public string SummarizeButtonText => _strings.Get(StringKey.SourceSummarizeButton);

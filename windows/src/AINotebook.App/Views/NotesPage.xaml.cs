@@ -3,10 +3,14 @@ using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.App.Dialogs;
 using AINotebook.Core.Models;
+using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 namespace AINotebook.App.Views;
 
@@ -31,6 +35,8 @@ public sealed partial class NotesPage : Page
         NewButtonEmpty.Content = _t.Get("notesNewButton");
         EmptyNotesText.Text = _t.Get("notesEmptyState");
         NoSelectionText.Text = _t.Get("notesEmptyState");
+        AddTagText.Text = _t.Get(StringKey.AddTagButton);
+        ToolTipService.SetToolTip(ExportNoteButton, _t.Get(StringKey.ExportNoteMarkdown));
 
         ViewModel.PropertyChanged += OnVmPropertyChanged;
         ViewModel.UnsavedDialogRequested += async () => await ShowUnsavedDialog();
@@ -126,6 +132,61 @@ public sealed partial class NotesPage : Page
             default: ViewModel.OnUnsavedCancel(); break;
         }
         SyncSelectionToList();
+    }
+
+    // B1: export selected note as Markdown.
+    private async void OnExportNote(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.SelectedNote is not { } note) return;
+        var picker = new FileSavePicker();
+        InitializeWithWindow.Initialize(picker, WindowNative.GetWindowHandle(App.MainWindow));
+        picker.SuggestedFileName = string.IsNullOrWhiteSpace(note.Title) ? "note" : note.Title;
+        picker.DefaultFileExtension = ".md";
+        picker.FileTypeChoices.Add("Markdown", [".md"]);
+        var file = await picker.PickSaveFileAsync();
+        if (file is null) return;
+        try { await FileIO.WriteTextAsync(file, ExportService.ExportNoteMarkdown(note)); }
+        catch (Exception ex) { ViewModel.ErrorMessage = ex.ToString(); }
+    }
+
+    // B8: remove a tag chip from the current note.
+    private void OnRemoveNoteTag(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement { Tag: Tag tag })
+            ViewModel.ToggleNoteTagCommand.Execute(tag);
+    }
+
+    // B8: add a tag to the current note via ContentDialog.
+    private async void OnAddNoteTag(object sender, RoutedEventArgs e)
+    {
+        var box = new TextBox
+        {
+            PlaceholderText = _t.Get(StringKey.TagNamePlaceholder),
+            MinWidth = 200
+        };
+        var panel = new StackPanel { Spacing = 8 };
+        panel.Children.Add(box);
+        if (ViewModel.AllNotebookTags.Count > 0)
+        {
+            var wrap = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
+            foreach (var t in ViewModel.AllNotebookTags)
+            {
+                var btn = new Button { Content = t.Name, Tag = t, Padding = new Thickness(6, 2, 6, 2), FontSize = 11 };
+                btn.Click += (_, _) => ViewModel.ToggleNoteTagCommand.Execute(btn.Tag as Tag);
+                wrap.Children.Add(btn);
+            }
+            panel.Children.Add(wrap);
+        }
+        var dialog = new ContentDialog
+        {
+            XamlRoot = this.XamlRoot,
+            Title = _t.Get(StringKey.AddTagButton),
+            Content = panel,
+            PrimaryButtonText = _t.Get(StringKey.Create),
+            CloseButtonText = _t.Get(StringKey.Cancel)
+        };
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary && !string.IsNullOrWhiteSpace(box.Text))
+            ViewModel.CreateNoteTagCommand.Execute(box.Text.Trim());
     }
 
     private async System.Threading.Tasks.Task ShowHistoryDialog(long noteId)

@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ctrl="using:AINotebook.App.Controls"
     xmlns:vm="using:AINotebook.App.ViewModels"
-    xmlns:models="using:AINotebook.Core.Models">
+    xmlns:models="using:AINotebook.Core.Models"
+    xmlns:sys="using:System">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="240"/>
@@ -133,6 +134,28 @@
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
+                                    <!-- C2: source sets — apply a saved set as scope preset -->
+                                    <Border Margin="0,4,0,0"
+                                            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                                            BorderThickness="0,1,0,0" Padding="0,6,0,0"
+                                            Visibility="{x:Bind ViewModel.SourceSets.Count, Mode=OneWay, Converter={StaticResource CountToVisibility}}">
+                                        <StackPanel Spacing="4">
+                                            <TextBlock x:Name="SourceSetsLabel"
+                                                       Style="{ThemeResource CaptionTextBlockStyle}"
+                                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                            <ItemsControl ItemsSource="{x:Bind ViewModel.SourceSets, Mode=OneWay}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate x:DataType="models:SourceSet">
+                                                        <Button Content="{x:Bind Name}" Tag="{x:Bind}"
+                                                                HorizontalAlignment="Stretch"
+                                                                HorizontalContentAlignment="Left"
+                                                                Click="OnApplySourceSet"
+                                                                Padding="6,4" Margin="0,2"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>
@@ -148,6 +171,11 @@
                             Visibility="{x:Bind ViewModel.CanEditLast, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
                         <FontIcon Glyph="&#xE72C;" FontSize="14"/>
                     </Button>
+                    <!-- E3: web search per-message toggle -->
+                    <ToggleButton x:Name="WebSearchToggle"
+                                  IsChecked="{x:Bind ViewModel.UseWebSearch, Mode=TwoWay}">
+                        <FontIcon Glyph="&#xE721;" FontSize="14"/>
+                    </ToggleButton>
                     <!-- C4: citation panel toggle -->
                     <Button x:Name="CitationPanelButton" Click="OnToggleCitationPanel">
                         <FontIcon Glyph="&#xE7C3;" FontSize="14"/>

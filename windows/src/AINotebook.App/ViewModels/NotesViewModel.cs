@@ -23,7 +23,12 @@ public partial class NotesViewModel : ObservableObject
     public ObservableCollection<Note> Notes { get; } = new();
     public ObservableCollection<Note> FilteredNotes { get; } = new();
 
+    // B8: tags for the currently selected note + all notebook tags.
+    public ObservableCollection<Tag> CurrentNoteTags { get; } = new();
+    public ObservableCollection<Tag> AllNotebookTags { get; } = new();
+
     [ObservableProperty] public partial Note? SelectedNote { get; set; }
+    public bool HasSelectedNote => SelectedNote is not null;
     [ObservableProperty] public partial string DraftTitle { get; set; } = "";
     [ObservableProperty] public partial string DraftBody { get; set; } = "";
     [ObservableProperty] public partial string? ErrorMessage { get; set; }
@@ -52,6 +57,7 @@ public partial class NotesViewModel : ObservableObject
     public async Task LoadAsync(long notebookId)
     {
         _notebookId = notebookId;
+        LoadAllTags();
         await ReloadAsync();
     }
 
@@ -69,6 +75,46 @@ public partial class NotesViewModel : ObservableObject
         }
         catch (Exception ex) { ErrorMessage = ex.ToString(); }
         await Task.CompletedTask;
+    }
+
+    partial void OnSelectedNoteChanged(Note? value)
+    {
+        OnPropertyChanged(nameof(HasSelectedNote));
+        LoadCurrentNoteTags();
+    }
+
+    private void LoadAllTags()
+    {
+        AllNotebookTags.Clear();
+        try { foreach (var t in _store.Tags()) AllNotebookTags.Add(t); } catch { }
+    }
+
+    private void LoadCurrentNoteTags()
+    {
+        CurrentNoteTags.Clear();
+        if (SelectedNote?.Id is not { } id) return;
+        try { foreach (var t in _store.TagsForNote(id)) CurrentNoteTags.Add(t); } catch { }
+    }
+
+    [RelayCommand]
+    private void ToggleNoteTag(Tag? tag)
+    {
+        if (tag is null || SelectedNote?.Id is not { } noteId) return;
+        var current = _store.NoteTagIds(noteId).ToHashSet();
+        if (current.Contains(tag.Id)) current.Remove(tag.Id); else current.Add(tag.Id);
+        _store.SetNoteTags(noteId, [.. current]);
+        LoadCurrentNoteTags();
+    }
+
+    [RelayCommand]
+    private void CreateNoteTag(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return;
+        var existing = AllNotebookTags.FirstOrDefault(t =>
+            t.Name.Equals(name.Trim(), StringComparison.OrdinalIgnoreCase));
+        var tag = existing ?? _store.CreateTag(name.Trim());
+        if (existing is null) LoadAllTags();
+        ToggleNoteTag(tag);
     }
 
     partial void OnSearchQueryChanged(string value) => ApplySearchFilter();

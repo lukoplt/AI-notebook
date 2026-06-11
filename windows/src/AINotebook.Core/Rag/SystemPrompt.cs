@@ -1,5 +1,6 @@
 using System.Text;
 using AINotebook.Core.Models;
+using AINotebook.Core.Providers;
 
 namespace AINotebook.Core.Rag;
 
@@ -13,7 +14,11 @@ public static class SystemPrompt
         "cite it inline as [N] where N is the block number. Multiple citations\n" +
         "may appear in a single sentence: [1][3].";
 
-    public static string Compose(IReadOnlyList<RetrievalHit> hits, string? currentNoteContent = null, string? notebookInstructions = null)
+    public static string Compose(
+        IReadOnlyList<RetrievalHit> hits,
+        string? currentNoteContent = null,
+        string? notebookInstructions = null,
+        IReadOnlyList<WebSearchResult>? webResults = null)
     {
         var sections = new List<string>();
         if (!string.IsNullOrWhiteSpace(notebookInstructions))
@@ -29,6 +34,13 @@ public static class SystemPrompt
             var blocks = string.Join("\n",
                 hits.Select((hit, i) => $"[{i + 1}] {hit.Snippet}"));
             sections.Add("CONTEXT:\n" + blocks);
+        }
+
+        if (webResults is { Count: > 0 })
+        {
+            var webBlocks = string.Join("\n",
+                webResults.Select((r, i) => $"[W{i + 1}] {r.Title}: {r.Snippet}"));
+            sections.Add("WEB SEARCH RESULTS (use these for up-to-date information, cite as [WN]):\n" + webBlocks);
         }
 
         if (currentNoteContent is { } note &&

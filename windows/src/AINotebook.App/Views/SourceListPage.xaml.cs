@@ -2,10 +2,12 @@ using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.Core.Ingestion;
 using AINotebook.Core.Models;
+using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
@@ -17,6 +19,7 @@ public sealed partial class SourceListPage : UserControl
 
     private readonly IngestionService _ingestion;
     private readonly LocalizedStrings _strings;
+    private readonly NotebookStore _store;
 
     public SourceListPage(Notebook notebook)
     {
@@ -24,9 +27,9 @@ public sealed partial class SourceListPage : UserControl
         var sp = App.Current.Services;
         _ingestion = sp.GetRequiredService<IngestionService>();
         _strings = sp.GetRequiredService<LocalizedStrings>();
-        var store = sp.GetRequiredService<NotebookStore>();
+        _store = sp.GetRequiredService<NotebookStore>();
         ViewModel = new SourcesViewModel(
-            store, _strings,
+            _store, _strings,
             sp.GetRequiredService<ProviderRouter>(),
             sp.GetRequiredService<ISettingsService>(),
             _ingestion,
@@ -41,6 +44,8 @@ public sealed partial class SourceListPage : UserControl
         FolderWatchActiveButton.Content = _strings.Get(StringKey.FolderWatchActiveLabel);
         BulkButton.Content = _strings.Get(StringKey.BulkSelectButton);
         BulkDeleteButton.Content = _strings.Get(StringKey.BulkDeleteSelectedButton);
+        ToolTipService.SetToolTip(ExportNotebookButton, _strings.Get(StringKey.ExportNotebookZip));
+        ExportNotebookButton.Content = new FontIcon { Glyph = "", FontSize = 14 };
 
         ViewModel.FolderWatchRequested += async () => await PickAndEnableFolderWatchAsync();
         ViewModel.PropertyChanged += (_, e) =>
@@ -76,6 +81,25 @@ public sealed partial class SourceListPage : UserControl
     {
         if (sender is Button { Tag: SourceItem item })
             await ViewModel.SummarizeAsync(item);
+    }
+
+    // B2: export entire notebook as ZIP.
+    private async void OnExportNotebook(object sender, RoutedEventArgs e)
+    {
+        var picker = new FileSavePicker();
+        InitializeWithWindow.Initialize(picker, WindowNative.GetWindowHandle(App.MainWindow));
+        picker.SuggestedFileName = "notebook";
+        picker.DefaultFileExtension = ".zip";
+        picker.FileTypeChoices.Add("ZIP", [".zip"]);
+        var file = await picker.PickSaveFileAsync();
+        if (file is null) return;
+        try
+        {
+            var stream = ExportService.ExportNotebookZip(ViewModel.NotebookId, _store);
+            using var outStream = await file.OpenStreamForWriteAsync();
+            await stream.CopyToAsync(outStream);
+        }
+        catch (Exception ex) { ViewModel.ErrorMessage = ex.ToString(); }
     }
 
     // E2: re-crawl URL source

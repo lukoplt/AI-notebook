@@ -63,13 +63,18 @@ public sealed partial class SourcesViewModel : ObservableObject
             // Pair each source with its persisted summary (Tier 2b).
             var rows = await Task.Run(() =>
                 _store.Sources(NotebookId)
-                      .Select(s => (Source: s, Summary: _store.SourceSummary(s.Id!.Value)))
+                      .Select(s => (Source: s, Summary: _store.SourceSummary(s.Id!.Value),
+                                   Tags: _store.TagsForSource(s.Id!.Value).ToList()))
                       .ToList());
             void Apply()
             {
                 Sources.Clear();
-                foreach (var (s, summary) in rows)
-                    Sources.Add(new SourceItem(s, _strings) { Summary = summary });
+                foreach (var (s, summary, tags) in rows)
+                {
+                    var item = new SourceItem(s, _strings) { Summary = summary };
+                    foreach (var t in tags) item.Tags.Add(t);
+                    Sources.Add(item);
+                }
                 IsEmpty = Sources.Count == 0;
                 ErrorMessage = null;
             }

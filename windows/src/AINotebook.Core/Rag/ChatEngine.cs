@@ -1,5 +1,6 @@
 using AINotebook.Core.Models;
 using AINotebook.Core.Ollama;
+using AINotebook.Core.Providers;
 using AINotebook.Core.Storage;
 
 namespace AINotebook.Core.Rag;
@@ -30,6 +31,7 @@ public sealed class ChatEngine
     public async Task<ChatMessage> SendAsync(
         long sessionId, long notebookId, string userText,
         string? currentNoteContent = null, IReadOnlyCollection<long>? sourceIds = null,
+        IReadOnlyList<WebSearchResult>? webResults = null,
         Action<string>? onToken = null, CancellationToken ct = default)
     {
         // 1) Persist the user message.
@@ -43,7 +45,7 @@ public sealed class ChatEngine
         var nb = notebooks.FirstOrDefault(n => n.Id == notebookId);
         var instructions = nb?.Instructions;
 
-        var systemContent = SystemPrompt.Compose(hits, currentNoteContent, instructions);
+        var systemContent = SystemPrompt.Compose(hits, currentNoteContent, instructions, webResults);
         var history = _store.Messages(sessionId);
         var turns = new List<ChatTurn> { new(ChatRole.System, systemContent) };
         foreach (var m in history) turns.Add(new ChatTurn(m.Role, m.Content));

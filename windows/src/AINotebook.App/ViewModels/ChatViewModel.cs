@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AINotebook.Core.Models;
 using AINotebook.Core.Ollama;
+using AINotebook.Core.Providers;
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using AINotebook.App.Services;          // ILocalizedStrings, ChatEngineHolder, coordinators (Plan 1)
@@ -23,6 +24,7 @@ public partial class ChatViewModel : ObservableObject
     private readonly ILocalizedStrings _t;
     private readonly IChatStreaming _chatStreaming;
     private readonly ISettingsService _settings;
+    private readonly IWebSearch _webSearch;
     private readonly DispatcherQueue _dispatcher;
 
     private long _notebookId;
@@ -52,6 +54,12 @@ public partial class ChatViewModel : ObservableObject
     [ObservableProperty] public partial CitationViewModel? SelectedCitation { get; set; }
     public ObservableCollection<CitationViewModel> PanelCitations { get; } = new();
 
+    // C2: source set picker.
+    public ObservableCollection<SourceSet> SourceSets { get; } = new();
+
+    // E3: per-message web search toggle.
+    [ObservableProperty] public partial bool UseWebSearch { get; set; }
+
     // Bound to the Sources scope flyout button label ("Sources" / "Sources (2)").
     public string ScopeButtonText
     {
@@ -70,11 +78,12 @@ public partial class ChatViewModel : ObservableObject
         NotebookStore store, ChatEngineHolder chatHolder,
         NoteJumpCoordinator noteJump, TabSwitchCoordinator tabSwitch,
         ILocalizedStrings t, IChatStreaming chatStreaming, ISettingsService settings,
-        DispatcherQueue dispatcher)
+        IWebSearch webSearch, DispatcherQueue dispatcher)
     {
         _store = store; _chatHolder = chatHolder;
         _noteJump = noteJump; _tabSwitch = tabSwitch;
-        _t = t; _chatStreaming = chatStreaming; _settings = settings; _dispatcher = dispatcher;
+        _t = t; _chatStreaming = chatStreaming; _settings = settings;
+        _webSearch = webSearch; _dispatcher = dispatcher;
     }
 
     // Bound to title text + send-enabled gating (mirrors `.disabled(sending || input.isEmpty)`).
@@ -91,7 +100,28 @@ public partial class ChatViewModel : ObservableObject
     {
         _notebookId = notebookId;
         LoadScopeSources();
+        LoadSourceSets();
         await EnsureSessionsAsync();
+    }
+
+    // C2: load saved source sets for the notebook.
+    private void LoadSourceSets()
+    {
+        SourceSets.Clear();
+        try { foreach (var ss in _store.SourceSets(_notebookId)) SourceSets.Add(ss); } catch { }
+    }
+
+    [RelayCommand]
+    private void ApplySourceSet(SourceSet? set)
+    {
+        if (set?.Id is not { } id) return;
+        try
+        {
+            var memberIds = _store.SourceSetMembers(id).ToHashSet();
+            foreach (var s in ScopeSources) s.IsSelected = memberIds.Contains(s.Id);
+            OnPropertyChanged(nameof(ScopeButtonText));
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
     }
 
     // Tier 3: populate the scope picker with this notebook's Ready sources (all selected).
@@ -260,9 +290,15 @@ public partial class ChatViewModel : ObservableObject
         ClearFollowups();
         try
         {
+            IReadOnlyList<WebSearchResult>? webResults = null;
+            if (UseWebSearch)
+            {
+                try { webResults = await _webSearch.SearchAsync(text); } catch { }
+            }
             await _chatHolder.Engine.SendAsync(
                 sid, _notebookId, text,
                 currentNoteContent: null, sourceIds: SelectedSourceIds(),
+                webResults: webResults,
                 onToken: token => _dispatcher.TryEnqueue(() => StreamingDraft += token));
             await ReloadMessagesAsync();
             await GenerateFollowupsAsync(text);
