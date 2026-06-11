@@ -46,3 +46,13 @@ public sealed class BoolToVisibilityConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, string language)
         => value is Visibility v && v == Visibility.Visible;
 }
+
+/// Maps an int count to <see cref="Visibility"/>: >0 -> Visible, 0 -> Collapsed.
+public sealed class CountToVisibilityConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, string language)
+        => (value is int n && n > 0) ? Visibility.Visible : Visibility.Collapsed;
+
+    public object ConvertBack(object value, Type targetType, object parameter, string language)
+        => throw new NotSupportedException();
+}
