@@ -42,8 +42,7 @@
             <TextBox Grid.Row="1" Margin="0,6,0,4"
                      x:Name="SearchBox"
                      Text="{x:Bind ViewModel.SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     PlaceholderText="{x:Bind SearchPlaceholder}"
-                     ClearButtonEnabled="True"/>
+                     PlaceholderText="{x:Bind SearchPlaceholder}"/>
             <!-- B8: tags for selected note -->
             <StackPanel Grid.Row="2" Margin="0,0,0,4" Spacing="4"
                         Visibility="{x:Bind ViewModel.HasSelectedNote, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
