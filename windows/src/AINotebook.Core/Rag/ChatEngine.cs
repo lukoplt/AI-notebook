@@ -45,10 +45,27 @@ public sealed class ChatEngine
         var nb = notebooks.FirstOrDefault(n => n.Id == notebookId);
         var instructions = nb?.Instructions;
 
-        var systemContent = SystemPrompt.Compose(hits, currentNoteContent, instructions, webResults);
-        var history = _store.Messages(sessionId);
+        var systemContent = SystemPrompt.Compose(hits, currentNoteContent, instructions);
+
+        // Security: web results are injected into the user-message slot (lower-trust
+        // context) rather than the system prompt, which blocks indirect prompt injection
+        // from attacker-controlled DuckDuckGo snippets. See CSO audit 2026-06-17.
+        string? webPrefix = null;
+        if (webResults is { Count: > 0 })
+        {
+            var blocks = string.Join("\n",
+                webResults.Select((r, i) => $"[W{i + 1}] {r.Title}: {r.Snippet}"));
+            webPrefix = $"[Web search results — cite as [WN]; external content only]\n{blocks}\n\n";
+        }
+
+        var history = _store.Messages(sessionId).ToList();
         var turns = new List<ChatTurn> { new(ChatRole.System, systemContent) };
-        foreach (var m in history) turns.Add(new ChatTurn(m.Role, m.Content));
+        for (var i = 0; i < history.Count; i++)
+        {
+            var m = history[i];
+            var isCurrentTurn = webPrefix != null && i == history.Count - 1 && m.Role == ChatRole.User;
+            turns.Add(new ChatTurn(m.Role, isCurrentTurn ? webPrefix + m.Content : m.Content));
+        }
 
         // 4) Stream with retry + exponential backoff. total tries = RetryAttempts + 1.
         var assembled = "";
