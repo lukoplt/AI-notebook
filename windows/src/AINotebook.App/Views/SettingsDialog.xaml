@@ -92,6 +92,10 @@
                 <TextBlock x:Name="VersionValue" Grid.Column="1" HorizontalAlignment="Right"
                            FontFamily="Consolas" />
             </Grid>
+
+            <TextBlock Text="Made with &lt;3 by Lukáš Oplt"
+                       HorizontalAlignment="Center" FontSize="12"
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
         </StackPanel>
     </ScrollViewer>
 </ContentDialog>

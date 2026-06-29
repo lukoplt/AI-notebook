@@ -89,6 +89,14 @@ struct SettingsView: View {
                     .monospacedDigit()
             }
 
+            HStack {
+                Spacer()
+                Text("Made with <3 by Lukáš Oplt")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
+
             Spacer()
 
             HStack {
