@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:AINotebook.App.ViewModels"
+    xmlns:core="using:AINotebook.Core.Storage"
     x:Name="Dialog"
     CloseButtonText="Close"
     DefaultButton="None">
@@ -43,7 +44,7 @@
                            Visibility="{x:Bind ViewModel.Notes.Count, Mode=OneWay, Converter={StaticResource CountToVisibility}}"/>
                 <ItemsControl ItemsSource="{x:Bind ViewModel.Notes, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="vm:NoteSearchHit">
+                        <DataTemplate x:DataType="core:NoteSearchHit">
                             <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
                                     Click="OnNoteHitClick" Tag="{x:Bind}"
                                     Padding="10,8" Margin="0,2">
@@ -63,7 +64,7 @@
                            Visibility="{x:Bind ViewModel.Sources.Count, Mode=OneWay, Converter={StaticResource CountToVisibility}}"/>
                 <ItemsControl ItemsSource="{x:Bind ViewModel.Sources, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="vm:SourceSearchHit">
+                        <DataTemplate x:DataType="core:SourceSearchHit">
                             <Border Padding="10,8" Margin="0,2" CornerRadius="4"
                                     Background="{ThemeResource SubtleFillColorSecondaryBrush}">
                                 <TextBlock Text="{x:Bind Title}" FontWeight="SemiBold"/>
