@@ -117,6 +117,35 @@ automatically if missing.
 - For local AI: [Ollama](https://ollama.com/download). For cloud AI: an API key
   for your chosen provider (Anthropic / OpenAI / OpenAI-compatible).
 
+### First launch: "unknown / unidentified developer"
+
+The release binaries are **not signed with a paid Apple/Microsoft developer
+certificate**, so the OS shows a warning the first time you open the app. This
+is expected for an open-source build — you can verify the source here and build
+it yourself. To run the downloaded release:
+
+**macOS** — Gatekeeper blocks it with *"AI Notebook can't be opened because
+Apple cannot check it for malicious software"* (or *"unidentified developer"*).
+
+1. In **Finder**, right-click (or Control-click) **AI Notebook** in
+   Applications → **Open**, then confirm **Open** in the dialog. macOS
+   remembers the choice for next time.
+2. If there's no **Open** button, go to  **System Settings → Privacy &
+   Security**, scroll to the message about AI Notebook, and click
+   **Open Anyway**.
+3. Stubborn quarantine flag? Clear it in Terminal:
+   ```bash
+   xattr -dr com.apple.quarantine "/Applications/AI Notebook.app"
+   ```
+
+**Windows** — SmartScreen shows *"Windows protected your PC"* with
+*"Unknown publisher"*.
+
+1. Click **More info**.
+2. Click **Run anyway** to launch the installer.
+3. If a User Account Control prompt names an unknown publisher, confirm
+   **Yes** to continue.
+
 ---
 
 ## Build from source
