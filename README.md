@@ -35,6 +35,18 @@ It ships as two native codebases sharing one design and data model:
 
 ---
 
+## Screenshots
+
+*macOS app, showing the "Renewable Energy" demo notebook.*
+
+| Sources — local ingestion & indexing | Chat with `[N]` citations |
+|:---:|:---:|
+| ![Sources tab](docs/screenshots/sources.png) | ![Chat with citations](docs/screenshots/chat.png) |
+| **Notes — WYSIWYG editor + note-scoped chat** | **AI tools — transformation templates** |
+| ![Notes tab](docs/screenshots/notes.png) | ![Transformations tab](docs/screenshots/transformations.png) |
+
+---
+
 ## Features
 
 - **Notebooks** — organise research into separate projects.
