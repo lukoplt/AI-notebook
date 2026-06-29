@@ -36,7 +36,7 @@ public sealed partial class AddProviderDialog : ContentDialog
 
         // Type picker — Ollama can't be changed when editing
         TypeCombo.Header = _strings.Get(StringKey.ProviderTypeLabel);
-        TypeCombo.ItemsSource = ViewModel.AllTypes.Select(TypeDisplayName).ToList();
+        TypeCombo.ItemsSource = AddProviderViewModel.AllTypes.Select(TypeDisplayName).ToList();
         TypeCombo.SelectedIndex = Array.IndexOf(AddProviderViewModel.AllTypes, ViewModel.SelectedType);
         TypeCombo.IsEnabled = !ViewModel.IsOllamaProvider;
 

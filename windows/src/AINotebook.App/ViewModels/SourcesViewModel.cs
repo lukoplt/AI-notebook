@@ -111,7 +111,7 @@ public sealed partial class SourcesViewModel : ObservableObject
         var had = item.Tags.Any(t => t.Id == tag.Id);
         if (had) item.Tags.Remove(item.Tags.First(t => t.Id == tag.Id));
         else item.Tags.Add(tag);
-        _store.SetSourceTags(item.Id, item.Tags.Select(t => t.Id!.Value).ToList());
+        _store.SetSourceTags(item.Id, item.Tags.Select(t => t.Id).ToList());
     }
 
     // B8: refresh the tag list for one source from the store (after bulk edits).

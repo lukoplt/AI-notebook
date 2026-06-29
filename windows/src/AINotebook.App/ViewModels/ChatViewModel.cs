@@ -148,7 +148,7 @@ public partial class ChatViewModel : ObservableObject
         {
             var selectedIds = ScopeSources.Where(s => s.IsSelected).Select(s => s.Id).ToList();
             var set = _store.CreateSourceSet(_notebookId, trimmed);
-            _store.SetSourceSetMembers(set.Id!.Value, selectedIds);
+            _store.SetSourceSetMembers(set.Id, selectedIds);
             SourceSets.Add(set);
         }
         catch (Exception ex) { ErrorMessage = ex.ToString(); }
