@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.8.1] — 2026-06-29
+
+First public release. Open-source on GitHub, cross-platform (macOS +
+Windows), with a green Windows CI build.
+
+### Added
+- Author footer ("Made with <3 by Lukáš Oplt") in Settings on both platforms.
+- Public README with screenshots, a privacy section, and per-platform
+  install + first-launch ("unknown publisher") guidance.
+
+### Fixed
+- Windows App build (Windows CI is green again): removed stale `SaveCommand`
+  references in `AddProviderViewModel`, a duplicate `StringKey` enum member,
+  non-nullable `Tag`/`SourceSet` `Id` misuse, a static-member instance access,
+  a `GlobalSearchDialog` `x:DataType` namespace, and a duplicate localization
+  key; updated test fakes for the multi-provider `ISettingsService`.
+- Security: web search results are injected as user-message context instead
+  of the system prompt, reducing prompt-injection surface.
+
 ## [0.7.3] — 2026-05-25
 
 Notes editor: per-note isolation + unsaved-changes guard.
