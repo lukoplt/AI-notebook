@@ -4,6 +4,7 @@ using AINotebook.App.Onboarding;
 using AINotebook.App.Services;
 using AINotebook.Core.Models;
 using AINotebook.Core.Ollama;
+using AINotebook.Core.Providers;
 using Xunit;
 
 namespace AINotebook.App.Tests;
@@ -15,6 +16,8 @@ internal sealed class OnbFakeSettings : ISettingsService
     public bool HasCompletedOnboarding { get; set; }
     public string SelectedChatModel { get; set; } = "llama3.2:3b";
     public string SelectedEmbeddingModel { get; set; } = "nomic-embed-text";
+    public string SelectedChatProviderId { get; set; } = ProviderConfig.OllamaId;
+    public string SelectedEmbeddingProviderId { get; set; } = ProviderConfig.OllamaId;
 }
 
 internal sealed class FakeOllama : IOllamaOnboarding
