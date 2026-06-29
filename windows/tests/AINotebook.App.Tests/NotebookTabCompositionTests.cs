@@ -3,6 +3,7 @@ using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.Core;
 using AINotebook.Core.Models;
+using AINotebook.Core.Storage;
 using Xunit;
 
 namespace AINotebook.App.Tests;
@@ -27,7 +28,8 @@ public class NotebookTabCompositionTests
     public void TabSwitchCoordinator_Request_updates_SelectedTab_and_auto_clears(TabSwitchCoordinator.Tab tab)
     {
         var coordinator = new TabSwitchCoordinator();
-        var vm = new NotebookDetailViewModel(TestNotebook, coordinator, new StubLocalizedStrings());
+        using var store = new NotebookStore(StorePath.InMemory);
+        var vm = new NotebookDetailViewModel(TestNotebook, coordinator, new StubLocalizedStrings(), store);
 
         coordinator.Request(tab);
 
