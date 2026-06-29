@@ -18,15 +18,15 @@ public sealed partial class AddProviderViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowUrlAndKey), nameof(ShowKeyOnly))]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    [NotifyPropertyChangedFor(nameof(CanSave))]
     public partial ProviderType SelectedType { get; set; } = ProviderType.Ollama;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    [NotifyPropertyChangedFor(nameof(CanSave))]
     public partial string Name { get; set; } = "";
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    [NotifyPropertyChangedFor(nameof(CanSave))]
     public partial string BaseUrl { get; set; } = "";
 
     [ObservableProperty]

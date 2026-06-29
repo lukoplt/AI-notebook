@@ -65,7 +65,7 @@ public enum StringKey
     // Epic C: chat quality.
     NotebookInstructionsLabel, NotebookInstructionsPlaceholder, NotebookInstructionsSaved,
     SourceSetsSectionTitle, AddSourceSetButton, SourceSetNamePlaceholder, DeleteSourceSetTitle,
-    ChatEditButton, ChatRegenerateButton, ChatRegenerateWithButton,
+    ChatEditButton, ChatRegenerateWithButton,
     CitationPanelTitle, CitationPanelEmpty,
     // Epic D: retrieval quality.
     ContextualEnrichmentLabel, ContextualEnrichmentHint,
