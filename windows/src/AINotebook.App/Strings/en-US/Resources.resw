@@ -650,9 +650,6 @@
   <data name="chatEditButton" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="chatRegenerateButton" xml:space="preserve">
-    <value>Regenerate</value>
-  </data>
   <data name="chatRegenerateWithButton" xml:space="preserve">
     <value>Regenerate with…</value>
   </data>

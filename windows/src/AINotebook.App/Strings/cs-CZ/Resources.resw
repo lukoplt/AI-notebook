@@ -650,9 +650,6 @@
   <data name="chatEditButton" xml:space="preserve">
     <value>Upravit</value>
   </data>
-  <data name="chatRegenerateButton" xml:space="preserve">
-    <value>Znovu vygenerovat</value>
-  </data>
   <data name="chatRegenerateWithButton" xml:space="preserve">
     <value>Znovu vygenerovat s…</value>
   </data>
