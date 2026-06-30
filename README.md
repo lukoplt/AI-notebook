@@ -18,6 +18,8 @@
 
 If AI Notebook is useful to you, please ⭐ **star the repo** — it helps others find it.
 
+![AI Notebook — chat with your own sources, fully on your machine](docs/screenshots/demo.gif)
+
 ---
 
 ## What is it?
