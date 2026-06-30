@@ -1,14 +1,22 @@
 # AI Notebook
 
-> A privacy-first, local-first research notebook for **macOS** and **Windows** —
-> chat with your own documents, get cited answers, and keep everything on your
-> machine. An open-source take on Google NotebookLM, inspired by
-> [open-notebook](https://github.com/lfnovo/open-notebook).
+> A free, open-source, **offline alternative to Google NotebookLM** for
+> **macOS** and **Windows**. Chat with your own PDFs, Office documents, and web
+> pages and get answers with inline citations — privacy-first and local-first,
+> with everything running on your machine. Powered by [Ollama](https://ollama.com);
+> inspired by [open-notebook](https://github.com/lfnovo/open-notebook).
 
+[![Latest release](https://img.shields.io/github/v/release/lukoplt/AI-notebook?sort=semver&display_name=tag)](https://github.com/lukoplt/AI-notebook/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/lukoplt/AI-notebook/total)](https://github.com/lukoplt/AI-notebook/releases)
+[![Stars](https://img.shields.io/github/stars/lukoplt/AI-notebook?style=flat)](https://github.com/lukoplt/AI-notebook/stargazers)
+![Platforms](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Core CI](https://github.com/lukoplt/AI-notebook/actions/workflows/core-ci.yml/badge.svg)](https://github.com/lukoplt/AI-notebook/actions/workflows/core-ci.yml)
 [![Windows CI](https://github.com/lukoplt/AI-notebook/actions/workflows/windows-ci.yml/badge.svg)](https://github.com/lukoplt/AI-notebook/actions/workflows/windows-ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-![Version](https://img.shields.io/badge/version-0.8.0-informational)
+
+### ⬇️ [Download the latest release](https://github.com/lukoplt/AI-notebook/releases/latest) — macOS `.dmg` · Windows `.exe`
+
+If AI Notebook is useful to you, please ⭐ **star the repo** — it helps others find it.
 
 ---
 
@@ -32,6 +40,22 @@ It ships as two native codebases sharing one design and data model:
 |---|---|---|
 | **macOS** 14+ | Swift 6 · SwiftUI | Ollama (local only) |
 | **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint |
+
+---
+
+## Why AI Notebook? (vs. Google NotebookLM)
+
+|  | **AI Notebook** | Google NotebookLM |
+|---|---|---|
+| Where it runs | Your machine (native desktop app) | Cloud / browser |
+| Your documents | Never leave your device (with Ollama) | Uploaded to Google |
+| Works offline | ✅ Yes | ❌ No |
+| Cost | Free & open source (MIT) | Free tier, Google account required |
+| AI model | Local (Ollama) or bring your own key | Google models only |
+| Platforms | Native macOS & Windows | Web only |
+
+If you want NotebookLM-style "chat with your sources, get citations" but
+**without sending your files to the cloud**, AI Notebook is built for that.
 
 ---
 
