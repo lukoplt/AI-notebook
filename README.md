@@ -184,6 +184,23 @@ Apple cannot check it for malicious software"* (or *"unidentified developer"*).
 3. If a User Account Control prompt names an unknown publisher, confirm
    **Yes** to continue.
 
+### Verify your download (build provenance)
+
+The releases aren't signed with a paid certificate, but every release
+artifact carries a **GitHub build-provenance attestation** (signed via
+[Sigstore](https://www.sigstore.dev/), recorded in a public transparency log).
+It cryptographically proves the file was built by this repo's release workflow
+and not tampered with. With the [GitHub CLI](https://cli.github.com/):
+
+```bash
+gh attestation verify AINotebook-v0.8.1-macos.dmg --repo lukoplt/AI-notebook
+# or, on Windows:
+gh attestation verify AINotebook-v0.8.1-windows-setup.exe --repo lukoplt/AI-notebook
+```
+
+A successful check confirms the binary's origin. (This does not remove the OS
+first-launch warning above — only a paid Apple/Microsoft certificate does that.)
+
 ---
 
 ## Build from source
