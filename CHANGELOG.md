@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.8.2] — 2026-07-06
+
+Windows launch hotfix. The v0.8.1 Windows build installed but exited
+silently on every launch; this release makes the app actually start.
+
+### Fixed
+- Windows: settings storage no longer uses `ApplicationData.Current`
+  (requires MSIX package identity, which the unpackaged app does not have);
+  settings now live in `%APPDATA%\AINotebook\settings.json`.
+- Windows: the release publish now runs with `-p:Platform=x64`, so the
+  WinUI `.pri` resource files ship with the installer (without them the
+  app cannot resolve any XAML resource).
+- Windows: shipped NuGet packages are pinned to exact versions — floating
+  ranges resolved differently across restore contexts and deployed
+  `Microsoft.Data.Sqlite` 9.0.16 next to a `Core.dll` built against 9.0.17.
+- Windows: language switching no longer sets
+  `ApplicationLanguages.PrimaryLanguageOverride` (packaged-only API); the
+  resource-context qualifier already handles it.
+- Windows: registered the missing `OnboardingViewModel` DI service the
+  first screen resolves.
+
+### Added
+- Windows: startup crashes are logged to `%TEMP%\ainotebook-crash.log`
+  so silent failures are diagnosable.
+- Windows release CI: post-publish guard that fails the build if
+  `AINotebook.App.exe`, `AINotebook.App.pri`, `Microsoft.ui.xaml.dll`, or
+  `e_sqlite3.dll` are missing from the payload.
+
 ## [0.8.1] — 2026-06-29
 
 First public release. Open-source on GitHub, cross-platform (macOS +
