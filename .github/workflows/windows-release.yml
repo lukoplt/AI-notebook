@@ -36,10 +36,20 @@ jobs:
         run: dotnet restore windows/AINotebook.sln --locked-mode
 
       - name: Publish self-contained (win-x64)
+        # -p:Platform=x64 is REQUIRED: without it the WASDK targets skip the
+        # PRI publish items, the installed app cannot resolve XAML resources,
+        # and it dies at startup with 0xC000027B and no error UI (v0.8.1 bug).
         run: >
           dotnet publish windows/src/AINotebook.App/AINotebook.App.csproj
-          -c Release -r win-x64 --self-contained true
+          -c Release -r win-x64 --self-contained true -p:Platform=x64
           -o windows/installer/publish
+
+      - name: Guard critical publish files
+        shell: pwsh
+        run: |
+          foreach ($f in 'AINotebook.App.exe','AINotebook.App.pri','Microsoft.ui.xaml.dll','e_sqlite3.dll') {
+            if (-not (Test-Path "windows/installer/publish/$f")) { throw "$f missing from publish output" }
+          }
 
       - name: Download WebView2 Evergreen bootstrapper
         shell: pwsh

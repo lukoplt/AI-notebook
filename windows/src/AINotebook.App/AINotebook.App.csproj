@@ -21,9 +21,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.*" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.*" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.*" />
+    <!-- Exact pins — see AINotebook.Core.csproj for why floats break publish. -->
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260508005" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.16" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,13 +4,13 @@
     "net10.0-windows10.0.19041": {
       "CommunityToolkit.Mvvm": {
         "type": "Direct",
-        "requested": "[8.4.*, )",
+        "requested": "[8.4.2, )",
         "resolved": "8.4.2",
         "contentHash": "WadCzGEc2U+3e20avRLng4qNtt4zoOGWrdUISqJWrHe3/FSnrYjuM5Sb4yQb09LhkBXrrI4Zt3dLKgRMbItsrg=="
       },
       "Microsoft.Extensions.DependencyInjection": {
         "type": "Direct",
-        "requested": "[9.0.*, )",
+        "requested": "[9.0.16, )",
         "resolved": "9.0.16",
         "contentHash": "ehl4zyK3uUAPX+sQWIzlcavpfWJVb5vl468tI71x5BRzE1Q/1co9OLYmTdEQtVS8qd0GO7RQK/nz6lZha1+Stw==",
         "dependencies": {
@@ -19,7 +19,7 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Direct",
-        "requested": "[1.8.*, )",
+        "requested": "[1.8.260508005, )",
         "resolved": "1.8.260508005",
         "contentHash": "+aA+zrvqJKgsn/1TPOSR0Uy7dkMO5jI/+cDWPu2pWmXe4KQxYkR8gQFY9IrfbgCxxSd/yl1zMcAKD/4HBbNqaw==",
         "dependencies": {
@@ -202,11 +202,11 @@
       "ainotebook.core": {
         "type": "Project",
         "dependencies": {
-          "AngleSharp": "[1.*, )",
-          "Dapper": "[2.*, )",
-          "Microsoft.Data.Sqlite": "[9.*, )",
-          "PdfPig": "[0.1.*, )",
-          "SQLitePCLRaw.bundle_e_sqlite3": "[2.*, )"
+          "AngleSharp": "[1.4.0, )",
+          "Dapper": "[2.1.79, )",
+          "Microsoft.Data.Sqlite": "[9.0.16, )",
+          "PdfPig": "[0.1.14, )",
+          "SQLitePCLRaw.bundle_e_sqlite3": "[2.1.11, )"
         }
       }
     },

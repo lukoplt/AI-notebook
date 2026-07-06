@@ -23,10 +23,34 @@ public partial class App : Application
 
     public App()
     {
-        InitializeComponent();
+        // An unpackaged WinUI app that dies during startup shows no error UI at
+        // all (stowed exception 0xC000027B); log to %TEMP%\ainotebook-crash.log
+        // so field reports are diagnosable.
+        AppDomain.CurrentDomain.UnhandledException += (_, e) => LogCrash("AppDomain", e.ExceptionObject as Exception);
+        UnhandledException += (_, e) => LogCrash("XamlUnhandled", e.Exception);
+        try
+        {
+            InitializeComponent();
+        }
+        catch (Exception ex)
+        {
+            LogCrash("InitializeComponent", ex);
+            throw;
+        }
         // Capture UI dispatcher before any background work starts.
         var uiQueue = DispatcherQueue.GetForCurrentThread();
         Services = ConfigureServices(uiQueue);
+    }
+
+    private static void LogCrash(string where, Exception? ex)
+    {
+        try
+        {
+            System.IO.File.AppendAllText(
+                System.IO.Path.Combine(System.IO.Path.GetTempPath(), "ainotebook-crash.log"),
+                $"[{DateTime.Now:O}] [{where}] {ex}{Environment.NewLine}");
+        }
+        catch { }
     }
 
     private static IServiceProvider ConfigureServices(DispatcherQueue uiQueue)
@@ -154,6 +178,7 @@ public partial class App : Application
             new DuckDuckGoWebSearch(sp.GetRequiredService<HttpClient>()));
 
         // ViewModels.
+        services.AddTransient<Onboarding.OnboardingViewModel>();
         services.AddTransient<ShellViewModel>();
         services.AddTransient<NotebookSidebarViewModel>();
         services.AddTransient<NotebookDetailViewModel>();
@@ -197,10 +222,18 @@ public partial class App : Application
 
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
-        Ui = DispatcherQueue.GetForCurrentThread();
-        WireStoreCallbacks();
-        MainWindow = new MainWindow();
-        MainWindow.Activate();
+        try
+        {
+            Ui = DispatcherQueue.GetForCurrentThread();
+            WireStoreCallbacks();
+            MainWindow = new MainWindow();
+            MainWindow.Activate();
+        }
+        catch (Exception ex)
+        {
+            LogCrash("OnLaunched", ex);
+            throw;
+        }
     }
 }
 

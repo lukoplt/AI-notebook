@@ -54,9 +54,10 @@ public sealed partial class SettingsViewModel : ObservableObject
         set
         {
             if (_settings.Language == value) return;
+            // LocalizedStrings listens to the settings change and re-qualifies
+            // its resource context; ApplicationLanguages.PrimaryLanguageOverride
+            // must not be touched — it throws without MSIX package identity.
             _settings.Language = value;
-            Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride =
-                value.RawValue() == "cs" ? "cs-CZ" : "en-US";
             OnPropertyChanged();
         }
     }

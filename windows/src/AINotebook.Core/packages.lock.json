@@ -4,19 +4,19 @@
     "net10.0": {
       "AngleSharp": {
         "type": "Direct",
-        "requested": "[1.*, )",
+        "requested": "[1.4.0, )",
         "resolved": "1.4.0",
         "contentHash": "6ph8mpaQx0KL0COYRt0kI8MB9gSp1PtKijKMhJU//+aVFgKAJLKDesG/+26JSaVCOrHNgPf12wpfoyRcMYOeXg=="
       },
       "Dapper": {
         "type": "Direct",
-        "requested": "[2.*, )",
+        "requested": "[2.1.79, )",
         "resolved": "2.1.79",
         "contentHash": "8YijbzgTfmqmQOnVNorYM6K++pxqnW3nJ4aC1sRHzxUA2CcuoJ9gsTem3kgBnPRMc38zZHl4Esb6hAezXIEEuw=="
       },
       "Microsoft.Data.Sqlite": {
         "type": "Direct",
-        "requested": "[9.*, )",
+        "requested": "[9.0.16, )",
         "resolved": "9.0.16",
         "contentHash": "sZQS7aHYhPW+UdxOb/Ew6w+ZgOCTcVqgpz3Wpe+ktkCcqxBlnA2CpF5dqggl4ojnR/D5KF4ne8OQrxHxoGj5tA==",
         "dependencies": {
@@ -27,13 +27,13 @@
       },
       "PdfPig": {
         "type": "Direct",
-        "requested": "[0.1.*, )",
+        "requested": "[0.1.14, )",
         "resolved": "0.1.14",
         "contentHash": "V2Anq0Yvyn3bGGG8WCQxqEAshG0KHIehB0QOotCz14vTkEk1PR3ErPOSmbnEsyOewhdF3G5XpQHywK2L50Xu+A=="
       },
       "SQLitePCLRaw.bundle_e_sqlite3": {
         "type": "Direct",
-        "requested": "[2.*, )",
+        "requested": "[2.1.11, )",
         "resolved": "2.1.11",
         "contentHash": "DC4nA7yWnf4UZdgJDF+9Mus4/cb0Y3Sfgi3gDnAoKNAIBwzkskNAbNbyu+u4atT0ruVlZNJfwZmwiEwE5oz9LQ==",
         "dependencies": {

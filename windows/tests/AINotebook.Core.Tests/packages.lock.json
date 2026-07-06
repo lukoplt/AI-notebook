@@ -156,11 +156,11 @@
       "ainotebook.core": {
         "type": "Project",
         "dependencies": {
-          "AngleSharp": "[1.*, )",
-          "Dapper": "[2.*, )",
-          "Microsoft.Data.Sqlite": "[9.*, )",
-          "PdfPig": "[0.1.*, )",
-          "SQLitePCLRaw.bundle_e_sqlite3": "[2.*, )"
+          "AngleSharp": "[1.4.0, )",
+          "Dapper": "[2.1.79, )",
+          "Microsoft.Data.Sqlite": "[9.0.16, )",
+          "PdfPig": "[0.1.14, )",
+          "SQLitePCLRaw.bundle_e_sqlite3": "[2.1.11, )"
         }
       }
     }

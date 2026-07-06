@@ -15,11 +15,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.*" />
-    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.*" />
-    <PackageReference Include="Dapper" Version="2.*" />
-    <PackageReference Include="PdfPig" Version="0.1.*" />
-    <PackageReference Include="AngleSharp" Version="1.*" />
+    <!-- Exact pins, not floating ranges: `dotnet publish -r win-x64` re-evaluates
+         this project's restore graph (its lock file was created without a RID),
+         so floats resolve to a NEWER version here than the one the App project
+         deploys from its lock — Core.dll then demands an assembly version that
+         is not shipped and the app dies at startup. -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.16" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
+    <PackageReference Include="Dapper" Version="2.1.79" />
+    <PackageReference Include="PdfPig" Version="0.1.14" />
+    <PackageReference Include="AngleSharp" Version="1.4.0" />
   </ItemGroup>
 
 </Project>

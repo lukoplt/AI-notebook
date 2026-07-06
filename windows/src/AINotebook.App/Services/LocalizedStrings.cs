@@ -2,13 +2,20 @@ using System.ComponentModel;
 using AINotebook.Core;
 using AINotebook.Core.Models;
 using Microsoft.Windows.ApplicationModel.Resources;
-using Windows.Globalization;
 
 namespace AINotebook.App.Services;
 
 public sealed class LocalizedStrings : ILocalizedStrings
 {
-    private readonly ResourceManager _rm = new();
+    // Unpackaged builds ship the app PRI as AINotebook.App.pri; the
+    // parameterless ResourceManager ctor only probes resources.pri.
+    private static ResourceManager CreateResourceManager()
+    {
+        var appPri = Path.Combine(AppContext.BaseDirectory, "AINotebook.App.pri");
+        return File.Exists(appPri) ? new ResourceManager(appPri) : new ResourceManager();
+    }
+
+    private readonly ResourceManager _rm = CreateResourceManager();
     private ResourceContext _ctx;
     private ResourceMap _map;
 
@@ -30,8 +37,10 @@ public sealed class LocalizedStrings : ILocalizedStrings
 
     public void SetLanguage(AppLanguage language)
     {
+        // Do NOT set ApplicationLanguages.PrimaryLanguageOverride here: it
+        // requires MSIX package identity and throws in this unpackaged app.
+        // The Language qualifier on the resource context does the switching.
         var bcp47 = language == AppLanguage.Czech ? "cs-CZ" : "en-US";
-        ApplicationLanguages.PrimaryLanguageOverride = bcp47;
         _ctx = _rm.CreateResourceContext();
         _ctx.QualifierValues["Language"] = bcp47;
         // Notify all bindings on the indexer to re-pull every visible string.

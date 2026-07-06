@@ -1,77 +1,128 @@
+using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using AINotebook.Core;
 using AINotebook.Core.Models;
 using AINotebook.Core.Providers;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Windows.Globalization;
-using Windows.Storage;
 
 namespace AINotebook.App.Services;
 
+/// <summary>
+/// File-backed settings store (%APPDATA%\AINotebook\settings.json).
+/// Windows.Storage.ApplicationData requires MSIX package identity, which this
+/// app does not have (WindowsPackageType=None) — calling it throws before the
+/// first window exists, so settings must live in a plain file instead.
+/// </summary>
 public sealed partial class SettingsService : ObservableObject, ISettingsService
 {
-    private readonly ApplicationDataContainer _store = ApplicationData.Current.LocalSettings;
-
-    private const string KeyLanguage = "language";
-    private const string KeyOnboarding = "hasCompletedOnboarding";
-    private const string KeyChatModel = "selectedChatModel";
-    private const string KeyEmbeddingModel = "selectedEmbeddingModel";
-    private const string KeyChatProviderId = "selectedChatProviderId";
-    private const string KeyEmbeddingProviderId = "selectedEmbeddingProviderId";
-
-    public SettingsService()
+    private sealed class SettingsFile
     {
-        var stored = _store.Values[KeyLanguage] as string;
-        _language = AppLanguageExtensions.FromRawValue(stored ?? "")
-            ?? LocaleDetection.DetectInitialLanguage(ApplicationLanguages.Languages);
+        public string? Language { get; set; }
+        public bool? HasCompletedOnboarding { get; set; }
+        public string? SelectedChatModel { get; set; }
+        public string? SelectedEmbeddingModel { get; set; }
+        public string? SelectedChatProviderId { get; set; }
+        public string? SelectedEmbeddingProviderId { get; set; }
+    }
 
-        _hasCompletedOnboarding = _store.Values[KeyOnboarding] as bool? ?? false;
-        _selectedChatModel = _store.Values[KeyChatModel] as string ?? "llama3.2:3b";
-        _selectedEmbeddingModel = _store.Values[KeyEmbeddingModel] as string ?? "nomic-embed-text";
-        _selectedChatProviderId = _store.Values[KeyChatProviderId] as string ?? ProviderConfig.OllamaId;
-        _selectedEmbeddingProviderId = _store.Values[KeyEmbeddingProviderId] as string ?? ProviderConfig.OllamaId;
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+
+    private readonly string _path;
+    private readonly SettingsFile _file;
+
+    public SettingsService() : this(DefaultPath()) { }
+
+    internal SettingsService(string path)
+    {
+        _path = path;
+        _file = Load(path);
+
+        _language = AppLanguageExtensions.FromRawValue(_file.Language ?? "")
+            ?? LocaleDetection.DetectInitialLanguage(new[] { CultureInfo.CurrentUICulture.Name });
+
+        _hasCompletedOnboarding = _file.HasCompletedOnboarding ?? false;
+        _selectedChatModel = _file.SelectedChatModel ?? "llama3.2:3b";
+        _selectedEmbeddingModel = _file.SelectedEmbeddingModel ?? "nomic-embed-text";
+        _selectedChatProviderId = _file.SelectedChatProviderId ?? ProviderConfig.OllamaId;
+        _selectedEmbeddingProviderId = _file.SelectedEmbeddingProviderId ?? ProviderConfig.OllamaId;
+    }
+
+    private static string DefaultPath()
+    {
+        var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var container = Path.Combine(appData, "AINotebook");
+        Directory.CreateDirectory(container);
+        return Path.Combine(container, "settings.json");
+    }
+
+    private static SettingsFile Load(string path)
+    {
+        try
+        {
+            if (File.Exists(path))
+                return JsonSerializer.Deserialize<SettingsFile>(File.ReadAllText(path)) ?? new SettingsFile();
+        }
+        catch (Exception ex)
+        {
+            // A corrupt settings file must not prevent startup; fall back to defaults.
+            System.Diagnostics.Debug.WriteLine($"SettingsService: failed to read {path}: {ex.Message}");
+        }
+        return new SettingsFile();
+    }
+
+    private void Save()
+    {
+        try
+        {
+            File.WriteAllText(_path, JsonSerializer.Serialize(_file, JsonOptions));
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"SettingsService: failed to write {_path}: {ex.Message}");
+        }
     }
 
     private AppLanguage _language;
     public AppLanguage Language
     {
         get => _language;
-        set { if (SetField(ref _language, value)) _store.Values[KeyLanguage] = value.RawValue(); }
+        set { if (SetField(ref _language, value)) { _file.Language = value.RawValue(); Save(); } }
     }
 
     private bool _hasCompletedOnboarding;
     public bool HasCompletedOnboarding
     {
         get => _hasCompletedOnboarding;
-        set { if (SetField(ref _hasCompletedOnboarding, value)) _store.Values[KeyOnboarding] = value; }
+        set { if (SetField(ref _hasCompletedOnboarding, value)) { _file.HasCompletedOnboarding = value; Save(); } }
     }
 
     private string _selectedChatModel;
     public string SelectedChatModel
     {
         get => _selectedChatModel;
-        set { if (SetField(ref _selectedChatModel, value)) _store.Values[KeyChatModel] = value; }
+        set { if (SetField(ref _selectedChatModel, value)) { _file.SelectedChatModel = value; Save(); } }
     }
 
     private string _selectedEmbeddingModel;
     public string SelectedEmbeddingModel
     {
         get => _selectedEmbeddingModel;
-        set { if (SetField(ref _selectedEmbeddingModel, value)) _store.Values[KeyEmbeddingModel] = value; }
+        set { if (SetField(ref _selectedEmbeddingModel, value)) { _file.SelectedEmbeddingModel = value; Save(); } }
     }
 
     private string _selectedChatProviderId;
     public string SelectedChatProviderId
     {
         get => _selectedChatProviderId;
-        set { if (SetField(ref _selectedChatProviderId, value)) _store.Values[KeyChatProviderId] = value; }
+        set { if (SetField(ref _selectedChatProviderId, value)) { _file.SelectedChatProviderId = value; Save(); } }
     }
 
     private string _selectedEmbeddingProviderId;
     public string SelectedEmbeddingProviderId
     {
         get => _selectedEmbeddingProviderId;
-        set { if (SetField(ref _selectedEmbeddingProviderId, value)) _store.Values[KeyEmbeddingProviderId] = value; }
+        set { if (SetField(ref _selectedEmbeddingProviderId, value)) { _file.SelectedEmbeddingProviderId = value; Save(); } }
     }
 
     private bool SetField<T>(ref T field, T value, [CallerMemberName] string? name = null)

@@ -291,19 +291,19 @@
         "type": "Project",
         "dependencies": {
           "AINotebook.Core": "[1.0.0, )",
-          "CommunityToolkit.Mvvm": "[8.4.*, )",
-          "Microsoft.Extensions.DependencyInjection": "[9.0.*, )",
-          "Microsoft.WindowsAppSDK": "[1.8.*, )"
+          "CommunityToolkit.Mvvm": "[8.4.2, )",
+          "Microsoft.Extensions.DependencyInjection": "[9.0.16, )",
+          "Microsoft.WindowsAppSDK": "[1.8.260508005, )"
         }
       },
       "ainotebook.core": {
         "type": "Project",
         "dependencies": {
-          "AngleSharp": "[1.*, )",
-          "Dapper": "[2.*, )",
-          "Microsoft.Data.Sqlite": "[9.*, )",
-          "PdfPig": "[0.1.*, )",
-          "SQLitePCLRaw.bundle_e_sqlite3": "[2.*, )"
+          "AngleSharp": "[1.4.0, )",
+          "Dapper": "[2.1.79, )",
+          "Microsoft.Data.Sqlite": "[9.0.16, )",
+          "PdfPig": "[0.1.14, )",
+          "SQLitePCLRaw.bundle_e_sqlite3": "[2.1.11, )"
         }
       }
     }
