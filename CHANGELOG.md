@@ -1,5 +1,15 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Windows: OpenWebUI network provider. New provider type in Settings → AI
+  providers: connect to an OpenWebUI server on your network (base URL +
+  optional API key), fetch its aggregated model list, and use any of its
+  models for chat, transformations, and summaries. Chat-only by design —
+  embeddings stay local (Ollama). The API key is stored in Windows
+  Credential Manager, never in the database.
+
 ## [0.8.2] — 2026-07-06
 
 Windows launch hotfix. The v0.8.1 Windows build installed but exited
