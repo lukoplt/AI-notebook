@@ -94,7 +94,10 @@ public sealed class OpenWebUIChatAdapter : IChatStreaming
     /// <summary>
     /// GET {base}/api/models → {"data":[{"id","name",...}]}. Includes every model the
     /// key's user can access. Throws ProviderAuthException on 401 so Test connection
-    /// can report an invalid key; other failures return an empty list.
+    /// can report an invalid key; network errors (HttpRequestException) and cancellation
+    /// also propagate so the router's TestConnectionAsync can surface a visible error
+    /// message instead of a false "success" with zero models. Other failures (bad JSON,
+    /// non-401 HTTP statuses) still return an empty list.
     /// </summary>
     public static async Task<IReadOnlyList<ProviderModelInfo>> ListModelsAsync(
         HttpClient http, string baseUrl, string? apiKey, CancellationToken ct = default)
@@ -122,6 +125,8 @@ public sealed class OpenWebUIChatAdapter : IChatStreaming
             return result.OrderBy(m => m.Label, StringComparer.OrdinalIgnoreCase).ToList();
         }
         catch (ProviderAuthException) { throw; }
+        catch (HttpRequestException) { throw; }
+        catch (OperationCanceledException) { throw; }
         catch { return []; }
     }
 }

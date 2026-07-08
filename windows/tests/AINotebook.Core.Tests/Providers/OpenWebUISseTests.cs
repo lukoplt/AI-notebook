@@ -168,6 +168,14 @@ public class OpenWebUISseTests
         Assert.Empty(models);
     }
 
+    [Fact]
+    public async Task ListModels_propagates_network_errors()
+    {
+        var http = new HttpClient(new ThrowingHandler());
+        await Assert.ThrowsAsync<HttpRequestException>(() =>
+            OpenWebUIChatAdapter.ListModelsAsync(http, "http://host:3000", "k"));
+    }
+
     // ── Helpers ──────────────────────────────────────────────────────────────
 
     private sealed class StubHandler(HttpStatusCode status, string body) : HttpMessageHandler
@@ -195,5 +203,11 @@ public class OpenWebUISseTests
                 Content = new StringContent(body, Encoding.UTF8, "text/event-stream")
             };
         }
+    }
+
+    private sealed class ThrowingHandler : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+            => throw new HttpRequestException("connection refused");
     }
 }

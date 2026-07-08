@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.Net;
 using System.Text;
 using AINotebook.App.Services;
-using AINotebook.Core;
 using AINotebook.Core.Models;
 using AINotebook.Core.Ollama;
 using AINotebook.Core.Providers;

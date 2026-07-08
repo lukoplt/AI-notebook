@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
-using AINotebook.Core;
 using AINotebook.Core.Models;
 using AINotebook.Core.Providers;
 using AINotebook.Core.Storage;
