@@ -15,7 +15,8 @@ public record ProviderConfig(
     public bool IsOllama => Id == OllamaId;
     public bool IsCloud => Type == ProviderType.Anthropic
                         || Type == ProviderType.OpenAI
-                        || Type == ProviderType.OpenAICompatible;
+                        || Type == ProviderType.OpenAICompatible
+                        || Type == ProviderType.OpenWebUI;
 }
 
 public record ProviderModelInfo(string Id, string? DisplayName)
