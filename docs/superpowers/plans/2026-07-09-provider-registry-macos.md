@@ -2581,7 +2581,8 @@ final class EmbedderModelKeyTests: XCTestCase {
         init(_ value: String) { self.value = value }
     }
 
-    private func makeStoreWithOneChunk() throws -> NotebookStore {
+    /// NotebookStore has no notebooks() list API — return the id directly.
+    private func makeStoreWithOneChunk() throws -> (store: NotebookStore, notebookId: Int64) {
         let store = try NotebookStore(path: .inMemory)
         let nb = try store.createNotebook(name: "NB")
         let source = try store.createSource(
@@ -2589,11 +2590,11 @@ final class EmbedderModelKeyTests: XCTestCase {
         try store.replaceChunks(sourceId: source.id!, chunks: [
             SourceChunk(sourceId: source.id!, ord: 0, text: "hello world")
         ])
-        return store
+        return (store, nb.id!)
     }
 
     func testEmbedderUsesLiveModelKeyPerDrain() async throws {
-        let store = try makeStoreWithOneChunk()
+        let (store, _) = try makeStoreWithOneChunk()
         let client = RecordingClient()
         let box = KeyBox("prov-A:model-1")
         let embedder = Embedder(store: store, client: client, modelKey: { box.value })
@@ -2608,7 +2609,7 @@ final class EmbedderModelKeyTests: XCTestCase {
     }
 
     func testConvenienceInitKeepsFixedModel() async throws {
-        let store = try makeStoreWithOneChunk()
+        let (store, _) = try makeStoreWithOneChunk()
         let client = RecordingClient()
         let embedder = Embedder(store: store, client: client, model: "fixed-key")
         _ = try await embedder.embedAllPending()
@@ -2616,19 +2617,18 @@ final class EmbedderModelKeyTests: XCTestCase {
     }
 
     func testRetrieverUsesLiveModelKey() async throws {
-        let store = try makeStoreWithOneChunk()
+        let (store, notebookId) = try makeStoreWithOneChunk()
         let client = RecordingClient()
         let embedder = Embedder(store: store, client: client, model: "prov-A:m")
         _ = try await embedder.embedAllPending()
 
         let box = KeyBox("prov-A:m")
         let retriever = Retriever(store: store, client: client, modelKey: { box.value })
-        let nbId = try XCTUnwrap(try store.notebooks().first?.id)
-        let hits = try await retriever.search(notebookId: nbId, query: "hello")
+        let hits = try await retriever.search(notebookId: notebookId, query: "hello")
         XCTAssertFalse(hits.isEmpty, "stored vectors under prov-A:m must be found")
 
         box.value = "prov-B:other"
-        let missHits = try await retriever.search(notebookId: nbId, query: "hello")
+        let missHits = try await retriever.search(notebookId: notebookId, query: "hello")
         // Vector arm finds nothing under the new key (FTS may still hit);
         // assert the embed call went out with the NEW key.
         XCTAssertEqual(client.models.last, "prov-B:other")
@@ -2637,7 +2637,7 @@ final class EmbedderModelKeyTests: XCTestCase {
 }
 ```
 
-Adjustment rule: `makeStoreWithOneChunk` uses `store.replaceChunks(sourceId:chunks:)` and `SourceChunk(sourceId:ord:text:)` — verify the real chunk-writing API in `NotebookStore+Sources.swift` / `SourceChunk.swift` and `EmbedderTests.swift` (which already builds this fixture) and mirror it exactly; same for `store.notebooks()`.
+Adjustment rule: `makeStoreWithOneChunk` uses `store.replaceChunks(sourceId:chunks:)` and `SourceChunk(sourceId:ord:text:)` — verify the real chunk-writing API in `NotebookStore+Sources.swift` / `SourceChunk.swift` and `EmbedderTests.swift` (which already builds this fixture) and mirror it exactly.
 
 - [ ] **Step 2: Write the failing ChatEngine retry tests**
 
@@ -2835,7 +2835,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 
 **Interfaces:**
 - Consumes: existing `AppText` structure (`enum Key: CaseIterable`, exhaustive per-language switches).
-- Produces: 24 new keys used by Tasks 11–12. Structural parity is enforced automatically by the existing `testEveryKeyHasEnglishString`/`testEveryKeyHasCzechString` loops over `allCases`.
+- Produces: 26 new keys used by Tasks 11–12. Structural parity is enforced automatically by the existing `testEveryKeyHasEnglishString`/`testEveryKeyHasCzechString` loops over `allCases`.
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -2886,6 +2886,8 @@ In `Sources/AINotebookCore/Localization.swift` add to `enum Key` (after the exis
         case chatProviderPickerLabel
         case embeddingProviderPickerLabel
         case customModelFieldLabel
+        case providerBadgeChat
+        case providerBadgeEmbedding
         case privacyGateTitle
         case privacyGateMessage
         case privacyGateAccept
@@ -2915,6 +2917,8 @@ Add to `english(_:)` (implicit-return switch rows, match surrounding style):
         case .chatProviderPickerLabel:      "Chat provider"
         case .embeddingProviderPickerLabel: "Embedding provider"
         case .customModelFieldLabel:        "Custom model ID"
+        case .providerBadgeChat:            "chat"
+        case .providerBadgeEmbedding:       "embeddings"
         case .privacyGateTitle:             "Send data to this provider?"
         case .privacyGateMessage:           "Chat questions and the source/note excerpts selected as context will be sent to this provider's server. Your database and local embeddings stay on this Mac."
         case .privacyGateAccept:            "Enable provider"
@@ -2944,6 +2948,8 @@ Add to `czech(_:)`:
         case .chatProviderPickerLabel:      "Chat provider"
         case .embeddingProviderPickerLabel: "Provider pro vektorizaci"
         case .customModelFieldLabel:        "Vlastní ID modelu"
+        case .providerBadgeChat:            "chat"
+        case .providerBadgeEmbedding:       "vektorizace"
         case .privacyGateTitle:             "Odesílat data tomuto providerovi?"
         case .privacyGateMessage:           "Dotazy v chatu a úryvky zdrojů/poznámek vybrané jako kontext budou odesílány na server tohoto providera. Vaše databáze a lokální vektorizace zůstávají na tomto Macu."
         case .privacyGateAccept:            "Povolit providera"
@@ -3341,8 +3347,12 @@ struct AddProviderSheet: View {
     }
 
     private func saveTapped() {
-        // New cloud/network provider → consent first (FR-A8).
-        if existing == nil && type.isCloud {
+        // Consent gate (FR-A8): fires for a NEW cloud/network provider and
+        // ALSO when an existing provider's type changes to a cloud/network
+        // type — the stored consent belonged to the previous type and must
+        // not silently carry over (plan-verification finding).
+        let typeChanged = existing.map { $0.type != type } ?? true
+        if type.isCloud && typeChanged {
             showingPrivacyGate = true
         } else {
             persist(acknowledge: false)
@@ -3412,6 +3422,7 @@ In `Sources/AINotebookApp/SettingsView.swift`:
     @State private var editingProvider: ProviderConfig?
     @State private var showingAddProvider = false
     @State private var pendingEmbeddingChange: (providerId: String, model: String)?
+    @State private var providerStatus: [String: Bool] = [:]   // id → reachable
 ```
 
 2. Providers section (insert between the language picker and the model section):
@@ -3421,8 +3432,21 @@ In `Sources/AINotebookApp/SettingsView.swift`:
             Text(settings.text.string(.providersSectionTitle)).font(.headline)
             ForEach(providers) { provider in
                 HStack {
+                    Circle()
+                        .fill(statusColor(for: provider))
+                        .frame(width: 8, height: 8)
                     Text(provider.name)
                     Text(provider.type.rawValue).font(.caption).foregroundStyle(.secondary)
+                    if provider.id == settings.selectedChatProviderId {
+                        Text(settings.text.string(.providerBadgeChat))
+                            .font(.caption2).padding(.horizontal, 4)
+                            .background(Capsule().fill(Color.accentColor.opacity(0.2)))
+                    }
+                    if provider.id == settings.selectedEmbeddingProviderId {
+                        Text(settings.text.string(.providerBadgeEmbedding))
+                            .font(.caption2).padding(.horizontal, 4)
+                            .background(Capsule().fill(Color.accentColor.opacity(0.2)))
+                    }
                     Spacer()
                     Button {
                         editingProvider = provider
@@ -3493,6 +3517,28 @@ and reuse the EXISTING re-embed `confirmationDialog` flow: when `pendingEmbeddin
 ```swift
     private func refreshProviders() {
         providers = (try? store.providers()) ?? []
+        Task { await refreshProviderStatus() }
+    }
+
+    /// Spec §5.2.8 status dot: ● green reachable / ● red error / gray
+    /// disabled-or-unknown. Probes run in the background; the row renders
+    /// gray until a result lands.
+    private func statusColor(for provider: ProviderConfig) -> Color {
+        guard provider.enabled else { return .gray }
+        switch providerStatus[provider.id] {
+        case .some(true): return .green
+        case .some(false): return .red
+        case .none: return .gray
+        }
+    }
+
+    private func refreshProviderStatus() async {
+        for provider in providers {
+            let key = (try? routerHolder.secrets.load(providerId: provider.id)) ?? nil
+            let error = await routerHolder.router.testConnection(
+                type: provider.type, baseURL: provider.baseURL, apiKey: key)
+            providerStatus[provider.id] = (error == nil)
+        }
     }
 
     private func refreshChatModels() async {
@@ -3555,7 +3601,7 @@ Expected: build succeeds, all tests green (SwiftUI views have no unit tests in t
 swift run AINotebookApp
 ```
 
-Verify: Settings opens → "AI providers" lists "Ollama (local)" → Add provider (type OpenWebUI, bogus URL `http://127.0.0.1:9`) → "Test connection" reports an error (NOT success) → save triggers the privacy alert → provider appears in the list and in the chat-provider picker → switching chat provider back to Ollama keeps chat working → embedding provider picker does NOT offer the OpenWebUI entry → Done. Report what you saw honestly; screenshots not required.
+Verify: Settings opens → "AI providers" lists "Ollama (local)" with a status dot (green when Ollama runs) and a "chat"/"embeddings" badge on the selected provider → Add provider (type OpenWebUI, bogus URL `http://127.0.0.1:9`) → "Test connection" reports an error (NOT success) → save triggers the privacy alert → provider appears in the list and in the chat-provider picker → switching chat provider back to Ollama keeps chat working → embedding provider picker does NOT offer the OpenWebUI entry → edit the OpenWebUI provider and switch its type to "Anthropic (Claude)" → saving triggers the privacy gate AGAIN (consent does not carry across type changes) → Done. Report what you saw honestly; screenshots not required.
 
 - [ ] **Step 5: Commit**
 
@@ -3618,6 +3664,16 @@ git commit -m "docs: changelog + README for macOS provider registry
 
 Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 git push -u origin feat/provider-registry-macos
+```
+
+core-ci's `push` trigger fires for `main` only — a branch push starts nothing. Open the PR first (its `pull_request` trigger targets main), then watch that run:
+
+```bash
+gh pr create --base main --head feat/provider-registry-macos \
+  --title "feat(mac): provider registry — Anthropic, OpenAI, OpenAI-compatible, OpenWebUI" \
+  --body "macOS Epic A provider registry per docs/superpowers/specs/2026-07-08-openwebui-network-provider-design.md §5. Chat via cloud/network providers, embeddings via Ollama/OpenAI, Keychain-stored keys, privacy gate, live provider/model switching. Draft until the manual acceptance checklist passes." \
+  --draft
+sleep 10
 gh run watch $(gh run list --branch feat/provider-registry-macos --workflow core-ci.yml --limit 1 --json databaseId --jq '.[0].databaseId') --exit-status
 ```
 
