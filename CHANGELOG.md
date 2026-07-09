@@ -1,6 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [0.9.0] — 2026-07-09
+
+Multi-provider AI on both platforms: the macOS app gains the full provider
+registry, and both apps can now chat through an OpenWebUI server on the
+network.
 
 ### Added
 - macOS: full AI provider registry — connect Anthropic (Claude), OpenAI
