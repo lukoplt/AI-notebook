@@ -30,14 +30,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11   # v4.1.1
 
-      - name: Forbid URLSession in AINotebookCore except OllamaClient and WebExtractor
-        # OllamaClient and WebExtractor are the only files allowed to talk to
-        # the network. Every other Core file must stay offline.
+      - name: Forbid URLSession in AINotebookCore except OllamaClient, WebExtractor and Providers/
+        # OllamaClient, WebExtractor, and the provider adapters under
+        # Providers/ are the only Core files allowed to talk to the network.
+        # Every other Core file must stay offline.
         run: |
-          OFFENDERS=$(grep -rl --include='*.swift' 'URLSession' Sources/AINotebookCore/ | grep -v -e '/OllamaClient.swift$' -e '/WebExtractor.swift$' || true)
+          OFFENDERS=$(grep -rl --include='*.swift' 'URLSession' Sources/AINotebookCore/ | grep -v -e '/OllamaClient.swift$' -e '/WebExtractor.swift$' -e '/Providers/' || true)
           if [ -n "$OFFENDERS" ]; then
-            echo "::error::URLSession found outside OllamaClient.swift and WebExtractor.swift:"
+            echo "::error::URLSession found outside OllamaClient.swift, WebExtractor.swift and Providers/:"
             echo "$OFFENDERS"
             exit 1
           fi
-          echo "OK: URLSession only present in OllamaClient.swift and WebExtractor.swift."
+          echo "OK: URLSession only present in OllamaClient.swift, WebExtractor.swift and Providers/."

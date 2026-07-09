@@ -1,8 +1,8 @@
 import Foundation
 
-/// Typed wrapper around the Ollama HTTP API. Lives in `AINotebookCore`
-/// and is the ONLY file in `AINotebookCore` allowed to import URLSession.
-/// All other Core files stay offline (enforced by CI grep gate).
+/// Typed wrapper around the Ollama HTTP API. Lives in `AINotebookCore`.
+/// Networking in Core is restricted to this file, `WebExtractor.swift`, and
+/// the provider adapters under `Providers/` (enforced by CI grep gate).
 public final class OllamaClient: @unchecked Sendable {
     public let baseURL: URL
     private let session: URLSession
