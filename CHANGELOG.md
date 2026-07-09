@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.9.1] — 2026-07-10
+
+Security patch release for the Windows build.
+
+### Fixed
+- Windows: bumped SQLitePCLRaw 2.1.11 → 3.0.3 (GHSA-2m69-gcr7-jv3q, HIGH) —
+  the bundled native SQLite is replaced with SQLite 3.50.4 via
+  SourceGear.sqlite3. No 2.x patch exists; Microsoft.Data.Sqlite unchanged.
+
 ## [0.9.0] — 2026-07-09
 
 Multi-provider AI on both platforms: the macOS app gains the full provider
