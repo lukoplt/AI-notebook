@@ -111,6 +111,32 @@ public struct AppText: Sendable {
         case manageModelsRefreshButton
         case chatModelPickerLabel
         case embeddingModelPickerLabel
+        case providersSectionTitle
+        case addProviderButton
+        case addProviderTitle
+        case editProviderTitle
+        case providerTypeLabel
+        case providerNameLabel
+        case providerUrlLabel
+        case providerApiKeyLabel
+        case providerKeySavedLabel
+        case providerTestButton
+        case providerTestSuccess
+        case providerDeleteButton
+        case providerDeleteConfirm
+        case chatProviderPickerLabel
+        case embeddingProviderPickerLabel
+        case customModelFieldLabel
+        case providerBadgeChat
+        case providerBadgeEmbedding
+        case privacyGateTitle
+        case privacyGateMessage
+        case privacyGateAccept
+        case errorInvalidApiKey
+        case errorRateLimited
+        case errorModelRefusal
+        case modelsUnavailableCaption
+        case doneButton
         case openNoteFromCitation
         case notesChatPanelTitle
         case notesChatPanelEmpty
@@ -285,6 +311,32 @@ public struct AppText: Sendable {
         case .manageModelsRefreshButton:   "Refresh list"
         case .chatModelPickerLabel:        "Chat model"
         case .embeddingModelPickerLabel:   "Embedding model"
+        case .providersSectionTitle:        "AI providers"
+        case .addProviderButton:            "Add provider…"
+        case .addProviderTitle:             "Add provider"
+        case .editProviderTitle:            "Edit provider"
+        case .providerTypeLabel:            "Type"
+        case .providerNameLabel:            "Name"
+        case .providerUrlLabel:             "Base URL"
+        case .providerApiKeyLabel:          "API key"
+        case .providerKeySavedLabel:        "Key saved ✓ — paste to replace"
+        case .providerTestButton:           "Test connection"
+        case .providerTestSuccess:          "Connection OK"
+        case .providerDeleteButton:         "Delete provider"
+        case .providerDeleteConfirm:        "Delete this provider? Its API key will be removed from the Keychain."
+        case .chatProviderPickerLabel:      "Chat provider"
+        case .embeddingProviderPickerLabel: "Embedding provider"
+        case .customModelFieldLabel:        "Custom model ID"
+        case .providerBadgeChat:            "chat"
+        case .providerBadgeEmbedding:       "embeddings"
+        case .privacyGateTitle:             "Send data to this provider?"
+        case .privacyGateMessage:           "Chat questions and the source/note excerpts selected as context will be sent to this provider's server. Your database and local embeddings stay on this Mac."
+        case .privacyGateAccept:            "Enable provider"
+        case .errorInvalidApiKey:           "Invalid API key"
+        case .errorRateLimited:             "Too many requests (429)"
+        case .errorModelRefusal:            "The model declined to answer"
+        case .modelsUnavailableCaption:     "Models unavailable — start Ollama or refresh in Manage models."
+        case .doneButton:                   "Done"
         case .openNoteFromCitation:        "Open note"
         case .notesChatPanelTitle:         "Chat"
         case .notesChatPanelEmpty:         "Start a question about this notebook…"
@@ -445,6 +497,32 @@ public struct AppText: Sendable {
         case .manageModelsRefreshButton:   "Obnovit seznam"
         case .chatModelPickerLabel:        "Chatovací model"
         case .embeddingModelPickerLabel:   "Model pro vektorizaci"
+        case .providersSectionTitle:        "AI provideři"
+        case .addProviderButton:            "Přidat providera…"
+        case .addProviderTitle:             "Přidat providera"
+        case .editProviderTitle:            "Upravit providera"
+        case .providerTypeLabel:            "Typ"
+        case .providerNameLabel:            "Název"
+        case .providerUrlLabel:             "Base URL"
+        case .providerApiKeyLabel:          "API klíč"
+        case .providerKeySavedLabel:        "Klíč uložen ✓ — vložením nahradíte"
+        case .providerTestButton:           "Otestovat připojení"
+        case .providerTestSuccess:          "Připojení OK"
+        case .providerDeleteButton:         "Smazat providera"
+        case .providerDeleteConfirm:        "Smazat tohoto providera? Jeho API klíč bude odstraněn z Klíčenky."
+        case .chatProviderPickerLabel:      "Chat provider"
+        case .embeddingProviderPickerLabel: "Provider pro vektorizaci"
+        case .customModelFieldLabel:        "Vlastní ID modelu"
+        case .providerBadgeChat:            "chat"
+        case .providerBadgeEmbedding:       "vektorizace"
+        case .privacyGateTitle:             "Odesílat data tomuto providerovi?"
+        case .privacyGateMessage:           "Dotazy v chatu a úryvky zdrojů/poznámek vybrané jako kontext budou odesílány na server tohoto providera. Vaše databáze a lokální vektorizace zůstávají na tomto Macu."
+        case .privacyGateAccept:            "Povolit providera"
+        case .errorInvalidApiKey:           "Neplatný API klíč"
+        case .errorRateLimited:             "Příliš mnoho požadavků (429)"
+        case .errorModelRefusal:            "Model odmítl odpovědět"
+        case .modelsUnavailableCaption:     "Modely nedostupné — spusťte Ollamu nebo obnovte ve Správě modelů."
+        case .doneButton:                   "Hotovo"
         case .openNoteFromCitation:        "Otevřít poznámku"
         case .notesChatPanelTitle:         "Chat"
         case .notesChatPanelEmpty:         "Zeptej se na něco z tohoto notebooku…"

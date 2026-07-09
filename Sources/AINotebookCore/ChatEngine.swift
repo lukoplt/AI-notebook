@@ -90,6 +90,23 @@ public actor ChatEngine {
                 assembled = partial
                 break
             } catch {
+                if let providerError = error as? ProviderError {
+                    switch providerError {
+                    case .auth, .refusal:
+                        // Retrying cannot help — the user must fix the key
+                        // or rephrase (FR-A10).
+                        throw providerError
+                    case .rateLimit(let retryAfterSeconds):
+                        if attempt >= retryAttempts { throw providerError }
+                        attempt += 1
+                        let fallback = Double(retryBackoffMillis) * pow(2.0, Double(attempt - 1)) / 1000.0
+                        let seconds = retryAfterSeconds ?? fallback
+                        try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+                        continue
+                    case .http, .decoding:
+                        break // generic backoff below
+                    }
+                }
                 if attempt >= retryAttempts { throw error }
                 attempt += 1
                 let delayNs = UInt64(retryBackoffMillis * Int(pow(2.0, Double(attempt - 1)))) * 1_000_000

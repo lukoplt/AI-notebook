@@ -96,4 +96,26 @@ final class AppSettingsTests: XCTestCase {
         XCTAssertEqual(defaults.string(forKey: "selectedChatModel"), "llama3.1:8b")
         XCTAssertEqual(defaults.string(forKey: "selectedEmbeddingModel"), "mxbai-embed-large")
     }
+
+    func testProviderSelectionDefaultsToBuiltInOllama() {
+        let defaults = makeSuite("test.providers.\(UUID().uuidString)")
+        let settings = AppSettings(defaults: defaults, preferredLanguages: ["en"])
+        XCTAssertEqual(settings.selectedChatProviderId, ProviderConfig.ollamaId)
+        XCTAssertEqual(settings.selectedEmbeddingProviderId, ProviderConfig.ollamaId)
+    }
+
+    func testProviderSelectionPersistsThroughSharedKeys() {
+        let name = "test.providers.persist.\(UUID().uuidString)"
+        let defaults = makeSuite(name)
+        let settings = AppSettings(defaults: defaults, preferredLanguages: ["en"])
+        settings.selectedChatProviderId = "prov-1"
+        settings.selectedChatModel = "gpt-4o"
+        // The router-side reader must observe the same values immediately.
+        let selection = DefaultsProviderSelection(defaults: defaults)
+        XCTAssertEqual(selection.chatSelection().providerId, "prov-1")
+        XCTAssertEqual(selection.chatSelection().model, "gpt-4o")
+        // And a fresh AppSettings re-reads them.
+        let reloaded = AppSettings(defaults: defaults, preferredLanguages: ["en"])
+        XCTAssertEqual(reloaded.selectedChatProviderId, "prov-1")
+    }
 }

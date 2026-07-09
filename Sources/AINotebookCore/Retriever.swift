@@ -4,19 +4,32 @@ import GRDB
 public actor Retriever {
     private let store: NotebookStore
     private let client: EmbeddingProducing
-    public let model: String
+    private let modelKey: @Sendable () -> String
     public let rrfK: Int
 
+    /// `modelKey` is read at the start of every `search`, so a provider/model
+    /// switch in Settings applies to the next query without rebuilding the
+    /// retriever (fixes the pre-registry staleness bug).
+    public init(
+        store: NotebookStore,
+        client: EmbeddingProducing,
+        modelKey: @escaping @Sendable () -> String,
+        rrfK: Int = 60
+    ) {
+        self.store = store
+        self.client = client
+        self.modelKey = modelKey
+        self.rrfK = rrfK
+    }
+
+    /// Convenience for a fixed key (tests, single-provider setups).
     public init(
         store: NotebookStore,
         client: EmbeddingProducing,
         model: String,
         rrfK: Int = 60
     ) {
-        self.store = store
-        self.client = client
-        self.model = model
-        self.rrfK = rrfK
+        self.init(store: store, client: client, modelKey: { model }, rrfK: rrfK)
     }
 
     /// Hybrid retrieval: cosine top-K on vectors + FTS5 BM25 top-K → RRF.
@@ -30,10 +43,11 @@ public actor Retriever {
         sourceIds: Set<Int64> = []
     ) async throws -> [RetrievalHit] {
         // 1) Vector ranking — embed query, score against stored vectors.
-        let queryVectors = try await client.embed(model: model, inputs: [query])
+        let key = modelKey()
+        let queryVectors = try await client.embed(model: key, inputs: [query])
         let queryVector = queryVectors.first ?? []
         let storeRef = store
-        let modelRef = model
+        let modelRef = key
         let allEmbeddings = try await MainActor.run {
             try storeRef.embeddings(notebookId: notebookId, model: modelRef)
         }
