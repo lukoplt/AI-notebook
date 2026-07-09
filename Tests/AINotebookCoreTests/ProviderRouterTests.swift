@@ -180,6 +180,56 @@ final class ProviderRouterTests: XCTestCase {
         XCTAssertNotNil(error)
     }
 
+    /// A mid-drain settings change must not let the network call diverge
+    /// from the composite key the caller (Embedder) snapshotted for storage:
+    /// the passed `model` composite key must win over the live selection.
+    func testEmbedHonorsCompositeKeyOverLiveSelection() async throws {
+        let store = try NotebookStore(path: .inMemory)
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com")
+        try store.saveProvider(cfg)
+        let secrets = InMemorySecretStore()
+        try secrets.save(providerId: cfg.id, secret: "sk-oai")
+        // Live selection points at Ollama — the composite key must win anyway.
+        let selection = StaticSelection(
+            chat: (ProviderConfig.ollamaId, "x"),
+            embed: (ProviderConfig.ollamaId, "nomic-embed-text")
+        )
+        let router = makeRouter(store: store, selection: selection, secrets: secrets)
+        nonisolated(unsafe) var captured: URLRequest?
+        MockURLProtocol.handler = { req in
+            captured = req
+            return (httpResponse(req.url!, status: 200), Data(#"{"data":[{"embedding":[1.0,0.0]}]}"#.utf8))
+        }
+        let vectors = try await router.embed(model: "\(cfg.id):text-embedding-3-small", inputs: ["a"])
+        XCTAssertEqual(vectors, [[1.0, 0.0]])
+        let req = try XCTUnwrap(captured)
+        XCTAssertEqual(req.url?.absoluteString, "https://api.openai.com/v1/embeddings", "must hit provider A, not the live Ollama selection")
+        let body = String(decoding: try XCTUnwrap(req.bodyData), as: UTF8.self)
+        XCTAssertTrue(body.contains(#""model":"text-embedding-3-small""#), body)
+    }
+
+    /// Ollama tags routinely contain colons (`llama3.2:3b`); splitting the
+    /// composite key on the FIRST colon only must preserve them in full.
+    func testEmbedCompositeKeyPreservesColonsInModelName() async throws {
+        let store = try NotebookStore(path: .inMemory)
+        let selection = StaticSelection(
+            chat: (ProviderConfig.ollamaId, "x"),
+            embed: (ProviderConfig.ollamaId, "should-be-ignored")
+        )
+        let router = makeRouter(store: store, selection: selection)
+        nonisolated(unsafe) var captured: URLRequest?
+        MockURLProtocol.handler = { req in
+            captured = req
+            return (httpResponse(req.url!, status: 200), Data(#"{"embeddings":[[1.0,0.0]]}"#.utf8))
+        }
+        let vectors = try await router.embed(model: "\(ProviderConfig.ollamaId):llama3.2:3b", inputs: ["a"])
+        XCTAssertEqual(vectors, [[1.0, 0.0]])
+        let req = try XCTUnwrap(captured)
+        XCTAssertEqual(req.url?.absoluteString, "http://127.0.0.1:11434/api/embed")
+        let body = String(decoding: try XCTUnwrap(req.bodyData), as: UTF8.self)
+        XCTAssertTrue(body.contains(#""model":"llama3.2:3b""#), "colons after the first must survive: \(body)")
+    }
+
     func testEmbeddingKeyComposition() {
         let selection = StaticSelection(chat: ("c", "m"), embed: ("prov-1", "nomic-embed-text"))
         XCTAssertEqual(selection.embeddingKey(), "prov-1:nomic-embed-text")

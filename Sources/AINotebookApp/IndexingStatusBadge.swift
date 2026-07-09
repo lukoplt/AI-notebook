@@ -5,6 +5,7 @@ struct IndexingStatusBadge: View {
     @EnvironmentObject private var settings: AppSettings
     @EnvironmentObject private var store: NotebookStore
     @EnvironmentObject private var embedderHolder: EmbedderHolder
+    @EnvironmentObject private var routerHolder: ProviderRouterHolder
 
     @State private var pending: Int = 0
     @State private var poller: Task<Void, Never>?
@@ -36,7 +37,7 @@ struct IndexingStatusBadge: View {
         poller?.cancel()
         poller = Task { @MainActor in
             while !Task.isCancelled {
-                pending = (try? store.unembeddedCount(model: settings.selectedEmbeddingModel)) ?? 0
+                pending = (try? store.unembeddedCount(model: routerHolder.selection.embeddingKey())) ?? 0
                 try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 s
             }
         }

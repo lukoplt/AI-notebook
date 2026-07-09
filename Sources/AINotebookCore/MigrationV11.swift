@@ -22,13 +22,21 @@ public func registerMigrationV11(on migrator: inout DatabaseMigrator) {
             """,
             arguments: [ProviderConfig.ollamaId]
         )
+        // Before v11 the `providers` table didn't exist, so no legacy row
+        // can already be legitimately provider-qualified — the only
+        // correct "already qualified" marker is a row already prefixed with
+        // the built-in Ollama id. `NOT LIKE '%:%'` is wrong here: legacy
+        // Ollama tag names routinely contain colons themselves
+        // (`llama3.2:3b`, `nomic-embed-text:latest`), and that rule would
+        // skip exactly those rows, silently breaking retrieval for them
+        // after upgrade.
         try db.execute(
             sql: """
             UPDATE chunk_embeddings
             SET model = ? || ':' || model
-            WHERE model NOT LIKE '%:%'
+            WHERE model NOT LIKE ? || ':%'
             """,
-            arguments: [ProviderConfig.ollamaId]
+            arguments: [ProviderConfig.ollamaId, ProviderConfig.ollamaId]
         )
     }
 }
