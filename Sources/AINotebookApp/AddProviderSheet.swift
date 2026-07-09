@@ -183,6 +183,13 @@ struct AddProviderSheet: View {
             if type != .ollama && !apiKey.isEmpty {
                 try routerHolder.secrets.save(providerId: cfg.id, secret: apiKey)
             }
+            // If this edit switched the currently-selected embedding provider
+            // to a type that no longer supports embeddings, the selection
+            // would silently keep pointing at it (picker no longer offers it,
+            // router falls back to Ollama at runtime) — reset it explicitly.
+            if settings.selectedEmbeddingProviderId == cfg.id && !cfg.type.supportsEmbeddings {
+                settings.selectedEmbeddingProviderId = ProviderConfig.ollamaId
+            }
             onSaved()
             dismiss()
         } catch {

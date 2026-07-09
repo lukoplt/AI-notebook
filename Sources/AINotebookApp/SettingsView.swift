@@ -180,12 +180,29 @@ struct SettingsView: View {
                         revertEmbeddingModel = nil
                         Task { await reembedAll() }
                     }
-                    Button(settings.text.string(.cancelButton), role: .cancel) {}
+                    Button(settings.text.string(.cancelButton), role: .cancel) {
+                        // Explicit revert so the common cancel path doesn't
+                        // depend on onChange-vs-button transaction ordering.
+                        // No-op if there's nothing pending (e.g. the dialog
+                        // was opened via the plain "Re-embed all" button).
+                        guard pendingEmbeddingChange != nil else { return }
+                        if let revertEmbeddingProviderId {
+                            settings.selectedEmbeddingProviderId = revertEmbeddingProviderId
+                        }
+                        if let revertEmbeddingModel {
+                            settings.selectedEmbeddingModel = revertEmbeddingModel
+                        }
+                        pendingEmbeddingChange = nil
+                        self.revertEmbeddingProviderId = nil
+                        self.revertEmbeddingModel = nil
+                        Task { await refreshEmbeddingModels() }
+                    }
                 }
                 .onChange(of: showingReembedConfirm) { _, isPresented in
-                    // Fires for every dismissal path (Cancel tap, Escape, click
-                    // outside) — not just the Cancel button — so a change that
-                    // triggered the dialog is never left half-applied.
+                    // Catch-all for dismissal paths that skip the Cancel
+                    // button's action (Escape, click outside). Idempotent:
+                    // if Cancel (or Yes) already cleared pendingEmbeddingChange,
+                    // this is a no-op, so it never double-applies the revert.
                     guard !isPresented, pendingEmbeddingChange != nil else { return }
                     if let revertEmbeddingProviderId {
                         settings.selectedEmbeddingProviderId = revertEmbeddingProviderId
