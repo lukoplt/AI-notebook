@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- macOS: full AI provider registry — connect Anthropic (Claude), OpenAI
+  (ChatGPT), any OpenAI-compatible server (LM Studio, OpenRouter, vLLM), or
+  an OpenWebUI server on your network, alongside local Ollama. Per-role
+  provider + model selection for chat and embeddings, connection test,
+  privacy consent gate, and API keys stored in the macOS Keychain — never in
+  the database. Embedding vectors are now keyed by provider + model, and
+  provider/model switches apply immediately (no relaunch).
+
 ## [0.8.2] — 2026-07-06
 
 Windows launch hotfix. The v0.8.1 Windows build installed but exited

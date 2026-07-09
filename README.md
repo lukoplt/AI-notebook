@@ -32,16 +32,17 @@ snippet they came from.
 
 The core idea: a NotebookLM-style workflow where **your documents never leave
 your machine unless you explicitly choose a cloud model**. Embeddings,
-retrieval, notes, and the database are all local. On macOS the AI is local-only
-(Ollama). On Windows you can stay fully local with Ollama, or opt into a cloud
-provider (Anthropic, OpenAI) when you want a stronger model.
+retrieval, notes, and the database are all local. Both platforms stay
+local-first with Ollama, and can optionally connect a cloud provider
+(Anthropic, OpenAI) or a server on your network (OpenWebUI, LM Studio) when
+you want a stronger model.
 
 It ships as two native codebases sharing one design and data model:
 
 | Platform | Stack | AI providers |
 |---|---|---|
-| **macOS** 14+ | Swift 6 · SwiftUI | Ollama (local only) |
-| **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint |
+| **macOS** 14+ | Swift 6 · SwiftUI | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint · OpenWebUI |
+| **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint · OpenWebUI |
 
 ---
 
@@ -105,9 +106,9 @@ If you want NotebookLM-style "chat with your sources, get citations" but
 - **Bilingual UI** — English and Czech, auto-detected from the system locale
   and switchable in Settings.
 
-> **Platform parity:** the macOS app focuses on a tight local-only Ollama
-> workflow. The Windows app additionally ships multi-provider AI, web search,
-> export/backup, tags, source sets, and global search.
+> **Platform parity:** both apps ship multi-provider AI (local Ollama plus
+> optional cloud and network providers). The Windows app additionally ships
+> web search, export/backup, tags, source sets, and global search.
 
 ---
 
