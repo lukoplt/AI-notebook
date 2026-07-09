@@ -70,6 +70,7 @@ public sealed partial class AddProviderDialog : ContentDialog
         ProviderType.Anthropic => "Anthropic (Claude)",
         ProviderType.OpenAI => "OpenAI (ChatGPT)",
         ProviderType.OpenAICompatible => "OpenAI-compatible",
+        ProviderType.OpenWebUI => "OpenWebUI (network)",
         _ => "Ollama (local)"
     };
 

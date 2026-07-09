@@ -48,7 +48,8 @@ public sealed partial class AddProviderViewModel : ObservableObject
 
     // Types the user can pick in add-mode (all types; Ollama only for custom base URL override)
     public static ProviderType[] AllTypes { get; } =
-        [ProviderType.Ollama, ProviderType.Anthropic, ProviderType.OpenAI, ProviderType.OpenAICompatible];
+        [ProviderType.Ollama, ProviderType.Anthropic, ProviderType.OpenAI,
+         ProviderType.OpenAICompatible, ProviderType.OpenWebUI];
 
     public AddProviderViewModel(
         ProviderRouter router, NotebookStore store, ISecretStore secrets,
@@ -84,8 +85,10 @@ public sealed partial class AddProviderViewModel : ObservableObject
     public bool CanSave =>
         !string.IsNullOrWhiteSpace(Name) &&
         !string.IsNullOrWhiteSpace(BaseUrl) &&
-        // Cloud providers require a key for new entries (edit can keep existing)
-        (SelectedType == ProviderType.Ollama || EditingId != null || !string.IsNullOrWhiteSpace(ApiKey));
+        // Cloud providers require a key for new entries (edit can keep existing).
+        // OpenWebUI is exempt: instances may run with auth disabled.
+        (SelectedType == ProviderType.Ollama || SelectedType == ProviderType.OpenWebUI
+            || EditingId != null || !string.IsNullOrWhiteSpace(ApiKey));
 
     public async Task<ProviderConfig?> SaveConfirmedAsync()
     {

@@ -83,6 +83,7 @@ public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
             ProviderType.Anthropic => await AnthropicChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key ?? "", ct),
             ProviderType.OpenAI or ProviderType.OpenAICompatible =>
                 await OpenAIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
+            ProviderType.OpenWebUI => await OpenWebUIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
             _ => []
         };
     }
@@ -97,6 +98,7 @@ public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
                 ProviderType.Anthropic => await AnthropicChatAdapter.ListModelsAsync(_http, baseUrl, apiKey, ct),
                 ProviderType.OpenAI or ProviderType.OpenAICompatible =>
                     await OpenAIChatAdapter.ListModelsAsync(_http, baseUrl, apiKey, ct),
+                ProviderType.OpenWebUI => await OpenWebUIChatAdapter.ListModelsAsync(_http, baseUrl, apiKey, ct),
                 _ => await ListOllamaModels(baseUrl, ct)
             };
             return null; // success
@@ -120,6 +122,7 @@ public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
         {
             ProviderType.Anthropic => new AnthropicChatAdapter(_http, cfg.BaseUrl, key),
             ProviderType.OpenAI or ProviderType.OpenAICompatible => new OpenAIChatAdapter(_http, cfg.BaseUrl, key),
+            ProviderType.OpenWebUI => new OpenWebUIChatAdapter(_http, cfg.BaseUrl, key),
             _ => new OllamaChatAdapter(_ollama)
         };
         _chatCache[providerId] = (hash, adapter);

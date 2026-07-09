@@ -34,16 +34,15 @@ The core idea: a NotebookLM-style workflow where **your documents never leave
 your machine unless you explicitly choose a cloud model**. Embeddings,
 retrieval, notes, and the database are all local. Both platforms stay
 local-first with Ollama, and can optionally connect a cloud provider
-(Anthropic, OpenAI) or any OpenAI-compatible endpoint (e.g. LM Studio) when
-you want a stronger model; on macOS you can also connect to OpenWebUI on
-your network.
+(Anthropic, OpenAI), any OpenAI-compatible endpoint (e.g. LM Studio), or an
+OpenWebUI server on your network when you want a stronger model.
 
 It ships as two native codebases sharing one design and data model:
 
 | Platform | Stack | AI providers |
 |---|---|---|
 | **macOS** 14+ | Swift 6 · SwiftUI | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint · OpenWebUI |
-| **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint |
+| **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint · OpenWebUI |
 
 ---
 
@@ -95,9 +94,9 @@ If you want NotebookLM-style "chat with your sources, get citations" but
 - **Follow-up suggestions & per-source summaries** — the chat surfaces
   suggested follow-up questions and one-line summaries for each source.
 - **Multi-provider AI** — route chat and embeddings to Ollama, Anthropic,
-  OpenAI, or any OpenAI-compatible server; macOS can also chat through an
-  OpenWebUI server on your network. Keys are stored in the OS credential
-  vault (macOS Keychain / Windows Credential Manager), never in the database.
+  OpenAI, or any OpenAI-compatible server, or chat through an OpenWebUI
+  server on your network. Keys are stored in the OS credential vault
+  (macOS Keychain / Windows Credential Manager), never in the database.
 - **Optional web search** *(Windows)* — opt-in web results injected as
   user-message context (kept out of the system prompt to limit prompt
   injection).
