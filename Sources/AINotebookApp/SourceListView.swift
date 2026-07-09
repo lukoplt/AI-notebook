@@ -8,6 +8,7 @@ struct SourceListView: View {
     @EnvironmentObject private var store: NotebookStore
     @EnvironmentObject private var ingestion: IngestionServiceHolder
     @EnvironmentObject private var ollama: OllamaClientHolder
+    @EnvironmentObject private var routerHolder: ProviderRouterHolder
 
     @State private var sources: [Source] = []
     @State private var showingAdd = false
@@ -19,7 +20,7 @@ struct SourceListView: View {
 
     /// Built from the same chat model + Ollama client the app uses elsewhere.
     private func makeSummarizer() -> SourceSummarizer {
-        SourceSummarizer(store: store, chat: ollama.client, chatModel: settings.selectedChatModel)
+        SourceSummarizer(store: store, chat: routerHolder.router, chatModel: settings.selectedChatModel)
     }
 
     var body: some View {
