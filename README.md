@@ -94,9 +94,10 @@ If you want NotebookLM-style "chat with your sources, get citations" but
   Entities) plus your own custom prompts, with batch runs and history.
 - **Follow-up suggestions & per-source summaries** — the chat surfaces
   suggested follow-up questions and one-line summaries for each source.
-- **Multi-provider AI** *(Windows)* — route chat and embeddings to Ollama,
-  Anthropic, OpenAI, or any OpenAI-compatible server. Keys are stored in the
-  Windows Credential Manager, never in the database.
+- **Multi-provider AI** — route chat and embeddings to Ollama, Anthropic,
+  OpenAI, or any OpenAI-compatible server; macOS can also chat through an
+  OpenWebUI server on your network. Keys are stored in the OS credential
+  vault (macOS Keychain / Windows Credential Manager), never in the database.
 - **Optional web search** *(Windows)* — opt-in web results injected as
   user-message context (kept out of the system prompt to limit prompt
   injection).
@@ -119,11 +120,13 @@ Everything runs on your machine by default:
 
 - Source text, chunks, embeddings, notes, and chat history live in a single
   local SQLite database.
-- API keys (Windows cloud providers) are stored in the OS credential vault,
-  not in the database or in plain text.
+- API keys for cloud/network providers are stored in the OS credential vault
+  (macOS Keychain / Windows Credential Manager), not in the database or in
+  plain text.
 - The **only** outbound network calls are ones you initiate: fetching a web
-  URL you add as a source, an optional update check, optional web search, and —
-  on Windows — requests to a cloud AI provider you explicitly configure.
+  URL you add as a source, an optional update check, optional web search, and
+  requests to a cloud or network AI provider you explicitly configure and
+  consent to.
 - With Ollama as the provider, the app makes **no AI calls off your device**.
 
 ---
