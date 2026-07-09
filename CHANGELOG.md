@@ -3,6 +3,13 @@
 ## [Unreleased]
 
 ### Added
+- macOS: full AI provider registry — connect Anthropic (Claude), OpenAI
+  (ChatGPT), any OpenAI-compatible server (LM Studio, OpenRouter, vLLM), or
+  an OpenWebUI server on your network, alongside local Ollama. Per-role
+  provider + model selection for chat and embeddings, connection test,
+  privacy consent gate, and API keys stored in the macOS Keychain — never in
+  the database. Embedding vectors are now keyed by provider + model, and
+  provider/model switches apply immediately (no relaunch).
 - Windows: OpenWebUI network provider. New provider type in Settings → AI
   providers: connect to an OpenWebUI server on your network (base URL +
   optional API key), fetch its aggregated model list, and use any of its

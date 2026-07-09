@@ -32,16 +32,17 @@ snippet they came from.
 
 The core idea: a NotebookLM-style workflow where **your documents never leave
 your machine unless you explicitly choose a cloud model**. Embeddings,
-retrieval, notes, and the database are all local. On macOS the AI is local-only
-(Ollama). On Windows you can stay fully local with Ollama, or opt into a cloud
-provider (Anthropic, OpenAI) when you want a stronger model.
+retrieval, notes, and the database are all local. Both platforms stay
+local-first with Ollama, and can optionally connect a cloud provider
+(Anthropic, OpenAI), any OpenAI-compatible endpoint (e.g. LM Studio), or an
+OpenWebUI server on your network when you want a stronger model.
 
 It ships as two native codebases sharing one design and data model:
 
 | Platform | Stack | AI providers |
 |---|---|---|
-| **macOS** 14+ | Swift 6 · SwiftUI | Ollama (local only) |
-| **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint |
+| **macOS** 14+ | Swift 6 · SwiftUI | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint · OpenWebUI |
+| **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint · OpenWebUI |
 
 ---
 
@@ -92,9 +93,10 @@ If you want NotebookLM-style "chat with your sources, get citations" but
   Entities) plus your own custom prompts, with batch runs and history.
 - **Follow-up suggestions & per-source summaries** — the chat surfaces
   suggested follow-up questions and one-line summaries for each source.
-- **Multi-provider AI** *(Windows)* — route chat and embeddings to Ollama,
-  Anthropic, OpenAI, or any OpenAI-compatible server. Keys are stored in the
-  Windows Credential Manager, never in the database.
+- **Multi-provider AI** — route chat and embeddings to Ollama, Anthropic,
+  OpenAI, or any OpenAI-compatible server, or chat through an OpenWebUI
+  server on your network. Keys are stored in the OS credential vault
+  (macOS Keychain / Windows Credential Manager), never in the database.
 - **Optional web search** *(Windows)* — opt-in web results injected as
   user-message context (kept out of the system prompt to limit prompt
   injection).
@@ -105,9 +107,9 @@ If you want NotebookLM-style "chat with your sources, get citations" but
 - **Bilingual UI** — English and Czech, auto-detected from the system locale
   and switchable in Settings.
 
-> **Platform parity:** the macOS app focuses on a tight local-only Ollama
-> workflow. The Windows app additionally ships multi-provider AI, web search,
-> export/backup, tags, source sets, and global search.
+> **Platform parity:** both apps ship multi-provider AI (local Ollama plus
+> optional cloud and network providers). The Windows app additionally ships
+> web search, export/backup, tags, source sets, and global search.
 
 ---
 
@@ -117,11 +119,13 @@ Everything runs on your machine by default:
 
 - Source text, chunks, embeddings, notes, and chat history live in a single
   local SQLite database.
-- API keys (Windows cloud providers) are stored in the OS credential vault,
-  not in the database or in plain text.
+- API keys for cloud/network providers are stored in the OS credential vault
+  (macOS Keychain / Windows Credential Manager), not in the database or in
+  plain text.
 - The **only** outbound network calls are ones you initiate: fetching a web
-  URL you add as a source, an optional update check, optional web search, and —
-  on Windows — requests to a cloud AI provider you explicitly configure.
+  URL you add as a source, an optional update check, optional web search, and
+  requests to a cloud or network AI provider you explicitly configure and
+  consent to.
 - With Ollama as the provider, the app makes **no AI calls off your device**.
 
 ---

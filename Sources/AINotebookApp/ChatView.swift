@@ -9,6 +9,7 @@ struct ChatView: View {
     @EnvironmentObject private var store: NotebookStore
     @EnvironmentObject private var chatHolder: ChatEngineHolder
     @EnvironmentObject private var ollama: OllamaClientHolder
+    @EnvironmentObject private var routerHolder: ProviderRouterHolder
 
     @State private var sessions: [ChatSession] = []
     @State private var selectedSessionId: Int64?
@@ -32,7 +33,7 @@ struct ChatView: View {
     /// Lazily built from the same chat model + Ollama client the app uses for
     /// `ChatEngine`. Cheap actor — fine to construct per call.
     private func makeFollowupSuggester() -> FollowupSuggester {
-        FollowupSuggester(chat: ollama.client, chatModel: settings.selectedChatModel)
+        FollowupSuggester(chat: routerHolder.router, chatModel: settings.selectedChatModel)
     }
 
     /// Source ids to scope retrieval to. Empty when nothing is narrowed (i.e.
@@ -343,7 +344,7 @@ struct ChatView: View {
             await reloadMessages()
             await generateFollowups(userText: text, answer: reply.content)
         } catch {
-            errorMessage = String(describing: error)
+            errorMessage = providerErrorText(error, text: settings.text)
             await reloadMessages()
         }
     }

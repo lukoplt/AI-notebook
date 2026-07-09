@@ -162,7 +162,7 @@ struct NotesChatPanel: View {
             }
             await reloadMessages()
         } catch {
-            errorMessage = String(describing: error)
+            errorMessage = providerErrorText(error, text: settings.text)
             await reloadMessages()
         }
     }

@@ -126,4 +126,21 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(AppText(language: .english).string(.aiToolsSectionTitle), "AI tools")
         XCTAssertEqual(AppText(language: .czech)  .string(.aiToolsSectionTitle), "AI nástroje")
     }
+
+    func testProviderSectionKeysAreBilingual() {
+        let en = AppText(language: .english)
+        let cs = AppText(language: .czech)
+        XCTAssertEqual(en.string(.providersSectionTitle), "AI providers")
+        XCTAssertEqual(cs.string(.providersSectionTitle), "AI provideři")
+        XCTAssertEqual(en.string(.addProviderButton), "Add provider…")
+        XCTAssertEqual(cs.string(.addProviderButton), "Přidat providera…")
+        XCTAssertEqual(en.string(.providerTestButton), "Test connection")
+        XCTAssertEqual(cs.string(.providerTestButton), "Otestovat připojení")
+        XCTAssertEqual(en.string(.privacyGateTitle), "Send data to this provider?")
+        XCTAssertEqual(cs.string(.privacyGateTitle), "Odesílat data tomuto providerovi?")
+        XCTAssertEqual(en.string(.errorInvalidApiKey), "Invalid API key")
+        XCTAssertEqual(cs.string(.errorInvalidApiKey), "Neplatný API klíč")
+        XCTAssertEqual(en.string(.doneButton), "Done")
+        XCTAssertEqual(cs.string(.doneButton), "Hotovo")
+    }
 }

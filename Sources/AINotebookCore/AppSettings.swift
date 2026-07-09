@@ -12,8 +12,10 @@ public final class AppSettings: ObservableObject {
     private enum Keys {
         static let language = "language"
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
-        static let selectedChatModel = "selectedChatModel"
-        static let selectedEmbeddingModel = "selectedEmbeddingModel"
+        static let selectedChatModel = ProviderSettingsKeys.chatModel
+        static let selectedEmbeddingModel = ProviderSettingsKeys.embeddingModel
+        static let selectedChatProviderId = ProviderSettingsKeys.chatProviderId
+        static let selectedEmbeddingProviderId = ProviderSettingsKeys.embeddingProviderId
     }
 
     private let defaults: UserDefaults
@@ -36,6 +38,14 @@ public final class AppSettings: ObservableObject {
         didSet { defaults.set(selectedEmbeddingModel, forKey: Keys.selectedEmbeddingModel) }
     }
 
+    @Published public var selectedChatProviderId: String {
+        didSet { defaults.set(selectedChatProviderId, forKey: Keys.selectedChatProviderId) }
+    }
+
+    @Published public var selectedEmbeddingProviderId: String {
+        didSet { defaults.set(selectedEmbeddingProviderId, forKey: Keys.selectedEmbeddingProviderId) }
+    }
+
     public init(
         defaults: UserDefaults = .standard,
         preferredLanguages: [String] = Locale.preferredLanguages
@@ -54,6 +64,10 @@ public final class AppSettings: ObservableObject {
             defaults.string(forKey: Keys.selectedChatModel) ?? "llama3.2:3b"
         self.selectedEmbeddingModel =
             defaults.string(forKey: Keys.selectedEmbeddingModel) ?? "nomic-embed-text"
+        self.selectedChatProviderId =
+            defaults.string(forKey: Keys.selectedChatProviderId) ?? ProviderConfig.ollamaId
+        self.selectedEmbeddingProviderId =
+            defaults.string(forKey: Keys.selectedEmbeddingProviderId) ?? ProviderConfig.ollamaId
     }
 
     public var text: AppText {

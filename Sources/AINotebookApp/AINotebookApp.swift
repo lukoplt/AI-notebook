@@ -6,6 +6,7 @@ struct AINotebookAppEntry: App {
     @StateObject private var settings: AppSettings
     @StateObject private var store: NotebookStore
     @StateObject private var ollama: OllamaClientHolder
+    @StateObject private var routerHolder: ProviderRouterHolder
     @StateObject private var ingestion: IngestionServiceHolder
     @StateObject private var embedderHolder: EmbedderHolder
     @StateObject private var onboarding: OnboardingViewModel
@@ -31,10 +32,17 @@ struct AINotebookAppEntry: App {
         let client = OllamaClient()
         _ollama = StateObject(wrappedValue: OllamaClientHolder(client: client))
 
+        let secrets = KeychainSecretStore()
+        let selection = DefaultsProviderSelection()
+        let router = ProviderRouter(store: store, secrets: secrets, selection: selection)
+        _routerHolder = StateObject(wrappedValue: ProviderRouterHolder(
+            router: router, selection: selection, secrets: secrets
+        ))
+
         let embedder = Embedder(
             store: store,
-            client: client,
-            model: settings.selectedEmbeddingModel
+            client: router,
+            modelKey: { selection.embeddingKey() }
         )
         let worker = EmbeddingWorker(embedder: embedder)
         _embedderHolder = StateObject(wrappedValue: EmbedderHolder(embedder: embedder, worker: worker))
@@ -58,19 +66,19 @@ struct AINotebookAppEntry: App {
 
         let retriever = Retriever(
             store: store,
-            client: client,
-            model: settings.selectedEmbeddingModel
+            client: router,
+            modelKey: { selection.embeddingKey() }
         )
         let engine = ChatEngine(
             store: store,
             retriever: retriever,
-            chat: client,
+            chat: router,
             chatModel: settings.selectedChatModel
         )
         _chatHolder = StateObject(wrappedValue: ChatEngineHolder(engine: engine))
 
         let txEngine = TransformationEngine(
-            store: store, chat: client, chatModel: settings.selectedChatModel
+            store: store, chat: router, chatModel: settings.selectedChatModel
         )
         _transformationHolder = StateObject(wrappedValue: TransformationEngineHolder(engine: txEngine))
 
@@ -92,6 +100,7 @@ struct AINotebookAppEntry: App {
                 .environmentObject(settings)
                 .environmentObject(store)
                 .environmentObject(ollama)
+                .environmentObject(routerHolder)
                 .environmentObject(ingestion)
                 .environmentObject(embedderHolder)
                 .environmentObject(onboarding)
@@ -117,6 +126,18 @@ struct AINotebookAppEntry: App {
 final class OllamaClientHolder: ObservableObject {
     let client: OllamaClient
     init(client: OllamaClient) { self.client = client }
+}
+
+@MainActor
+final class ProviderRouterHolder: ObservableObject {
+    let router: ProviderRouter
+    let selection: DefaultsProviderSelection
+    let secrets: any SecretStoring
+    init(router: ProviderRouter, selection: DefaultsProviderSelection, secrets: any SecretStoring) {
+        self.router = router
+        self.selection = selection
+        self.secrets = secrets
+    }
 }
 
 @MainActor
