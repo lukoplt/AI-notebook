@@ -6,7 +6,19 @@ import XCTest
 /// The body is delivered in one chunk — `URLSession.bytes(for:).lines` still
 /// splits it into lines, so SSE streams are testable end-to-end.
 final class MockURLProtocol: URLProtocol {
-    nonisolated(unsafe) static var handler: (@Sendable (URLRequest) throws -> (HTTPURLResponse, Data))?
+    private static let lock = NSLock()
+    private static nonisolated(unsafe) var _handler: (@Sendable (URLRequest) throws -> (HTTPURLResponse, Data))?
+
+    static var handler: (@Sendable (URLRequest) throws -> (HTTPURLResponse, Data))? {
+        get {
+            lock.lock(); defer { lock.unlock() }
+            return _handler
+        }
+        set {
+            lock.lock(); defer { lock.unlock() }
+            _handler = newValue
+        }
+    }
 
     override class func canInit(with request: URLRequest) -> Bool { true }
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
