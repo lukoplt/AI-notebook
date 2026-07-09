@@ -34,15 +34,16 @@ The core idea: a NotebookLM-style workflow where **your documents never leave
 your machine unless you explicitly choose a cloud model**. Embeddings,
 retrieval, notes, and the database are all local. Both platforms stay
 local-first with Ollama, and can optionally connect a cloud provider
-(Anthropic, OpenAI) or a server on your network (OpenWebUI, LM Studio) when
-you want a stronger model.
+(Anthropic, OpenAI) or any OpenAI-compatible endpoint (e.g. LM Studio) when
+you want a stronger model; on macOS you can also connect to OpenWebUI on
+your network.
 
 It ships as two native codebases sharing one design and data model:
 
 | Platform | Stack | AI providers |
 |---|---|---|
 | **macOS** 14+ | Swift 6 · SwiftUI | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint · OpenWebUI |
-| **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint · OpenWebUI |
+| **Windows** 10/11 | .NET 10 · WinUI 3 | Ollama (local) · Anthropic · OpenAI · any OpenAI-compatible endpoint |
 
 ---
 
