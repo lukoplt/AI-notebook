@@ -7,6 +7,7 @@ struct SettingsView: View {
     @EnvironmentObject private var ollama: OllamaClientHolder
     @EnvironmentObject private var embedderHolder: EmbedderHolder
     @EnvironmentObject private var routerHolder: ProviderRouterHolder
+    @EnvironmentObject private var updates: UpdateService
     @Environment(\.dismiss) private var dismiss
 
     @State private var showingReembedConfirm = false
@@ -335,6 +336,17 @@ struct SettingsView: View {
                     .monospacedDigit()
             }
 
+            Toggle(settings.text.string(.updateAutoCheckToggle), isOn: $settings.autoCheckUpdates)
+            HStack {
+                Button(settings.text.string(.updateCheckNowButton)) {
+                    Task { await updates.checkNow() }
+                }
+                .disabled(updates.status == .checking)
+                Text(updateStatusText)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
             HStack {
                 Spacer()
                 Text("Made with <3 by Lukáš Oplt")
@@ -433,6 +445,17 @@ struct SettingsView: View {
 
     private func refreshEmbeddingModels() async {
         embeddingModels = await routerHolder.router.listModels(providerId: settings.selectedEmbeddingProviderId)
+    }
+
+    private var updateStatusText: String {
+        switch updates.status {
+        case .idle: ""
+        case .checking: settings.text.string(.updateStatusChecking)
+        case .upToDate: settings.text.string(.updateStatusUpToDate)
+        case .available(let info):
+            String(format: settings.text.string(.updateStatusAvailable), info.latestVersion)
+        case .failed: settings.text.string(.updateStatusFailed)
+        }
     }
 }
 

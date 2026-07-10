@@ -15,10 +15,14 @@ struct AINotebookAppEntry: App {
     @StateObject private var attachmentsHolder: AttachmentStoreHolder
     @StateObject private var noteJump = NoteJumpCoordinator()
     @StateObject private var tabSwitch = TabSwitchCoordinator()
+    @StateObject private var updates: UpdateService
 
     init() {
         let settings = AppSettings()
         _settings = StateObject(wrappedValue: settings)
+
+        let updates = UpdateService(settings: settings)
+        _updates = StateObject(wrappedValue: updates)
 
         let store: NotebookStore
         do {
@@ -109,6 +113,7 @@ struct AINotebookAppEntry: App {
                 .environmentObject(attachmentsHolder)
                 .environmentObject(noteJump)
                 .environmentObject(tabSwitch)
+                .environmentObject(updates)
                 .frame(minWidth: 900, minHeight: 600)
         }
         .windowStyle(.titleBar)

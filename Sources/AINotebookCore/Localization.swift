@@ -182,6 +182,15 @@ public struct AppText: Sendable {
         case chatScopeButton
         case chatScopeAllSources
         case chatScopeTitle
+        case updateBannerTitle
+        case updateDownloadButton
+        case updateLaterButton
+        case updateAutoCheckToggle
+        case updateCheckNowButton
+        case updateStatusChecking
+        case updateStatusUpToDate
+        case updateStatusAvailable
+        case updateStatusFailed
     }
 
     public let language: AppLanguage
@@ -383,6 +392,15 @@ public struct AppText: Sendable {
         case .chatScopeButton:             "Sources"
         case .chatScopeAllSources:         "All sources"
         case .chatScopeTitle:              "Limit chat to sources"
+        case .updateBannerTitle:      "A new version (%@) is available."
+        case .updateDownloadButton:   "Download"
+        case .updateLaterButton:      "Later"
+        case .updateAutoCheckToggle:  "Automatically check for updates"
+        case .updateCheckNowButton:   "Check for updates now"
+        case .updateStatusChecking:   "Checking…"
+        case .updateStatusUpToDate:   "You're up to date"
+        case .updateStatusAvailable:  "Update available (%@)"
+        case .updateStatusFailed:     "Couldn't check for updates."
         }
     }
 
@@ -570,6 +588,15 @@ public struct AppText: Sendable {
         case .chatScopeButton:             "Zdroje"
         case .chatScopeAllSources:         "Všechny zdroje"
         case .chatScopeTitle:              "Omezit chat na zdroje"
+        case .updateBannerTitle:      "Je k dispozici nová verze (%@)."
+        case .updateDownloadButton:   "Stáhnout"
+        case .updateLaterButton:      "Později"
+        case .updateAutoCheckToggle:  "Automaticky kontrolovat aktualizace"
+        case .updateCheckNowButton:   "Zkontrolovat aktualizace"
+        case .updateStatusChecking:   "Kontroluji…"
+        case .updateStatusUpToDate:   "Máte aktuální verzi"
+        case .updateStatusAvailable:  "Dostupná aktualizace (%@)"
+        case .updateStatusFailed:     "Kontrola aktualizací se nezdařila."
         }
     }
 }

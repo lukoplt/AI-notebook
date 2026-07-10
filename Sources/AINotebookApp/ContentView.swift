@@ -7,6 +7,7 @@ struct ContentView: View {
     @EnvironmentObject private var ollama: OllamaClientHolder
     @EnvironmentObject private var embedderHolder: EmbedderHolder
     @EnvironmentObject private var onboarding: OnboardingViewModel
+    @EnvironmentObject private var updates: UpdateService
 
     @State private var selectedNotebookId: Int64?
     @State private var showSettings = false
@@ -23,29 +24,39 @@ struct ContentView: View {
     }
 
     private var mainUI: some View {
-        NavigationSplitView {
-            SidebarView(selection: $selectedNotebookId)
-                .environmentObject(settings)
-                .environmentObject(store)
-        } detail: {
-            detail
-        }
-        .navigationTitle(settings.text.string(.appName))
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button {
-                    showSettings = true
-                } label: {
-                    Label(settings.text.string(.settings), systemImage: "gearshape")
+        VStack(spacing: 0) {
+            if let info = updates.availableInfo, !updates.bannerDismissed {
+                UpdateBanner(info: info)
+            }
+            NavigationSplitView {
+                SidebarView(selection: $selectedNotebookId)
+                    .environmentObject(settings)
+                    .environmentObject(store)
+            } detail: {
+                detail
+            }
+            .navigationTitle(settings.text.string(.appName))
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Label(settings.text.string(.settings), systemImage: "gearshape")
+                    }
                 }
             }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
+                    .environmentObject(settings)
+                    .environmentObject(store)
+                    .environmentObject(ollama)
+                    .environmentObject(embedderHolder)
+            }
         }
-        .sheet(isPresented: $showSettings) {
-            SettingsView()
-                .environmentObject(settings)
-                .environmentObject(store)
-                .environmentObject(ollama)
-                .environmentObject(embedderHolder)
+        .task {
+            if settings.hasCompletedOnboarding {
+                await updates.autoCheckIfDue()
+            }
         }
     }
 

@@ -145,4 +145,17 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(en.string(.doneButton), "Done")
         XCTAssertEqual(cs.string(.doneButton), "Hotovo")
     }
+
+    func testUpdateKeysAreBilingual() {
+        let en = AppText(language: .english)
+        let cs = AppText(language: .czech)
+        XCTAssertEqual(en.string(.updateBannerTitle), "A new version (%@) is available.")
+        XCTAssertEqual(cs.string(.updateBannerTitle), "Je k dispozici nová verze (%@).")
+        XCTAssertEqual(en.string(.updateDownloadButton), "Download")
+        XCTAssertEqual(cs.string(.updateDownloadButton), "Stáhnout")
+        XCTAssertEqual(en.string(.updateLaterButton), "Later")
+        XCTAssertEqual(cs.string(.updateLaterButton), "Později")
+        XCTAssertEqual(en.string(.updateStatusFailed), "Couldn't check for updates.")
+        XCTAssertEqual(cs.string(.updateStatusFailed), "Kontrola aktualizací se nezdařila.")
+    }
 }
