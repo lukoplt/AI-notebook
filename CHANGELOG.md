@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.9.2] — 2026-07-10
+
+Privacy-consent enforcement + Windows data-integrity fixes.
+
+### Added
+- Both platforms: the per-provider privacy consent (recorded when you enable
+  a cloud/network provider) is now enforced — chat and embedding requests to
+  a provider without recorded consent are refused with a clear localized
+  error, and selecting such a provider in Settings re-shows the consent
+  dialog (accept proceeds, decline reverts). Changing an existing provider's
+  type to a different cloud service asks for consent again on both platforms.
+
+### Fixed
+- Windows: editing a provider (rename, URL, key rotation) no longer silently
+  resets its recorded privacy consent.
+- Windows: the "indexing" badge no longer shows pending chunks forever — it
+  now checks embeddings under the correct provider-qualified key.
+- Windows: embeddings created before the provider registry (v0.8.0 era) are
+  requalified by a new migration and are visible to retrieval again.
+- Windows: switching the embedding model mid-indexing can no longer store
+  vectors under a stale key (router now honors the exact requested key).
+- Windows: the built-in Ollama provider row was unreadable on every database
+  (seed wrote second-precision timestamps, reader required milliseconds) —
+  fixed seed, repair migration, and tolerant date parsing.
+- Windows: "Test connection" for OpenAI / OpenAI-compatible providers no
+  longer reports success when the server is unreachable or the key invalid.
+- Both platforms: adapters share one SSE wire implementation per platform
+  (parser divergence class eliminated).
+
 ## [0.9.1] — 2026-07-10
 
 Security patch release for the Windows build.
