@@ -24,6 +24,8 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
         public string? SelectedEmbeddingModel { get; set; }
         public string? SelectedChatProviderId { get; set; }
         public string? SelectedEmbeddingProviderId { get; set; }
+        public bool? AutoCheckUpdates { get; set; }
+        public string? LastUpdateCheckUtc { get; set; }
     }
 
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
@@ -46,6 +48,8 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
         _selectedEmbeddingModel = _file.SelectedEmbeddingModel ?? "nomic-embed-text";
         _selectedChatProviderId = _file.SelectedChatProviderId ?? ProviderConfig.OllamaId;
         _selectedEmbeddingProviderId = _file.SelectedEmbeddingProviderId ?? ProviderConfig.OllamaId;
+        _autoCheckUpdates = _file.AutoCheckUpdates ?? true;
+        _lastUpdateCheckUtc = DateTimeOffset.TryParse(_file.LastUpdateCheckUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out var t) ? t : null;
     }
 
     private static string DefaultPath()
@@ -123,6 +127,20 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
     {
         get => _selectedEmbeddingProviderId;
         set { if (SetField(ref _selectedEmbeddingProviderId, value)) { _file.SelectedEmbeddingProviderId = value; Save(); } }
+    }
+
+    private bool _autoCheckUpdates;
+    public bool AutoCheckUpdates
+    {
+        get => _autoCheckUpdates;
+        set { if (SetField(ref _autoCheckUpdates, value)) { _file.AutoCheckUpdates = value; Save(); } }
+    }
+
+    private DateTimeOffset? _lastUpdateCheckUtc;
+    public DateTimeOffset? LastUpdateCheckUtc
+    {
+        get => _lastUpdateCheckUtc;
+        set { if (SetField(ref _lastUpdateCheckUtc, value)) { _file.LastUpdateCheckUtc = value?.ToString("o"); Save(); } }
     }
 
     private bool SetField<T>(ref T field, T value, [CallerMemberName] string? name = null)

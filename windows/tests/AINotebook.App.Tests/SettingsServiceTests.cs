@@ -71,4 +71,34 @@ public class SettingsServiceTests : IDisposable
         var s = new SettingsService(Path.Combine(_dir, "sub", "none.json"));
         Assert.Equal("llama3.2:3b", s.SelectedChatModel);
     }
+
+    [Fact]
+    public void AutoCheckUpdates_defaults_true_and_roundtrips_false()
+    {
+        var s = new SettingsService(PathFor("fresh"));
+        Assert.True(s.AutoCheckUpdates);
+
+        var path = PathFor("roundtrip-auto-check");
+        var first = new SettingsService(path);
+        first.AutoCheckUpdates = false;
+
+        var second = new SettingsService(path);
+        Assert.False(second.AutoCheckUpdates);
+    }
+
+    [Fact]
+    public void LastUpdateCheckUtc_defaults_null_and_roundtrips_through_save_reload()
+    {
+        var s = new SettingsService(PathFor("fresh"));
+        Assert.Null(s.LastUpdateCheckUtc);
+
+        var path = PathFor("roundtrip-last-check");
+        var value = new DateTimeOffset(2026, 7, 10, 12, 0, 0, TimeSpan.Zero);
+
+        var first = new SettingsService(path);
+        first.LastUpdateCheckUtc = value;
+
+        var second = new SettingsService(path);
+        Assert.Equal(value, second.LastUpdateCheckUtc);
+    }
 }

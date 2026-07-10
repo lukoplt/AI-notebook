@@ -13,4 +13,6 @@ public interface ISettingsService : INotifyPropertyChanged
     string SelectedEmbeddingModel { get; set; }      // model name within selected embedding provider
     string SelectedChatProviderId { get; set; }      // default = Ollama well-known ID
     string SelectedEmbeddingProviderId { get; set; } // default = Ollama well-known ID
+    bool AutoCheckUpdates { get; set; }
+    DateTimeOffset? LastUpdateCheckUtc { get; set; }
 }

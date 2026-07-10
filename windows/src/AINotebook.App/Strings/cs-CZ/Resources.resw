@@ -689,4 +689,31 @@
   <data name="webSearchEmpty" xml:space="preserve">
     <value>Žádné výsledky z webu</value>
   </data>
+  <data name="updateBannerTitle" xml:space="preserve">
+    <value>Je k dispozici nová verze ({0}).</value>
+  </data>
+  <data name="updateDownloadButton" xml:space="preserve">
+    <value>Stáhnout</value>
+  </data>
+  <data name="updateLaterButton" xml:space="preserve">
+    <value>Později</value>
+  </data>
+  <data name="updateAutoCheckToggle" xml:space="preserve">
+    <value>Automaticky kontrolovat aktualizace</value>
+  </data>
+  <data name="updateCheckNowButton" xml:space="preserve">
+    <value>Zkontrolovat aktualizace</value>
+  </data>
+  <data name="updateStatusChecking" xml:space="preserve">
+    <value>Kontroluji…</value>
+  </data>
+  <data name="updateStatusUpToDate" xml:space="preserve">
+    <value>Máte aktuální verzi</value>
+  </data>
+  <data name="updateStatusAvailable" xml:space="preserve">
+    <value>Dostupná aktualizace ({0})</value>
+  </data>
+  <data name="updateStatusFailed" xml:space="preserve">
+    <value>Kontrola aktualizací se nezdařila.</value>
+  </data>
 </root>

@@ -93,6 +93,13 @@
                            FontFamily="Consolas" />
             </Grid>
 
+            <ToggleSwitch x:Name="AutoUpdateToggle" Toggled="OnAutoUpdateToggled"/>
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <Button x:Name="CheckUpdatesButton" Click="OnCheckUpdates"/>
+                <TextBlock x:Name="UpdateStatusText" VerticalAlignment="Center"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
+
             <TextBlock Text="Made with &lt;3 by Lukáš Oplt"
                        HorizontalAlignment="Center" FontSize="12"
                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />

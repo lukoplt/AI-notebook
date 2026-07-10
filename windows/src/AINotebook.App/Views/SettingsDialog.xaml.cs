@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
+using AINotebook.Core;
 using AINotebook.Core.Models;
 using AINotebook.Core.Providers;
 using AINotebook.Core.Rag;
@@ -28,7 +29,8 @@ public sealed partial class SettingsDialog : ContentDialog
             sp.GetRequiredService<ISettingsService>(),
             _store,
             sp.GetRequiredService<ProviderRouter>(),
-            sp.GetRequiredService<EmbeddingWorker>());
+            sp.GetRequiredService<EmbeddingWorker>(),
+            sp.GetRequiredService<UpdateChecker>());
 
         CloseButtonText = "Done";
         ApplyLocalizedText();
@@ -38,6 +40,7 @@ public sealed partial class SettingsDialog : ContentDialog
 
         VersionValue.Text = ViewModel.Version;
         CurrentModelValue.Text = ViewModel.SelectedEmbeddingModel;
+        AutoUpdateToggle.IsOn = ViewModel.AutoCheckUpdates;
 
         ViewModel.PropertyChanged += OnVmChanged;
         Opened += async (_, _) => await LoadAllAsync();
@@ -59,7 +62,19 @@ public sealed partial class SettingsDialog : ContentDialog
         CurrentModelLabel.Text = _strings.Get(StringKey.CurrentModelLabel);
         ReembedButton.Content = _strings.Get(StringKey.ReembedButton);
         VersionLabel.Text = _strings.Get(StringKey.Version);
+        AutoUpdateToggle.Header = _strings.Get(StringKey.UpdateAutoCheckToggle);
+        CheckUpdatesButton.Content = _strings.Get(StringKey.UpdateCheckNowButton);
+        UpdateStatusText.Text = FormatUpdateStatus();
     }
+
+    private string FormatUpdateStatus() => ViewModel.CheckStatus switch
+    {
+        UpdateCheckStatus.Checking => _strings.Get(StringKey.UpdateStatusChecking),
+        UpdateCheckStatus.UpToDate => _strings.Get(StringKey.UpdateStatusUpToDate),
+        UpdateCheckStatus.Available => string.Format(_strings.Get(StringKey.UpdateStatusAvailable), ViewModel.AvailableVersion),
+        UpdateCheckStatus.Failed => _strings.Get(StringKey.UpdateStatusFailed),
+        _ => "",
+    };
 
     private async Task LoadAllAsync()
     {
@@ -112,6 +127,18 @@ public sealed partial class SettingsDialog : ContentDialog
             if (string.IsNullOrEmpty(ViewModel.SettingsError)) ErrorBar.IsOpen = false;
             else { ErrorBar.Message = ViewModel.SettingsError; ErrorBar.IsOpen = true; }
         }
+        if (e.PropertyName == nameof(SettingsViewModel.CheckStatus) || e.PropertyName == nameof(SettingsViewModel.AvailableVersion))
+            UpdateStatusText.Text = FormatUpdateStatus();
+    }
+
+    private void OnAutoUpdateToggled(object sender, RoutedEventArgs e)
+    {
+        ViewModel.AutoCheckUpdates = AutoUpdateToggle.IsOn;
+    }
+
+    private async void OnCheckUpdates(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.CheckForUpdatesAsync();
     }
 
     private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)

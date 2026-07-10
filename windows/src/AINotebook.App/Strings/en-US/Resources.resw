@@ -689,4 +689,31 @@
   <data name="webSearchEmpty" xml:space="preserve">
     <value>No web results</value>
   </data>
+  <data name="updateBannerTitle" xml:space="preserve">
+    <value>A new version ({0}) is available.</value>
+  </data>
+  <data name="updateDownloadButton" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="updateLaterButton" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="updateAutoCheckToggle" xml:space="preserve">
+    <value>Automatically check for updates</value>
+  </data>
+  <data name="updateCheckNowButton" xml:space="preserve">
+    <value>Check for updates now</value>
+  </data>
+  <data name="updateStatusChecking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="updateStatusUpToDate" xml:space="preserve">
+    <value>You're up to date</value>
+  </data>
+  <data name="updateStatusAvailable" xml:space="preserve">
+    <value>Update available ({0})</value>
+  </data>
+  <data name="updateStatusFailed" xml:space="preserve">
+    <value>Couldn't check for updates.</value>
+  </data>
 </root>

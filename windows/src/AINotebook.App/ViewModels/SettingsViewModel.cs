@@ -10,12 +10,20 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AINotebook.App.ViewModels;
 
+/// Raw (non-localized) result of the last "Check for updates now" action.
+/// SettingsViewModel has no ILocalizedStrings dependency (unlike some other
+/// VMs in this app), so the dialog code-behind — which already holds
+/// LocalizedStrings — maps this to display text, mirroring how SettingsError
+/// is surfaced today (VM holds raw state, view formats it).
+public enum UpdateCheckStatus { Idle, Checking, UpToDate, Available, Failed }
+
 public sealed partial class SettingsViewModel : ObservableObject
 {
     private readonly ISettingsService _settings;
     private readonly NotebookStore _store;
     private readonly ProviderRouter _router;
     private readonly EmbeddingWorker _worker;
+    private readonly UpdateChecker _checker;
 
     // Models for the currently-selected providers
     public ObservableCollection<string> AvailableChatModels { get; } = new();
@@ -38,12 +46,52 @@ public sealed partial class SettingsViewModel : ObservableObject
     public AppLanguage[] Languages { get; } = [AppLanguage.English, AppLanguage.Czech];
 
     public SettingsViewModel(
-        ISettingsService settings, NotebookStore store, ProviderRouter router, EmbeddingWorker worker)
+        ISettingsService settings, NotebookStore store, ProviderRouter router, EmbeddingWorker worker,
+        UpdateChecker checker)
     {
         _settings = settings;
         _store = store;
         _router = router;
         _worker = worker;
+        _checker = checker;
+    }
+
+    // ── Update check ─────────────────────────────────────────────────────────
+
+    public bool AutoCheckUpdates
+    {
+        get => _settings.AutoCheckUpdates;
+        set { if (_settings.AutoCheckUpdates != value) { _settings.AutoCheckUpdates = value; OnPropertyChanged(); } }
+    }
+
+    [ObservableProperty]
+    public partial UpdateCheckStatus CheckStatus { get; set; } = UpdateCheckStatus.Idle;
+
+    [ObservableProperty]
+    public partial string? AvailableVersion { get; set; }
+
+    [RelayCommand]
+    public async Task CheckForUpdatesAsync()
+    {
+        CheckStatus = UpdateCheckStatus.Checking;
+        try
+        {
+            var info = await _checker.CheckAsync();
+            _settings.LastUpdateCheckUtc = DateTimeOffset.UtcNow;
+            if (info.IsUpdateAvailable)
+            {
+                AvailableVersion = info.LatestVersion;
+                CheckStatus = UpdateCheckStatus.Available;
+            }
+            else
+            {
+                CheckStatus = UpdateCheckStatus.UpToDate;
+            }
+        }
+        catch
+        {
+            CheckStatus = UpdateCheckStatus.Failed;
+        }
     }
 
     // ── Language ────────────────────────────────────────────────────────────
