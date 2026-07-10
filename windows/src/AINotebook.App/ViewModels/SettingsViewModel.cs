@@ -24,6 +24,7 @@ public sealed partial class SettingsViewModel : ObservableObject
     private readonly ProviderRouter _router;
     private readonly EmbeddingWorker _worker;
     private readonly UpdateChecker _checker;
+    private readonly UpdateState _updateState;
 
     // Models for the currently-selected providers
     public ObservableCollection<string> AvailableChatModels { get; } = new();
@@ -47,13 +48,14 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     public SettingsViewModel(
         ISettingsService settings, NotebookStore store, ProviderRouter router, EmbeddingWorker worker,
-        UpdateChecker checker)
+        UpdateChecker checker, UpdateState updateState)
     {
         _settings = settings;
         _store = store;
         _router = router;
         _worker = worker;
         _checker = checker;
+        _updateState = updateState;
     }
 
     // ── Update check ─────────────────────────────────────────────────────────
@@ -82,10 +84,21 @@ public sealed partial class SettingsViewModel : ObservableObject
             {
                 AvailableVersion = info.LatestVersion;
                 CheckStatus = UpdateCheckStatus.Available;
+                // Feed the same state the ShellPage InfoBar (with the Download
+                // button) reads, driven today only by the launch-time hook —
+                // otherwise a manual check can only ever report "available"
+                // with no way to act on it. Re-show even if the user
+                // previously dismissed the banner for an older/same check.
+                _updateState.Available = info;
+                _updateState.BannerDismissed = false;
             }
             else
             {
                 CheckStatus = UpdateCheckStatus.UpToDate;
+                // Definitive "no update" clears any previously-shown banner
+                // (mirrors the macOS UpdateService invariant). A transient
+                // failure below leaves it untouched.
+                _updateState.Available = null;
             }
         }
         catch

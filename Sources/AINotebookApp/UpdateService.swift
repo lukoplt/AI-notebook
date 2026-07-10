@@ -15,6 +15,13 @@ final class UpdateService: ObservableObject {
 
     @Published var status: Status = .idle
     @Published var bannerDismissed = false
+    /// Last known update, independent of `status`. `status` reflects the
+    /// current/last check's transient outcome (.checking, .failed, etc.),
+    /// so deriving `availableInfo` from it hides an already-known update
+    /// while a new check is in flight or a manual check fails. This tracks
+    /// the update separately so the banner stays visible through those
+    /// transient states.
+    @Published private(set) var available: UpdateInfo?
 
     private static let releasesURL = URL(
         string: "https://api.github.com/repos/lukoplt/AI-notebook/releases?per_page=30")!
@@ -28,10 +35,7 @@ final class UpdateService: ObservableObject {
         self.session = session
     }
 
-    var availableInfo: UpdateInfo? {
-        if case .available(let info) = status { return info }
-        return nil
-    }
+    var availableInfo: UpdateInfo? { available }
 
     /// Launch-time check: toggle on, ≥24h since last, silent on failure.
     func autoCheckIfDue() async {
@@ -63,8 +67,19 @@ final class UpdateService: ObservableObject {
                 assetSuffix: UpdateCheck.macAssetSuffix
             )
             settings.lastUpdateCheck = Date()
-            status = info.isUpdateAvailable ? .available(info) : .upToDate
+            if info.isUpdateAvailable {
+                available = info
+                // A newly-found update re-shows the banner even if the user
+                // dismissed a prior one this session (they asked for a check).
+                bannerDismissed = false
+                status = .available(info)
+            } else {
+                available = nil
+                status = .upToDate
+            }
         } catch {
+            // Leave `available` untouched — a transient failure or a new
+            // in-flight check must not hide an already-known update.
             status = silent ? .idle : .failed
         }
     }

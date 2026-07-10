@@ -30,7 +30,8 @@ public sealed partial class SettingsDialog : ContentDialog
             _store,
             sp.GetRequiredService<ProviderRouter>(),
             sp.GetRequiredService<EmbeddingWorker>(),
-            sp.GetRequiredService<UpdateChecker>());
+            sp.GetRequiredService<UpdateChecker>(),
+            sp.GetRequiredService<UpdateState>());
 
         CloseButtonText = "Done";
         ApplyLocalizedText();
