@@ -131,10 +131,21 @@ struct SettingsView: View {
                 .alert(settings.text.string(.privacyGateTitle), isPresented: $showingChatPrivacyGate) {
                     Button(settings.text.string(.privacyGateAccept)) {
                         guard let pending = pendingChatProviderConsent else { return }
-                        try? store.acknowledgePrivacy(providerId: pending.new)
-                        refreshProviders()
-                        pendingChatProviderConsent = nil
-                        Task { await refreshChatModels() }
+                        do {
+                            try store.acknowledgePrivacy(providerId: pending.new)
+                            refreshProviders()
+                            pendingChatProviderConsent = nil
+                            Task { await refreshChatModels() }
+                        } catch {
+                            // Consent was NOT recorded — do not proceed with the
+                            // selection. Revert exactly like a decline, and
+                            // surface the failure instead of silently keeping
+                            // an un-acknowledged provider selected.
+                            settingsError = String(describing: error)
+                            suppressChatProviderOnChange = true
+                            settings.selectedChatProviderId = pending.old
+                            pendingChatProviderConsent = nil
+                        }
                     }
                     Button(settings.text.string(.cancel), role: .cancel) {
                         guard let pending = pendingChatProviderConsent else { return }
@@ -198,10 +209,20 @@ struct SettingsView: View {
                 .alert(settings.text.string(.privacyGateTitle), isPresented: $showingEmbeddingPrivacyGate) {
                     Button(settings.text.string(.privacyGateAccept)) {
                         guard let pending = pendingEmbeddingProviderConsent else { return }
-                        try? store.acknowledgePrivacy(providerId: pending.new)
-                        refreshProviders()
-                        pendingEmbeddingProviderConsent = nil
-                        beginEmbeddingProviderChange(old: pending.old, new: pending.new)
+                        do {
+                            try store.acknowledgePrivacy(providerId: pending.new)
+                            refreshProviders()
+                            pendingEmbeddingProviderConsent = nil
+                            beginEmbeddingProviderChange(old: pending.old, new: pending.new)
+                        } catch {
+                            // Consent was NOT recorded — do not proceed with the
+                            // selection (skip the re-embed flow entirely). Revert
+                            // exactly like a decline, and surface the failure.
+                            settingsError = String(describing: error)
+                            suppressEmbeddingProviderOnChange = true
+                            settings.selectedEmbeddingProviderId = pending.old
+                            pendingEmbeddingProviderConsent = nil
+                        }
                     }
                     Button(settings.text.string(.cancel), role: .cancel) {
                         guard let pending = pendingEmbeddingProviderConsent else { return }
