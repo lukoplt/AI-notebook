@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- Both platforms: in-app update check — once a day (toggleable in Settings)
+  the app asks GitHub Releases whether a newer version exists and shows a
+  dismissible banner with a Download button; a "Check for updates now"
+  button lives in Settings. Check + notify only, no auto-download.
+
+### Fixed
+- The in-app version constants were stale (0.7.3); they now match the repo
+  VERSION file and a guard test on each platform fails CI on any future drift.
+
 ## [0.9.2] — 2026-07-10
 
 Privacy-consent enforcement + Windows data-integrity fixes.

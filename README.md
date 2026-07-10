@@ -123,9 +123,10 @@ Everything runs on your machine by default:
   (macOS Keychain / Windows Credential Manager), not in the database or in
   plain text.
 - The **only** outbound network calls are ones you initiate: fetching a web
-  URL you add as a source, an optional update check, optional web search, and
-  requests to a cloud or network AI provider you explicitly configure and
-  consent to.
+  URL you add as a source, an optional once-a-day update check against
+  api.github.com (toggleable in Settings, carries no personal data),
+  optional web search, and requests to a cloud or network AI provider you
+  explicitly configure and consent to.
 - With Ollama as the provider, the app makes **no AI calls off your device**.
 
 ---
