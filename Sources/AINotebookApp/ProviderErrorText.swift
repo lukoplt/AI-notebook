@@ -8,6 +8,7 @@ func providerErrorText(_ error: Error, text: AppText) -> String {
         case .auth: return text.string(.errorInvalidApiKey)
         case .rateLimit: return text.string(.errorRateLimited)
         case .refusal: return text.string(.errorModelRefusal)
+        case .consentRequired: return text.string(.errorConsentRequired)
         case .http(let code, _): return "HTTP \(code)"
         case .decoding(let message): return message
         }

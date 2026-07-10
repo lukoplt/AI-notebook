@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.Data.Sqlite;
 
 namespace AINotebook.Core.Storage;
@@ -28,6 +27,7 @@ public static class Migrator
         ("v14_chunk_context", V14),
         ("v15_live_sources", V15),
         ("v16_requalify_embedding_keys", V16),
+        ("v17_fix_provider_timestamps", V17),
     };
 
     public static void Migrate(SqliteConnection conn)
@@ -92,7 +92,9 @@ public static class Migrator
     /// <summary>
     /// v6 backfills note_uuid; v11 seeds the default Ollama provider; v16
     /// requalifies legacy raw chunk_embeddings.model keys left behind because
-    /// v11 seeded the provider registry but never requalified existing rows.
+    /// v11 seeded the provider registry but never requalified existing rows;
+    /// v17 repairs providers.created_at rows left malformed by the (buggy)
+    /// v11 seed, which wrote second-precision timestamps.
     /// </summary>
     private static void RunCustom(SqliteConnection conn, SqliteTransaction tx, string id)
     {
@@ -134,13 +136,44 @@ public static class Migrator
                 VALUES($id, 'ollama', 'Ollama (local)', 'http://127.0.0.1:11434', 1, 1, $now)
                 """;
             ins.Parameters.AddWithValue("$id", "00000000-0000-0000-0000-000000000000");
-            ins.Parameters.AddWithValue("$now", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
+            ins.Parameters.AddWithValue("$now", SqliteDate.ToDb(DateTime.UtcNow));
             ins.ExecuteNonQuery();
         }
         else if (id == "v16_requalify_embedding_keys")
         {
             RequalifyLegacyEmbeddingKeys(conn, tx);
         }
+        else if (id == "v17_fix_provider_timestamps")
+        {
+            FixProviderTimestamps(conn, tx);
+        }
+    }
+
+    /// <summary>
+    /// Repairs providers.created_at rows written by the (buggy) v11 data
+    /// step, which seeded the built-in Ollama provider via
+    /// DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") — no milliseconds —
+    /// while SqliteDate.FromDb requires the strict "yyyy-MM-dd HH:mm:ss.fff"
+    /// shape. Every DB migrated before the v11 seed fix carries this
+    /// unreadable row (Provider()/Providers() threw FormatException the
+    /// moment they touched it). Appending ".000" to any created_at with no
+    /// '.' brings it into the strict format without altering its meaning
+    /// (a bare "yyyy-MM-dd HH:mm:ss" value has no sub-second component to
+    /// preserve).
+    ///
+    /// Internal (not private) + optional SqliteTransaction, mirroring
+    /// <see cref="RequalifyLegacyEmbeddingKeys"/>, so tests can re-run this
+    /// exact data step directly against a fully-migrated, in-memory database
+    /// after simulating a pre-v17 malformed row — Migrate() itself is
+    /// idempotent per-identifier and won't re-apply v17 once it's already
+    /// recorded in grdb_migrations.
+    /// </summary>
+    internal static void FixProviderTimestamps(SqliteConnection conn, SqliteTransaction? tx = null)
+    {
+        using var cmd = conn.CreateCommand();
+        if (tx is not null) cmd.Transaction = tx;
+        cmd.CommandText = "UPDATE providers SET created_at = created_at || '.000' WHERE created_at NOT LIKE '%.%'";
+        cmd.ExecuteNonQuery();
     }
 
     /// <summary>
@@ -357,4 +390,7 @@ public static class Migrator
 
     // No DDL — v16 is a pure data migration (see RequalifyLegacyEmbeddingKeys).
     private const string V16 = "";
+
+    // No DDL — v17 is a pure data migration (see FixProviderTimestamps).
+    private const string V17 = "";
 }

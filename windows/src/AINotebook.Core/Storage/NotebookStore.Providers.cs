@@ -25,6 +25,16 @@ public sealed partial class NotebookStore
         return r.Read() ? ReadProvider(r) : null;
     }
 
+    /// <summary>
+    /// Upsert. On update, <c>privacy_acknowledged</c> is intentionally NOT
+    /// overwritten — consent is granted once via <see cref="AcknowledgePrivacy"/>
+    /// and an edit must not reset it (callers such as AddProviderViewModel.
+    /// SaveConfirmedAsync always construct the incoming ProviderConfig with
+    /// PrivacyAcknowledged = false for cloud types, so including it in the
+    /// UPDATE SET would clobber a previously-granted consent on every edit).
+    /// <c>created_at</c> is likewise excluded — it must not change on update.
+    /// Mirrors Sources/AINotebookCore/NotebookStore+Providers.swift saveProvider.
+    /// </summary>
     public ProviderConfig SaveProvider(ProviderConfig p)
     {
         using var cmd = Connection.CreateCommand();
@@ -35,8 +45,7 @@ public sealed partial class NotebookStore
               type = excluded.type,
               name = excluded.name,
               base_url = excluded.base_url,
-              enabled = excluded.enabled,
-              privacy_acknowledged = excluded.privacy_acknowledged
+              enabled = excluded.enabled
             """;
         cmd.Parameters.AddWithValue("$id", p.Id);
         cmd.Parameters.AddWithValue("$type", p.Type.ToStorageString());

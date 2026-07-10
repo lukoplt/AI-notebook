@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AINotebook.App.Services;
 using AINotebook.Core.Models;
+using AINotebook.Core.Providers;
 using AINotebook.Core.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -77,7 +78,17 @@ public partial class NotesChatPanelViewModel : ObservableObject
                 onToken: tok => _dispatcher.TryEnqueue(() => StreamingDraft += tok));
             ReloadMessages();
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); ReloadMessages(); }
+        catch (Exception ex)
+        {
+            // FR-A8: mirrors ChatViewModel.SendAsync's catch — see the
+            // comment there for why ProviderConsentException specifically
+            // gets a localized message while everything else keeps the
+            // existing raw ex.ToString() behavior.
+            ErrorMessage = ex is ProviderConsentException
+                ? _t.Get(StringKey.ErrorConsentRequired)
+                : ex.ToString();
+            ReloadMessages();
+        }
         finally { Sending = false; StreamingDraft = ""; }
     }
 

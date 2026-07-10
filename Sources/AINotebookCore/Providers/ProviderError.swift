@@ -8,4 +8,9 @@ public enum ProviderError: Error, Equatable, Sendable {
     case http(code: Int, body: String)
     case refusal
     case decoding(String)
+    /// Thrown by `ProviderRouter` (FR-A8) when a cloud/network provider is
+    /// selected for chat or embeddings but the user has never acknowledged
+    /// the privacy gate for it. Terminal — `ChatEngine` must not retry it,
+    /// since retrying cannot grant consent.
+    case consentRequired
 }

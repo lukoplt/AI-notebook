@@ -94,6 +94,14 @@ extension ProviderRouter: ChatStreaming {
                 do {
                     let (providerId, activeModel) = self.selection.chatSelection()
                     let cfg = await self.config(providerId)
+                    // FR-A8 defense-in-depth: without consent, a cloud/network
+                    // provider must not receive data — checked here (not just
+                    // at the add-provider gate) so a picker re-selection can
+                    // never bypass it. The built-in Ollama fallback config
+                    // is never cloud, so it is unaffected.
+                    guard !(cfg.type.isCloud && !cfg.privacyAcknowledged) else {
+                        throw ProviderError.consentRequired
+                    }
                     let adapter = self.chatAdapter(for: cfg)
                     for try await token in adapter.stream(model: activeModel, messages: messages) {
                         continuation.yield(token)
@@ -120,6 +128,10 @@ extension ProviderRouter: EmbeddingProducing {
             (providerId, activeModel) = selection.embeddingSelection()
         }
         let cfg = await config(providerId)
+        // FR-A8 defense-in-depth: same gate as `stream` above.
+        guard !(cfg.type.isCloud && !cfg.privacyAcknowledged) else {
+            throw ProviderError.consentRequired
+        }
         switch cfg.type {
         case .openai, .openaiCompatible:
             return try await OpenAIEmbeddingAdapter(

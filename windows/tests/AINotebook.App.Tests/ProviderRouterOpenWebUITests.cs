@@ -69,6 +69,69 @@ public class ProviderRouterOpenWebUITests
         Assert.Equal("http://host:3000/api/chat/completions", uri!.ToString());
     }
 
+    // ── FR-A8 consent gate (defense-in-depth) ───────────────────────────────
+
+    /// A cloud/network provider the user never acknowledged must not receive
+    /// any data via chat — the router throws before the adapter makes a
+    /// request. Mirrors Tests/AINotebookCoreTests/ProviderRouterTests.swift's
+    /// testStreamThrowsConsentRequiredForUnacknowledgedCloudProvider.
+    [Fact]
+    public async Task Chat_throws_ProviderConsentException_for_unacknowledged_cloud_provider()
+    {
+        var handlerInvoked = false;
+        var http = new HttpClient(new CapturingHandler(HttpStatusCode.OK, "data: [DONE]\n",
+            _ => handlerInvoked = true));
+
+        using var store = new NotebookStore(StorePath.InMemory);
+        var cfg = new ProviderConfig(
+            "66666666-6666-6666-6666-666666666666", ProviderType.OpenWebUI,
+            "LAN", "http://host:3000", true, false, DateTime.UtcNow); // PrivacyAcknowledged: false
+        store.SaveProvider(cfg);
+
+        var settings = new FakeSettings
+        {
+            SelectedChatProviderId = cfg.Id,
+            SelectedChatModel = "llama3.2"
+        };
+        var router = MakeRouter(store, http, settings);
+
+        await Assert.ThrowsAsync<ProviderConsentException>(async () =>
+        {
+            await foreach (var _ in router.StreamAsync("ignored", [new ChatTurn(ChatRole.User, "hi")])) { }
+        });
+
+        Assert.False(handlerInvoked, "no HTTP request must be made without consent");
+    }
+
+    /// Once the user acknowledges consent, the same provider streams normally
+    /// — proves the gate is not sticky/cached beyond the consent flag itself.
+    [Fact]
+    public async Task Chat_streams_normally_once_provider_is_acknowledged()
+    {
+        var sse = "data: {\"choices\":[{\"delta\":{\"content\":\"tok\"},\"index\":0}]}\n" +
+                  "data: [DONE]\n";
+        var http = new HttpClient(new CapturingHandler(HttpStatusCode.OK, sse, _ => { }));
+
+        using var store = new NotebookStore(StorePath.InMemory);
+        var cfg = new ProviderConfig(
+            "77777777-7777-7777-7777-777777777777", ProviderType.OpenWebUI,
+            "LAN", "http://host:3000", true, true, DateTime.UtcNow); // PrivacyAcknowledged: true
+        store.SaveProvider(cfg);
+
+        var settings = new FakeSettings
+        {
+            SelectedChatProviderId = cfg.Id,
+            SelectedChatModel = "llama3.2"
+        };
+        var router = MakeRouter(store, http, settings);
+
+        var tokens = new List<string>();
+        await foreach (var t in router.StreamAsync("ignored", [new ChatTurn(ChatRole.User, "hi")]))
+            tokens.Add(t);
+
+        Assert.Equal(["tok"], tokens);
+    }
+
     // ── Helpers ──────────────────────────────────────────────────────────────
 
     private static ProviderRouter MakeRouter(

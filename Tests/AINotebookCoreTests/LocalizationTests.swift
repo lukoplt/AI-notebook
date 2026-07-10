@@ -140,6 +140,8 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(cs.string(.privacyGateTitle), "Odesílat data tomuto providerovi?")
         XCTAssertEqual(en.string(.errorInvalidApiKey), "Invalid API key")
         XCTAssertEqual(cs.string(.errorInvalidApiKey), "Neplatný API klíč")
+        XCTAssertEqual(en.string(.errorConsentRequired), "Provider not enabled — confirm data sharing in Settings")
+        XCTAssertEqual(cs.string(.errorConsentRequired), "Provider není povolen — potvrďte sdílení dat v Nastavení")
         XCTAssertEqual(en.string(.doneButton), "Done")
         XCTAssertEqual(cs.string(.doneButton), "Hotovo")
     }

@@ -335,7 +335,18 @@ public partial class ChatViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.ToString();
+            // FR-A8: no App-layer chat error is localized by exception TYPE
+            // today (everything else falls through to raw ex.ToString(),
+            // matching the existing — unlocalized — behavior of this catch).
+            // ProviderConsentException is deliberately the first to get a
+            // localized, actionable message instead of a raw stack/message
+            // dump, since "confirm data sharing in Settings" is something a
+            // user can act on. The Core exception's Message is plain English
+            // (Core can't reach .resw); this App-layer type check is where
+            // the localized (StringKey.ErrorConsentRequired) text is chosen.
+            ErrorMessage = ex is ProviderConsentException
+                ? _t.Get(StringKey.ErrorConsentRequired)
+                : ex.ToString();
             await ReloadMessagesAsync();
         }
         finally

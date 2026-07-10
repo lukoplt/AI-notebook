@@ -536,6 +536,9 @@
   <data name="privacyGateAcknowledge" xml:space="preserve">
     <value>Rozumím</value>
   </data>
+  <data name="errorConsentRequired" xml:space="preserve">
+    <value>Provider není povolen — potvrďte sdílení dat v Nastavení</value>
+  </data>
   <data name="chatProviderPickerLabel" xml:space="preserve">
     <value>Poskytovatel chatu</value>
   </data>

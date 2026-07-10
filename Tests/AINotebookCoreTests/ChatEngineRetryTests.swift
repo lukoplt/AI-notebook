@@ -80,6 +80,19 @@ final class ChatEngineRetryTests: XCTestCase {
         XCTAssertEqual(chat.attempts, 1, "401 must not be retried")
     }
 
+    func testConsentRequiredIsNotRetried() async throws {
+        let (store, sessionId, notebookId) = try makeChatFixture()
+        let chat = ThrowingChat(error: ProviderError.consentRequired)
+        let engine = makeEngine(store: store, chat: chat)
+        do {
+            _ = try await engine.send(sessionId: sessionId, notebookId: notebookId, userText: "hi", onToken: { _ in })
+            XCTFail("expected throw")
+        } catch let e as ProviderError {
+            XCTAssertEqual(e, .consentRequired)
+        }
+        XCTAssertEqual(chat.attempts, 1, "consentRequired must not be retried — the user must grant consent, retrying cannot help")
+    }
+
     func testRefusalIsNotRetried() async throws {
         let (store, sessionId, notebookId) = try makeChatFixture()
         let chat = ThrowingChat(error: ProviderError.refusal)

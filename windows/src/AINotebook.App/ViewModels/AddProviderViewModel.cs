@@ -16,6 +16,12 @@ public sealed partial class AddProviderViewModel : ObservableObject
     public string? EditingId { get; }
     public bool IsOllamaProvider => EditingId == ProviderConfig.OllamaId;
 
+    // The provider's type as it existed before this edit session (null in add
+    // mode). Needed so the dialog can detect a type CHANGE — e.g. an edit
+    // that switches from one cloud type to another — and re-gate consent for
+    // it, instead of silently inheriting the old type's acknowledgement.
+    public ProviderType? OriginalType { get; }
+
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ShowUrlAndKey), nameof(ShowKeyOnly))]
     [NotifyPropertyChangedFor(nameof(CanSave))]
@@ -62,6 +68,7 @@ public sealed partial class AddProviderViewModel : ObservableObject
         if (existing is not null)
         {
             EditingId = existing.Id;
+            OriginalType = existing.Type;
             SelectedType = existing.Type;
             Name = existing.Name;
             BaseUrl = existing.BaseUrl;
@@ -90,7 +97,14 @@ public sealed partial class AddProviderViewModel : ObservableObject
         (SelectedType == ProviderType.Ollama || SelectedType == ProviderType.OpenWebUI
             || EditingId != null || !string.IsNullOrWhiteSpace(ApiKey));
 
-    public async Task<ProviderConfig?> SaveConfirmedAsync()
+    /// <param name="acknowledgePrivacy">
+    /// True when the caller just walked the user through (and got acceptance
+    /// on) the privacy gate for this save — independent of whether an API key
+    /// was entered. A keyless OpenWebUI instance (auth disabled) still sends
+    /// note/query data over the network, so consent must be recorded whenever
+    /// the gate was accepted, not only when a key happens to be present.
+    /// </param>
+    public async Task<ProviderConfig?> SaveConfirmedAsync(bool acknowledgePrivacy)
     {
         var id = EditingId ?? Guid.NewGuid().ToString();
         var cfg = new ProviderConfig(
@@ -103,7 +117,7 @@ public sealed partial class AddProviderViewModel : ObservableObject
         if (SelectedType != ProviderType.Ollama && !string.IsNullOrWhiteSpace(ApiKey))
             _secrets.Save(id, ApiKey);
 
-        if (SelectedType != ProviderType.Ollama && !string.IsNullOrWhiteSpace(ApiKey))
+        if (acknowledgePrivacy)
             await Task.Run(() => _store.AcknowledgePrivacy(id));
 
         return cfg;

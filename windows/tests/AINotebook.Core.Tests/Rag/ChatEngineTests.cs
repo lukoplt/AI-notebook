@@ -1,5 +1,6 @@
 using AINotebook.Core;
 using AINotebook.Core.Models;
+using AINotebook.Core.Providers;
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using AINotebook.Core.Tests.Helpers;
@@ -111,5 +112,50 @@ public class ChatEngineTests
 
         await engine.SendAsync(sessionId, nbId, "q", onToken: _ => { });
         Assert.DoesNotContain("CURRENTLY OPEN NOTE", chat.CapturedMessages[0][0].Content);
+    }
+
+    // ChatEngineRetryTests.testAuthErrorIsNotRetried (macOS parity)
+    [Fact]
+    public async Task AuthErrorIsNotRetried()
+    {
+        var (store, nbId, sessionId, _) = Setup();
+        var emb = new MockEmbeddingClient(_ => new[] { 1f, 0f });
+        var retriever = new Retriever(store, emb, "emb");
+        var chat = new ThrowingChat(new ProviderAuthException("Invalid API key (401)."));
+        var engine = new ChatEngine(store, retriever, chat, "m", retryAttempts: 2, retryBackoffMillis: 1);
+
+        await Assert.ThrowsAsync<ProviderAuthException>(
+            () => engine.SendAsync(sessionId, nbId, "hi", onToken: _ => { }));
+        Assert.Equal(1, chat.Attempts);
+    }
+
+    // ChatEngineRetryTests.testConsentRequiredIsNotRetried (macOS parity)
+    [Fact]
+    public async Task ConsentRequiredIsNotRetried()
+    {
+        var (store, nbId, sessionId, _) = Setup();
+        var emb = new MockEmbeddingClient(_ => new[] { 1f, 0f });
+        var retriever = new Retriever(store, emb, "emb");
+        var chat = new ThrowingChat(new ProviderConsentException("consent required"));
+        var engine = new ChatEngine(store, retriever, chat, "m", retryAttempts: 2, retryBackoffMillis: 1);
+
+        await Assert.ThrowsAsync<ProviderConsentException>(
+            () => engine.SendAsync(sessionId, nbId, "hi", onToken: _ => { }));
+        Assert.Equal(1, chat.Attempts);
+    }
+
+    // ChatEngineRetryTests.testRefusalIsNotRetried (macOS parity)
+    [Fact]
+    public async Task RefusalIsNotRetried()
+    {
+        var (store, nbId, sessionId, _) = Setup();
+        var emb = new MockEmbeddingClient(_ => new[] { 1f, 0f });
+        var retriever = new Retriever(store, emb, "emb");
+        var chat = new ThrowingChat(new ProviderRefusalException("refused"));
+        var engine = new ChatEngine(store, retriever, chat, "m", retryAttempts: 2, retryBackoffMillis: 1);
+
+        await Assert.ThrowsAsync<ProviderRefusalException>(
+            () => engine.SendAsync(sessionId, nbId, "hi", onToken: _ => { }));
+        Assert.Equal(1, chat.Attempts);
     }
 }

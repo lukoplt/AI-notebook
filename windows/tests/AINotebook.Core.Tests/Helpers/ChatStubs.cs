@@ -42,6 +42,32 @@ public sealed class StaggeredChat : IChatStreaming
     }
 }
 
+/// <summary>
+/// Always throws the given exception on stream start. Mirrors Swift's
+/// ChatEngineRetryTests.ThrowingChat — used to assert terminal provider
+/// errors (auth/refusal/consent) are never retried.
+/// </summary>
+public sealed class ThrowingChat : IChatStreaming
+{
+    private readonly Exception _error;
+    public int Attempts { get; private set; }
+
+    public ThrowingChat(Exception error) => _error = error;
+
+#pragma warning disable CS1998 // no await needed: throws before any yield
+    public async IAsyncEnumerable<string> StreamAsync(
+        string model, IReadOnlyList<ChatTurn> messages,
+        [EnumeratorCancellation] CancellationToken ct = default)
+    {
+        Attempts++;
+        throw _error;
+#pragma warning disable CS0162 // unreachable code: satisfies IAsyncEnumerable<string> return shape
+        yield break;
+#pragma warning restore CS0162
+    }
+#pragma warning restore CS1998
+}
+
 public sealed class FlakyChat : IChatStreaming
 {
     private readonly int _failTimes;

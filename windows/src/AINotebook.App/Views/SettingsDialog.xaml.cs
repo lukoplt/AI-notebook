@@ -15,6 +15,7 @@ public sealed partial class SettingsDialog : ContentDialog
 {
     public SettingsViewModel ViewModel { get; }
     private readonly LocalizedStrings _strings;
+    private readonly NotebookStore _store;
     private bool _suppress;
 
     public SettingsDialog(LocalizedStrings strings)
@@ -22,9 +23,10 @@ public sealed partial class SettingsDialog : ContentDialog
         this.InitializeComponent();
         _strings = strings;
         var sp = App.Current.Services;
+        _store = sp.GetRequiredService<NotebookStore>();
         ViewModel = new SettingsViewModel(
             sp.GetRequiredService<ISettingsService>(),
-            sp.GetRequiredService<NotebookStore>(),
+            _store,
             sp.GetRequiredService<ProviderRouter>(),
             sp.GetRequiredService<EmbeddingWorker>());
 
@@ -124,7 +126,42 @@ public sealed partial class SettingsDialog : ContentDialog
         if (_suppress) return;
         var idx = ChatProviderCombo.SelectedIndex;
         if (idx < 0 || idx >= ViewModel.Providers.Count) return;
-        ViewModel.SelectedChatProviderId = ViewModel.Providers[idx].Id;
+        var oldId = ViewModel.SelectedChatProviderId;
+        var target = ViewModel.Providers[idx];
+        if (target.Id == oldId) return;
+
+        // FR-A8 re-gate on picker selection: a cloud/network provider that
+        // was never acknowledged (added, declined, but left enabled in the
+        // registry) must re-show the privacy gate here — the router enforces
+        // this defense-in-depth on every call regardless, but silently
+        // falling back or surfacing a raw consent-required chat error would
+        // be a confusing dead end for a picker that looked like it "worked".
+        if (target.IsCloud && !target.PrivacyAcknowledged)
+        {
+            var oldIdx = ViewModel.Providers.ToList().FindIndex(p => p.Id == oldId);
+            // WinUI allows only one ContentDialog open at a time, and this
+            // dialog IS one — hide it while the gate is shown, then re-show
+            // (mirrors AddProviderDialog.OnClosing / OnAddProvider et al.).
+            this.Hide();
+            var gate = new PrivacyGateDialog(_strings) { XamlRoot = this.XamlRoot };
+            var gateResult = await gate.ShowAsync();
+            await this.ShowAsync();
+
+            if (gateResult != ContentDialogResult.Primary)
+            {
+                // Declined — revert the combo to the previous selection
+                // under _suppress so this handler doesn't re-enter.
+                _suppress = true;
+                ChatProviderCombo.SelectedIndex = oldIdx >= 0 ? oldIdx : 0;
+                _suppress = false;
+                return;
+            }
+
+            _store.AcknowledgePrivacy(target.Id);
+            await ViewModel.RefreshProvidersAsync();
+        }
+
+        ViewModel.SelectedChatProviderId = target.Id;
         await ViewModel.RefreshChatModelsAsync();
         PopulateModelCombos();
     }
@@ -134,7 +171,33 @@ public sealed partial class SettingsDialog : ContentDialog
         if (_suppress) return;
         var idx = EmbedProviderCombo.SelectedIndex;
         if (idx < 0 || idx >= ViewModel.Providers.Count) return;
-        ViewModel.SelectedEmbeddingProviderId = ViewModel.Providers[idx].Id;
+        var oldId = ViewModel.SelectedEmbeddingProviderId;
+        var target = ViewModel.Providers[idx];
+        if (target.Id == oldId) return;
+
+        // FR-A8 re-gate on picker selection — same rationale as the chat
+        // picker above.
+        if (target.IsCloud && !target.PrivacyAcknowledged)
+        {
+            var oldIdx = ViewModel.Providers.ToList().FindIndex(p => p.Id == oldId);
+            this.Hide();
+            var gate = new PrivacyGateDialog(_strings) { XamlRoot = this.XamlRoot };
+            var gateResult = await gate.ShowAsync();
+            await this.ShowAsync();
+
+            if (gateResult != ContentDialogResult.Primary)
+            {
+                _suppress = true;
+                EmbedProviderCombo.SelectedIndex = oldIdx >= 0 ? oldIdx : 0;
+                _suppress = false;
+                return;
+            }
+
+            _store.AcknowledgePrivacy(target.Id);
+            await ViewModel.RefreshProvidersAsync();
+        }
+
+        ViewModel.SelectedEmbeddingProviderId = target.Id;
         await ViewModel.RefreshEmbeddingModelsAsync();
         PopulateModelCombos();
     }

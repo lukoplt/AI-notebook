@@ -115,6 +115,58 @@ public class ProviderRouterEmbedCompositeKeyTests
         Assert.Contains("\"model\":\"live-model\"", capturedBody!);
     }
 
+    // ── FR-A8 consent gate (defense-in-depth) ───────────────────────────────
+
+    /// The composite key still resolves to a real saved provider row — an
+    /// unacknowledged cloud provider must not receive text to embed even when
+    /// reached via the composite-key path (not just the live-selection path).
+    /// Mirrors Tests/AINotebookCoreTests/ProviderRouterTests.swift's
+    /// testEmbedThrowsConsentRequiredForUnacknowledgedCloudProvider.
+    [Fact]
+    public async Task Composite_key_throws_ProviderConsentException_for_unacknowledged_provider()
+    {
+        var handlerInvoked = false;
+        var http = new HttpClient(new CapturingHandler(HttpStatusCode.OK,
+            """{"data":[{"embedding":[0.1]}]}""",
+            (_, _) => handlerInvoked = true));
+
+        using var store = new NotebookStore(StorePath.InMemory);
+        var target = new ProviderConfig(
+            "88888888-8888-8888-8888-888888888888", ProviderType.OpenAICompatible,
+            "Target", "https://target.example.com", true, false, DateTime.UtcNow); // PrivacyAcknowledged: false
+        store.SaveProvider(target);
+
+        var router = MakeRouter(store, http, new FakeSettings());
+
+        await Assert.ThrowsAsync<ProviderConsentException>(() =>
+            router.EmbedAsync($"{target.Id}:target-model", ["hello"]));
+
+        Assert.False(handlerInvoked, "no HTTP request must be made without consent");
+    }
+
+    /// Once acknowledged, the same composite key routes and embeds normally.
+    [Fact]
+    public async Task Composite_key_embeds_normally_once_provider_is_acknowledged()
+    {
+        string? capturedBody = null;
+        var http = new HttpClient(new CapturingHandler(HttpStatusCode.OK,
+            """{"data":[{"embedding":[0.1,0.2]}]}""",
+            (_, b) => capturedBody = b));
+
+        using var store = new NotebookStore(StorePath.InMemory);
+        var target = new ProviderConfig(
+            "99999999-9999-9999-9999-999999999999", ProviderType.OpenAICompatible,
+            "Target", "https://target.example.com", true, true, DateTime.UtcNow); // PrivacyAcknowledged: true
+        store.SaveProvider(target);
+
+        var router = MakeRouter(store, http, new FakeSettings());
+
+        await router.EmbedAsync($"{target.Id}:target-model", ["hello"]);
+
+        Assert.NotNull(capturedBody);
+        Assert.Contains("\"model\":\"target-model\"", capturedBody!);
+    }
+
     // ── Helpers ──────────────────────────────────────────────────────────────
 
     private static ProviderRouter MakeRouter(
