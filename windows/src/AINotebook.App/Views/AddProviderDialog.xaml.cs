@@ -159,19 +159,25 @@ public sealed partial class AddProviderDialog : ContentDialog
         ViewModel.BaseUrl = UrlBox.Text.Trim();
         ViewModel.ApiKey = KeyBox.Password;
 
-        // Privacy gate for new cloud providers — defer close, show gate, then hide manually
-        if (ViewModel.SelectedType != ProviderType.Ollama && ViewModel.EditingId is null)
+        // Privacy gate (FR-A8): fires for a NEW cloud/network provider AND for
+        // an edit that changes an existing provider's type to a (possibly
+        // different) cloud/network type — the stored consent belonged to the
+        // previous type and must not silently carry over. Mirrors
+        // Sources/AINotebookApp/AddProviderSheet.swift saveTapped()'s
+        // `typeChanged = existing.map { $0.type != type } ?? true`.
+        var typeChanged = ViewModel.EditingId is null || ViewModel.SelectedType != ViewModel.OriginalType;
+        if (ViewModel.SelectedType != ProviderType.Ollama && typeChanged)
         {
             args.Cancel = true; // keep dialog open while gate is shown
             this.Hide();        // hide this dialog so gate can appear
             var gate = new PrivacyGateDialog(_strings) { XamlRoot = this.XamlRoot };
             var gateResult = await gate.ShowAsync();
             if (gateResult == ContentDialogResult.Primary)
-                Tag = await ViewModel.SaveConfirmedAsync();
+                Tag = await ViewModel.SaveConfirmedAsync(acknowledgePrivacy: true);
             // If gate was cancelled, Tag stays null — caller reloads and nothing changed.
             return; // this.Hide() already closed us; don't proceed further
         }
 
-        Tag = await ViewModel.SaveConfirmedAsync();
+        Tag = await ViewModel.SaveConfirmedAsync(acknowledgePrivacy: false);
     }
 }

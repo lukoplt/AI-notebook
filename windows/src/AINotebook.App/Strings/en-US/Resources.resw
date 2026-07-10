@@ -536,6 +536,9 @@
   <data name="privacyGateAcknowledge" xml:space="preserve">
     <value>I understand</value>
   </data>
+  <data name="errorConsentRequired" xml:space="preserve">
+    <value>Provider not enabled — confirm data sharing in Settings</value>
+  </data>
   <data name="chatProviderPickerLabel" xml:space="preserve">
     <value>Chat provider</value>
   </data>

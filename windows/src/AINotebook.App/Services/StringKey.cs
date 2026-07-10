@@ -53,6 +53,7 @@ public enum StringKey
     ProviderDeleteTitle, ProviderDeleteConfirm,
     PrivacyGateTitle, PrivacyGateBody, PrivacyGateAcknowledge,
     ChatProviderPickerLabel, EmbeddingProviderPickerLabel,
+    ErrorConsentRequired,
     // Epic B: export, search, drag&drop, tags, bulk ops.
     NoteSearchPlaceholder,
     SourcePreviewTitle, SourcePreviewChunksLabel, SourcePreviewNoContent, SourcePreviewButton,

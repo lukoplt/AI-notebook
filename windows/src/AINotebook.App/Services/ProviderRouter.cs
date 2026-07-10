@@ -29,6 +29,13 @@ namespace AINotebook.App.Services;
 ///   from ever diverging within a drain. Callers that pass a plain
 ///   (colon-free) model string — the legacy/direct convenience path used by
 ///   some tests — still get today's live-selection behavior.
+///
+/// FR-A8 defense-in-depth: <see cref="GetChatAdapter"/> and
+/// <see cref="GetEmbeddingAdapter"/> both throw <see cref="ProviderConsentException"/>
+/// for a cloud/network provider whose config is not `PrivacyAcknowledged` —
+/// enforced here on every call (not just at the add-provider gate) so a
+/// Settings picker re-selection, a stale composite key, or any other path
+/// can never route real data to an unacknowledged provider.
 /// </summary>
 public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
 {
@@ -172,6 +179,19 @@ public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
     private IChatStreaming GetChatAdapter(string providerId)
     {
         var cfg = _store.Provider(providerId) ?? OllamaFallback();
+        // FR-A8 defense-in-depth: without consent, a cloud/network provider
+        // must not receive data — checked here (not just at the add-provider
+        // gate) so a picker re-selection can never bypass it. Gated BEFORE
+        // the adapter cache lookup/hash below: consent is NOT part of the
+        // cache hash, and cfg is re-read from the store on every call, so
+        // running the check unconditionally (cache hit or miss) means
+        // acknowledging consent later takes effect immediately instead of
+        // ever serving a stale refusal — and no adapter is ever cached for
+        // an unacknowledged config in the first place. The built-in Ollama
+        // fallback is never cloud, so it is unaffected.
+        if (cfg.IsCloud && !cfg.PrivacyAcknowledged)
+            throw new ProviderConsentException("Provider not enabled — confirm data sharing in Settings");
+
         var key = cfg.IsCloud ? (_secrets.Load(providerId) ?? "") : "";
         var hash = $"{cfg.Type}|{cfg.BaseUrl}|{key.Length}"; // cheap change detection
 
@@ -192,6 +212,10 @@ public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
     private IEmbeddingProducing GetEmbeddingAdapter(string providerId)
     {
         var cfg = _store.Provider(providerId) ?? OllamaFallback();
+        // FR-A8 defense-in-depth: same gate as GetChatAdapter above.
+        if (cfg.IsCloud && !cfg.PrivacyAcknowledged)
+            throw new ProviderConsentException("Provider not enabled — confirm data sharing in Settings");
+
         var key = cfg.IsCloud ? (_secrets.Load(providerId) ?? "") : "";
         var hash = $"{cfg.Type}|{cfg.BaseUrl}|{key.Length}";
 
