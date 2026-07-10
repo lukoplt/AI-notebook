@@ -71,21 +71,36 @@ public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
 
     // ── Provider discovery (used by Settings UI) ────────────────────────────
 
+    /// UI-safe: this backs the Settings model pickers, so failures collapse
+    /// to an empty list rather than throwing. The underlying Core adapters
+    /// (OpenAI/OpenWebUI via the shared OpenAIStyleWire helper) now throw on
+    /// ANY failure — macOS parity — so this catch is load-bearing, not
+    /// defensive filler: without it, a misconfigured provider would blow up
+    /// the picker refresh instead of just showing no models.
+    /// <see cref="TestConnectionAsync"/> is the throwing counterpart — it
+    /// must NOT catch here, since Test connection needs the real error.
     public async Task<IReadOnlyList<ProviderModelInfo>> ListModelsAsync(
         string providerId, CancellationToken ct = default)
     {
         var cfg = _store.Provider(providerId);
         if (cfg is null) return [];
         var key = _secrets.Load(providerId);
-        return cfg.Type switch
+        try
         {
-            ProviderType.Ollama => await ListOllamaModels(cfg.BaseUrl, ct),
-            ProviderType.Anthropic => await AnthropicChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key ?? "", ct),
-            ProviderType.OpenAI or ProviderType.OpenAICompatible =>
-                await OpenAIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
-            ProviderType.OpenWebUI => await OpenWebUIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
-            _ => []
-        };
+            return cfg.Type switch
+            {
+                ProviderType.Ollama => await ListOllamaModels(cfg.BaseUrl, ct),
+                ProviderType.Anthropic => await AnthropicChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key ?? "", ct),
+                ProviderType.OpenAI or ProviderType.OpenAICompatible =>
+                    await OpenAIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
+                ProviderType.OpenWebUI => await OpenWebUIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
+                _ => []
+            };
+        }
+        catch
+        {
+            return [];
+        }
     }
 
     public async Task<string?> TestConnectionAsync(

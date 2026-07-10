@@ -1,4 +1,3 @@
-using System.Net;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -73,12 +72,13 @@ public sealed class AnthropicChatAdapter : IChatStreaming
 
         using var resp = await _http.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct);
 
-        if (resp.StatusCode == HttpStatusCode.Unauthorized)
-            throw new ProviderAuthException("Anthropic: invalid API key (401).");
-        if (resp.StatusCode == (HttpStatusCode)429)
-            throw new ProviderRateLimitException("Anthropic: rate limit exceeded (429).");
-        if (!resp.IsSuccessStatusCode)
-            throw new ProviderException($"Anthropic: HTTP {(int)resp.StatusCode}.");
+        // Shared status mapping (macOS parity — ProviderWire.error(forStatus:)
+        // applies the same 401/429/other mapping to Anthropic too, with no
+        // per-provider message prefix). No test pins the old "Anthropic: "
+        // prefix — only the exception type is asserted — so this is safe to
+        // unify; only the request shape and SSE event loop below stay
+        // Anthropic-specific.
+        OpenAIStyleWire.ThrowForStatus(resp);
 
         using var stream = await resp.Content.ReadAsStreamAsync(ct);
         using var reader = new StreamReader(stream);
