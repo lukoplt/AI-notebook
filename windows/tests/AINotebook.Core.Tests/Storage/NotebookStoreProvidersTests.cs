@@ -55,4 +55,22 @@ public class NotebookStoreProvidersTests
         store.DeleteProvider(cfg.Id);
         Assert.Null(store.Provider(cfg.Id));
     }
+
+    // Regression: the v11 migration's data step used to seed the built-in
+    // Ollama provider's created_at with DateTime.UtcNow.ToString("yyyy-MM-dd
+    // HH:mm:ss") — no milliseconds — while SqliteDate.FromDb does a strict
+    // ParseExact on "yyyy-MM-dd HH:mm:ss.fff". Every fresh DB (in-memory or
+    // on-disk) therefore carried an unreadable seeded row, and Provider()/
+    // Providers() threw FormatException the moment they touched it. This
+    // must succeed on a brand-new store with no other setup.
+    [Fact]
+    public void SeededOllamaProvider_IsReadableRightAfterMigration()
+    {
+        using var store = Fresh();
+
+        var cfg = store.Provider(ProviderConfig.OllamaId);
+
+        Assert.NotNull(cfg);
+        Assert.Contains(store.Providers(), p => p.Id == ProviderConfig.OllamaId);
+    }
 }
