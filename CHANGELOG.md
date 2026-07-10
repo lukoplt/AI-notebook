@@ -1,6 +1,8 @@
 # Changelog
 
-## [Unreleased]
+## [0.10.0] — 2026-07-10
+
+In-app update notifications.
 
 ### Added
 - Both platforms: in-app update check — once a day (toggleable in Settings)
