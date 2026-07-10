@@ -26,4 +26,11 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\..\VERSION">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>VERSION</Link>
+    </None>
+  </ItemGroup>
+
 </Project>

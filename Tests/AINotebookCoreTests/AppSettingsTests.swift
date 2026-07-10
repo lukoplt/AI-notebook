@@ -118,4 +118,26 @@ final class AppSettingsTests: XCTestCase {
         let reloaded = AppSettings(defaults: defaults, preferredLanguages: ["en"])
         XCTAssertEqual(reloaded.selectedChatProviderId, "prov-1")
     }
+
+    func testAutoCheckUpdatesDefaultsOnAndPersists() {
+        let name = "test.updates.\(UUID().uuidString)"
+        let defaults = makeSuite(name)
+        let settings = AppSettings(defaults: defaults, preferredLanguages: ["en"])
+        XCTAssertTrue(settings.autoCheckUpdates)
+        settings.autoCheckUpdates = false
+        let reloaded = AppSettings(defaults: defaults, preferredLanguages: ["en"])
+        XCTAssertFalse(reloaded.autoCheckUpdates)
+    }
+
+    func testLastUpdateCheckDefaultsNilAndPersists() {
+        let name = "test.updates.last.\(UUID().uuidString)"
+        let defaults = makeSuite(name)
+        let settings = AppSettings(defaults: defaults, preferredLanguages: ["en"])
+        XCTAssertNil(settings.lastUpdateCheck)
+        let stamp = Date(timeIntervalSince1970: 1_750_000_000)
+        settings.lastUpdateCheck = stamp
+        let reloaded = AppSettings(defaults: defaults, preferredLanguages: ["en"])
+        XCTAssertEqual(reloaded.lastUpdateCheck?.timeIntervalSince1970 ?? 0,
+                       stamp.timeIntervalSince1970, accuracy: 0.001)
+    }
 }

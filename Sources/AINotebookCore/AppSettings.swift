@@ -16,6 +16,8 @@ public final class AppSettings: ObservableObject {
         static let selectedEmbeddingModel = ProviderSettingsKeys.embeddingModel
         static let selectedChatProviderId = ProviderSettingsKeys.chatProviderId
         static let selectedEmbeddingProviderId = ProviderSettingsKeys.embeddingProviderId
+        static let autoCheckUpdates = "autoCheckUpdates"
+        static let lastUpdateCheck = "lastUpdateCheck"
     }
 
     private let defaults: UserDefaults
@@ -46,6 +48,21 @@ public final class AppSettings: ObservableObject {
         didSet { defaults.set(selectedEmbeddingProviderId, forKey: Keys.selectedEmbeddingProviderId) }
     }
 
+    @Published public var autoCheckUpdates: Bool {
+        didSet { defaults.set(autoCheckUpdates, forKey: Keys.autoCheckUpdates) }
+    }
+
+    /// Stored as a unix timestamp; nil until the first successful check.
+    @Published public var lastUpdateCheck: Date? {
+        didSet {
+            if let lastUpdateCheck {
+                defaults.set(lastUpdateCheck.timeIntervalSince1970, forKey: Keys.lastUpdateCheck)
+            } else {
+                defaults.removeObject(forKey: Keys.lastUpdateCheck)
+            }
+        }
+    }
+
     public init(
         defaults: UserDefaults = .standard,
         preferredLanguages: [String] = Locale.preferredLanguages
@@ -68,6 +85,17 @@ public final class AppSettings: ObservableObject {
             defaults.string(forKey: Keys.selectedChatProviderId) ?? ProviderConfig.ollamaId
         self.selectedEmbeddingProviderId =
             defaults.string(forKey: Keys.selectedEmbeddingProviderId) ?? ProviderConfig.ollamaId
+
+        if defaults.object(forKey: Keys.autoCheckUpdates) == nil {
+            self.autoCheckUpdates = true
+        } else {
+            self.autoCheckUpdates = defaults.bool(forKey: Keys.autoCheckUpdates)
+        }
+        if let stamp = defaults.object(forKey: Keys.lastUpdateCheck) as? Double {
+            self.lastUpdateCheck = Date(timeIntervalSince1970: stamp)
+        } else {
+            self.lastUpdateCheck = nil
+        }
     }
 
     public var text: AppText {

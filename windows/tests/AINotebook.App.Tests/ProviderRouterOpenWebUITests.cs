@@ -148,6 +148,8 @@ public class ProviderRouterOpenWebUITests
         public string SelectedEmbeddingModel { get; set; } = "nomic-embed-text";
         public string SelectedChatProviderId { get; set; } = ProviderConfig.OllamaId;
         public string SelectedEmbeddingProviderId { get; set; } = ProviderConfig.OllamaId;
+        public bool AutoCheckUpdates { get; set; } = true;
+        public DateTimeOffset? LastUpdateCheckUtc { get; set; }
     }
 
     private sealed class FakeSecrets : ISecretStore

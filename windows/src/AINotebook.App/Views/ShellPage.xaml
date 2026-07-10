@@ -9,7 +9,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     mc:Ignorable="d">
 
-    <muxc:NavigationView x:Name="Nav"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <InfoBar x:Name="UpdateBar" Grid.Row="0" Severity="Informational"
+                 IsClosable="True" IsOpen="False">
+            <InfoBar.ActionButton>
+                <Button x:Name="UpdateDownloadButton" Click="OnUpdateDownload"/>
+            </InfoBar.ActionButton>
+        </InfoBar>
+        <muxc:NavigationView x:Name="Nav" Grid.Row="1"
         PaneDisplayMode="Left"
         IsBackButtonVisible="Collapsed"
         IsSettingsVisible="False"
@@ -62,5 +73,6 @@
                            HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>
-    </muxc:NavigationView>
+        </muxc:NavigationView>
+    </Grid>
 </Page>

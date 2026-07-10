@@ -15,6 +15,7 @@ public sealed partial class ShellPage : Page
 {
     public ShellViewModel ViewModel { get; }
     private readonly ILocalizedStrings _l;
+    private readonly UpdateState _updateState;
 
     public string RenameText => _l["renameNotebook"];
     public string DeleteText => _l["deleteNotebook"];
@@ -33,6 +34,27 @@ public sealed partial class ShellPage : Page
                 ShowDetail(ViewModel.SelectedNotebook);
         };
         ShowDetail(ViewModel.SelectedNotebook);
+
+        _updateState = App.Current.Services.GetRequiredService<UpdateState>();
+        _updateState.PropertyChanged += (_, __) => SyncUpdateBar();
+        UpdateBar.CloseButtonClick += (_, __) => _updateState.BannerDismissed = true;
+        SyncUpdateBar();
+    }
+
+    private void SyncUpdateBar()
+    {
+        var info = _updateState.Available;
+        if (info is null || _updateState.BannerDismissed) { UpdateBar.IsOpen = false; return; }
+        UpdateBar.Message = string.Format(_l.Get(StringKey.UpdateBannerTitle), info.LatestVersion);
+        UpdateDownloadButton.Content = _l.Get(StringKey.UpdateDownloadButton);
+        UpdateBar.IsOpen = true;
+    }
+
+    private async void OnUpdateDownload(object sender, RoutedEventArgs e)
+    {
+        var info = _updateState.Available;
+        if (info is null) return;
+        _ = await Windows.System.Launcher.LaunchUriAsync(new Uri(info.DownloadUrl));
     }
 
     private void ShowDetail(Notebook? nb)

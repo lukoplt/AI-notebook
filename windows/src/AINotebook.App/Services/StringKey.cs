@@ -74,4 +74,8 @@ public enum StringKey
     FolderWatchButton, FolderWatchActiveLabel,
     UrlRefreshButton, UrlRefreshingStatus,
     WebSearchToggleLabel, WebSearchResultsTitle, WebSearchEmpty,
+    // In-app update check.
+    UpdateBannerTitle, UpdateDownloadButton, UpdateLaterButton, UpdateAutoCheckToggle,
+    UpdateCheckNowButton, UpdateStatusChecking, UpdateStatusUpToDate, UpdateStatusAvailable,
+    UpdateStatusFailed,
 }

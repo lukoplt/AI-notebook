@@ -76,6 +76,9 @@ public partial class App : Application
             return http;
         });
 
+        services.AddSingleton(sp => new UpdateChecker(sp.GetRequiredService<HttpClient>()));
+        services.AddSingleton<UpdateState>();
+
         // --- Core service graph ---
 
         services.AddSingleton<NotebookStore>(sp =>
@@ -228,11 +231,38 @@ public partial class App : Application
             WireStoreCallbacks();
             MainWindow = new MainWindow();
             MainWindow.Activate();
+            _ = RunStartupUpdateCheckAsync();
         }
         catch (Exception ex)
         {
             LogCrash("OnLaunched", ex);
             throw;
+        }
+    }
+
+    /// Launch-time update check: toggle on, ≥24h since last, onboarding done.
+    /// Fully best-effort — failures are silent (spec).
+    private async Task RunStartupUpdateCheckAsync()
+    {
+        try
+        {
+            var settings = Services.GetRequiredService<ISettingsService>();
+            if (!settings.HasCompletedOnboarding || !settings.AutoCheckUpdates) return;
+            var last = settings.LastUpdateCheckUtc;
+            if (last is not null && DateTimeOffset.UtcNow - last < TimeSpan.FromHours(24)) return;
+
+            var checker = Services.GetRequiredService<UpdateChecker>();
+            var info = await checker.CheckAsync();
+            settings.LastUpdateCheckUtc = DateTimeOffset.UtcNow;
+            if (!info.IsUpdateAvailable) return;
+            Ui?.TryEnqueue(() =>
+            {
+                Services.GetRequiredService<UpdateState>().Available = info;
+            });
+        }
+        catch
+        {
+            // silent by design
         }
     }
 }

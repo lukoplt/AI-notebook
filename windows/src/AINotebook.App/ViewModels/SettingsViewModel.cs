@@ -10,12 +10,21 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace AINotebook.App.ViewModels;
 
+/// Raw (non-localized) result of the last "Check for updates now" action.
+/// SettingsViewModel has no ILocalizedStrings dependency (unlike some other
+/// VMs in this app), so the dialog code-behind — which already holds
+/// LocalizedStrings — maps this to display text, mirroring how SettingsError
+/// is surfaced today (VM holds raw state, view formats it).
+public enum UpdateCheckStatus { Idle, Checking, UpToDate, Available, Failed }
+
 public sealed partial class SettingsViewModel : ObservableObject
 {
     private readonly ISettingsService _settings;
     private readonly NotebookStore _store;
     private readonly ProviderRouter _router;
     private readonly EmbeddingWorker _worker;
+    private readonly UpdateChecker _checker;
+    private readonly UpdateState _updateState;
 
     // Models for the currently-selected providers
     public ObservableCollection<string> AvailableChatModels { get; } = new();
@@ -38,12 +47,64 @@ public sealed partial class SettingsViewModel : ObservableObject
     public AppLanguage[] Languages { get; } = [AppLanguage.English, AppLanguage.Czech];
 
     public SettingsViewModel(
-        ISettingsService settings, NotebookStore store, ProviderRouter router, EmbeddingWorker worker)
+        ISettingsService settings, NotebookStore store, ProviderRouter router, EmbeddingWorker worker,
+        UpdateChecker checker, UpdateState updateState)
     {
         _settings = settings;
         _store = store;
         _router = router;
         _worker = worker;
+        _checker = checker;
+        _updateState = updateState;
+    }
+
+    // ── Update check ─────────────────────────────────────────────────────────
+
+    public bool AutoCheckUpdates
+    {
+        get => _settings.AutoCheckUpdates;
+        set { if (_settings.AutoCheckUpdates != value) { _settings.AutoCheckUpdates = value; OnPropertyChanged(); } }
+    }
+
+    [ObservableProperty]
+    public partial UpdateCheckStatus CheckStatus { get; set; } = UpdateCheckStatus.Idle;
+
+    [ObservableProperty]
+    public partial string? AvailableVersion { get; set; }
+
+    [RelayCommand]
+    public async Task CheckForUpdatesAsync()
+    {
+        CheckStatus = UpdateCheckStatus.Checking;
+        try
+        {
+            var info = await _checker.CheckAsync();
+            _settings.LastUpdateCheckUtc = DateTimeOffset.UtcNow;
+            if (info.IsUpdateAvailable)
+            {
+                AvailableVersion = info.LatestVersion;
+                CheckStatus = UpdateCheckStatus.Available;
+                // Feed the same state the ShellPage InfoBar (with the Download
+                // button) reads, driven today only by the launch-time hook —
+                // otherwise a manual check can only ever report "available"
+                // with no way to act on it. Re-show even if the user
+                // previously dismissed the banner for an older/same check.
+                _updateState.Available = info;
+                _updateState.BannerDismissed = false;
+            }
+            else
+            {
+                CheckStatus = UpdateCheckStatus.UpToDate;
+                // Definitive "no update" clears any previously-shown banner
+                // (mirrors the macOS UpdateService invariant). A transient
+                // failure below leaves it untouched.
+                _updateState.Available = null;
+            }
+        }
+        catch
+        {
+            CheckStatus = UpdateCheckStatus.Failed;
+        }
     }
 
     // ── Language ────────────────────────────────────────────────────────────

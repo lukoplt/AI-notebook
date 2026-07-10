@@ -13,14 +13,16 @@ public class LocalizedStringsTests
 
     // NOTE: requires WinUI? No — pure XML. Runs anywhere with .NET (incl. Windows CI).
     [Fact]
-    public void Both_languages_have_the_same_224_keys()
+    public void Both_languages_have_the_same_233_keys()
     {
         var en = Names("en.resw");
         var cs = Names("cs.resw");
 
-        // FR-A8: +1 for errorConsentRequired (added alongside ProviderConsentException).
-        Assert.Equal(224, en.Count);
-        Assert.Equal(224, cs.Count);
+        // In-app update check: +9 (updateBannerTitle, updateDownloadButton, updateLaterButton,
+        // updateAutoCheckToggle, updateCheckNowButton, updateStatusChecking, updateStatusUpToDate,
+        // updateStatusAvailable, updateStatusFailed).
+        Assert.Equal(233, en.Count);
+        Assert.Equal(233, cs.Count);
         Assert.True(en.SetEquals(cs), "en-US and cs-CZ must define the identical key set");
     }
 

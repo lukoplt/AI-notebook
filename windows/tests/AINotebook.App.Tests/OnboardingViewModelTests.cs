@@ -18,6 +18,8 @@ internal sealed class OnbFakeSettings : ISettingsService
     public string SelectedEmbeddingModel { get; set; } = "nomic-embed-text";
     public string SelectedChatProviderId { get; set; } = ProviderConfig.OllamaId;
     public string SelectedEmbeddingProviderId { get; set; } = ProviderConfig.OllamaId;
+    public bool AutoCheckUpdates { get; set; } = true;
+    public DateTimeOffset? LastUpdateCheckUtc { get; set; }
 }
 
 internal sealed class FakeOllama : IOllamaOnboarding
