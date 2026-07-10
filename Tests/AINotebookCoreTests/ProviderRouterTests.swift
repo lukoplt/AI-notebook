@@ -37,7 +37,11 @@ final class ProviderRouterTests: XCTestCase {
 
     func testChatRoutesToOpenWebUIWithLiveModelAndStoredKey() async throws {
         let store = try NotebookStore(path: .inMemory)
-        let cfg = ProviderConfig(type: .openwebui, name: "LAN", baseURL: "http://h:3000")
+        // Acknowledged deliberately: this test exercises routing/model/auth
+        // wiring, not consent. Under FR-A8 enforcement, an unacknowledged
+        // cloud provider throws `.consentRequired` before any request is
+        // made — see testStreamThrowsConsentRequiredForUnacknowledgedCloudProvider.
+        let cfg = ProviderConfig(type: .openwebui, name: "LAN", baseURL: "http://h:3000", privacyAcknowledged: true)
         try store.saveProvider(cfg)
         let secrets = InMemorySecretStore()
         try secrets.save(providerId: cfg.id, secret: "sk-owui")
@@ -74,7 +78,8 @@ final class ProviderRouterTests: XCTestCase {
 
     func testEmbedRoutesToOpenAIEmbeddings() async throws {
         let store = try NotebookStore(path: .inMemory)
-        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com")
+        // Acknowledged deliberately (see note in the chat-routing test above).
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com", privacyAcknowledged: true)
         try store.saveProvider(cfg)
         let secrets = InMemorySecretStore()
         try secrets.save(providerId: cfg.id, secret: "sk-oai")
@@ -96,8 +101,13 @@ final class ProviderRouterTests: XCTestCase {
     func testEmbedForChatOnlyTypeFallsBackToOllama() async throws {
         // UI never offers openwebui for embeddings; if selected anyway the
         // router falls back to Ollama (Windows parity).
+        // Acknowledged deliberately: the config itself is still a cloud type
+        // (openwebui.isCloud == true), so the FR-A8 gate is checked on it
+        // before the type-switch fallback runs — this test is about the
+        // fallback-routing behavior, not consent, so we grant consent on
+        // the fixture to isolate what's under test.
         let store = try NotebookStore(path: .inMemory)
-        let cfg = ProviderConfig(type: .openwebui, name: "LAN", baseURL: "http://h:3000")
+        let cfg = ProviderConfig(type: .openwebui, name: "LAN", baseURL: "http://h:3000", privacyAcknowledged: true)
         try store.saveProvider(cfg)
         let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (cfg.id, "nomic-embed-text"))
         let router = makeRouter(store: store, selection: selection)
@@ -185,7 +195,10 @@ final class ProviderRouterTests: XCTestCase {
     /// the passed `model` composite key must win over the live selection.
     func testEmbedHonorsCompositeKeyOverLiveSelection() async throws {
         let store = try NotebookStore(path: .inMemory)
-        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com")
+        // Acknowledged deliberately (see note in the chat-routing test above):
+        // the composite key still resolves this real saved provider row, so
+        // it would trip the FR-A8 gate otherwise.
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com", privacyAcknowledged: true)
         try store.saveProvider(cfg)
         let secrets = InMemorySecretStore()
         try secrets.save(providerId: cfg.id, secret: "sk-oai")
@@ -228,6 +241,54 @@ final class ProviderRouterTests: XCTestCase {
         XCTAssertEqual(req.url?.absoluteString, "http://127.0.0.1:11434/api/embed")
         let body = String(decoding: try XCTUnwrap(req.bodyData), as: UTF8.self)
         XCTAssertTrue(body.contains(#""model":"llama3.2:3b""#), "colons after the first must survive: \(body)")
+    }
+
+    // MARK: - FR-A8 consent gate (defense-in-depth)
+
+    /// A cloud provider the user never acknowledged must not receive any
+    /// data via chat — the router throws before the adapter makes a request.
+    func testStreamThrowsConsentRequiredForUnacknowledgedCloudProvider() async throws {
+        let store = try NotebookStore(path: .inMemory)
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com")
+        XCTAssertFalse(cfg.privacyAcknowledged, "fixture must start unacknowledged")
+        try store.saveProvider(cfg)
+        let selection = StaticSelection(chat: (cfg.id, "gpt-4o"), embed: (ProviderConfig.ollamaId, "x"))
+        let router = makeRouter(store: store, selection: selection)
+        nonisolated(unsafe) var handlerInvoked = false
+        MockURLProtocol.handler = { req in
+            handlerInvoked = true
+            return (httpResponse(req.url!, status: 200), Data())
+        }
+        do {
+            _ = try await collect(router.stream(model: "ignored", messages: [ChatTurn(role: .user, content: "hi")]))
+            XCTFail("expected consentRequired")
+        } catch let e as ProviderError {
+            XCTAssertEqual(e, .consentRequired)
+        }
+        XCTAssertFalse(handlerInvoked, "no HTTP request must be made without consent")
+    }
+
+    /// Same gate for embeddings — an unacknowledged cloud provider must not
+    /// receive text to embed either.
+    func testEmbedThrowsConsentRequiredForUnacknowledgedCloudProvider() async throws {
+        let store = try NotebookStore(path: .inMemory)
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com")
+        XCTAssertFalse(cfg.privacyAcknowledged, "fixture must start unacknowledged")
+        try store.saveProvider(cfg)
+        let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (cfg.id, "text-embedding-3-small"))
+        let router = makeRouter(store: store, selection: selection)
+        nonisolated(unsafe) var handlerInvoked = false
+        MockURLProtocol.handler = { req in
+            handlerInvoked = true
+            return (httpResponse(req.url!, status: 200), Data())
+        }
+        do {
+            _ = try await router.embed(model: "ignored", inputs: ["a"])
+            XCTFail("expected consentRequired")
+        } catch let e as ProviderError {
+            XCTAssertEqual(e, .consentRequired)
+        }
+        XCTAssertFalse(handlerInvoked, "no HTTP request must be made without consent")
     }
 
     func testEmbeddingKeyComposition() {

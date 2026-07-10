@@ -92,9 +92,9 @@ public actor ChatEngine {
             } catch {
                 if let providerError = error as? ProviderError {
                     switch providerError {
-                    case .auth, .refusal:
-                        // Retrying cannot help — the user must fix the key
-                        // or rephrase (FR-A10).
+                    case .auth, .refusal, .consentRequired:
+                        // Retrying cannot help — the user must fix the key,
+                        // rephrase (FR-A10), or grant consent (FR-A8).
                         throw providerError
                     case .rateLimit(let retryAfterSeconds):
                         if attempt >= retryAttempts { throw providerError }

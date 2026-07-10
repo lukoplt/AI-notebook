@@ -135,6 +135,7 @@ public struct AppText: Sendable {
         case errorInvalidApiKey
         case errorRateLimited
         case errorModelRefusal
+        case errorConsentRequired
         case modelsUnavailableCaption
         case doneButton
         case openNoteFromCitation
@@ -335,6 +336,7 @@ public struct AppText: Sendable {
         case .errorInvalidApiKey:           "Invalid API key"
         case .errorRateLimited:             "Too many requests (429)"
         case .errorModelRefusal:            "The model declined to answer"
+        case .errorConsentRequired:         "Provider not enabled — confirm data sharing in Settings"
         case .modelsUnavailableCaption:     "Models unavailable — start Ollama or refresh in Manage models."
         case .doneButton:                   "Done"
         case .openNoteFromCitation:        "Open note"
@@ -521,6 +523,7 @@ public struct AppText: Sendable {
         case .errorInvalidApiKey:           "Neplatný API klíč"
         case .errorRateLimited:             "Příliš mnoho požadavků (429)"
         case .errorModelRefusal:            "Model odmítl odpovědět"
+        case .errorConsentRequired:         "Provider není povolen — potvrďte sdílení dat v Nastavení"
         case .modelsUnavailableCaption:     "Modely nedostupné — spusťte Ollamu nebo obnovte ve Správě modelů."
         case .doneButton:                   "Hotovo"
         case .openNoteFromCitation:        "Otevřít poznámku"

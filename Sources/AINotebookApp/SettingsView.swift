@@ -30,6 +30,36 @@ struct SettingsView: View {
     @State private var revertEmbeddingProviderId: String?
     @State private var revertEmbeddingModel: String?
 
+    // MARK: - FR-A8 re-gate on picker selection
+    //
+    // Selecting a cloud/network provider that was never acknowledged (e.g. it
+    // was added, declined, and left `enabled` in the registry) must re-show
+    // the privacy gate — the router enforces this defense-in-depth on every
+    // call, but a picker that silently "worked" via Ollama fallback (or threw
+    // a raw `consentRequired` chat error) would be a confusing dead end.
+    //
+    // Both pickers reuse the same `privacyGateTitle/Message/Accept` keys and
+    // alert pattern as `AddProviderSheet`. Each has its own `showing…`/
+    // `pending…Consent` pair so the two gates never interfere.
+    @State private var showingChatPrivacyGate = false
+    @State private var pendingChatProviderConsent: (old: String, new: String)?
+    // Set immediately before programmatically reverting
+    // `selectedChatProviderId` on decline, so the reentrant `onChange` fire
+    // that revert triggers is swallowed instead of being mistaken for a new
+    // user selection (which would just no-op here, but is guarded for the
+    // same reason as the embedding flag below).
+    @State private var suppressChatProviderOnChange = false
+
+    @State private var showingEmbeddingPrivacyGate = false
+    @State private var pendingEmbeddingProviderConsent: (old: String, new: String)?
+    // Same purpose as `suppressChatProviderOnChange`, but load-bearing here:
+    // without it, reverting `selectedEmbeddingProviderId` on consent-decline
+    // would re-enter the embedding `onChange` and — since the reverted-to
+    // provider is already acknowledged — fall through to
+    // `beginEmbeddingProviderChange`, incorrectly popping the re-embed
+    // confirmation dialog right after the user declined consent.
+    @State private var suppressEmbeddingProviderOnChange = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Text(settings.text.string(.settings))
@@ -84,8 +114,36 @@ struct SettingsView: View {
                         Text(p.name).tag(p.id)
                     }
                 }
-                .onChange(of: settings.selectedChatProviderId) { _, _ in
+                .onChange(of: settings.selectedChatProviderId) { old, new in
+                    if suppressChatProviderOnChange {
+                        suppressChatProviderOnChange = false
+                        return
+                    }
+                    guard old != new else { return }
+                    if let provider = providers.first(where: { $0.id == new }),
+                       provider.type.isCloud, !provider.privacyAcknowledged {
+                        pendingChatProviderConsent = (old, new)
+                        showingChatPrivacyGate = true
+                        return
+                    }
                     Task { await refreshChatModels() }
+                }
+                .alert(settings.text.string(.privacyGateTitle), isPresented: $showingChatPrivacyGate) {
+                    Button(settings.text.string(.privacyGateAccept)) {
+                        guard let pending = pendingChatProviderConsent else { return }
+                        try? store.acknowledgePrivacy(providerId: pending.new)
+                        refreshProviders()
+                        pendingChatProviderConsent = nil
+                        Task { await refreshChatModels() }
+                    }
+                    Button(settings.text.string(.cancel), role: .cancel) {
+                        guard let pending = pendingChatProviderConsent else { return }
+                        suppressChatProviderOnChange = true
+                        settings.selectedChatProviderId = pending.old
+                        pendingChatProviderConsent = nil
+                    }
+                } message: {
+                    Text(settings.text.string(.privacyGateMessage))
                 }
                 if !chatModels.isEmpty {
                     Picker(settings.text.string(.chatModelPickerLabel), selection: $settings.selectedChatModel) {
@@ -120,12 +178,39 @@ struct SettingsView: View {
                     }
                 }
                 .onChange(of: settings.selectedEmbeddingProviderId) { old, new in
+                    if suppressEmbeddingProviderOnChange {
+                        suppressEmbeddingProviderOnChange = false
+                        return
+                    }
                     guard old != new else { return }
-                    if revertEmbeddingProviderId == nil { revertEmbeddingProviderId = old }
-                    if revertEmbeddingModel == nil { revertEmbeddingModel = settings.selectedEmbeddingModel }
-                    pendingEmbeddingChange = (new, settings.selectedEmbeddingModel)
-                    showingReembedConfirm = true
-                    Task { await refreshEmbeddingModels() }
+                    // Consent gate runs FIRST: only once the user accepts does
+                    // the existing re-embed confirmation flow continue (see
+                    // beginEmbeddingProviderChange below). Decline reverts and
+                    // skips the re-embed dialog entirely.
+                    if let provider = providers.first(where: { $0.id == new }),
+                       provider.type.isCloud, !provider.privacyAcknowledged {
+                        pendingEmbeddingProviderConsent = (old, new)
+                        showingEmbeddingPrivacyGate = true
+                        return
+                    }
+                    beginEmbeddingProviderChange(old: old, new: new)
+                }
+                .alert(settings.text.string(.privacyGateTitle), isPresented: $showingEmbeddingPrivacyGate) {
+                    Button(settings.text.string(.privacyGateAccept)) {
+                        guard let pending = pendingEmbeddingProviderConsent else { return }
+                        try? store.acknowledgePrivacy(providerId: pending.new)
+                        refreshProviders()
+                        pendingEmbeddingProviderConsent = nil
+                        beginEmbeddingProviderChange(old: pending.old, new: pending.new)
+                    }
+                    Button(settings.text.string(.cancel), role: .cancel) {
+                        guard let pending = pendingEmbeddingProviderConsent else { return }
+                        suppressEmbeddingProviderOnChange = true
+                        settings.selectedEmbeddingProviderId = pending.old
+                        pendingEmbeddingProviderConsent = nil
+                    }
+                } message: {
+                    Text(settings.text.string(.privacyGateMessage))
                 }
                 if !embeddingModels.isEmpty {
                     Picker(settings.text.string(.embeddingModelPickerLabel), selection: $settings.selectedEmbeddingModel) {
@@ -271,6 +356,18 @@ struct SettingsView: View {
         }) { provider in
             AddProviderSheet(existing: provider, onSaved: { refreshProviders() })
         }
+    }
+
+    /// The pre-consent-gate body of the embedding-provider `onChange`:
+    /// arms the re-embed confirmation dialog with a revert snapshot. Shared
+    /// by the direct (already-acknowledged) path and the post-consent-accept
+    /// path so both funnel through the identical existing re-embed flow.
+    private func beginEmbeddingProviderChange(old: String, new: String) {
+        if revertEmbeddingProviderId == nil { revertEmbeddingProviderId = old }
+        if revertEmbeddingModel == nil { revertEmbeddingModel = settings.selectedEmbeddingModel }
+        pendingEmbeddingChange = (new, settings.selectedEmbeddingModel)
+        showingReembedConfirm = true
+        Task { await refreshEmbeddingModels() }
     }
 
     @MainActor
