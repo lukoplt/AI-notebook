@@ -83,8 +83,14 @@ public sealed class ChatEngine
                 assembled = partial;
                 break;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Terminal provider errors: retrying cannot help — the user
+                // must fix the key (auth), rephrase (refusal), or grant
+                // consent (FR-A8). Mirrors Sources/AINotebookCore/ChatEngine.swift's
+                // .auth/.refusal/.consentRequired no-retry cases.
+                if (ex is ProviderAuthException or ProviderRefusalException or ProviderConsentException)
+                    throw;
                 if (attempt >= RetryAttempts) throw;
                 attempt++;
                 var delayMs = RetryBackoffMillis * (int)Math.Pow(2, attempt - 1);
