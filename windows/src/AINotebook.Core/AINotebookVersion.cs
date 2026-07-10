@@ -1,9 +1,8 @@
 namespace AINotebook.Core;
 
-/// Bump on each release. The pinned literal is the authoritative version;
-/// AINotebookVersionTests.VersionMatchesExpected pins it and MUST be updated
-/// on every bump (kept in sync with the repo VERSION file).
+/// Must equal the repo-root VERSION file — AINotebookVersionTests reads that
+/// file (copied into the test output) and enforces the match on every build.
 public static class AINotebookVersion
 {
-    public const string Current = "0.7.3";
+    public const string Current = "0.9.2";
 }
