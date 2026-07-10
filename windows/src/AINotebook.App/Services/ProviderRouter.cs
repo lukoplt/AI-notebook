@@ -10,8 +10,25 @@ namespace AINotebook.App.Services;
 /// <summary>
 /// Routes IChatStreaming / IEmbeddingProducing calls to the active provider.
 /// Reads provider + model from ISettingsService at every call — no stale state.
-/// The `model` parameter passed by legacy callers (ChatEngine etc.) is ignored;
-/// the router always uses the live setting.
+///
+/// The two interfaces are handled differently (mirrors
+/// Sources/AINotebookCore/Providers/ProviderRouter.swift):
+///
+/// - <see cref="StreamAsync"/> (chat): the `model` parameter is ignored.
+///   Legacy callers (ChatEngine etc.) capture their model at launch; the
+///   router always reads the live (provider, model) selection so a Settings
+///   change takes effect immediately on the next call.
+/// - <see cref="EmbedAsync"/>: the `model` parameter is HONORED as a
+///   composite `"{providerId}:{rawModel}"` key when it contains a colon.
+///   <see cref="AINotebook.Core.Rag.Embedder"/> snapshots this composite key
+///   once per drain (via <see cref="CurrentEmbeddingKey"/>) for storage; if
+///   the router instead re-sampled the live selection here, a settings
+///   change mid-drain could route the network call to a NEW provider while
+///   rows get labeled with the OLD key — silently mislabeled vectors.
+///   Honoring the passed key keeps the storage label and the network call
+///   from ever diverging within a drain. Callers that pass a plain
+///   (colon-free) model string — the legacy/direct convenience path used by
+///   some tests — still get today's live-selection behavior.
 /// </summary>
 public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
 {
@@ -59,33 +76,76 @@ public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
     // ── IEmbeddingProducing ─────────────────────────────────────────────────
 
     public Task<float[][]> EmbedAsync(
-        string model,   // ignored — router reads live settings
+        string model,   // composite "{providerId}:{rawModel}" key when given — see class doc
         IReadOnlyList<string> inputs,
         CancellationToken ct = default)
     {
-        var providerId = _settings.SelectedEmbeddingProviderId;
-        var activeModel = _settings.SelectedEmbeddingModel;
+        string providerId;
+        string activeModel;
+        if (ParseCompositeKey(model) is { } parsed)
+        {
+            (providerId, activeModel) = parsed;
+        }
+        else
+        {
+            providerId = _settings.SelectedEmbeddingProviderId;
+            activeModel = _settings.SelectedEmbeddingModel;
+        }
         var adapter = GetEmbeddingAdapter(providerId);
         return adapter.EmbedAsync(activeModel, inputs, ct);
     }
 
+    /// <summary>
+    /// Splits a composite `"{providerId}:{rawModel}"` embedding key on the
+    /// FIRST colon only, so raw model names that themselves contain colons
+    /// (Ollama tags like `llama3.2:3b`) survive intact in `rawModel`.
+    /// Returns null when the string has no colon, or the prefix before the
+    /// first colon is empty — both signal "not a composite key"
+    /// (legacy/direct callers), and the caller should fall back to the live
+    /// selection.
+    /// </summary>
+    private static (string ProviderId, string RawModel)? ParseCompositeKey(string model)
+    {
+        var colonIndex = model.IndexOf(':');
+        if (colonIndex < 0) return null;
+        var providerId = model[..colonIndex];
+        if (providerId.Length == 0) return null;
+        var rawModel = model[(colonIndex + 1)..];
+        return (providerId, rawModel);
+    }
+
     // ── Provider discovery (used by Settings UI) ────────────────────────────
 
+    /// UI-safe: this backs the Settings model pickers, so failures collapse
+    /// to an empty list rather than throwing. The underlying Core adapters
+    /// (OpenAI/OpenWebUI via the shared OpenAIStyleWire helper) now throw on
+    /// ANY failure — macOS parity — so this catch is load-bearing, not
+    /// defensive filler: without it, a misconfigured provider would blow up
+    /// the picker refresh instead of just showing no models.
+    /// <see cref="TestConnectionAsync"/> is the throwing counterpart — it
+    /// must NOT catch here, since Test connection needs the real error.
     public async Task<IReadOnlyList<ProviderModelInfo>> ListModelsAsync(
         string providerId, CancellationToken ct = default)
     {
         var cfg = _store.Provider(providerId);
         if (cfg is null) return [];
         var key = _secrets.Load(providerId);
-        return cfg.Type switch
+        try
         {
-            ProviderType.Ollama => await ListOllamaModels(cfg.BaseUrl, ct),
-            ProviderType.Anthropic => await AnthropicChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key ?? "", ct),
-            ProviderType.OpenAI or ProviderType.OpenAICompatible =>
-                await OpenAIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
-            ProviderType.OpenWebUI => await OpenWebUIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
-            _ => []
-        };
+            return cfg.Type switch
+            {
+                ProviderType.Ollama => await ListOllamaModels(cfg.BaseUrl, ct),
+                ProviderType.Anthropic => await AnthropicChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key ?? "", ct),
+                ProviderType.OpenAI or ProviderType.OpenAICompatible =>
+                    await OpenAIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
+                ProviderType.OpenWebUI => await OpenWebUIChatAdapter.ListModelsAsync(_http, cfg.BaseUrl, key, ct),
+                _ => []
+            };
+        }
+        catch
+        {
+            return [];
+        }
     }
 
     public async Task<string?> TestConnectionAsync(

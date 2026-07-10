@@ -27,6 +27,7 @@ public static class Migrator
         ("v13_instructions_and_sourcesets", V13),
         ("v14_chunk_context", V14),
         ("v15_live_sources", V15),
+        ("v16_requalify_embedding_keys", V16),
     };
 
     public static void Migrate(SqliteConnection conn)
@@ -88,7 +89,11 @@ public static class Migrator
         }
     }
 
-    /// <summary>v6 backfills note_uuid; v11 seeds the default Ollama provider.</summary>
+    /// <summary>
+    /// v6 backfills note_uuid; v11 seeds the default Ollama provider; v16
+    /// requalifies legacy raw chunk_embeddings.model keys left behind because
+    /// v11 seeded the provider registry but never requalified existing rows.
+    /// </summary>
     private static void RunCustom(SqliteConnection conn, SqliteTransaction tx, string id)
     {
         if (id == "v6_notes_auto_source_and_uuid")
@@ -132,6 +137,62 @@ public static class Migrator
             ins.Parameters.AddWithValue("$now", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
             ins.ExecuteNonQuery();
         }
+        else if (id == "v16_requalify_embedding_keys")
+        {
+            RequalifyLegacyEmbeddingKeys(conn, tx);
+        }
+    }
+
+    /// <summary>
+    /// Requalifies legacy raw `chunk_embeddings.model` keys (seeded before
+    /// the v11 provider registry existed, e.g. bare Ollama tag names like
+    /// `nomic-embed-text` or `llama3.2:3b`) to the composite
+    /// `"{providerId}:{rawModel}"` shape today's readers expect.
+    ///
+    /// Unlike v11 — where NO composite rows could possibly exist yet, so
+    /// "already qualified" only ever meant "prefixed with the built-in
+    /// Ollama id" — real composite rows under arbitrary provider UUIDs can
+    /// already exist by the time this runs (the provider registry has been
+    /// live since v11). So the skip condition here is "the model column
+    /// already starts with some existing provider's id + ':'", checked
+    /// against the live `providers` table rather than hardcoded to Ollama.
+    /// Colon presence alone is NOT a valid qualification test (macOS
+    /// MigrationV11 lesson) — Ollama tags routinely contain colons
+    /// themselves (`llama3.2:3b`), so `NOT LIKE '%:%'` would wrongly skip
+    /// exactly those legacy rows.
+    ///
+    /// Internal (not private) + a real SqliteTransaction parameter so tests
+    /// can re-run this exact data step directly against a fully-migrated,
+    /// in-memory database after inserting pre-v16 legacy rows — Migrate()
+    /// itself is idempotent per-identifier and won't re-apply v16 once it's
+    /// already recorded in grdb_migrations.
+    ///
+    /// Deleted-provider gap: <see cref="NotebookStore.DeleteProvider"/> only
+    /// removes the providers row — it never cleans up chunk_embeddings. So a
+    /// composite row can already be qualified under a provider GUID that no
+    /// longer exists by the time this migration runs. The NOT EXISTS check
+    /// against the live providers table alone would treat such a row as
+    /// "unqualified" and double-prefix it to
+    /// "{ollamaId}:{deletedProviderId}:{model}", corrupting it. The extra
+    /// NOT GLOB clause below is a structural guard: any model column whose
+    /// prefix already has the full 8-4-4-4-12 GUID shape followed by ':' is
+    /// skipped regardless of whether that provider id still exists. Tradeoff
+    /// accepted: a raw (never-qualified) legacy model name that pathologically
+    /// happens to start with a GUID-shaped string followed by ':' would also
+    /// be skipped here — considered acceptable since real Ollama/OpenAI model
+    /// names are never GUID-shaped.
+    /// </summary>
+    internal static void RequalifyLegacyEmbeddingKeys(SqliteConnection conn, SqliteTransaction? tx = null)
+    {
+        using var cmd = conn.CreateCommand();
+        if (tx is not null) cmd.Transaction = tx;
+        cmd.CommandText = """
+            UPDATE chunk_embeddings
+            SET model = '00000000-0000-0000-0000-000000000000' || ':' || model
+            WHERE NOT EXISTS (SELECT 1 FROM providers p WHERE chunk_embeddings.model LIKE p.id || ':%')
+              AND chunk_embeddings.model NOT GLOB '[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]-[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]-[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]-[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]-[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]:*'
+            """;
+        cmd.ExecuteNonQuery();
     }
 
     private const string V1 = """
@@ -293,4 +354,7 @@ public static class Migrator
         @@
         ALTER TABLE sources ADD COLUMN "content_hash" TEXT;
         """;
+
+    // No DDL — v16 is a pure data migration (see RequalifyLegacyEmbeddingKeys).
+    private const string V16 = "";
 }

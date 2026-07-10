@@ -129,6 +129,45 @@ public class OpenAiSseTests
         Assert.Equal(["ok"], tokens);
     }
 
+    // ── Model listing (macOS parity: ListModels throws on ANY failure — the
+    // shared OpenAIStyleWire helper never silently swallows to an empty list,
+    // so Settings "Test connection" can no longer report a false success) ────
+
+    [Fact]
+    public async Task Lists_models_with_display_names()
+    {
+        var models = await OpenAIChatAdapter.ListModelsAsync(
+            MakeClient("""{"data":[{"id":"gpt-4o","name":"GPT-4o"},{"id":"gpt-4o-mini"}]}"""),
+            "https://api.openai.com", "sk-key");
+        Assert.Equal(2, models.Count);
+        Assert.Contains(models, m => m.Id == "gpt-4o" && m.DisplayName == "GPT-4o");
+        Assert.Contains(models, m => m.Id == "gpt-4o-mini" && m.DisplayName == null);
+    }
+
+    [Fact]
+    public async Task ListModels_throws_ProviderAuthException_on_401()
+    {
+        await Assert.ThrowsAsync<ProviderAuthException>(() =>
+            OpenAIChatAdapter.ListModelsAsync(
+                MakeClient("", HttpStatusCode.Unauthorized), "https://api.openai.com", "bad-key"));
+    }
+
+    [Fact]
+    public async Task ListModels_throws_ProviderException_on_other_non_success()
+    {
+        await Assert.ThrowsAsync<ProviderException>(() =>
+            OpenAIChatAdapter.ListModelsAsync(
+                MakeClient("", HttpStatusCode.InternalServerError), "https://api.openai.com", "key"));
+    }
+
+    [Fact]
+    public async Task ListModels_propagates_network_errors()
+    {
+        var http = new HttpClient(new ThrowingHandler());
+        await Assert.ThrowsAsync<HttpRequestException>(() =>
+            OpenAIChatAdapter.ListModelsAsync(http, "https://api.openai.com", "key"));
+    }
+
     // ── Helpers ──────────────────────────────────────────────────────────────
 
     private sealed class StubHandler(HttpStatusCode status, string body) : HttpMessageHandler
@@ -155,5 +194,11 @@ public class OpenAiSseTests
                 Content = new StringContent(body, Encoding.UTF8, "text/event-stream")
             };
         }
+    }
+
+    private sealed class ThrowingHandler : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+            => throw new HttpRequestException("connection refused");
     }
 }
