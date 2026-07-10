@@ -10,7 +10,7 @@ namespace AINotebook.App.Views;
 public sealed partial class IndexingStatusBadge : UserControl
 {
     private readonly NotebookStore _store;
-    private readonly ISettingsService _settings;
+    private readonly ProviderRouter _router;
     private readonly LocalizedStrings _strings;
     private DispatcherQueueTimer? _timer;
 
@@ -19,7 +19,7 @@ public sealed partial class IndexingStatusBadge : UserControl
         this.InitializeComponent();
         var sp = App.Current.Services;
         _store = sp.GetRequiredService<NotebookStore>();
-        _settings = sp.GetRequiredService<ISettingsService>();
+        _router = sp.GetRequiredService<ProviderRouter>();
         _strings = sp.GetRequiredService<LocalizedStrings>();
         Apply(0);
     }
@@ -42,8 +42,13 @@ public sealed partial class IndexingStatusBadge : UserControl
 
     private void Tick()
     {
+        // Rows are stored under the composite "{providerId}:{model}" key
+        // (router.CurrentEmbeddingKey), not the raw settings model name —
+        // polling the raw name here would show "pending" forever once any
+        // non-Ollama provider is selected, since no row's `model` column
+        // ever matches a bare model string post-provider-registry.
         int pending;
-        try { pending = _store.UnembeddedCount(_settings.SelectedEmbeddingModel); }
+        try { pending = _store.UnembeddedCount(_router.CurrentEmbeddingKey); }
         catch { pending = 0; }
         Apply(pending);
     }
