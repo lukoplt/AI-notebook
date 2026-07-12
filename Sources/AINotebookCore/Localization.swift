@@ -208,6 +208,11 @@ public struct AppText: Sendable {
         case globalSearchNotesSection
         case globalSearchSourcesSection
         case globalSearchEmpty
+        // Epic B7 — source preview
+        case sourcePreviewTitle
+        case sourcePreviewChunksHeader
+        case sourcePreviewOpenOriginal
+        case sourcePreviewNoChunks
     }
 
     public let language: AppLanguage
@@ -432,6 +437,10 @@ public struct AppText: Sendable {
         case .globalSearchNotesSection:  "Notes"
         case .globalSearchSourcesSection: "Sources"
         case .globalSearchEmpty:         "No matches"
+        case .sourcePreviewTitle:        "Source preview"
+        case .sourcePreviewChunksHeader: "Chunks"
+        case .sourcePreviewOpenOriginal: "Open original"
+        case .sourcePreviewNoChunks:     "No chunks yet"
         }
     }
 
@@ -642,6 +651,10 @@ public struct AppText: Sendable {
         case .globalSearchNotesSection:  "Poznámky"
         case .globalSearchSourcesSection: "Zdroje"
         case .globalSearchEmpty:         "Žádné výsledky"
+        case .sourcePreviewTitle:        "Náhled zdroje"
+        case .sourcePreviewChunksHeader: "Části"
+        case .sourcePreviewOpenOriginal: "Otevřít originál"
+        case .sourcePreviewNoChunks:     "Zatím žádné části"
         }
     }
 }

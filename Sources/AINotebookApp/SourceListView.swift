@@ -16,6 +16,7 @@ struct SourceListView: View {
     @State private var summaries: [Int64: String] = [:]
     @State private var summarizing: Set<Int64> = []
     @State private var isDropTarget = false
+    @State private var previewSource: Source?
 
     private var t: AppText { settings.text }
 
@@ -57,6 +58,8 @@ struct SourceListView: View {
                     ForEach(sources) { source in
                         sourceRow(source)
                             .padding(.vertical, 4)
+                            .contentShape(Rectangle())
+                            .onTapGesture { previewSource = source }
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -90,6 +93,14 @@ struct SourceListView: View {
                 ingestion: ingestion.service,
                 isPresented: $showingAdd
             )
+        }
+        .sheet(item: $previewSource) { source in
+            SourcePreviewSheet(source: source, isPresented: Binding(
+                get: { previewSource != nil },
+                set: { if !$0 { previewSource = nil } }
+            ))
+            .environmentObject(settings)
+            .environmentObject(store)
         }
     }
 
