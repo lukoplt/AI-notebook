@@ -191,6 +191,23 @@ public struct AppText: Sendable {
         case updateStatusUpToDate
         case updateStatusAvailable
         case updateStatusFailed
+        // Epic C1 — per-notebook chat instructions
+        case notebookInstructions
+        case notebookInstructionsHint
+        // Epic B1/B2/B3 — export & backup
+        case exportBackupMenu
+        case exportNoteMarkdown
+        case exportNotebookZip
+        case backupDatabase
+        case restoreDatabase
+        case restoreConfirm
+        case exportDone
+        // Epic B4 — global search
+        case globalSearchTitle
+        case globalSearchPlaceholder
+        case globalSearchNotesSection
+        case globalSearchSourcesSection
+        case globalSearchEmpty
     }
 
     public let language: AppLanguage
@@ -401,6 +418,20 @@ public struct AppText: Sendable {
         case .updateStatusUpToDate:   "You're up to date"
         case .updateStatusAvailable:  "Update available (%@)"
         case .updateStatusFailed:     "Couldn't check for updates."
+        case .notebookInstructions:      "Chat instructions"
+        case .notebookInstructionsHint:  "Optional guidance added to every chat in this notebook."
+        case .exportBackupMenu:          "Export / Backup"
+        case .exportNoteMarkdown:        "Export note as Markdown…"
+        case .exportNotebookZip:         "Export notebook as ZIP…"
+        case .backupDatabase:            "Back up database…"
+        case .restoreDatabase:           "Restore from backup…"
+        case .restoreConfirm:            "Replace all current data with this backup? This cannot be undone."
+        case .exportDone:                "Done"
+        case .globalSearchTitle:         "Search everything"
+        case .globalSearchPlaceholder:   "Search notes and sources…"
+        case .globalSearchNotesSection:  "Notes"
+        case .globalSearchSourcesSection: "Sources"
+        case .globalSearchEmpty:         "No matches"
         }
     }
 
@@ -597,6 +628,20 @@ public struct AppText: Sendable {
         case .updateStatusUpToDate:   "Máte aktuální verzi"
         case .updateStatusAvailable:  "Dostupná aktualizace (%@)"
         case .updateStatusFailed:     "Kontrola aktualizací se nezdařila."
+        case .notebookInstructions:      "Instrukce pro chat"
+        case .notebookInstructionsHint:  "Volitelné pokyny přidané do každého chatu v tomto bloku."
+        case .exportBackupMenu:          "Export / Záloha"
+        case .exportNoteMarkdown:        "Exportovat poznámku jako Markdown…"
+        case .exportNotebookZip:         "Exportovat blok jako ZIP…"
+        case .backupDatabase:            "Zálohovat databázi…"
+        case .restoreDatabase:           "Obnovit ze zálohy…"
+        case .restoreConfirm:            "Nahradit všechna současná data touto zálohou? Tuto akci nelze vzít zpět."
+        case .exportDone:                "Hotovo"
+        case .globalSearchTitle:         "Hledat všude"
+        case .globalSearchPlaceholder:   "Hledat v poznámkách a zdrojích…"
+        case .globalSearchNotesSection:  "Poznámky"
+        case .globalSearchSourcesSection: "Zdroje"
+        case .globalSearchEmpty:         "Žádné výsledky"
         }
     }
 }

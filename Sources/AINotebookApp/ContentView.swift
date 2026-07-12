@@ -8,9 +8,12 @@ struct ContentView: View {
     @EnvironmentObject private var embedderHolder: EmbedderHolder
     @EnvironmentObject private var onboarding: OnboardingViewModel
     @EnvironmentObject private var updates: UpdateService
+    @EnvironmentObject private var tabSwitch: TabSwitchCoordinator
+    @EnvironmentObject private var noteJump: NoteJumpCoordinator
 
     @State private var selectedNotebookId: Int64?
     @State private var showSettings = false
+    @State private var showSearch = false
 
     var body: some View {
         Group {
@@ -38,6 +41,11 @@ struct ContentView: View {
             .navigationTitle(settings.text.string(.appName))
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
+                    Button { showSearch = true } label: {
+                        Label(settings.text.string(.globalSearchTitle), systemImage: "magnifyingglass")
+                    }
+                }
+                ToolbarItem(placement: .primaryAction) {
                     Button {
                         showSettings = true
                     } label: {
@@ -52,6 +60,27 @@ struct ContentView: View {
                     .environmentObject(ollama)
                     .environmentObject(embedderHolder)
             }
+            .sheet(isPresented: $showSearch) {
+                GlobalSearchPalette(
+                    isPresented: $showSearch,
+                    onSelectNote: { notebookId, noteId in
+                        selectedNotebookId = notebookId
+                        tabSwitch.request(.notes)
+                        noteJump.request(noteId: noteId)
+                    },
+                    onSelectSource: { notebookId, _ in
+                        selectedNotebookId = notebookId
+                        tabSwitch.request(.sources)
+                    }
+                )
+                .environmentObject(settings)
+                .environmentObject(store)
+            }
+            .background(
+                Button("") { showSearch = true }
+                    .keyboardShortcut("k", modifiers: .command)
+                    .hidden()
+            )
         }
         .task {
             if settings.hasCompletedOnboarding {
