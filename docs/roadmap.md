@@ -66,7 +66,9 @@ Průřezový požadavek žádá identická čísla migrací na obou platformách
 > - **D2:** `RetrievalEval` recall@k harness (Core + testy) — gate pro D3.
 > - Testy: **346 macOS testů zelených** (+35). Modely `Notebook`/`ChatMessage`/`Source`/`SourceChunk` rozšířeny bez regrese.
 >
-> **Zbývá:** macOS **UI wiring** (SwiftUI — Task 5: drag&drop, bulk select, náhled zdroje, tag UI, ⌘K paleta, source-set scope, instrukce, regenerate, export/backup menu, web search toggle); **Epic W** Windows-only kód (PDF export, bulk summarize/notes — nelze ověřit build na macOS/darwin); **C5 persony** (nová migrace v16+ na obou platformách, nejnižší priorita); **D3 reranker** (podmíněný reálným během D2). FSEvents folder-watch smyčka je App-layer (Core sync API hotové).
+> **macOS UI wiring (Task 5) — částečně hotovo (buildable, runtime neověřeno na darwin):** ✅ C1 instrukce (popover), ✅ B1 export poznámky MD (context menu), ✅ B2/B3 export ZIP + backup/restore (menu), ✅ B4 ⌘K global search paleta, ✅ B5 drag&drop na Sources, ✅ B7 náhled zdroje (sheet). **Zbývá UI:** B6 bulk select/delete/summarize, B8 tag UI + filtr, C2 source-set scope picker, C3 regenerate/edit v chatu, E3 web search toggle + chat integrace.
+>
+> **Zbývá (mimo macOS UI):** **Epic W** Windows-only kód (PDF export, bulk summarize/notes — nelze ověřit build na macOS/darwin); **C5 persony** (nová migrace v16+ na obou platformách, nejnižší priorita); **D3 reranker** (podmíněný reálným během D2). FSEvents folder-watch smyčka je App-layer (Core sync API hotové).
 
 
 Dvě hlavní osy plus dvě podpůrné:
