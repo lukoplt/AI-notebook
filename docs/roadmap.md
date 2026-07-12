@@ -1,157 +1,140 @@
 # AI Notebook — detailní zadání vývoje
 
-*Baseline: v0.8.0 (NotebookLM Stage C), 2026-06-11. Dual-platform: macOS (Swift/SwiftUI, `Sources/`) + Windows (.NET 10 / WinUI 3, `windows/`). Tento dokument je závazné zadání — nahrazuje předchozí rámcový roadmap.*
+*Baseline: v0.10.0 (in-app update check), 2026-07-12. Dual-platform: macOS (Swift/SwiftUI, `Sources/`) + Windows (.NET 10 / WinUI 3, `windows/`). Tento dokument je závazné zadání — nahrazuje předchozí rámcový roadmap.*
 
 ---
 
 ## 0. Kontext a současný stav
 
-Obě platformy sdílejí datový model (11 tabulek, 10 migrací) a RAG pipeline:
+Obě platformy sdílejí datový model a RAG pipeline. Od baseline v0.8.0 se dokončil hotfix Windows UI (P0), multi-provider AI (Epic A) a in-app update check — **na obou platformách**. Epicy B–E se ale implementovaly **jen na Windows**; macOS je za Windows 6 verzí schématu (v11 vs v17) a postrádá export/zálohy, hledání, tagy, source sets, pokročilý chat, kontextové obohacení a živé zdroje.
+
+### 0.1 Co je hotové na obou platformách
 
 | Oblast | Stav |
 |---|---|
-| Notebooky, poznámky (TipTap WYSIWYG, verze, přílohy) | ✅ obě platformy |
-| Zdroje: PDF, TXT, MD, web, DOCX/PPTX/XLSX + auto-indexace poznámek | ✅ obě platformy |
-| Hybrid retrieval (cosine + FTS5 BM25 → RRF), source-scoped chat | ✅ obě platformy |
-| Chat s citacemi `[N]`, streaming, follow-up chips, per-source souhrny | ✅ obě platformy |
-| Transformace (šablony, built-in + vlastní, batch, historie) | ✅ obě platformy |
-| Ollama onboarding, správa modelů, EN/CZ lokalizace (155 klíčů) | ✅ obě platformy |
-| **Windows: obsah tabů detailu notebooku** | ❌ **placeholder — viz Epic P0** |
-| Cloud AI provideři | ❌ chybí — viz Epic A |
-| Export/import/záloha, globální hledání, drag & drop, tagy | ❌ chybí — viz Epic B |
+| Notebooky, poznámky (TipTap WYSIWYG, verze, přílohy) | ✅ obě |
+| Zdroje: PDF, TXT, MD, web, DOCX/PPTX/XLSX + auto-indexace poznámek | ✅ obě |
+| Hybrid retrieval (cosine + FTS5 BM25 → RRF), source-scoped chat | ✅ obě |
+| Chat s citacemi `[N]`, streaming, follow-up chips, per-source souhrny | ✅ obě |
+| Transformace (šablony, built-in + vlastní, batch, historie) | ✅ obě |
+| Ollama onboarding, správa modelů, EN/CZ lokalizace | ✅ obě |
+| **AI provideři: Ollama + Anthropic + OpenAI + OpenAI-kompatibilní + OpenWebUI** (Epic A) | ✅ obě |
+| Bezpečné uložení klíčů (Keychain / Credential Manager), privacy gate + enforcement | ✅ obě |
+| Windows detail notebooku (4 taby reálně zapojené, ex-Epic P0) | ✅ Windows |
+| In-app update check (1×/den GitHub Releases, banner, „Check now") | ✅ obě |
+| Citace odpovědi: popover (macOS) / panel (Windows) — FR-C4 | ✅ obě |
 
-### Kritický nález (důvod Epicu P0)
+### 0.2 Co je hotové jen na Windows (parita macOS chybí)
 
-`windows/src/AINotebook.App/Views/NotebookDetailPage.xaml:29-42` obsahuje ve všech čtyřech `PivotItem` pouze placeholder texty „Sources (Plan 3)“ atd. Stránky `SourceListPage`, `ChatPage`, `NotesPage`, `TransformationsPage` jsou kompletně implementované (XAML + ViewModely + testy), ale **nikde v aplikaci se neinstancují** — grep na jejich konstruktory nenajde jediné použití mimo definici. Důsledek: Windows build v0.8.0 zobrazuje v detailu notebooku jen placeholdery; Stage C funkce jsou z UI nedosažitelné. `MainWindow.FindActiveNotesPage` (Ctrl+S, Ctrl+Shift+H) nikdy nic nenajde. CI to nechytilo, protože neexistují UI-kompoziční testy.
+| FR | Funkce | Windows | macOS |
+|---|---|---|---|
+| B1 | Export poznámky → Markdown | ✅ (`ExportService.ExportNoteMarkdown`) | ❌ |
+| B1 | Export poznámky → **PDF** | ❌ (jen MD) | ❌ |
+| B2 | Export notebooku → ZIP | ✅ (`ExportService.ExportNotebookZip`) | ❌ |
+| B3 | Záloha / obnovení databáze | ✅ (`NotebookStore.BackupTo`, `NotebookDetailPage`) | ❌ |
+| B4 | Globální hledání (Ctrl+K paleta) | ✅ (`GlobalSearchViewModel`, `GlobalSearchDialog`) | ❌ |
+| B5 | Drag & drop souborů na Sources | ✅ (`SourceListPage` `AllowDrop`/`OnDrop`) | ❌ |
+| B6 | Bulk delete zdrojů | ✅ (`SourcesViewModel.BulkDeleteAsync`) | ❌ |
+| B6 | Bulk **summarize** zdrojů + bulk operace **poznámek** | ❌ | ❌ |
+| B7 | Náhled zdroje (chunky + metadata) | ✅ (`SourcePreviewViewModel`/`Dialog`) | ❌ |
+| B8 | Tagy (`tags`/`note_tags`/`source_tags`) + UI | ✅ (v12, `NotebookStore.Tags`) | ❌ |
+| B9 | Hledání v poznámkách (`notes_fts`) | ✅ (`NotebookStore.Search.SearchNotes`) | ❌ |
+| C1 | Per-notebook instrukce (`notebooks.instructions`) | ✅ (v13) | ❌ |
+| C2 | Pojmenované sady zdrojů (`source_sets`) | ✅ (v13, `NotebookStore.SourceSets`) | ❌ |
+| C3 | Editace zprávy + regenerace s volbou modelu (`chat_messages.model`) | ✅ (`ChatViewModel.RegenerateAsync`) | ❌ |
+| C5 | Persony / presety | ❌ | ❌ |
+| D1 | Contextual chunk enrichment (`source_chunks.context`) | ✅ (v14, `ContextualEnricher`) | ❌ |
+| D2 | Mini eval sada (recall@8) | ❌ | ❌ |
+| D3 | Cross-encoder reranker | ❌ | ❌ |
+| E1 | Sledovaná složka (`last_synced_at`, `content_hash`) | ✅ (v15, `FolderWatchService`) | ❌ |
+| E2 | Re-crawl URL | ✅ (`SourcesViewModel.RefreshUrlAsync`) | ❌ |
+| E3 | Opt-in web search v chatu | ✅ (`WebSearchAdapter`) | ❌ |
 
----
+### 0.3 Číslování migrací — porušená parita
 
-## Epic P0 — Hotfix Windows UI (release win-v0.8.1)
-
-**Cíl:** Zprovoznit Windows UI tak, aby všechny implementované funkce byly reálně dostupné.
-
-### Požadavky
-
-- **P0-1 Zapojení obsahu tabů.** `NotebookDetailPage` při výběru tabu lazy-vytvoří příslušnou stránku a vloží ji do odpovídajícího hostu (`SourcesHost`/`ChatHost`/`NotesHost`/`TransformationsHost`); placeholder `TextBlock` odstranit. Stránka se vytváří jednou na životnost `NotebookDetailPage` (ne při každém přepnutí), aby chat/editor nepřišly o stav. Konstruktory: `SourceListPage(Notebook)`, ostatní bezparametrické — ověřit a sjednotit předání aktuálního notebooku (ViewModely jej dnes berou z DI/holderů).
-- **P0-2 Koordinátory.** Ověřit funkčnost `TabSwitchCoordinator` (transformace → „Open note“ → skok na Notes tab + výběr poznámky přes `NoteJumpCoordinator`) a `NoteEditorCoordinator` (hlídání neuložených změn při přepnutí poznámky/tabů).
-- **P0-3 Editor end-to-end.** Po zapojení NotesPage ověřit WebView2 ↔ TipTap bridge: load obsahu, change events, autosave, Ctrl+S, historie (Ctrl+Shift+H), přílohy.
-- **P0-4 Model management akce.** Dopojit tlačítka Pull/Delete v `ModelManagementDialog` na `OllamaClient.PullAsync`/`DeleteModelAsync` (Core metody existují), včetně progress UI pro pull a confirm dialogu pro delete.
-- **P0-5 UI-kompoziční testy.** Do `AINotebook.App.Tests` přidat testy, které instancují `NotebookDetailPage` a ověří, že po výběru každého tabu host obsahuje očekávaný typ stránky (ne `TextBlock`). Pokud WinUI runtime v testech nelze plně nastartovat, minimálně test factory metody, která taby plní. Cíl: třída chyb „stránka existuje, ale není zapojená“ už neprojde CI.
-
-### Akceptační kritéria
-
-1. Windows build: výběr notebooku → 4 taby zobrazují reálný obsah; zdroj lze přidat, chat odpovídá s citacemi, poznámku lze editovat a uložit, transformaci spustit.
-2. Ctrl+S a Ctrl+Shift+H fungují v Notes tabu.
-3. Pull i delete modelu funguje z dialogu.
-4. Nové UI testy zelené v CI.
-5. Release: bump `VERSION` → 0.8.1, tag `win-v0.8.1`.
-
----
-
-## Epic A — AI provideři: Ollama + cloud (OpenAI/ChatGPT, Anthropic/Claude, OpenAI-kompatibilní)
-
-**Cíl:** Uživatel může vedle lokální Ollamy připojit cloudové AI providery, u každého **explicitně zvolit model**, kterým se zpracovává chat (a kde to dává smysl i embeddings). Local-first zůstává: výchozí chování beze změny, cloud je opt-in.
-
-### A.1 Funkční požadavky
-
-- **FR-A1 Registr providerů.** Typy: `ollama` (vestavěný, vždy přítomný), `anthropic`, `openai`, `openai_compatible` (LM Studio, OpenRouter, vLLM, …). Uživatel může přidat více instancí téhož typu (např. dva OpenAI-kompatibilní endpointy). Provider má: název (uživatelský), typ, base URL, API klíč, stav enabled/disabled.
-- **FR-A2 Výchozí base URL** předvyplnit dle typu: Anthropic `https://api.anthropic.com`, OpenAI `https://api.openai.com`, openai_compatible prázdné (povinné), Ollama `http://127.0.0.1:11434` (stávající, editovatelné).
-- **FR-A3 Načtení modelů providera** („Fetch models“, vzor Onyx): Ollama `GET /api/tags` (stávající), Anthropic `GET /v1/models`, OpenAI a kompatibilní `GET {base}/v1/models`. Vždy navíc povolit **ruční zadání libovolného model ID** (kompatibilní servery často `/v1/models` neimplementují korektně).
-- **FR-A4 Volba modelu.** Globální nastavení = dvojice *(provider, model)* zvlášť pro **chat** a zvlášť pro **embeddings**. UI picker zobrazuje modely seskupené podle providera („Anthropic — claude-sonnet-4-6“). Pod kterým modelem se zpracovává každý požadavek musí být deterministické a viditelné v nastavení.
-- **FR-A5 Embeddings omezení.** Anthropic embeddings API nemá — v embedding pickeru se providery typu `anthropic` nenabízejí. Embeddings podporují: `ollama` (`/api/embed`), `openai` a `openai_compatible` (`POST /v1/embeddings`).
-- **FR-A6 Streaming chat** u všech providerů, beze změny RAG pipeline: retrieval, skládání kontextu (`SystemPrompt`), citace `[N]`, follow-upy, transformace a souhrny jdou přes stejnou abstrakci — vyměňuje se jen transport.
-- **FR-A7 Bezpečné uložení klíčů.** API klíče se ukládají výhradně do OS úložiště: macOS Keychain (`kSecClassGenericPassword`, service `AINotebook`, account = provider id), Windows `Windows.Security.Credentials.PasswordVault` (resource `AINotebook`, userName = provider id). V SQLite je jen reference (provider id). Klíč se nikdy neloguje, neexportuje, nezobrazuje zpět v UI (jen „klíč uložen ✓ / změnit“).
-- **FR-A8 Privacy gate.** Při prvním povolení cloud providera zobrazit potvrzovací dialog: obsah poznámek a zdrojů (chunky vybrané retrievalem + dotazy) bude odesílán třetí straně. Souhlas se ukládá per provider. Bez souhlasu provider zůstane disabled.
-- **FR-A9 Test připojení.** Tlačítko „Test“ u providera: provede `GET /v1/models` (Ollama `/api/tags`) a zobrazí výsledek (OK / 401 neplatný klíč / síťová chyba). 
-- **FR-A10 Chybové stavy v chatu.** Mapování: 401 → „Neplatný API klíč“, 429 → retry s respektováním `retry-after`, 5xx/529 → stávající exponenciální backoff (2 pokusy), Anthropic `stop_reason: "refusal"` → zobrazit jako odmítnutí, ne jako prázdnou odpověď. Chyby se zobrazují stávajícím error řádkem v chatu, lokalizovaně.
-- **FR-A11 Změna embedding modelu/providera** prochází stávajícím re-embed flow (confirm + přepočet). Záznamy v `chunk_embeddings.model` nově nesou plně kvalifikovaný identifikátor `"{providerId}:{model}"`, aby kolize mezi stejnojmennými modely různých providerů nevracely špatné vektory.
-- **FR-A12 Onboarding beze změny** (Ollama-first). Cloud provideři se přidávají v Settings. Pokud Ollama neběží a uživatel má nakonfigurovaný cloud chat model, app funguje (jen embeddings vyžadují embedding providera).
-
-### A.2 Technický návrh
-
-**Abstrakce (obě platformy).** Windows už má `IChatStreaming` a embedding adaptér (`Core/Ollama/OllamaAdapters.cs`) — zavést totéž jako formální rozhraní:
-
-```
-IChatStreaming:   stream(messages: [ChatTurn], system: String, model: String) -> AsyncSequence<String>
-IEmbedding:       embed(texts: [String], model: String) -> [[Double]]
-IModelCatalog:    listModels() -> [ModelInfo]
-```
-
-Na macOS zavést ekvivalentní Swift protokoly (`ChatStreaming`, `EmbeddingProviding`, `ModelCatalog`) a `OllamaClient` pod ně zapojit. `ChatEngine`, `TransformationEngine`, `FollowupSuggester`, `SourceSummarizer`, `Embedder` závisejí jen na rozhraních; konkrétní klient se vybírá podle nastaveného *(provider, model)* přes `ProviderRegistry`.
-
-**Pozor na systémový prompt:** dnešní `SystemPrompt` se u Ollamy posílá jako message s rolí `system`. Anthropic vyžaduje systémový prompt v top-level poli `system` (ne v `messages`). Rozhraní proto předává `system` zvlášť a adaptér si jej zařadí dle API.
-
-**Anthropic adaptér.**
-- Endpoint `POST {base}/v1/messages`, hlavičky `x-api-key: <key>`, `anthropic-version: 2023-06-01`, `content-type: application/json`.
-- Tělo: `model`, `max_tokens` (default 8192, konstanta v adaptéru), `system`, `messages` (role `user`/`assistant`), `stream: true`.
-- Streaming = SSE: číst `content_block_delta` s `delta.type == "text_delta"` → token; `message_delta` nese `stop_reason`; `message_stop` konec. Ošetřit `stop_reason: "refusal"` (FR-A10).
-- Discovery: `GET /v1/models` (vrací `id`, `display_name`). Fallback nabídka při nedostupnosti: `claude-opus-4-8` (doporučený default), `claude-sonnet-4-6`, `claude-haiku-4-5`, `claude-fable-5`. **Model ID používat přesně takto — bez datových suffixů.**
-- Windows: použít oficiální SDK `dotnet add package Anthropic` (`AnthropicClient`, `Messages.CreateStreaming`, typ `RawMessageStreamEvent` + `TryPickContentBlockDelta`); přidání balíčku = regenerovat NuGet lockfiles (`packages.lock.json`) a ověřit `--locked-mode` v CI. macOS: žádné oficiální Swift SDK — raw HTTP přes `URLSession.bytes(for:)` + řádkový SSE parser (vzor: stávající `OllamaClient` streaming).
-
-**OpenAI / OpenAI-kompatibilní adaptér.**
-- Chat: `POST {base}/v1/chat/completions`, hlavička `Authorization: Bearer <key>`, tělo `model`, `messages` (vč. role `system`), `stream: true`. SSE řádky `data: {...}`, token v `choices[0].delta.content`, konec `data: [DONE]`.
-- Embeddings: `POST {base}/v1/embeddings`, tělo `model`, `input: [String]` → `data[].embedding`. Doporučený default model `text-embedding-3-small`.
-- `openai_compatible` = stejný tvar, jiné base URL; klíč volitelný (LM Studio ho nevyžaduje).
-- Implementace na obou platformách raw HTTP (jeden adaptér pro `openai` i `openai_compatible`).
-
-**Úložiště konfigurace.** Migrace **v11** (obě platformy, stejné číslo!):
-
-```sql
-CREATE TABLE providers (
-  id TEXT PRIMARY KEY,            -- uuid
-  type TEXT NOT NULL,             -- ollama|anthropic|openai|openai_compatible
-  name TEXT NOT NULL,
-  base_url TEXT NOT NULL,
-  enabled INTEGER NOT NULL DEFAULT 1,
-  privacy_acknowledged INTEGER NOT NULL DEFAULT 0,
-  created_at TEXT NOT NULL
-);
-```
-
-Seed: jeden řádek `ollama` z dosavadního nastavení. Nastavení modelů rozšířit na `chat_provider_id` + `chat_model`, `embedding_provider_id` + `embedding_model` (migrace stávajících hodnot na Ollama providera). API klíč v DB **není** (FR-A7) — zavést `ISecretStore` rozhraní (Keychain/PasswordVault implementace + in-memory pro testy).
-
-### A.3 UI specifikace
-
-**Settings → sekce „AI provideři“** (macOS `SettingsView`, Windows `SettingsDialog`):
-- Seznam providerů: název, typ, stav (●zelená dosažitelný / ●červená chyba / šedá disabled), výchozí badge u providera použitého pro chat/embeddings.
-- „Přidat providera“ → sheet/dialog: typ (picker), název, base URL (předvyplněné), API klíč (`SecureField`/`PasswordBox`), tlačítko „Test připojení“, Save. Editace: stejný formulář, klíč zobrazen jako „uložen ✓ — změnit“.
-- **Chat model picker** a **Embedding model picker**: dvouúrovňový výběr (provider → model z `listModels()` + pole „vlastní model ID“). Embedding picker filtruje providery bez embeddings (FR-A5).
-- Privacy dialog (FR-A8) při prvním enable cloud providera.
-- Všechny nové stringy lokalizovat EN + CZ (macOS `Localization.swift`, Windows `.resw` + `StringKey`; aktualizovat paritní test počtu klíčů).
-
-### A.4 Akceptační kritéria
-
-1. Uživatel přidá Anthropic providera s klíčem, načte modely, vybere `claude-sonnet-4-6` jako chat model → chat streamuje odpovědi s funkčními citacemi, follow-upy a scoped chatem; totéž s OpenAI a LM Studio (openai_compatible).
-2. Klíč přežije restart aplikace, v souboru `db.sqlite` se nevyskytuje (ověřit testem: dump DB neobsahuje klíč).
-3. Bez nakonfigurovaného cloudu se chování aplikace nijak nemění (Ollama default, žádné nové dialogy).
-4. Neplatný klíč → srozumitelná chyba v chatu i v Testu připojení; výpadek sítě → chyba, ne pád; 429 → automatický retry.
-5. Přepnutí embedding modelu na OpenAI vyvolá re-embed confirm; po přepnutí retrieval funguje; přepnutí zpět na Ollamu rovněž (vektory se nemíchají — klíčování `provider:model`).
-6. Transformace, souhrny zdrojů a follow-upy běží přes zvoleného chat providera.
-7. Windows CI: locked-mode restore projde s novým balíčkem; všechny testy zelené. macOS: build + testy zelené.
-
-### A.5 Testy
-
-- Unit: builder request body per provider (system prompt umístění, role mapping, scoping beze změny), SSE parsery na fixture streamech (Anthropic eventy, OpenAI `data:` řádky, `[DONE]`, refusal), error mapping 401/429/5xx, klíčování embeddingů `provider:model`.
-- Integrace: mock HTTP server (lokální) pro oba tvary API; `ISecretStore` in-memory.
-- Manuální checklist: skutečný Anthropic + OpenAI klíč, LM Studio lokálně.
+Průřezový požadavek žádá identická čísla migrací na obou platformách. **Aktuálně porušeno:** macOS = v11 (`MigrationV11.swift`, provideři), Windows = v17 (`Migrator.cs`). Windows-only migrace v12–v15 (tagy+notes FTS, instrukce+source sets, chunk context, live sources) jsou přesně schéma pod B8/C1/C2/D1/E1, které macOS nemá. Dohnání macOS na v15 (min.) je jádro Epicu M níže; v16/v17 jsou Windows repair migrace bez macOS protějšku (macOS ekvivalentní opravy neproběhly).
 
 ---
 
-## Epic B — „Reálný projekt“: export, hledání, organizace
+## 1. Zbývající práce — přehled
+
+> **Stav implementace (2026-07-12):** macOS **Core vrstva** parity je hotová a otestovaná — schéma dotaženo na **v15** (migrace V12–V15), a Core API pro Epicy B/C/D1/E ported z Windows:
+> - **B:** tagy (`NotebookStore+Tags`), note/global FTS search (`NotebookStore+Search`), export MD/ZIP + `sources.json` (`ExportService`), DB backup/restore (`NotebookStore+Backup`, in-place přes GRDB backup — bez relaunche).
+> - **C:** per-notebook instrukce + `SystemPrompt` injekce, source sets (`NotebookStore+SourceSets`), edit/regenerate zpráv + `messages.model` sloupec.
+> - **D1:** `source_chunks.context` + `ContextualEnricher` + `SourceChunk.embeddingText`.
+> - **E:** live-source sync (`last_synced_at`/`content_hash` + `updateSourceSyncInfo`), `WebSearch`/`DuckDuckGoWebSearch` + `WebSearchContext` (výsledky jako user-message context, ne system prompt).
+> - **D2:** `RetrievalEval` recall@k harness (Core + testy) — gate pro D3.
+> - Testy: **346 macOS testů zelených** (+35). Modely `Notebook`/`ChatMessage`/`Source`/`SourceChunk` rozšířeny bez regrese.
+>
+> **Zbývá:** macOS **UI wiring** (SwiftUI — Task 5: drag&drop, bulk select, náhled zdroje, tag UI, ⌘K paleta, source-set scope, instrukce, regenerate, export/backup menu, web search toggle); **Epic W** Windows-only kód (PDF export, bulk summarize/notes — nelze ověřit build na macOS/darwin); **C5 persony** (nová migrace v16+ na obou platformách, nejnižší priorita); **D3 reranker** (podmíněný reálným během D2). FSEvents folder-watch smyčka je App-layer (Core sync API hotové).
+
+
+Dvě hlavní osy plus dvě podpůrné:
+
+- **Epic M — parita macOS** (největší kus): implementovat na macOS vše z 0.2, co Windows už má (B1-MD, B2, B3, B4, B5, B6-delete, B7, B8, B9, C1, C2, C3, D1, E1, E2, E3). Migrace macOS v12–v15.
+- **Epic W — dokončení Windows zbytku**: PDF export (B1), bulk summarize + bulk poznámky (B6), persony (C5), eval sada (D2), a podle výsledku eval případný reranker (D3).
+- **Testy Epiců B–E**: velká Windows implementace přinesla hlavně migrace a pár oprav testů, ne plné pokrytí akceptačních kritérií — doplnit cílené testy (viz §6).
+- **Průřezové požadavky** (§7) platí beze změny.
+
+Detailní specifikace jednotlivých FR zůstávají v Epicích B–E níže a slouží jako **zadání implementace pro obě osy** (macOS parita i Windows dokončení). U každého FR je uveden aktuální stav.
+
+---
+
+## Epic M — Parita macOS (Epicy B–E)
+
+**Cíl:** Dostat macOS na funkční úroveň Windows. Každý níže uvedený „✅ Windows / ❌ macOS" FR implementovat na macOS podle jeho specifikace v Epicích B–E, se stejným chováním, stejnými čísly migrací a EN+CZ lokalizací.
+
+### Rozsah a pořadí (macOS)
+
+1. **Schéma napřed.** macOS migrace `MigrationV12`…`MigrationV15` se stejnými DDL jako Windows `Migrator.cs` V12–V15 (tagy+notes FTS, instrukce+source sets, chunk context, live sources). Ověřit, že seed a existující data přežijí (vzor: Windows repair migrace, ale bez jejich Windows-specifických oprav timestampů).
+2. **Epic B (macOS):** ExportService ekvivalent (MD + ZIP + manifest), DB backup/restore, globální hledání (`⌘K` paleta přes SwiftUI `.searchable`/vlastní overlay), drag & drop (`dropDestination`/`NSItemProvider`) na Sources, bulk delete zdrojů, náhled zdroje, tagy + filtr, hledání v poznámkách přes `notes_fts`.
+3. **Epic C (macOS):** per-notebook instrukce do `SystemPrompt`, source sets ve scope popoveru, editace + regenerace odpovědi s volbou *(provider, model)* (návaznost na hotový Epic A), badge modelu u regenerované zprávy.
+4. **Epic D1 (macOS):** contextual enrichment jako opt-in toggle (default off), jeden LLM průchod na zdroj, sloupec `source_chunks.context`.
+5. **Epic E (macOS):** sledovaná složka (mtime/hash porovnání při startu + periodicky), re-crawl URL, opt-in web search tool (respektuje privacy gate; výsledky jako user-message context, ne system prompt — parita s Windows bezpečnostním vzorem).
+
+### Akceptační kritéria (Epic M)
+
+1. macOS schéma na v15; migrace idempotentní, existující DB projde upgrade bez ztráty dat.
+2. Každý FR z tabulky 0.2 se stavem „✅ Windows" funguje i na macOS se shodným chováním a lokalizací (EN+CZ).
+3. Nové stringy v `Localization.swift`; paritní test počtu klíčů aktualizován na obou platformách.
+4. macOS build + testy zelené; nové Core i UI testy pro portované funkce (viz §6).
+
+---
+
+## Epic W — Dokončení Windows zbytku
+
+**Cíl:** Doimplementovat na Windows FR, které tam dosud chybí (a chybí i na macOS — tedy dělat rovnou na obou, kde to jde jedním spec).
+
+- **W-1 Export poznámky do PDF (FR-B1 PDF část).** Tisk z editor WebView2 do PDF (`CoreWebView2.PrintToPdfAsync`) — přidat vedle stávajícího MD exportu v `ExportService`/Notes akci. macOS ekvivalent: tisk z WKWebView (`createPDF`/`NSPrintOperation`).
+- **W-2 Bulk summarize zdrojů + bulk operace poznámek (FR-B6 zbytek).** Windows už má `IsBulkMode`/`BulkDeleteAsync` pro zdroje; doplnit bulk **summarize** (dávkové `SummarizeAsync` s progress) a **multi-select v poznámkách** (bulk delete). macOS řeší Epic M zároveň.
+- **W-3 Persony / presety (FR-C5).** Pojmenovaná kombinace instrukce + sada zdrojů + model; picker v chatu. Navazuje na C1+C2+C3 (Windows hotové). Nízká priorita — až po M a W-1/W-2.
+- **W-4 Retrieval eval sada (FR-D2).** Skript + fixture korpus (10 dokumentů, 30 dotazů se zlatými chunky) měřící recall@8; spouštěný lokálně (ne CI). **Blokuje rozhodnutí o D3.**
+- **W-5 (podmíněné) Reranker (FR-D3).** Lokální cross-encoder top-K → top-8 (ONNX MiniLM na Windows, CoreML na macOS). **Zavést jen pokud W-4 prokáže zisk;** jinak vypustit a poznamenat do CHANGELOG.
+
+### Akceptační kritéria (Epic W)
+
+1. PDF export vytvoří validní PDF odpovídající obsahu editoru (obě platformy).
+2. Bulk summarize projde N zdrojů s progress a bez blokace UI; bulk delete poznámek s confirm.
+3. Persona picker aplikuje instrukci + sadu + model na nový chat.
+4. Eval skript vypíše recall@8 nad fixture korpusem; výsledek zapsán a použit jako gate pro D3.
+
+---
+
+## Epic B — „Reálný projekt": export, hledání, organizace *(spec pro M + W)*
 
 **Cíl:** Denní práce na projektu s desítkami zdrojů — dostat data dovnitř rychle, najít cokoli, dostat výstupy ven.
 
 ### Požadavky
 
-- **FR-B1 Export poznámky** → Markdown (`bodyMd` + přílohy do podsložky) a PDF (tisk z editor WebView). Menu/kontextová akce v Notes.
-- **FR-B2 Export notebooku** → ZIP: `notes/*.md`, `attachments/`, `sources/` (původní soubory z `rawPath`), `manifest.json` (metadata, verze schématu).
-- **FR-B3 Záloha databáze** jedním kliknutím (kopie `db.sqlite` + attachments do zvoleného umístění) + obnovení ze zálohy s confirm dialogem.
-- **FR-B4 Globální vyhledávání** (Cmd/Ctrl+K paleta): fulltext přes poznámky, zdroje (FTS indexy existují) a názvy chatů, napříč notebooky; výsledky s náhledem; Enter = skok (notebook → tab → položka). Včetně akcí („Nový zápisek“, „Přepnout notebook…“).
-- **FR-B5 Drag & drop** souborů na Sources tab (macOS `onDrop`, Windows `DragOver/Drop` na `SourceListPage`) + multi-výběr ve file pickeru; fronta ingesce s progress přehledem.
-- **FR-B6 Hromadné operace:** multi-select v seznamu zdrojů a poznámek; bulk delete (confirm), bulk summarize zdrojů.
-- **FR-B7 Náhled zdroje:** klik na zdroj otevře detail — extrahovaný text po chuncích, metadata (typ, URI, datum, počet chunků, stav embeddingů), u PDF číslo stránky chunku; akce „Otevřít originál“.
-- **FR-B8 Tagy** pro poznámky a zdroje: migrace **v12** (`tags`, `note_tags`, `source_tags`), UI: přiřazení tagů, filtr v seznamech, tag chips. Notebooky zůstávají ploché.
-- **FR-B9 Vyhledávání v poznámkách na Windows** (parita s macOS) — search pole nad seznamem poznámek.
+- **FR-B1 Export poznámky** → Markdown (`bodyMd` + přílohy do podsložky) a PDF (tisk z editor WebView). Menu/kontextová akce v Notes. — *Stav: MD ✅ Windows / ❌ macOS; PDF ❌ obě (viz W-1).*
+- **FR-B2 Export notebooku** → ZIP: `notes/*.md`, `attachments/`, `sources/` (původní soubory z `rawPath`), `manifest.json` (metadata, verze schématu). — *✅ Windows / ❌ macOS.*
+- **FR-B3 Záloha databáze** jedním kliknutím (kopie `db.sqlite` + attachments do zvoleného umístění) + obnovení ze zálohy s confirm dialogem. — *✅ Windows / ❌ macOS.*
+- **FR-B4 Globální vyhledávání** (Cmd/Ctrl+K paleta): fulltext přes poznámky, zdroje (FTS indexy existují) a názvy chatů, napříč notebooky; výsledky s náhledem; Enter = skok (notebook → tab → položka). Včetně akcí („Nový zápisek", „Přepnout notebook…"). — *✅ Windows / ❌ macOS.*
+- **FR-B5 Drag & drop** souborů na Sources tab (macOS `onDrop`, Windows `DragOver/Drop` na `SourceListPage`) + multi-výběr ve file pickeru; fronta ingesce s progress přehledem. — *✅ Windows / ❌ macOS.*
+- **FR-B6 Hromadné operace:** multi-select v seznamu zdrojů a poznámek; bulk delete (confirm), bulk summarize zdrojů. — *Delete zdrojů ✅ Windows / ❌ macOS; bulk summarize + bulk poznámky ❌ obě (viz W-2).*
+- **FR-B7 Náhled zdroje:** klik na zdroj otevře detail — extrahovaný text po chuncích, metadata (typ, URI, datum, počet chunků, stav embeddingů), u PDF číslo stránky chunku; akce „Otevřít originál". — *✅ Windows / ❌ macOS.*
+- **FR-B8 Tagy** pro poznámky a zdroje: migrace **v12** (`tags`, `note_tags`, `source_tags`), UI: přiřazení tagů, filtr v seznamech, tag chips. Notebooky zůstávají ploché. — *✅ Windows (v12) / ❌ macOS.*
+- **FR-B9 Vyhledávání v poznámkách** (parita) — search pole nad seznamem poznámek. — *✅ Windows / ❌ macOS.*
 
 ### Akceptační kritéria (výběr)
 
@@ -162,54 +145,78 @@ Seed: jeden řádek `ollama` z dosavadního nastavení. Nastavení modelů rozš
 
 ---
 
-## Epic C — Kvalita chatu (vzory z Onyx)
+## Epic C — Kvalita chatu (vzory z Onyx) *(spec pro M + W)*
 
-- **FR-C1 Per-notebook instrukce** (Projects pattern): textové pole v detailu notebooku; obsah se vkládá do `SystemPrompt` všech chatů, transformací notebooku a follow-upů. Migrace **v13**: `notebooks.instructions TEXT`.
-- **FR-C2 Pojmenované sady zdrojů** (document sets): uložené scopy — `source_sets(id, notebook_id, name)` + `source_set_members`. Scope popover nabízí sady + ad-hoc výběr (stávající). Migrace v13.
-- **FR-C3 Editace odeslané zprávy + regenerace odpovědi.** U poslední výměny: „Upravit“ (přepíše user message, smaže odpověď, znovu odešle) a „Regenerovat“ s volbou *(provider, model)* — návaznost na Epic A; u regenerované zprávy zobrazit badge modelu. `chat_messages` rozšířit o `model TEXT` (v13).
-- **FR-C4 Citační panel:** pravý postranní panel (toggle) se zdroji aktuálně vybrané odpovědi — titulek zdroje, snippet, skok na chunk/stránku; nahrazuje-doplňuje inline popover.
-- **FR-C5 Persony (presety):** pojmenovaná kombinace instrukce + sada zdrojů + model; picker v chatu. Až po C1+C2; nízká priorita.
+- **FR-C1 Per-notebook instrukce** (Projects pattern): textové pole v detailu notebooku; obsah se vkládá do `SystemPrompt` všech chatů, transformací notebooku a follow-upů. Migrace **v13**: `notebooks.instructions TEXT`. — *✅ Windows (v13) / ❌ macOS.*
+- **FR-C2 Pojmenované sady zdrojů** (document sets): uložené scopy — `source_sets(id, notebook_id, name)` + `source_set_members`. Scope popover nabízí sady + ad-hoc výběr (stávající). Migrace v13. — *✅ Windows / ❌ macOS.*
+- **FR-C3 Editace odeslané zprávy + regenerace odpovědi.** U poslední výměny: „Upravit" (přepíše user message, smaže odpověď, znovu odešle) a „Regenerovat" s volbou *(provider, model)* — návaznost na Epic A; u regenerované zprávy zobrazit badge modelu. `chat_messages` rozšířit o `model TEXT` (v13). — *✅ Windows / ❌ macOS.*
+- **FR-C4 Citační panel:** zdroje aktuálně vybrané odpovědi — titulek zdroje, snippet, skok na chunk/stránku. — *✅ obě (macOS popover `CitationPopover`, Windows panel `CitationViewModel`).*
+- **FR-C5 Persony (presety):** pojmenovaná kombinace instrukce + sada zdrojů + model; picker v chatu. Až po C1+C2; nízká priorita. — *❌ obě (viz W-3).*
 
-**Akceptační kritéria:** instrukce ovlivní odpověď (ověřit promptovým testem); sada zdrojů omezí retrieval (unit test filtru); regenerace jiným modelem vytvoří novou odpověď bez ztráty historie; citační panel ukazuje právě zdroje z `citations` dané zprávy.
-
----
-
-## Epic D — Kvalita retrievalu
-
-- **FR-D1 Contextual chunk enrichment** (Onyx „contextual RAG“): při ingesci volitelně (settings toggle, default off) vygenerovat 1–2větný kontext dokumentu a předřadit jej textu chunku před embeddingem. Sloupec `source_chunks.context TEXT` (v14). Jeden LLM průchod na zdroj (ne na chunk — kontext per dokument, sdílený).
-- **FR-D2 Mini eval sada:** skript + fixture korpus (10 dokumentů, 30 dotazů se zlatými chunky) měřící recall@8 retrievalu; spouštěný lokálně (ne CI). Bez měření nezapínat D1 defaultně.
-- **FR-D3 (volitelné, až po D2) Lokální cross-encoder reranker** top-K → top-8 (ONNX MiniLM na Windows, CoreML na macOS). Zavést jen pokud D2 prokáže zisk; jinak vypustit.
+**Akceptační kritéria:** instrukce ovlivní odpověď (ověřit promptovým testem); sada zdrojů omezí retrieval (unit test filtru); regenerace jiným modelem vytvoří novou odpověď bez ztráty historie; citační panel/popover ukazuje právě zdroje z `citations` dané zprávy.
 
 ---
 
-## Epic E — Živé zdroje a nástroje
+## Epic D — Kvalita retrievalu *(spec pro M + W)*
 
-- **FR-E1 Sledovaná složka:** zdroj typu „folder watch“ — při startu a periodicky porovnat mtime/hash, změněné soubory reindexovat, smazané označit stale (ne mazat). `sources.last_synced_at`, `sources.content_hash` (v15).
-- **FR-E2 Re-crawl URL:** akce „Obnovit“ u web zdrojů + volitelný interval; diff hash → reindex.
-- **FR-E3 Opt-in web search tool** v chatu (per-message toggle, default off; provider SearXNG/Brave dle konfigurace) s citacemi webových výsledků vedle lokálních. Respektuje privacy gate jako cloud provideři.
+- **FR-D1 Contextual chunk enrichment** (Onyx „contextual RAG"): při ingesci volitelně (settings toggle, default off) vygenerovat 1–2větný kontext dokumentu a předřadit jej textu chunku před embeddingem. Sloupec `source_chunks.context TEXT` (v14). Jeden LLM průchod na zdroj (ne na chunk — kontext per dokument, sdílený). — *✅ Windows (v14, `ContextualEnricher`) / ❌ macOS.*
+- **FR-D2 Mini eval sada:** skript + fixture korpus (10 dokumentů, 30 dotazů se zlatými chunky) měřící recall@8 retrievalu; spouštěný lokálně (ne CI). Bez měření nezapínat D1 defaultně. — *❌ obě (viz W-4).*
+- **FR-D3 (volitelné, až po D2) Lokální cross-encoder reranker** top-K → top-8 (ONNX MiniLM na Windows, CoreML na macOS). Zavést jen pokud D2 prokáže zisk; jinak vypustit. — *❌ obě (viz W-5, podmíněné W-4).*
 
 ---
 
-## Průřezové požadavky (platí pro všechny epicy)
+## Epic E — Živé zdroje a nástroje *(spec pro M)*
 
-1. **Parita platforem.** Každá funkce se implementuje na obou platformách v rámci téhož epicu. Čísla migrací schématu musí být identická (v11 provideři, v12 tagy, v13 chat, v14 retrieval, v15 živé zdroje). Před implementací epicu sepsat krátký spec chování + stringy (může být sekce v PR description).
-2. **Lokalizace.** Každý nový string EN + CZ; Windows: doplnit `StringKey` + oba `.resw`, aktualizovat paritní test počtu klíčů; macOS: `Localization.swift`. Opravit existující hardcoded „Done“ v `NoteWYSIWYGEditor.swift:80`.
-3. **Testy.** Core logika unit testy na obou platformách (vzor: stávající 53 testovacích souborů ve Windows Core.Tests). UI-kompoziční smoke testy (zavádí P0-5) rozšiřovat s každým epicem.
-4. **Bezpečnost.** API klíče jen v OS úložišti (FR-A7); export (FR-B1/B2) nikdy neobsahuje klíče ani interní cesty; web fetch/re-crawl drží stávající CSP a sanitizaci; všechny nové SQL přes parametrizované dotazy (žádná interpolace — viz bezpečnostní audit 2026-06-06).
-5. **CI.** Windows: locked-mode NuGet restore — každá změna závislostí = regenerace `packages.lock.json` pro všechny 4 projekty. Release: bump root `VERSION` + tag `win-v*`.
+- **FR-E1 Sledovaná složka:** zdroj typu „folder watch" — při startu a periodicky porovnat mtime/hash, změněné soubory reindexovat, smazané označit stale (ne mazat). `sources.last_synced_at`, `sources.content_hash` (v15). — *✅ Windows (v15, `FolderWatchService`) / ❌ macOS.*
+- **FR-E2 Re-crawl URL:** akce „Obnovit" u web zdrojů + volitelný interval; diff hash → reindex. — *✅ Windows (`RefreshUrlAsync`) / ❌ macOS.*
+- **FR-E3 Opt-in web search tool** v chatu (per-message toggle, default off; provider SearXNG/Brave dle konfigurace) s citacemi webových výsledků vedle lokálních. Respektuje privacy gate jako cloud provideři; výsledky jako user-message context (ne system prompt). — *✅ Windows (`WebSearchAdapter`) / ❌ macOS.*
+
+---
+
+## 6. Testy Epiců B–E (dluh)
+
+Windows implementace B–E přinesla migrace (v12–v15) a několik oprav testů, ne plné pokrytí akceptačních kritérií. Doplnit cíleně:
+
+- **B (obě platformy):** ExportService — round-trip ZIP (manifest validní, přílohy i `rawPath` soubory přítomné); PDF export produkuje neprázdný validní soubor; DB backup → restore obnoví identická data (hash porovnání); GlobalSearch najde poznámku i zdroj napříč notebooky a vrátí správný skok-cíl; tag filtr + text search kombinace; `notes_fts` search relevance.
+- **C:** per-notebook instrukce se propíše do `SystemPrompt` (prompt-assembly test); source set omezí retrieval scope (filtr unit test); regenerace jiným modelem vytvoří nový `chat_messages` řádek s `model` a nezničí historii; citace panelu odpovídají `citations` zprávy.
+- **D:** contextual enrichment předřadí kontext před embeddingem (jeden LLM průchod na zdroj, ne na chunk — ověřit počet volání); eval skript (W-4) vypíše recall@8 nad fixture korpusem.
+- **E:** folder watch detekuje změněný/smazaný soubor (mtime/hash) a označí stale ne mazáním; re-crawl diff hash → reindex jen při změně; web search výsledky jdou do user-message contextu, ne do system promptu (bezpečnostní regrese test).
+- **UI-kompoziční smoke testy** (vzor ex-P0): každý nový tab/dialog instancuje reálnou stránku, ne placeholder.
+
+---
+
+## 7. Průřezové požadavky (platí pro všechny epicy)
+
+1. **Parita platforem.** Každá funkce se implementuje na obou platformách. Čísla migrací schématu musí být identická (v12 tagy, v13 chat, v14 retrieval, v15 živé zdroje). **Aktuálně porušeno** — macOS na v11, Windows na v17; Epic M to napravuje dohnáním macOS na v15. Před implementací epicu sepsat krátký spec chování + stringy (může být sekce v PR description).
+2. **Lokalizace.** Každý nový string EN + CZ; Windows: doplnit `StringKey` + oba `.resw`, aktualizovat paritní test počtu klíčů; macOS: `Localization.swift`.
+3. **Testy.** Core logika unit testy na obou platformách. UI-kompoziční smoke testy rozšiřovat s každým epicem. Dluh pokrytí B–E viz §6.
+4. **Bezpečnost.** API klíče jen v OS úložišti (FR-A7, hotové); export (FR-B1/B2) nikdy neobsahuje klíče ani interní cesty; web fetch/re-crawl/web search drží stávající CSP a sanitizaci a jdou jako user-message context, ne system prompt; všechny nové SQL přes parametrizované dotazy (žádná interpolace — viz bezpečnostní audit 2026-06-06).
+5. **CI.** Windows: locked-mode NuGet restore — každá změna závislostí = regenerace `packages.lock.json` pro všechny 4 projekty. Release: bump root `VERSION` + **oba in-code version konstanty** (`AINotebookVersion.swift` + `AINotebookVersion.cs`, guard testy hlídají shodu s `VERSION`) + CHANGELOG + tag `v*`.
 6. **Local-first slib.** Cloud (provideři, web search) vždy opt-in s privacy gate; výchozí instalace funguje plně offline s Ollamou.
 
 ---
 
-## Pořadí a release plán
+## 8. Historie (dokončeno)
 
-| Pořadí | Epic | Release |
+| Verze | Obsah |
+|---|---|
+| win-v0.8.1 / v0.8.2 | **Epic P0** — hotfix Windows UI: 4 taby detailu notebooku reálně zapojené, koordinátory, editor end-to-end, model management; + Windows launch hotfix (unpackaged settings, x64 `.pri`, pinned NuGet). |
+| v0.9.0 | **Epic A** — multi-provider AI na obou platformách (Ollama + Anthropic + OpenAI + OpenAI-kompatibilní + OpenWebUI), per-role volba modelu, test připojení, Keychain/Credential Manager, embeddingy klíčované `provider:model`. |
+| v0.9.1 | Security patch (Windows: SQLitePCLRaw 2.1.11 → 3.0.3, HIGH). |
+| v0.9.2 | Enforcement privacy consentu na obou platformách + Windows data-integrity opravy (requalify embedding keys v16, provider timestamps v17). |
+| v0.10.0 | In-app update check na obou platformách (1×/den GitHub Releases, dismissible banner, „Check for updates now"; jen check+notify, žádný auto-download). |
+
+---
+
+## 9. Pořadí a release plán (dopředu)
+
+| Pořadí | Práce | Cílový release |
 |---|---|---|
-| 1 | **P0** hotfix Windows UI | win-v0.8.1 |
-| 2 | **A** AI provideři (cloud + volba modelu) | v0.9.0 |
-| 3 | **B** reálný projekt (export, hledání, DnD, tagy) | v0.10.0 |
-| 4 | **C** kvalita chatu | v0.11.0 |
-| 5 | **D** kvalita retrievalu | v0.12.0 |
-| 6 | **E** živé zdroje + web search | v0.13.0 |
+| 1 | **W-1** PDF export (B1) + **W-2** bulk summarize / bulk poznámky (B6) — dokončení Windows, kde macOS zatím nesahá | v0.11.0 |
+| 2 | **Epic M** parita macOS — schéma v12–v15 + Epic B na macOS | v0.12.0 (macOS-heavy) |
+| 3 | **Epic M** — Epic C + D1 na macOS | v0.13.0 |
+| 4 | **Epic M** — Epic E na macOS | v0.14.0 |
+| 5 | **W-4** eval sada (D2) → rozhodnutí o **W-5** rerankeru (D3) na obou | v0.15.0 |
+| 6 | **W-3** persony (C5) na obou | v0.16.0 |
 
-P0 je blokující pro vše ostatní na Windows. Epic A je předřazen B, protože FR-C3 (regenerace jiným modelem) i FR-D1 (enrichment) na něm stavějí a uživatelská priorita je vysoká. Uvnitř epiců lze FR dodávat po menších PR; každý PR musí držet průřezové požadavky.
+**Priorita:** dokončit rozjeté Windows funkce (W-1/W-2) je levné a hned viditelné, proto první. Epic M (parita macOS) je největší kus a bude trvat několik verzí — schéma napřed, pak B → C/D1 → E. Eval sada (W-4) předchází rerankeru (W-5): bez měření recall@8 se D3 nezapíná. Persony (C5) jsou nízká priorita, až úplně nakonec. Uvnitř epiců lze FR dodávat po menších PR; každý PR musí držet průřezové požadavky (§7) — zvlášť identická čísla migrací.

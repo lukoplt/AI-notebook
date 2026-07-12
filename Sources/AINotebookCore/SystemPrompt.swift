@@ -4,7 +4,8 @@ public enum SystemPrompt {
 
     public static func compose(
         hits: [RetrievalHit],
-        currentNoteContent: String? = nil
+        currentNoteContent: String? = nil,
+        notebookInstructions: String? = nil
     ) -> String {
         let header = """
         You are a helpful assistant answering questions about the user's notebook.
@@ -14,7 +15,13 @@ public enum SystemPrompt {
         may appear in a single sentence: [1][3].
         """
 
-        var sections: [String] = [header]
+        var sections: [String] = []
+        // Per-notebook instructions lead so they frame everything below (FR-C1).
+        if let instructions = notebookInstructions,
+           !instructions.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            sections.append("NOTEBOOK INSTRUCTIONS:\n" + instructions.trimmingCharacters(in: .whitespacesAndNewlines))
+        }
+        sections.append(header)
 
         if hits.isEmpty {
             sections.append("CONTEXT:\n(none)")

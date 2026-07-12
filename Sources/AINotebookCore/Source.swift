@@ -11,6 +11,11 @@ public struct Source: Identifiable, Equatable, Hashable, Codable, Sendable {
     public var status: SourceStatus
     public var error: String?
     public var ingestedAt: Date
+    /// Last successful re-sync of a live source (folder watch / URL re-crawl,
+    /// FR-E1/E2). Nil for static sources.
+    public var lastSyncedAt: Date?
+    /// Content hash used to skip unchanged live sources on re-sync (FR-E1/E2).
+    public var contentHash: String?
 
     public init(
         id: Int64? = nil,
@@ -21,7 +26,9 @@ public struct Source: Identifiable, Equatable, Hashable, Codable, Sendable {
         rawPath: String? = nil,
         status: SourceStatus = .pending,
         error: String? = nil,
-        ingestedAt: Date = Date()
+        ingestedAt: Date = Date(),
+        lastSyncedAt: Date? = nil,
+        contentHash: String? = nil
     ) {
         self.id = id
         self.notebookId = notebookId
@@ -32,6 +39,8 @@ public struct Source: Identifiable, Equatable, Hashable, Codable, Sendable {
         self.status = status
         self.error = error
         self.ingestedAt = ingestedAt
+        self.lastSyncedAt = lastSyncedAt
+        self.contentHash = contentHash
     }
 }
 
@@ -49,7 +58,9 @@ extension Source: FetchableRecord, MutablePersistableRecord {
         case rawPath     = "raw_path"
         case status
         case error
-        case ingestedAt  = "ingested_at"
+        case ingestedAt   = "ingested_at"
+        case lastSyncedAt = "last_synced_at"
+        case contentHash  = "content_hash"
 
         var column: Column { Column(self.rawValue) }
     }

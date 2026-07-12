@@ -8,6 +8,9 @@ public struct SourceChunk: Identifiable, Equatable, Hashable, Codable, Sendable 
     public var text: String
     public var tokenCount: Int
     public var pageHint: Int?
+    /// Document-level context prepended to `text` before embedding (FR-D1).
+    /// Nil when contextual enrichment is off (the default).
+    public var context: String?
 
     public init(
         id: Int64? = nil,
@@ -15,7 +18,8 @@ public struct SourceChunk: Identifiable, Equatable, Hashable, Codable, Sendable 
         ord: Int,
         text: String,
         tokenCount: Int,
-        pageHint: Int? = nil
+        pageHint: Int? = nil,
+        context: String? = nil
     ) {
         self.id = id
         self.sourceId = sourceId
@@ -23,6 +27,16 @@ public struct SourceChunk: Identifiable, Equatable, Hashable, Codable, Sendable 
         self.text = text
         self.tokenCount = tokenCount
         self.pageHint = pageHint
+        self.context = context
+    }
+
+    /// The text used for embedding: the document context (if enriched) followed
+    /// by the chunk body, mirroring Anthropic's "contextual retrieval" recipe.
+    public var embeddingText: String {
+        if let ctx = context, !ctx.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return ctx + "\n\n" + text
+        }
+        return text
     }
 }
 
@@ -38,6 +52,7 @@ extension SourceChunk: FetchableRecord, MutablePersistableRecord {
         case text
         case tokenCount = "token_count"
         case pageHint   = "page_hint"
+        case context
 
         var column: Column { Column(self.rawValue) }
     }

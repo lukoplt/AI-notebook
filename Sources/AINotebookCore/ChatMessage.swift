@@ -27,6 +27,10 @@ public struct ChatMessage: Identifiable, Equatable, Hashable, Codable, Sendable 
     public var role: ChatRole
     public var content: String
     public var citations: [Citation]
+    /// The provider-qualified model that generated this (assistant) message,
+    /// shown as a badge after a regenerate with a different model (FR-C3).
+    /// Nil for user messages and pre-v13 rows.
+    public var model: String?
     public var createdAt: Date
 
     public init(
@@ -35,6 +39,7 @@ public struct ChatMessage: Identifiable, Equatable, Hashable, Codable, Sendable 
         role: ChatRole,
         content: String,
         citations: [Citation] = [],
+        model: String? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -42,6 +47,7 @@ public struct ChatMessage: Identifiable, Equatable, Hashable, Codable, Sendable 
         self.role = role
         self.content = content
         self.citations = citations
+        self.model = model
         self.createdAt = createdAt
     }
 }
@@ -55,6 +61,7 @@ extension ChatMessage: FetchableRecord, MutablePersistableRecord {
         case role
         case content
         case citationsJson = "citations_json"
+        case model
         case createdAt     = "created_at"
 
         var column: Column { Column(self.rawValue) }
@@ -80,6 +87,7 @@ extension ChatMessage: FetchableRecord, MutablePersistableRecord {
             role: ChatRole(rawValue: roleRaw) ?? .user,
             content: row[Columns.content.rawValue],
             citations: cits,
+            model: row[Columns.model.rawValue],
             createdAt: row[Columns.createdAt.rawValue]
         )
     }
@@ -92,6 +100,7 @@ extension ChatMessage: FetchableRecord, MutablePersistableRecord {
             citations.isEmpty
                 ? nil
                 : String(data: try JSONEncoder().encode(citations), encoding: .utf8)
+        container[Columns.model.rawValue] = model
         container[Columns.createdAt.rawValue] = createdAt
     }
 }

@@ -11,7 +11,7 @@ import GRDB
 /// M4) will use GRDB's async APIs from background actors.
 @MainActor
 public final class NotebookStore: ObservableObject {
-    private let dbQueue: DatabaseQueue
+    let dbQueue: DatabaseQueue
 
     @Published public private(set) var notebooks: [Notebook] = []
 
@@ -41,6 +41,10 @@ public final class NotebookStore: ObservableObject {
         registerMigrationV9(on: &migrator)
         registerMigrationV10(on: &migrator)
         registerMigrationV11(on: &migrator)
+        registerMigrationV12(on: &migrator)
+        registerMigrationV13(on: &migrator)
+        registerMigrationV14(on: &migrator)
+        registerMigrationV15(on: &migrator)
         try migrator.migrate(dbQueue)
         try dbQueue.write { db in
             try BuiltinTransformations.seedIfNeeded(db, language: language)

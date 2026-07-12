@@ -6,6 +6,8 @@ public enum StoreError: Error, Equatable, Sendable {
     case sourceNotFound(Int64)
     case invalidSourceTitle(String)
     case builtInProviderUndeletable
+    case invalidTagName(String)
+    case invalidSourceSetName(String)
 }
 
 extension StoreError: LocalizedError {
@@ -21,6 +23,10 @@ extension StoreError: LocalizedError {
             "Invalid source title: \"\(title)\"."
         case .builtInProviderUndeletable:
             "The built-in Ollama provider cannot be deleted."
+        case .invalidTagName(let name):
+            "Invalid tag name: \"\(name)\"."
+        case .invalidSourceSetName(let name):
+            "Invalid source set name: \"\(name)\"."
         }
     }
 }
