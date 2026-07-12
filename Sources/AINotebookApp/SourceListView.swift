@@ -15,6 +15,7 @@ struct SourceListView: View {
     @State private var errorMessage: String?
     @State private var summaries: [Int64: String] = [:]
     @State private var summarizing: Set<Int64> = []
+    @State private var isDropTarget = false
 
     private var t: AppText { settings.text }
 
@@ -69,6 +70,18 @@ struct SourceListView: View {
         }
         .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .overlay {
+            if isDropTarget {
+                RoundedRectangle(cornerRadius: 8)
+                    .strokeBorder(Color.accentColor, style: StrokeStyle(lineWidth: 2, dash: [6]))
+                    .padding(8)
+            }
+        }
+        // B5 — drag & drop files onto Sources.
+        .dropDestination(for: URL.self) { urls, _ in
+            ingestDropped(urls)
+            return true
+        } isTargeted: { isDropTarget = $0 }
         .task(id: notebook.id) { await reload() }
         .sheet(isPresented: $showingAdd, onDismiss: { Task { await reload() } }) {
             AddSourceSheet(
@@ -170,6 +183,26 @@ struct SourceListView: View {
             if !summary.isEmpty { summaries[id] = summary }
         } catch {
             errorMessage = String(describing: error)
+        }
+    }
+
+    /// B5 — ingest a batch of dropped file URLs, then refresh. Non-file URLs
+    /// (e.g. web links) are routed to the URL ingester.
+    private func ingestDropped(_ urls: [URL]) {
+        guard let notebookId = notebook.id else { return }
+        Task {
+            for url in urls {
+                do {
+                    if url.isFileURL {
+                        _ = try await ingestion.service.ingestFile(url, into: notebookId)
+                    } else {
+                        _ = try await ingestion.service.ingestURL(url, into: notebookId)
+                    }
+                } catch {
+                    errorMessage = String(describing: error)
+                }
+            }
+            await reload()
         }
     }
 

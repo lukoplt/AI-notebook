@@ -1,4 +1,6 @@
 import SwiftUI
+import AppKit
+import UniformTypeIdentifiers
 import AINotebookCore
 
 private struct NoteIdBox: Identifiable, Hashable {
@@ -122,6 +124,9 @@ struct NotesView: View {
                                 .foregroundStyle(.secondary)
                         }
                         .tag(note.id ?? -1)
+                        .contextMenu {
+                            Button(t.string(.exportNoteMarkdown)) { exportNoteMarkdown(note) }
+                        }
                     }
                 }
                 .listStyle(.sidebar)
@@ -177,6 +182,20 @@ struct NotesView: View {
     }
 
     @MainActor
+    /// B1 — export a single note to a Markdown file.
+    private func exportNoteMarkdown(_ note: Note) {
+        let panel = NSSavePanel()
+        panel.nameFieldStringValue = (note.title.isEmpty ? "note" : note.title) + ".md"
+        panel.allowedContentTypes = [UTType(filenameExtension: "md") ?? .plainText]
+        panel.canCreateDirectories = true
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        do {
+            try Data(ExportService.exportNoteMarkdown(note).utf8).write(to: url)
+        } catch {
+            errorMessage = String(describing: error)
+        }
+    }
+
     private func reload() async {
         do {
             notes = try store.notes(notebookId: notebook.id!)
