@@ -412,11 +412,11 @@ a {
 
 .product-window,
 .gallery-stage figure {
-  overflow: hidden;
-  border: 1px solid oklch(100% 0 0 / 0.2);
-  border-radius: clamp(1rem, 2.3vw, 1.8rem);
-  background: var(--surface);
-  box-shadow: 0 50px 120px oklch(4% 0.03 285 / 0.54), 0 12px 40px oklch(4% 0.03 285 / 0.32);
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .product-window {
@@ -425,44 +425,12 @@ a {
   will-change: transform;
 }
 
-.window-chrome {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  height: 2.75rem;
-  padding: 0 1rem;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
-  background: oklch(97% 0.007 270);
-  font-size: 0.7rem;
-  font-weight: 650;
-}
-
-.traffic {
-  display: flex;
-  gap: 0.42rem;
-}
-
-.traffic i {
-  width: 0.65rem;
-  height: 0.65rem;
-  border-radius: 50%;
-}
-
-.traffic i:nth-child(1) { background: oklch(65% 0.22 26); }
-.traffic i:nth-child(2) { background: oklch(80% 0.16 83); }
-.traffic i:nth-child(3) { background: oklch(67% 0.17 148); }
-
-.chrome-dot {
-  justify-self: end;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--line);
-}
-
-.product-window img {
+.product-window img,
+.gallery-stage figure img {
   width: 100%;
+  height: auto;
+  aspect-ratio: 2696 / 1776;
+  object-fit: contain;
 }
 
 .float-note {
@@ -709,7 +677,8 @@ a {
 
 .gallery-stage {
   position: relative;
-  min-height: min(71vw, 68rem);
+  min-height: 0;
+  aspect-ratio: 1.36;
   padding: clamp(1rem, 4vw, 4rem);
   border-radius: clamp(1.5rem, 4vw, 3.5rem);
   background: var(--night);
@@ -748,18 +717,22 @@ a {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.gallery-stage figure img {
-  width: 100%;
-}
-
 .gallery-stage figcaption {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  width: fit-content;
+  max-width: calc(100% - 3rem);
   padding: 1rem 1.25rem;
+  margin: -1.35rem auto 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
   color: var(--muted);
   background: var(--surface);
+  box-shadow: 0 12px 30px oklch(5% 0.02 285 / 0.2);
   font-size: 0.78rem;
 }
 
@@ -1252,15 +1225,6 @@ a {
   .hero-product {
     width: 110vw;
     margin-left: calc(-1 * var(--page) - 5vw);
-  }
-
-  .window-chrome {
-    height: 2rem;
-  }
-
-  .traffic i {
-    width: 0.45rem;
-    height: 0.45rem;
   }
 
   .float-note-source {
