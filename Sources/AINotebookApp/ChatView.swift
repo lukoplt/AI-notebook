@@ -30,6 +30,7 @@ struct ChatView: View {
     @State private var sourceSets: [SourceSet] = []
     @State private var newSetName = ""
     @State private var useWebForNextMessage = false
+    @State private var chatProviders: [ProviderConfig] = []
 
     private var t: AppText { settings.text }
 
@@ -235,14 +236,28 @@ struct ChatView: View {
                     // C3 — regenerate / edit the last exchange.
                     if let last = messages.last, last.role == .assistant, !sending, streamingDraft.isEmpty {
                         HStack(spacing: 12) {
-                            Button { Task { await regenerate() } } label: {
+                            Menu {
+                                Button(t.string(.chatRegenerate)) { Task { await regenerate() } }
+                                if !chatProviders.isEmpty {
+                                    Divider()
+                                    ForEach(chatProviders) { p in
+                                        // Regenerate via a specific provider (C3 model choice);
+                                        // the router honors this provider-qualified key.
+                                        Button(p.name) {
+                                            Task { await regenerate(model: "\(p.id):\(settings.selectedChatModel)") }
+                                        }
+                                    }
+                                }
+                            } label: {
                                 Label(t.string(.chatRegenerate), systemImage: "arrow.clockwise")
                             }
+                            .menuStyle(.borderlessButton)
+                            .fixedSize()
                             Button { editLastUserMessage() } label: {
                                 Label(t.string(.chatEdit), systemImage: "pencil")
                             }
+                            .buttonStyle(.borderless)
                         }
-                        .buttonStyle(.borderless)
                         .font(.caption)
                         .padding(.leading, 4)
                     }
@@ -330,6 +345,7 @@ struct ChatView: View {
 
     @MainActor
     private func ensureSessions() async {
+        chatProviders = (try? store.providers().filter(\.enabled)) ?? []
         do {
             sessions = try store.chatSessions(notebookId: notebook.id!)
             if let first = sessions.first {
@@ -398,8 +414,9 @@ struct ChatView: View {
         await send(text: question)
     }
 
-    /// C3 — regenerate the last assistant answer with the current model.
-    private func regenerate() async {
+    /// C3 — regenerate the last assistant answer. `model` nil uses the current
+    /// selection; a provider-qualified key regenerates via that provider.
+    private func regenerate(model: String? = nil) async {
         guard let sid = selectedSessionId, !sending else { return }
         sending = true
         errorMessage = nil
@@ -410,7 +427,8 @@ struct ChatView: View {
             _ = try await chatHolder.engine.regenerate(
                 sessionId: sid,
                 notebookId: notebook.id!,
-                sourceIds: effectiveSourceIds
+                sourceIds: effectiveSourceIds,
+                model: model
             ) { token in
                 Task { @MainActor in streamingDraft += token }
             }

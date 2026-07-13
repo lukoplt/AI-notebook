@@ -308,4 +308,48 @@ final class ProviderRouterTests: XCTestCase {
         XCTAssertEqual(selection.chatSelection().providerId, "p-9")
         XCTAssertEqual(selection.chatSelection().model, "gpt-4o")
     }
+
+    /// FR-C3: passing an explicit provider-qualified model key must route to
+    /// THAT provider, overriding the live chat selection. Proven via the
+    /// consent gate, which fires before any network request: the selection
+    /// points at consented Ollama, but a composite key aimed at an
+    /// unacknowledged cloud provider must throw `.consentRequired`.
+    func testStreamHonorsCompositeModelKeyOverSelection() async throws {
+        let store = try NotebookStore(path: .inMemory) // seeds consented Ollama
+        let cloud = ProviderConfig(type: .anthropic, name: "Claude",
+                                   baseURL: "https://api.anthropic.com", privacyAcknowledged: false)
+        try store.saveProvider(cloud)
+        let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "llama3.2:3b"),
+                                        embed: (ProviderConfig.ollamaId, "nomic-embed-text"))
+        let router = makeRouter(store: store, selection: selection)
+        do {
+            for try await _ in router.stream(model: "\(cloud.id):claude-sonnet-4-6",
+                                             messages: [ChatTurn(role: .user, content: "hi")]) {}
+            XCTFail("expected consentRequired — key must route to the cloud provider")
+        } catch let e as ProviderError {
+            XCTAssertEqual(e, .consentRequired)
+        }
+    }
+
+    /// A raw chat model containing a colon (e.g. `llama3.2:3b`) must NOT be
+    /// mistaken for a composite key — its prefix isn't a real provider id, so
+    /// resolution falls back to the live selection.
+    func testStreamRawColonModelFallsBackToSelection() async throws {
+        let store = try NotebookStore(path: .inMemory)
+        // Selection points at an unacknowledged cloud provider so the gate
+        // fires from the SELECTION path (proving the raw model didn't route).
+        let cloud = ProviderConfig(type: .anthropic, name: "Claude",
+                                   baseURL: "https://api.anthropic.com", privacyAcknowledged: false)
+        try store.saveProvider(cloud)
+        let selection = StaticSelection(chat: (cloud.id, "claude"),
+                                        embed: (ProviderConfig.ollamaId, "nomic-embed-text"))
+        let router = makeRouter(store: store, selection: selection)
+        do {
+            for try await _ in router.stream(model: "llama3.2:3b",
+                                             messages: [ChatTurn(role: .user, content: "hi")]) {}
+            XCTFail("expected consentRequired from the selection path")
+        } catch let e as ProviderError {
+            XCTAssertEqual(e, .consentRequired)
+        }
+    }
 }

@@ -24,6 +24,8 @@ struct NotesView: View {
     @StateObject private var editorCoord = NoteEditorCoordinator()
     @State private var pendingSelection: Int64?
     @State private var showUnsavedAlert = false
+    @State private var bulkMode = false
+    @State private var selectedNoteIds: Set<Int64> = []
 
     private var t: AppText { settings.text }
 
@@ -86,12 +88,27 @@ struct NotesView: View {
             HStack {
                 Text(t.string(.notesSectionTitle)).font(.title3).bold()
                 Spacer()
+                if !notes.isEmpty {
+                    Button(bulkMode ? t.string(.bulkDone) : t.string(.bulkSelect)) {
+                        bulkMode.toggle()
+                        selectedNoteIds.removeAll()
+                    }
+                }
                 Button(t.string(.notesNewButton)) {
                     Task { await createBlank() }
                 }
             }
             .padding(.horizontal, 12)
             .padding(.top, 12)
+            if bulkMode && !selectedNoteIds.isEmpty {
+                HStack {
+                    Text("\(selectedNoteIds.count)").font(.caption).foregroundStyle(.secondary)
+                    Spacer()
+                    Button(t.string(.bulkDelete), role: .destructive) { bulkDeleteNotes() }
+                        .buttonStyle(.borderedProminent)
+                }
+                .padding(.horizontal, 12)
+            }
             if notes.isEmpty {
                 VStack(spacing: 10) {
                     Spacer()
@@ -116,12 +133,19 @@ struct NotesView: View {
                     set: { newValue in attemptSelect(newValue) }
                 )) {
                     ForEach(notes) { note in
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(note.title.isEmpty ? t.string(.noteUntitled) : note.title)
-                                .font(.headline)
-                            Text(originLabel(note.origin))
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                        HStack(spacing: 8) {
+                            if bulkMode, let id = note.id {
+                                Image(systemName: selectedNoteIds.contains(id) ? "checkmark.circle.fill" : "circle")
+                                    .foregroundStyle(selectedNoteIds.contains(id) ? Color.accentColor : .secondary)
+                                    .onTapGesture { toggleBulk(id) }
+                            }
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(note.title.isEmpty ? t.string(.noteUntitled) : note.title)
+                                    .font(.headline)
+                                Text(originLabel(note.origin))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                         .tag(note.id ?? -1)
                         .contextMenu {
@@ -182,6 +206,21 @@ struct NotesView: View {
     }
 
     @MainActor
+    private func toggleBulk(_ id: Int64) {
+        if selectedNoteIds.contains(id) { selectedNoteIds.remove(id) } else { selectedNoteIds.insert(id) }
+    }
+
+    /// B6 — delete every selected note.
+    private func bulkDeleteNotes() {
+        do {
+            for id in selectedNoteIds { try store.deleteNote(id: id) }
+            if let sel = selection, selectedNoteIds.contains(sel) { selection = nil }
+            selectedNoteIds.removeAll()
+            bulkMode = false
+            Task { await reload() }
+        } catch { errorMessage = String(describing: error) }
+    }
+
     /// B1 — export a single note to a Markdown file.
     private func exportNoteMarkdown(_ note: Note) {
         let panel = NSSavePanel()

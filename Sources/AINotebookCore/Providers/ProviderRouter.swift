@@ -92,7 +92,21 @@ extension ProviderRouter: ChatStreaming {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    let (providerId, activeModel) = self.selection.chatSelection()
+                    // Honor an explicit provider-qualified model (FR-C3 regenerate
+                    // with a chosen model): treat `model` as composite ONLY when
+                    // its prefix before the first colon is a real provider id.
+                    // Raw chat model names routinely contain colons themselves
+                    // (`llama3.2:3b`), so a bare colon is NOT enough — validate
+                    // against the providers table, else fall back to the live
+                    // selection (the default send() path).
+                    let providerId: String
+                    let activeModel: String
+                    if let parsed = Self.parseCompositeKey(model),
+                       (try? await MainActor.run { try self.store.provider(id: parsed.providerId) }) ?? nil != nil {
+                        (providerId, activeModel) = parsed
+                    } else {
+                        (providerId, activeModel) = self.selection.chatSelection()
+                    }
                     let cfg = await self.config(providerId)
                     // FR-A8 defense-in-depth: without consent, a cloud/network
                     // provider must not receive data — checked here (not just
