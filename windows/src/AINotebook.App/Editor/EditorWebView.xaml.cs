@@ -42,6 +42,14 @@ public sealed partial class EditorWebView : UserControl
         _dispatcher = DispatcherQueue.GetForCurrentThread();
     }
 
+    /// W-1 (FR-B1 PDF): render the current editor content to a PDF file via
+    /// WebView2's print-to-PDF. Returns false if the print failed.
+    public async Task<bool> ExportPdfAsync(string filePath)
+    {
+        await Web.EnsureCoreWebView2Async();
+        return await Web.CoreWebView2.PrintToPdfAsync(filePath, null);
+    }
+
     // Called once per note open. `initialMarkdown` seeds the editor; `onSave` is the autosave sink.
     public async void Configure(
         long noteId, string noteUuid, string initialMarkdown,

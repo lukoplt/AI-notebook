@@ -36,7 +36,9 @@ public sealed partial class NotesPage : Page
         EmptyNotesText.Text = _t.Get("notesEmptyState");
         NoSelectionText.Text = _t.Get("notesEmptyState");
         AddTagText.Text = _t.Get(StringKey.AddTagButton);
-        ToolTipService.SetToolTip(ExportNoteButton, _t.Get(StringKey.ExportNoteMarkdown));
+        ToolTipService.SetToolTip(ExportNoteButton, _t.Get(StringKey.ExportNoteButton));
+        ExportMarkdownItem.Text = _t.Get(StringKey.ExportNoteMarkdown);
+        ExportPdfItem.Text = _t.Get(StringKey.ExportNotePdf);
 
         ViewModel.PropertyChanged += OnVmPropertyChanged;
         ViewModel.UnsavedDialogRequested += async () => await ShowUnsavedDialog();
@@ -146,6 +148,21 @@ public sealed partial class NotesPage : Page
         var file = await picker.PickSaveFileAsync();
         if (file is null) return;
         try { await FileIO.WriteTextAsync(file, ExportService.ExportNoteMarkdown(note)); }
+        catch (Exception ex) { ViewModel.ErrorMessage = ex.ToString(); }
+    }
+
+    // W-1 (B1 PDF): export the selected note as a PDF via WebView2 print.
+    private async void OnExportNotePdf(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.SelectedNote is not { } note) return;
+        var picker = new FileSavePicker();
+        InitializeWithWindow.Initialize(picker, WindowNative.GetWindowHandle(App.MainWindow));
+        picker.SuggestedFileName = string.IsNullOrWhiteSpace(note.Title) ? "note" : note.Title;
+        picker.DefaultFileExtension = ".pdf";
+        picker.FileTypeChoices.Add("PDF", [".pdf"]);
+        var file = await picker.PickSaveFileAsync();
+        if (file is null) return;
+        try { await Editor.ExportPdfAsync(file.Path); }
         catch (Exception ex) { ViewModel.ErrorMessage = ex.ToString(); }
     }
 

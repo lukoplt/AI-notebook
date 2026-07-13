@@ -46,9 +46,12 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="BulkSelectedLabel" Grid.Column="0" VerticalAlignment="Center"/>
-            <Button x:Name="BulkDeleteButton" Grid.Column="1"
+            <Button x:Name="BulkSummarizeButton" Grid.Column="1"
+                    Command="{x:Bind ViewModel.BulkSummarizeCommand}"/>
+            <Button x:Name="BulkDeleteButton" Grid.Column="2"
                     Command="{x:Bind ViewModel.BulkDeleteCommand}"
                     Style="{ThemeResource AccentButtonStyle}"/>
         </Grid>

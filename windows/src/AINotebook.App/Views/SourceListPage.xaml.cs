@@ -45,6 +45,7 @@ public sealed partial class SourceListPage : UserControl
         FolderWatchActiveButton.Content = _strings.Get(StringKey.FolderWatchActiveLabel);
         BulkButton.Content = _strings.Get(StringKey.BulkSelectButton);
         BulkDeleteButton.Content = _strings.Get(StringKey.BulkDeleteSelectedButton);
+        BulkSummarizeButton.Content = _strings.Get(StringKey.BulkSummarizeSelectedButton);
         ToolTipService.SetToolTip(ExportNotebookButton, _strings.Get(StringKey.ExportNotebookZip));
         ExportNotebookButton.Content = new FontIcon { Glyph = "", FontSize = 14 };
 

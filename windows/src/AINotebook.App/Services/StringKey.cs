@@ -57,7 +57,7 @@ public enum StringKey
     // Epic B: export, search, drag&drop, tags, bulk ops.
     NoteSearchPlaceholder,
     SourcePreviewTitle, SourcePreviewChunksLabel, SourcePreviewNoContent, SourcePreviewButton,
-    ExportNoteButton, ExportNoteMarkdown, ExportNotebookButton, ExportNotebookZip,
+    ExportNoteButton, ExportNoteMarkdown, ExportNotePdf, ExportNotebookButton, ExportNotebookZip,
     BackupButton, BackupRestoreButton, BackupRestoreConfirm, ExportSuccess,
     GlobalSearchTitle, GlobalSearchPlaceholder, GlobalSearchEmpty,
     GlobalSearchSectionNotes, GlobalSearchSectionSources,

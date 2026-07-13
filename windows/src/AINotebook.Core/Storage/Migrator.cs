@@ -28,6 +28,7 @@ public static class Migrator
         ("v15_live_sources", V15),
         ("v16_requalify_embedding_keys", V16),
         ("v17_fix_provider_timestamps", V17),
+        ("v18_personas", V18),
     };
 
     public static void Migrate(SqliteConnection conn)
@@ -393,4 +394,20 @@ public static class Migrator
 
     // No DDL — v17 is a pure data migration (see FixProviderTimestamps).
     private const string V17 = "";
+
+    // Epic C5 — personas (named instructions + source set + model preset).
+    // Shared identifier with macOS MigrationV18.
+    private const string V18 = """
+        CREATE TABLE IF NOT EXISTS "personas" (
+          "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+          "notebook_id" INTEGER NOT NULL REFERENCES "notebooks"("id") ON DELETE CASCADE,
+          "name" TEXT NOT NULL,
+          "instructions" TEXT NOT NULL DEFAULT '',
+          "source_set_id" INTEGER REFERENCES "source_sets"("id") ON DELETE SET NULL,
+          "model" TEXT,
+          "created_at" DATETIME NOT NULL
+        );
+        @@
+        CREATE INDEX "idx_personas_notebook" ON "personas"("notebook_id");
+        """;
 }

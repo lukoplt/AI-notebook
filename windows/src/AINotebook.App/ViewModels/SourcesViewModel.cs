@@ -157,6 +157,32 @@ public sealed partial class SourcesViewModel : ObservableObject
         catch (Exception ex) { ErrorMessage = ex.ToString(); }
     }
 
+    // W-2 (B6): summarize every selected source.
+    [RelayCommand]
+    private async Task BulkSummarizeAsync()
+    {
+        var items = Sources.Where(s => s.IsSelected && !s.HasSummary).ToList();
+        if (items.Count == 0) return;
+        var summarizer = new SourceSummarizer(_store, _chatStreaming, _settings.SelectedChatModel);
+        foreach (var item in items)
+        {
+            item.IsSummarizing = true;
+            try
+            {
+                var text = await Task.Run(() => summarizer.SummarizeAsync(item.Id));
+                void Apply() { item.Summary = text; }
+                if (!_dispatcher.HasThreadAccess) _dispatcher.TryEnqueue(Apply); else Apply();
+            }
+            catch (Exception ex) { ErrorMessage = ex.ToString(); }
+            finally
+            {
+                void Done() { item.IsSummarizing = false; }
+                if (!_dispatcher.HasThreadAccess) _dispatcher.TryEnqueue(Done); else Done();
+            }
+        }
+        IsBulkMode = false;
+    }
+
     // E2: re-crawl a URL source.
     [RelayCommand]
     public async Task RefreshUrlAsync(SourceItem? item)

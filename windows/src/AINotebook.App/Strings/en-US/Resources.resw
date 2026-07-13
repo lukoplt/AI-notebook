@@ -566,6 +566,9 @@
   <data name="exportNoteMarkdown" xml:space="preserve">
     <value>Export as Markdown</value>
   </data>
+  <data name="exportNotePdf" xml:space="preserve">
+    <value>Export as PDF</value>
+  </data>
   <data name="exportNotebookButton" xml:space="preserve">
     <value>Export notebook</value>
   </data>

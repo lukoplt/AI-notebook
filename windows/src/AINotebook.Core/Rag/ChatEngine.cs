@@ -32,6 +32,7 @@ public sealed class ChatEngine
         long sessionId, long notebookId, string userText,
         string? currentNoteContent = null, IReadOnlyCollection<long>? sourceIds = null,
         IReadOnlyList<WebSearchResult>? webResults = null,
+        string? model = null, string? instructionsOverride = null,
         Action<string>? onToken = null, CancellationToken ct = default)
     {
         // 1) Persist the user message.
@@ -43,7 +44,8 @@ public sealed class ChatEngine
         // 3) Compose messages: system (with per-notebook instructions) + full history.
         var notebooks = _store.Notebooks();
         var nb = notebooks.FirstOrDefault(n => n.Id == notebookId);
-        var instructions = nb?.Instructions;
+        // A persona's instructions (FR-C5) override the per-notebook ones (FR-C1).
+        var instructions = !string.IsNullOrWhiteSpace(instructionsOverride) ? instructionsOverride : nb?.Instructions;
 
         var systemContent = SystemPrompt.Compose(hits, currentNoteContent, instructions);
 
@@ -75,7 +77,7 @@ public sealed class ChatEngine
             try
             {
                 var partial = "";
-                await foreach (var token in _chat.StreamAsync(ChatModel, turns, ct))
+                await foreach (var token in _chat.StreamAsync(model ?? ChatModel, turns, ct))
                 {
                     partial += token;
                     onToken?.Invoke(token);

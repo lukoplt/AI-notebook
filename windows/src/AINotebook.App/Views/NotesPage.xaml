@@ -31,9 +31,14 @@
                            VerticalAlignment="Center"/>
                 <!-- B1: export selected note -->
                 <Button Grid.Column="1" x:Name="ExportNoteButton" Margin="4,0,0,0"
-                        Click="OnExportNote"
                         Visibility="{x:Bind ViewModel.HasSelectedNote, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
                     <FontIcon Glyph="&#xEDE1;" FontSize="14"/>
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Name="ExportMarkdownItem" Click="OnExportNote"/>
+                            <MenuFlyoutItem x:Name="ExportPdfItem" Click="OnExportNotePdf"/>
+                        </MenuFlyout>
+                    </Button.Flyout>
                 </Button>
                 <Button Grid.Column="2" x:Name="NewButtonTop" Margin="4,0,0,0"
                         Command="{x:Bind ViewModel.CreateBlankCommand}"/>
