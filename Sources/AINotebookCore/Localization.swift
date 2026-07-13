@@ -213,6 +213,26 @@ public struct AppText: Sendable {
         case sourcePreviewChunksHeader
         case sourcePreviewOpenOriginal
         case sourcePreviewNoChunks
+        // Epic B8 — tags
+        case tagsLabel
+        case tagAddPlaceholder
+        case tagFilterAll
+        case tagFilterMenu
+        // Epic B6 — bulk operations
+        case bulkSelect
+        case bulkDone
+        case bulkDelete
+        case bulkSummarize
+        // Epic C2 — source sets
+        case sourceSetsLabel
+        case sourceSetSaveCurrent
+        case sourceSetNamePlaceholder
+        // Epic C3 — regenerate / edit
+        case chatRegenerate
+        case chatEdit
+        // Epic E3 — web search
+        case webSearchToggle
+        case webSearchChatToggle
     }
 
     public let language: AppLanguage
@@ -441,6 +461,21 @@ public struct AppText: Sendable {
         case .sourcePreviewChunksHeader: "Chunks"
         case .sourcePreviewOpenOriginal: "Open original"
         case .sourcePreviewNoChunks:     "No chunks yet"
+        case .tagsLabel:                 "Tags"
+        case .tagAddPlaceholder:         "Add tag…"
+        case .tagFilterAll:              "All tags"
+        case .tagFilterMenu:             "Filter by tag"
+        case .bulkSelect:                "Select"
+        case .bulkDone:                  "Done"
+        case .bulkDelete:                "Delete selected"
+        case .bulkSummarize:             "Summarize selected"
+        case .sourceSetsLabel:           "Source sets"
+        case .sourceSetSaveCurrent:      "Save current selection as set…"
+        case .sourceSetNamePlaceholder:  "Set name"
+        case .chatRegenerate:            "Regenerate"
+        case .chatEdit:                  "Edit"
+        case .webSearchToggle:           "Enable web search"
+        case .webSearchChatToggle:       "Search the web for this message"
         }
     }
 
@@ -655,6 +690,21 @@ public struct AppText: Sendable {
         case .sourcePreviewChunksHeader: "Části"
         case .sourcePreviewOpenOriginal: "Otevřít originál"
         case .sourcePreviewNoChunks:     "Zatím žádné části"
+        case .tagsLabel:                 "Štítky"
+        case .tagAddPlaceholder:         "Přidat štítek…"
+        case .tagFilterAll:              "Všechny štítky"
+        case .tagFilterMenu:             "Filtrovat podle štítku"
+        case .bulkSelect:                "Vybrat"
+        case .bulkDone:                  "Hotovo"
+        case .bulkDelete:                "Smazat vybrané"
+        case .bulkSummarize:             "Shrnout vybrané"
+        case .sourceSetsLabel:           "Sady zdrojů"
+        case .sourceSetSaveCurrent:      "Uložit výběr jako sadu…"
+        case .sourceSetNamePlaceholder:  "Název sady"
+        case .chatRegenerate:            "Přegenerovat"
+        case .chatEdit:                  "Upravit"
+        case .webSearchToggle:           "Povolit hledání na webu"
+        case .webSearchChatToggle:       "Hledat na webu pro tuto zprávu"
         }
     }
 }

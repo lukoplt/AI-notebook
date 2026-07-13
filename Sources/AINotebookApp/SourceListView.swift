@@ -17,8 +17,25 @@ struct SourceListView: View {
     @State private var summarizing: Set<Int64> = []
     @State private var isDropTarget = false
     @State private var previewSource: Source?
+    @State private var allTags: [Tag] = []
+    @State private var tagFilter: Int64?
+    @State private var sourceTagIds: [Int64: Set<Int64>] = [:]
 
     private var t: AppText { settings.text }
+
+    /// Sources after applying the active tag filter (B8).
+    private var displayedSources: [Source] {
+        guard let tagFilter else { return sources }
+        return sources.filter { source in
+            guard let id = source.id else { return false }
+            return sourceTagIds[id]?.contains(tagFilter) ?? false
+        }
+    }
+
+    private var tagFilterLabel: String {
+        if let tagFilter, let tag = allTags.first(where: { $0.id == tagFilter }) { return tag.name }
+        return settings.text.string(.tagFilterMenu)
+    }
 
     /// Built from the same chat model + Ollama client the app uses elsewhere.
     private func makeSummarizer() -> SourceSummarizer {
@@ -31,6 +48,24 @@ struct SourceListView: View {
                 Text(settings.text.string(.sourcesSectionTitle))
                     .font(.title2).bold()
                 Spacer()
+                if !allTags.isEmpty {
+                    Menu {
+                        Button(settings.text.string(.tagFilterAll)) { tagFilter = nil }
+                        Divider()
+                        ForEach(allTags) { tag in
+                            Button {
+                                tagFilter = tag.id
+                            } label: {
+                                if tagFilter == tag.id { Label(tag.name, systemImage: "checkmark") }
+                                else { Text(tag.name) }
+                            }
+                        }
+                    } label: {
+                        Label(tagFilterLabel, systemImage: "line.3.horizontal.decrease.circle")
+                    }
+                    .menuStyle(.borderlessButton)
+                    .fixedSize()
+                }
                 IndexingStatusBadge()
                 Button(settings.text.string(.addSourceButton)) {
                     showingAdd = true
@@ -55,7 +90,7 @@ struct SourceListView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 List {
-                    ForEach(sources) { source in
+                    ForEach(displayedSources) { source in
                         sourceRow(source)
                             .padding(.vertical, 4)
                             .contentShape(Rectangle())
@@ -94,7 +129,7 @@ struct SourceListView: View {
                 isPresented: $showingAdd
             )
         }
-        .sheet(item: $previewSource) { source in
+        .sheet(item: $previewSource, onDismiss: { Task { await reload() } }) { source in
             SourcePreviewSheet(source: source, isPresented: Binding(
                 get: { previewSource != nil },
                 set: { if !$0 { previewSource = nil } }
@@ -178,6 +213,14 @@ struct SourceListView: View {
                 }
             }
             summaries = loaded
+            allTags = try store.tags()
+            var tagMap: [Int64: Set<Int64>] = [:]
+            for source in sources {
+                guard let id = source.id else { continue }
+                tagMap[id] = Set(try store.tagsForSource(sourceId: id).map(\.id))
+            }
+            sourceTagIds = tagMap
+            if let f = tagFilter, !allTags.contains(where: { $0.id == f }) { tagFilter = nil }
         } catch {
             errorMessage = String(describing: error)
         }

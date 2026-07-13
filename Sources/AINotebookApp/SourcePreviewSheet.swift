@@ -11,6 +11,8 @@ struct SourcePreviewSheet: View {
     @Binding var isPresented: Bool
 
     @State private var chunks: [SourceChunk] = []
+    @State private var assignedTags: [Tag] = []
+    @State private var allTags: [Tag] = []
 
     private var t: AppText { settings.text }
 
@@ -22,6 +24,18 @@ struct SourcePreviewSheet: View {
                 Button(t.string(.cancel)) { isPresented = false }
             }
             metadata
+            TagChipsEditor(
+                assigned: assignedTags,
+                all: allTags,
+                onAdd: { tagId in setTags(assignedTags.map(\.id) + [tagId]) },
+                onRemove: { tagId in setTags(assignedTags.map(\.id).filter { $0 != tagId }) },
+                onCreate: { name in
+                    if let tag = try? store.createTag(name: name) {
+                        setTags(assignedTags.map(\.id) + [tag.id])
+                    }
+                }
+            )
+            .environmentObject(settings)
             Divider()
             Text(t.string(.sourcePreviewChunksHeader) + " (\(chunks.count))")
                 .font(.subheadline).bold()
@@ -44,7 +58,20 @@ struct SourcePreviewSheet: View {
         }
         .padding(20)
         .frame(width: 620, height: 520)
-        .task { chunks = (try? store.chunks(sourceId: source.id ?? -1)) ?? [] }
+        .task {
+            chunks = (try? store.chunks(sourceId: source.id ?? -1)) ?? []
+            reloadTags()
+        }
+    }
+
+    private func reloadTags() {
+        allTags = (try? store.tags()) ?? []
+        assignedTags = (try? store.tagsForSource(sourceId: source.id ?? -1)) ?? []
+    }
+
+    private func setTags(_ ids: [Int64]) {
+        try? store.setSourceTags(sourceId: source.id ?? -1, tagIds: Array(Set(ids)))
+        reloadTags()
     }
 
     private var metadata: some View {
