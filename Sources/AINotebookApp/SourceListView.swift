@@ -20,6 +20,8 @@ struct SourceListView: View {
     @State private var allTags: [Tag] = []
     @State private var tagFilter: Int64?
     @State private var sourceTagIds: [Int64: Set<Int64>] = [:]
+    @State private var bulkMode = false
+    @State private var selectedIds: Set<Int64> = []
 
     private var t: AppText { settings.text }
 
@@ -67,9 +69,18 @@ struct SourceListView: View {
                     .fixedSize()
                 }
                 IndexingStatusBadge()
+                if !sources.isEmpty {
+                    Button(bulkMode ? settings.text.string(.bulkDone) : settings.text.string(.bulkSelect)) {
+                        bulkMode.toggle()
+                        selectedIds.removeAll()
+                    }
+                }
                 Button(settings.text.string(.addSourceButton)) {
                     showingAdd = true
                 }
+            }
+            if bulkMode && !selectedIds.isEmpty {
+                bulkActionBar
             }
 
             if sources.isEmpty {
@@ -91,10 +102,22 @@ struct SourceListView: View {
             } else {
                 List {
                     ForEach(displayedSources) { source in
-                        sourceRow(source)
-                            .padding(.vertical, 4)
-                            .contentShape(Rectangle())
-                            .onTapGesture { previewSource = source }
+                        HStack(spacing: 8) {
+                            if bulkMode, let id = source.id {
+                                Image(systemName: selectedIds.contains(id) ? "checkmark.circle.fill" : "circle")
+                                    .foregroundStyle(selectedIds.contains(id) ? Color.accentColor : .secondary)
+                            }
+                            sourceRow(source)
+                        }
+                        .padding(.vertical, 4)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            if bulkMode, let id = source.id {
+                                if selectedIds.contains(id) { selectedIds.remove(id) } else { selectedIds.insert(id) }
+                            } else {
+                                previewSource = source
+                            }
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -137,6 +160,43 @@ struct SourceListView: View {
             .environmentObject(settings)
             .environmentObject(store)
         }
+    }
+
+    private var bulkActionBar: some View {
+        HStack {
+            Text("\(selectedIds.count)").font(.caption).foregroundStyle(.secondary)
+            Spacer()
+            Button(settings.text.string(.bulkSummarize)) { Task { await bulkSummarize() } }
+                .buttonStyle(.bordered)
+            Button(settings.text.string(.bulkDelete), role: .destructive) { bulkDelete() }
+                .buttonStyle(.borderedProminent)
+        }
+        .padding(.vertical, 4)
+    }
+
+    /// B6 / W-2 — summarize every selected source.
+    @MainActor
+    private func bulkSummarize() async {
+        let summarizer = makeSummarizer()
+        for id in selectedIds {
+            guard let source = sources.first(where: { $0.id == id }), source.status == .ready else { continue }
+            summarizing.insert(id)
+            do {
+                let summary = try await summarizer.summarize(sourceId: id)
+                if !summary.isEmpty { summaries[id] = summary }
+            } catch { errorMessage = String(describing: error) }
+            summarizing.remove(id)
+        }
+    }
+
+    /// B6 — delete every selected source.
+    private func bulkDelete() {
+        do {
+            for id in selectedIds { try store.deleteSource(id: id) }
+            selectedIds.removeAll()
+            bulkMode = false
+            Task { await reload() }
+        } catch { errorMessage = String(describing: error) }
     }
 
     @ViewBuilder
