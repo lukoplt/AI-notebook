@@ -18,6 +18,7 @@ public final class AppSettings: ObservableObject {
         static let selectedEmbeddingProviderId = ProviderSettingsKeys.embeddingProviderId
         static let autoCheckUpdates = "autoCheckUpdates"
         static let lastUpdateCheck = "lastUpdateCheck"
+        static let webSearchEnabled = "webSearchEnabled"
     }
 
     private let defaults: UserDefaults
@@ -50,6 +51,11 @@ public final class AppSettings: ObservableObject {
 
     @Published public var autoCheckUpdates: Bool {
         didSet { defaults.set(autoCheckUpdates, forKey: Keys.autoCheckUpdates) }
+    }
+
+    /// E3 — master switch for opt-in web search (default off, local-first).
+    @Published public var webSearchEnabled: Bool {
+        didSet { defaults.set(webSearchEnabled, forKey: Keys.webSearchEnabled) }
     }
 
     /// Stored as a unix timestamp; nil until the first successful check.
@@ -96,6 +102,7 @@ public final class AppSettings: ObservableObject {
         } else {
             self.lastUpdateCheck = nil
         }
+        self.webSearchEnabled = defaults.bool(forKey: Keys.webSearchEnabled)
     }
 
     public var text: AppText {

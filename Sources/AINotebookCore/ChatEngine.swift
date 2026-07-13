@@ -17,6 +17,7 @@ public actor ChatEngine {
     private let store: NotebookStore
     private let retriever: Retriever
     private let chat: ChatStreaming
+    private let webSearch: WebSearch?
     public let chatModel: String
     public let topK: Int
     public let retryAttempts: Int
@@ -27,6 +28,7 @@ public actor ChatEngine {
         retriever: Retriever,
         chat: ChatStreaming,
         chatModel: String,
+        webSearch: WebSearch? = nil,
         topK: Int = 8,
         retryAttempts: Int = 2,
         retryBackoffMillis: Int = 250
@@ -34,6 +36,7 @@ public actor ChatEngine {
         self.store = store
         self.retriever = retriever
         self.chat = chat
+        self.webSearch = webSearch
         self.chatModel = chatModel
         self.topK = topK
         self.retryAttempts = retryAttempts
@@ -47,6 +50,7 @@ public actor ChatEngine {
         userText: String,
         currentNoteContent: String? = nil,
         sourceIds: Set<Int64> = [],
+        useWebSearch: Bool = false,
         onToken: @escaping @Sendable (String) -> Void
     ) async throws -> ChatMessage {
         // 1) Persist the user message.
@@ -66,6 +70,7 @@ public actor ChatEngine {
             model: chatModel,
             currentNoteContent: currentNoteContent,
             sourceIds: sourceIds,
+            useWebSearch: useWebSearch,
             onToken: onToken
         )
     }
@@ -115,6 +120,7 @@ public actor ChatEngine {
         model: String,
         currentNoteContent: String?,
         sourceIds: Set<Int64>,
+        useWebSearch: Bool = false,
         onToken: @escaping @Sendable (String) -> Void
     ) async throws -> ChatMessage {
         let storeRef = store
@@ -139,6 +145,15 @@ public actor ChatEngine {
             try storeRef.messages(sessionId: sessionId)
         }
         var turns: [ChatTurn] = [ChatTurn(role: .system, content: systemContent)]
+        // E3 — opt-in web results, injected as a USER-role turn (never the
+        // system prompt) to limit prompt-injection surface. Not persisted.
+        if useWebSearch, let webSearch {
+            let results = (try? await webSearch.search(query: queryText, maxResults: 5)) ?? []
+            let rendered = WebSearchContext.render(results)
+            if !rendered.isEmpty {
+                turns.append(ChatTurn(role: .user, content: rendered))
+            }
+        }
         for m in history {
             turns.append(ChatTurn(role: m.role, content: m.content))
         }

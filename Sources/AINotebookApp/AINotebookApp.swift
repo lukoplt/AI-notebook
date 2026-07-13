@@ -77,7 +77,8 @@ struct AINotebookAppEntry: App {
             store: store,
             retriever: retriever,
             chat: router,
-            chatModel: settings.selectedChatModel
+            chatModel: settings.selectedChatModel,
+            webSearch: DuckDuckGoWebSearch()
         )
         _chatHolder = StateObject(wrappedValue: ChatEngineHolder(engine: engine))
 

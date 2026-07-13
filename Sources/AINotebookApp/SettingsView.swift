@@ -336,6 +336,7 @@ struct SettingsView: View {
                     .monospacedDigit()
             }
 
+            Toggle(settings.text.string(.webSearchToggle), isOn: $settings.webSearchEnabled)
             Toggle(settings.text.string(.updateAutoCheckToggle), isOn: $settings.autoCheckUpdates)
             HStack {
                 Button(settings.text.string(.updateCheckNowButton)) {

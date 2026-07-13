@@ -29,6 +29,7 @@ struct ChatView: View {
     @State private var showingScopePopover = false
     @State private var sourceSets: [SourceSet] = []
     @State private var newSetName = ""
+    @State private var useWebForNextMessage = false
 
     private var t: AppText { settings.text }
 
@@ -301,17 +302,28 @@ struct ChatView: View {
     }
 
     private var inputBar: some View {
-        HStack(alignment: .bottom, spacing: 8) {
-            TextField(t.string(.chatInputPlaceholder), text: $input, axis: .vertical)
-                .lineLimit(1...5)
-                .textFieldStyle(.roundedBorder)
-                .disabled(sending)
-
-            Button(t.string(.chatSendButton)) {
-                Task { await send() }
+        VStack(alignment: .leading, spacing: 4) {
+            // E3 — per-message web search opt-in (only when enabled in Settings).
+            if settings.webSearchEnabled {
+                Toggle(isOn: $useWebForNextMessage) {
+                    Label(t.string(.webSearchChatToggle), systemImage: "globe")
+                        .font(.caption)
+                }
+                .toggleStyle(.switch)
+                .controlSize(.mini)
             }
-            .keyboardShortcut(.return, modifiers: [.command])
-            .disabled(sending || input.trimmingCharacters(in: .whitespaces).isEmpty)
+            HStack(alignment: .bottom, spacing: 8) {
+                TextField(t.string(.chatInputPlaceholder), text: $input, axis: .vertical)
+                    .lineLimit(1...5)
+                    .textFieldStyle(.roundedBorder)
+                    .disabled(sending)
+
+                Button(t.string(.chatSendButton)) {
+                    Task { await send() }
+                }
+                .keyboardShortcut(.return, modifiers: [.command])
+                .disabled(sending || input.trimmingCharacters(in: .whitespaces).isEmpty)
+            }
         }
         .padding(.top, 8)
     }
@@ -433,7 +445,8 @@ struct ChatView: View {
                 sessionId: sid,
                 notebookId: notebook.id!,
                 userText: text,
-                sourceIds: effectiveSourceIds
+                sourceIds: effectiveSourceIds,
+                useWebSearch: settings.webSearchEnabled && useWebForNextMessage
             ) { token in
                 Task { @MainActor in streamingDraft += token }
             }
