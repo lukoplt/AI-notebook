@@ -233,6 +233,9 @@ public struct AppText: Sendable {
         // Epic E3 — web search
         case webSearchToggle
         case webSearchChatToggle
+        // Epic E1/E2 — live sources
+        case watchFolderButton
+        case recrawlSourceButton
     }
 
     public let language: AppLanguage
@@ -476,6 +479,8 @@ public struct AppText: Sendable {
         case .chatEdit:                  "Edit"
         case .webSearchToggle:           "Enable web search"
         case .webSearchChatToggle:       "Search the web for this message"
+        case .watchFolderButton:         "Sync folder…"
+        case .recrawlSourceButton:       "Refresh"
         }
     }
 
@@ -705,6 +710,8 @@ public struct AppText: Sendable {
         case .chatEdit:                  "Upravit"
         case .webSearchToggle:           "Povolit hledání na webu"
         case .webSearchChatToggle:       "Hledat na webu pro tuto zprávu"
+        case .watchFolderButton:         "Synchronizovat složku…"
+        case .recrawlSourceButton:       "Obnovit"
         }
     }
 }

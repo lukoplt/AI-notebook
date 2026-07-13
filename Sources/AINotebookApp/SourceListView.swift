@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 import AINotebookCore
 
 struct SourceListView: View {
@@ -75,6 +76,7 @@ struct SourceListView: View {
                         selectedIds.removeAll()
                     }
                 }
+                Button(settings.text.string(.watchFolderButton)) { syncFolderAction() }
                 Button(settings.text.string(.addSourceButton)) {
                     showingAdd = true
                 }
@@ -116,6 +118,11 @@ struct SourceListView: View {
                                 if selectedIds.contains(id) { selectedIds.remove(id) } else { selectedIds.insert(id) }
                             } else {
                                 previewSource = source
+                            }
+                        }
+                        .contextMenu {
+                            if source.type == .web || source.rawPath != nil {
+                                Button(settings.text.string(.recrawlSourceButton)) { recrawl(source) }
                             }
                         }
                     }
@@ -317,6 +324,35 @@ struct SourceListView: View {
                 }
             }
             await reload()
+        }
+    }
+
+    /// E2 — re-crawl a single web/file source.
+    private func recrawl(_ source: Source) {
+        guard let id = source.id else { return }
+        Task {
+            do {
+                try await LiveSourceSync(store: store, ingestion: ingestion.service).recrawl(sourceId: id)
+                await reload()
+            } catch { errorMessage = String(describing: error) }
+        }
+    }
+
+    /// E1 — pick a folder and sync it (ingest new, re-ingest changed, skip
+    /// unchanged). One-shot; a continuous FSEvents watcher can call the same
+    /// LiveSourceSync.syncFolder.
+    private func syncFolderAction() {
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        guard panel.runModal() == .OK, let folder = panel.url, let notebookId = notebook.id else { return }
+        Task {
+            do {
+                _ = try await LiveSourceSync(store: store, ingestion: ingestion.service)
+                    .syncFolder(notebookId: notebookId, folder: folder)
+                await reload()
+            } catch { errorMessage = String(describing: error) }
         }
     }
 

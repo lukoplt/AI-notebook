@@ -114,6 +114,44 @@ public final class IngestionService: @unchecked Sendable {
         }
     }
 
+    /// Re-ingests an existing source from its stored raw path or URI (folder
+    /// watch / URL re-crawl, FR-E1/E2). Ported from the Windows `ReIngestAsync`.
+    @discardableResult
+    public func reIngest(sourceId: Int64) async throws -> Source {
+        let source = try await MainActor.run { try store.source(id: sourceId) }
+        guard let source else { throw IngestionError.unsupportedExtension("(source \(sourceId) not found)") }
+        let url: URL
+        if let raw = source.rawPath { url = URL(fileURLWithPath: raw) }
+        else if let uri = source.uri, let u = URL(string: uri) { url = u }
+        else { throw IngestionError.unsupportedExtension("(source \(sourceId) has no path/URI)") }
+        let kind = source.type
+        return try await runPipeline(for: source) { [self] in
+            switch kind {
+            case .pdf:
+                let extracted = try await pdf.extract(from: url, kind: kind)
+                let pages: [(String, Int)]
+                if let hints = extracted.pageHints {
+                    let split = extracted.text.split(separator: "\u{0C}", omittingEmptySubsequences: false)
+                    pages = zip(split, hints).map { (String($0.0), $0.1) }
+                } else {
+                    pages = [(extracted.text, 0)]
+                }
+                return (extracted, Chunker.chunkPaged(pages))
+            case .text, .markdown:
+                let e = try await plain.extract(from: url, kind: kind)
+                return (e, Chunker.chunk(e.text))
+            case .docx, .pptx, .xlsx:
+                let e = try await office.extract(from: url, kind: kind)
+                return (e, Chunker.chunk(e.text))
+            case .web:
+                let e = try await web.extract(from: url, kind: kind)
+                return (e, Chunker.chunk(e.text))
+            case .note:
+                throw IngestionError.unsupportedExtension("note")
+            }
+        }
+    }
+
     private func runPipeline(
         for sourceIn: Source,
         extract: () async throws -> (ExtractedText, [ChunkDraft])
