@@ -12,7 +12,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <title>AI Notebook | Private AI for your documents</title>
     <link rel="icon" href="docs/icon.png">
-    <link rel="stylesheet" href="styles.css?v=317aaef">
+    <link rel="stylesheet" href="styles.css?v=mobile-polish-1">
     <script src="script.js" defer></script>
   </head>
 
@@ -67,7 +67,10 @@
         <div class="hero-product reveal" data-delay="1" data-parallax-stage>
           <div class="hero-halo" aria-hidden="true"></div>
           <div class="product-window" data-parallax>
-            <img src="docs/screenshots/chat.png" alt="AI Notebook answering an energy strategy question with grounded citations" width="2696" height="1776">
+            <picture>
+              <source media="(max-width: 760px)" srcset="docs/screenshots/mobile/chat.png">
+              <img src="docs/screenshots/chat.png" alt="AI Notebook answering an energy strategy question with grounded citations" width="2696" height="1776" decoding="async" fetchpriority="high">
+            </picture>
           </div>
 
           <div class="float-note float-note-source" aria-hidden="true">
@@ -123,22 +126,34 @@
             <div class="gallery-glow" aria-hidden="true"></div>
 
             <figure id="panel-chat" role="tabpanel" aria-labelledby="tab-chat" data-gallery-panel="chat">
-              <img src="docs/screenshots/chat.png" alt="Chat view with a populated strategy conversation and grounded citations" width="2696" height="1776">
+              <picture>
+                <source media="(max-width: 760px)" srcset="docs/screenshots/mobile/chat.png">
+                <img src="docs/screenshots/chat.png" alt="Chat view with a populated strategy conversation and grounded citations" width="2696" height="1776" loading="lazy" decoding="async">
+              </picture>
               <figcaption><b>Ask across everything.</b><span>Streamed answers with clickable citations.</span></figcaption>
             </figure>
 
             <figure id="panel-sources" role="tabpanel" aria-labelledby="tab-sources" data-gallery-panel="sources" hidden>
-              <img src="docs/screenshots/sources.png" alt="Source library with four indexed clean-energy research documents" width="2696" height="1776">
+              <picture>
+                <source media="(max-width: 760px)" srcset="docs/screenshots/mobile/sources.png">
+                <img src="docs/screenshots/sources.png" alt="Source library with four indexed clean-energy research documents" width="2696" height="1776" loading="lazy" decoding="async">
+              </picture>
               <figcaption><b>Ground every conversation.</b><span>PDFs, Office files, web pages, and text.</span></figcaption>
             </figure>
 
             <figure id="panel-notes" role="tabpanel" aria-labelledby="tab-notes" data-gallery-panel="notes" hidden>
-              <img src="docs/screenshots/notes.png" alt="Rich notes editor with an English executive briefing and notebook chat" width="2696" height="1776">
+              <picture>
+                <source media="(max-width: 760px)" srcset="docs/screenshots/mobile/notes.png">
+                <img src="docs/screenshots/notes.png" alt="Rich notes editor with an English executive briefing and notebook chat" width="2696" height="1776" loading="lazy" decoding="async">
+              </picture>
               <figcaption><b>Keep what matters.</b><span>Write, attach, version, and search your notes.</span></figcaption>
             </figure>
 
             <figure id="panel-tools" role="tabpanel" aria-labelledby="tab-tools" data-gallery-panel="tools" hidden>
-              <img src="docs/screenshots/transformations.png" alt="AI transformation run history populated with completed research outputs" width="2696" height="1776">
+              <picture>
+                <source media="(max-width: 760px)" srcset="docs/screenshots/mobile/transformations.png">
+                <img src="docs/screenshots/transformations.png" alt="AI transformation run history populated with completed research outputs" width="2696" height="1776" loading="lazy" decoding="async">
+              </picture>
               <figcaption><b>Make thinking repeatable.</b><span>Summaries, key points, entities, and your own prompts.</span></figcaption>
             </figure>
           </div>

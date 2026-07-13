@@ -44,6 +44,7 @@ svg {
 
 img {
   max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -1101,12 +1102,20 @@ a {
 
   .site-header {
     padding: 0.65rem 0.75rem;
+    transition: none;
+  }
+
+  .site-header.is-scrolled {
+    padding-top: 0.65rem;
   }
 
   .nav {
     grid-template-columns: 1fr auto;
     min-height: 3.45rem;
     padding-left: 0.65rem;
+    background: oklch(15% 0.02 285 / 0.96);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .brand span {
@@ -1203,6 +1212,8 @@ a {
     top: -10%;
     width: 190vw;
     aspect-ratio: 1;
+    filter: none;
+    opacity: 0.72;
   }
 
   .hero-grid {
@@ -1227,6 +1238,16 @@ a {
     margin-left: calc(-1 * var(--page) - 5vw);
   }
 
+  .hero-halo {
+    background: radial-gradient(ellipse, oklch(67% 0.22 270 / 0.28), transparent 70%);
+    filter: none;
+  }
+
+  .product-window {
+    transform: none;
+    will-change: auto;
+  }
+
   .float-note-source {
     top: -7%;
     left: 6%;
@@ -1239,6 +1260,7 @@ a {
 
   .float-note {
     transform: scale(0.78);
+    backdrop-filter: none;
   }
 
   .scroll-cue {
@@ -1281,8 +1303,14 @@ a {
     border-radius: 0;
   }
 
+  .gallery-glow {
+    filter: none;
+  }
+
   .gallery-stage figure {
     border-radius: 0.75rem;
+    animation-name: panel-in-mobile;
+    animation-duration: 280ms;
   }
 
   .gallery-stage figcaption {
@@ -1297,6 +1325,11 @@ a {
   .privacy-orbit {
     width: 94vw;
     margin-left: calc(-0.5 * (94vw - 100%));
+  }
+
+  .privacy-orbit::before {
+    background: radial-gradient(circle, oklch(65% 0.22 276 / 0.3), transparent 70%);
+    filter: none;
   }
 
   .privacy-core {
@@ -1325,6 +1358,34 @@ a {
     min-height: 84svh;
   }
 
+  .final-beam {
+    filter: none;
+    opacity: 0.84;
+  }
+
+  .motion-ready .reveal,
+  .motion-ready .reveal.is-visible {
+    transform: none;
+    transition: none;
+  }
+
+  .motion-ready .hero-copy,
+  .motion-ready .showcase-heading,
+  .motion-ready .privacy-copy,
+  .motion-ready .native-heading,
+  .motion-ready .final-content {
+    transform: translateY(8px);
+    transition: transform 420ms var(--ease);
+  }
+
+  .motion-ready .hero-copy.is-visible,
+  .motion-ready .showcase-heading.is-visible,
+  .motion-ready .privacy-copy.is-visible,
+  .motion-ready .native-heading.is-visible,
+  .motion-ready .final-content.is-visible {
+    transform: translateY(0);
+  }
+
   .final-actions {
     width: 100%;
     max-width: 23rem;
@@ -1348,6 +1409,11 @@ a {
     flex-wrap: wrap;
     justify-content: center;
   }
+}
+
+@keyframes panel-in-mobile {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @media (max-width: 390px) {
