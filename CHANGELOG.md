@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.11.0] — 2026-07-13
+
+macOS reaches feature parity with Windows (Epics B–E), plus personas on
+both platforms.
+
+### Added
+- macOS: export a note to Markdown, a notebook to a ZIP (with a
+  `sources.json` manifest), and back up / restore the whole database.
+- macOS: a ⌘K "search everything" palette across all notebooks' notes and
+  source titles, with jump-to navigation.
+- macOS: drag & drop files onto Sources, bulk select / delete / summarize
+  sources, bulk delete notes, a source preview sheet (chunks + metadata),
+  and tags with a per-source filter.
+- macOS: per-notebook chat instructions (now injected into the system
+  prompt), named source sets in the chat scope, edit / regenerate the last
+  answer with a choice of model, and a contextual-enrichment column.
+- macOS: live sources — sync a folder (ingest new, re-ingest changed, skip
+  unchanged by content hash) and re-crawl a URL source; opt-in web search
+  in chat (results injected as user-message context, never the system
+  prompt).
+- Both platforms: personas (C5) — a named preset of instructions + source
+  set + model, selectable in chat (schema v18).
+- Windows: export a note to PDF and bulk-summarize selected sources.
+- A retrieval-evaluation harness (recall@k) for measuring retrieval
+  quality locally.
+
+### Fixed
+- macOS: `ProviderRouter` now honors an explicitly provider-qualified chat
+  model (regenerate-with-model previously only tagged the message).
+
+### Schema
+- Migrations v12–v15 ported to macOS (tags + notes FTS, instructions +
+  source sets, chunk context, live sources); v18 (personas) on both
+  platforms.
+
 ## [0.10.0] — 2026-07-10
 
 In-app update notifications.
