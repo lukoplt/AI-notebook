@@ -27,6 +27,8 @@ struct ChatView: View {
     @State private var scopeSources: [Source] = []
     @State private var selectedSourceIds: Set<Int64> = []
     @State private var showingScopePopover = false
+    @State private var sourceSets: [SourceSet] = []
+    @State private var newSetName = ""
 
     private var t: AppText { settings.text }
 
@@ -147,9 +149,54 @@ struct ChatView: View {
                 }
                 .toggleStyle(.checkbox)
             }
+            // C2 — named source sets
+            if !sourceSets.isEmpty || !scopeSources.isEmpty {
+                Divider()
+                Text(t.string(.sourceSetsLabel)).font(.caption).foregroundStyle(.secondary)
+                ForEach(sourceSets) { set in
+                    HStack {
+                        Button(set.name) { applySourceSet(set) }
+                            .buttonStyle(.link)
+                        Spacer()
+                        Button {
+                            try? store.deleteSourceSet(id: set.id)
+                            loadSourceSets()
+                        } label: { Image(systemName: "trash").font(.caption2) }
+                        .buttonStyle(.plain).foregroundStyle(.secondary)
+                    }
+                }
+                HStack(spacing: 6) {
+                    TextField(t.string(.sourceSetNamePlaceholder), text: $newSetName)
+                        .textFieldStyle(.roundedBorder)
+                    Button(t.string(.save)) { saveCurrentAsSet() }
+                        .disabled(newSetName.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
         }
         .padding(12)
-        .frame(minWidth: 240, maxWidth: 360)
+        .frame(minWidth: 260, maxWidth: 380)
+    }
+
+    private func applySourceSet(_ set: SourceSet) {
+        let members = (try? store.sourceSetMembers(setId: set.id)) ?? []
+        // Intersect with currently-ready sources so stale members are ignored.
+        let ready = Set(scopeSources.compactMap(\.id))
+        selectedSourceIds = Set(members).intersection(ready)
+    }
+
+    private func saveCurrentAsSet() {
+        let name = newSetName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+        do {
+            let set = try store.createSourceSet(notebookId: notebook.id!, name: name)
+            try store.setSourceSetMembers(setId: set.id, sourceIds: Array(selectedSourceIds))
+            newSetName = ""
+            loadSourceSets()
+        } catch { errorMessage = String(describing: error) }
+    }
+
+    private func loadSourceSets() {
+        sourceSets = (try? store.sourceSets(notebookId: notebook.id!)) ?? []
     }
 
     private func bindingForSource(_ source: Source) -> Binding<Bool> {
@@ -183,6 +230,20 @@ struct ChatView: View {
                             onCitationTapped: { c in showCitation(c) },
                             onSaveAsNote: { Task { await saveAsNote(m) } }
                         )
+                    }
+                    // C3 — regenerate / edit the last exchange.
+                    if let last = messages.last, last.role == .assistant, !sending, streamingDraft.isEmpty {
+                        HStack(spacing: 12) {
+                            Button { Task { await regenerate() } } label: {
+                                Label(t.string(.chatRegenerate), systemImage: "arrow.clockwise")
+                            }
+                            Button { editLastUserMessage() } label: {
+                                Label(t.string(.chatEdit), systemImage: "pencil")
+                            }
+                        }
+                        .buttonStyle(.borderless)
+                        .font(.caption)
+                        .padding(.leading, 4)
                     }
                     if !streamingDraft.isEmpty {
                         MessageBubble(
@@ -325,6 +386,41 @@ struct ChatView: View {
         await send(text: question)
     }
 
+    /// C3 — regenerate the last assistant answer with the current model.
+    private func regenerate() async {
+        guard let sid = selectedSessionId, !sending else { return }
+        sending = true
+        errorMessage = nil
+        streamingDraft = ""
+        followups = []
+        defer { sending = false; streamingDraft = "" }
+        do {
+            _ = try await chatHolder.engine.regenerate(
+                sessionId: sid,
+                notebookId: notebook.id!,
+                sourceIds: effectiveSourceIds
+            ) { token in
+                Task { @MainActor in streamingDraft += token }
+            }
+            await reloadMessages()
+        } catch {
+            errorMessage = providerErrorText(error, text: settings.text)
+            await reloadMessages()
+        }
+    }
+
+    /// C3 — pull the last user message back into the input for editing and drop
+    /// it (plus the answer) so a re-send starts a clean exchange.
+    private func editLastUserMessage() {
+        guard let sid = selectedSessionId,
+              let lastUser = messages.last(where: { $0.role == .user }),
+              let uid = lastUser.id else { return }
+        input = lastUser.content
+        try? store.deleteMessagesAfter(sessionId: sid, messageId: uid)
+        try? store.deleteMessage(id: uid)
+        Task { await reloadMessages() }
+    }
+
     private func send(text: String) async {
         guard let sid = selectedSessionId else { return }
         sending = true
@@ -371,6 +467,7 @@ struct ChatView: View {
             scopeSources = ready
             // Default = all selected (which maps to the unscoped path).
             selectedSourceIds = Set(ready.compactMap { $0.id })
+            loadSourceSets()
         } catch {
             scopeSources = []
             selectedSourceIds = []
