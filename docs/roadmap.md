@@ -68,9 +68,11 @@ Průřezový požadavek žádá identická čísla migrací na obou platformách
 >
 > **macOS UI wiring (Task 5) — HOTOVO (buildable, runtime neověřeno na darwin — bez spuštění appky):** ✅ C1 instrukce (popover) + injekce do chat promptu, ✅ B1 export poznámky MD (context menu), ✅ B2/B3 export ZIP + backup/restore (menu), ✅ B4 ⌘K global search paleta, ✅ B5 drag&drop na Sources, ✅ B6 bulk select/delete/summarize (zdroje), ✅ B7 náhled zdroje (sheet), ✅ B8 tag editor + filtr, ✅ C2 source-set scope picker v chatu, ✅ C3 regenerate/edit v chatu, ✅ E3 web search toggle (Settings + per-message) + chat integrace. **351 macOS testů zelených.**
 >
-> **Drobné zbytky macOS UI:** B6 bulk pro **poznámky** (zatím jen zdroje); C3 regenerate zatím s aktuálním modelem, ne s **výběrem modelu** (Core `regenerate(model:)` to už umí — chybí jen picker); FSEvents folder-watch smyčka (Core sync API + E2 recrawl API hotové, chybí App-layer watcher).
+> **macOS — dokončené zbytky:** ✅ B6 bulk pro **poznámky**; ✅ C3 **výběr modelu** u regenerate (+ oprava `ProviderRouter.stream`, který dřív ignoroval předaný model); ✅ E1/E2 live sources (`IngestionService.reIngest`, `LiveSourceSync` folder sync + recrawl, UI „Sync folder…"/„Refresh"); ✅ **C5 persony** (migrace v18, `Persona` + CRUD, `ChatEngine` instructionsOverride, persona picker v chatu). ✅ **D2** eval harness (`RetrievalEval` + testy). **359 macOS testů zelených.** Zbývá jen App-layer FSEvents watcher (Core sync API hotové — „Sync folder" je zatím one-shot).
 >
-> **Zbývá (mimo macOS UI):** **Epic W** Windows-only kód (PDF export, bulk summarize/notes — nelze ověřit build na macOS/darwin); **C5 persony** (nová migrace v16+ na obou platformách, nejnižší priorita); **D3 reranker** (podmíněný reálným během D2).
+> **Windows (NEOVĚŘENO — WinUI nejde builtit na darwin, ověří Windows CI):** ✅ C5 Core (Migrator v18, `Persona`, `NotebookStore.Personas`, `ChatEngine` model+instructionsOverride; `MigratorTests` upraveny na v18), ✅ W-1 PDF export (`EditorWebView.ExportPdfAsync` + Markdown/PDF menu), ✅ W-2 bulk summarize zdrojů. **Zbývá Windows-only:** notes bulk-delete UI + persona picker UI (Core připravené, jen dodrátovat XAML na Windows stroji).
+>
+> **D3 reranker:** záměrně nezapracován — roadmapa ho gateuje na reálný běh D2 („zavést jen pokud D2 prokáže zisk; jinak vypustit"). Bez měření recall@8 na reálných embeddinzích (Ollama, lokálně) se nezapíná.
 
 
 Dvě hlavní osy plus dvě podpůrné:
