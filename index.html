@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#08080c">
+    <meta name="description" content="Private AI for the documents on your desktop. AI Notebook is free, open source, and local-first.">
+    <meta property="og:title" content="AI Notebook | Every answer, rooted in your sources">
+    <meta property="og:description" content="Research with your own documents. Get cited answers. Keep everything on your machine.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="docs/screenshots/chat.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>AI Notebook | Private AI for your documents</title>
+    <link rel="icon" href="docs/icon.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-header>
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="AI Notebook home">
+          <img src="docs/icon.png" alt="" width="34" height="34">
+          <span>AI Notebook</span>
+        </a>
+
+        <div class="nav-links" id="nav-links" data-nav-links>
+          <a href="#product">Product</a>
+          <a href="#privacy">Privacy</a>
+          <a href="https://github.com/lukoplt/AI-notebook" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+
+        <div class="nav-actions">
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-menu-toggle>
+            <span class="sr-only">Open navigation</span>
+            <i aria-hidden="true"></i>
+            <i aria-hidden="true"></i>
+          </button>
+          <a class="nav-cta" href="https://github.com/lukoplt/AI-notebook/releases/latest">Get the app</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-aurora" aria-hidden="true"></div>
+        <div class="hero-grid" aria-hidden="true"></div>
+
+        <div class="hero-copy reveal">
+          <p class="hero-label"><span></span>Private AI for macOS and Windows</p>
+          <h1 id="hero-title">Every answer.<br><em>Rooted in your sources.</em></h1>
+          <p class="hero-intro">A private research workspace that reads your documents, cites its answers, and runs on your machine.</p>
+          <div class="hero-actions">
+            <a class="button button-light" href="https://github.com/lukoplt/AI-notebook/releases/latest" data-download>
+              <span data-download-label>Download latest</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5v10m0 0 4-4m-4 4-4-4M3 16.5h14"/></svg>
+            </a>
+            <a class="hero-github" href="https://github.com/lukoplt/AI-notebook" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8a9.2 9.2 0 0 0-2.9 17.9c.5.1.6-.2.6-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 0 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.5-1.1-4.5-4.6 0-1 .4-1.9 1-2.5-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.5 1a8.8 8.8 0 0 1 4.6 0c1.8-1.2 2.5-1 2.5-1 .5 1.3.2 2.3.1 2.6.7.7 1 1.5 1 2.5 0 3.5-2.3 4.3-4.5 4.6.4.3.7.9.7 1.8v2.6c0 .4.2.6.7.5A9.2 9.2 0 0 0 12 2.8Z"/></svg>
+              Open source
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-product reveal" data-delay="1" data-parallax-stage>
+          <div class="hero-halo" aria-hidden="true"></div>
+          <div class="product-window" data-parallax>
+            <div class="window-chrome" aria-hidden="true">
+              <div class="traffic"><i></i><i></i><i></i></div>
+              <span>AI Notebook</span>
+              <i class="chrome-dot"></i>
+            </div>
+            <img src="docs/screenshots/chat.png" alt="AI Notebook answering a question with an inline citation" width="1600" height="1044">
+          </div>
+
+          <div class="float-note float-note-source" aria-hidden="true">
+            <span class="float-icon">
+              <svg viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20.5H7zM14 3.5v4h4M10 12h5M10 15.5h5"/></svg>
+            </span>
+            <span><b>3 sources</b><small>searched locally</small></span>
+          </div>
+
+          <div class="float-note float-note-citation" aria-hidden="true">
+            <b>[3]</b>
+            <span><strong>Source verified</strong><small>Exact passage found</small></span>
+            <i></i>
+          </div>
+        </div>
+
+        <a class="scroll-cue" href="#product" aria-label="Explore the product">
+          <span>Explore</span>
+          <i aria-hidden="true"></i>
+        </a>
+      </section>
+
+      <section class="manifesto" aria-label="AI Notebook principles">
+        <p class="reveal">Your documents are not training data.</p>
+        <p class="reveal" data-delay="1">Your questions are not telemetry.</p>
+        <p class="manifesto-highlight reveal" data-delay="2">Your knowledge stays yours.</p>
+      </section>
+
+      <section class="product-showcase" id="product" aria-labelledby="product-title">
+        <div class="showcase-heading reveal">
+          <p class="kicker">One private workspace</p>
+          <h2 id="product-title">Four ways to move<br>an idea forward.</h2>
+          <p>Switch between sources, conversation, writing, and reusable AI tools without leaving the notebook.</p>
+        </div>
+
+        <div class="gallery reveal" data-gallery>
+          <div class="gallery-tabs" role="tablist" aria-label="Product views">
+            <button id="tab-chat" type="button" role="tab" aria-selected="true" aria-controls="panel-chat" tabindex="0" data-gallery-tab="chat">
+              <span>01</span> Ask
+            </button>
+            <button id="tab-sources" type="button" role="tab" aria-selected="false" aria-controls="panel-sources" tabindex="-1" data-gallery-tab="sources">
+              <span>02</span> Ground
+            </button>
+            <button id="tab-notes" type="button" role="tab" aria-selected="false" aria-controls="panel-notes" tabindex="-1" data-gallery-tab="notes">
+              <span>03</span> Write
+            </button>
+            <button id="tab-tools" type="button" role="tab" aria-selected="false" aria-controls="panel-tools" tabindex="-1" data-gallery-tab="tools">
+              <span>04</span> Transform
+            </button>
+          </div>
+
+          <div class="gallery-stage">
+            <div class="gallery-glow" aria-hidden="true"></div>
+
+            <figure id="panel-chat" role="tabpanel" aria-labelledby="tab-chat" data-gallery-panel="chat">
+              <img src="docs/screenshots/chat.png" alt="Chat view with a grounded answer and source citation" width="1600" height="1044">
+              <figcaption><b>Ask across everything.</b><span>Streamed answers with clickable citations.</span></figcaption>
+            </figure>
+
+            <figure id="panel-sources" role="tabpanel" aria-labelledby="tab-sources" data-gallery-panel="sources" hidden>
+              <img src="docs/screenshots/sources.png" alt="Source library with locally indexed documents" width="1600" height="1044">
+              <figcaption><b>Ground every conversation.</b><span>PDFs, Office files, web pages, and text.</span></figcaption>
+            </figure>
+
+            <figure id="panel-notes" role="tabpanel" aria-labelledby="tab-notes" data-gallery-panel="notes" hidden>
+              <img src="docs/screenshots/notes.png" alt="Notes editor connected to the research notebook" width="1600" height="1044">
+              <figcaption><b>Keep what matters.</b><span>Write, attach, version, and search your notes.</span></figcaption>
+            </figure>
+
+            <figure id="panel-tools" role="tabpanel" aria-labelledby="tab-tools" data-gallery-panel="tools" hidden>
+              <img src="docs/screenshots/transformations.png" alt="Reusable AI transformation tools in AI Notebook" width="1600" height="1044">
+              <figcaption><b>Make thinking repeatable.</b><span>Summaries, key points, entities, and your own prompts.</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="privacy" id="privacy" aria-labelledby="privacy-title">
+        <div class="privacy-orbit" aria-hidden="true">
+          <div class="orbit orbit-a"></div>
+          <div class="orbit orbit-b"></div>
+          <div class="orbit orbit-c"></div>
+          <div class="privacy-core">
+            <img src="docs/icon.png" alt="" width="96" height="96">
+          </div>
+          <span class="orbit-node node-document">
+            <svg viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20.5H7zM14 3.5v4h4"/></svg>
+          </span>
+          <span class="orbit-node node-database">
+            <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="7" ry="3"/><path d="M5 5.5v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6M5 11.5v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+          </span>
+          <span class="orbit-node node-lock">
+            <svg viewBox="0 0 24 24"><path d="M8 10V8a4 4 0 0 1 8 0v2M6 10h12v10H6z"/></svg>
+          </span>
+        </div>
+
+        <div class="privacy-copy reveal">
+          <p class="kicker kicker-mint">Local-first, for real</p>
+          <h2 id="privacy-title">The cloud<br>is optional.</h2>
+          <p>Use Ollama and every document, embedding, note, and conversation remains on your computer. Connect a cloud model only when you choose to.</p>
+          <ul>
+            <li><span></span>No account required</li>
+            <li><span></span>Keys stored in the OS credential vault</li>
+            <li><span></span>Open source under the MIT license</li>
+          </ul>
+          <a class="privacy-link" href="https://github.com/lukoplt/AI-notebook#privacy" target="_blank" rel="noreferrer">
+            Inspect how privacy works
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <section class="native" aria-labelledby="native-title">
+        <div class="native-heading reveal">
+          <p class="kicker">Built for the desktop</p>
+          <h2 id="native-title">Native where<br>you do your work.</h2>
+        </div>
+
+        <div class="platform-rail reveal">
+          <article class="platform platform-mac">
+            <div class="platform-top">
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M22.3 17.1c0-3.7 3-5.5 3.1-5.6-1.7-2.5-4.4-2.8-5.4-2.8-2.3-.2-4.5 1.4-5.6 1.4-1.2 0-3-1.3-4.9-1.3-2.5 0-4.8 1.5-6.1 3.7-2.6 4.5-.7 11.2 1.9 14.9 1.3 1.8 2.8 3.8 4.8 3.7 1.9-.1 2.7-1.2 5-1.2s3 1.2 5 1.2c2.1 0 3.4-1.8 4.7-3.7 1.5-2.1 2.1-4.2 2.1-4.3-.1 0-4.1-1.6-4.2-6zm-3.8-10.8c1.1-1.3 1.8-3.1 1.6-4.8-1.6.1-3.5 1.1-4.6 2.4-1 1.1-1.9 3-1.6 4.7 1.7.1 3.5-.9 4.6-2.3z"/></svg>
+              <span>macOS 14+</span>
+            </div>
+            <h3>SwiftUI.<br>Right at home.</h3>
+            <a href="https://github.com/lukoplt/AI-notebook/releases/latest">Download for macOS <span>↗</span></a>
+          </article>
+
+          <article class="platform platform-windows">
+            <div class="platform-top">
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 6.5 14.7 5v10H3zm13.2-1.7L29 3v12H16.2zM3 16.6h11.7v10L3 25zm13.2 0H29v12.1L16.2 27z"/></svg>
+              <span>Windows 10/11</span>
+            </div>
+            <h3>WinUI 3.<br>Made to belong.</h3>
+            <a href="https://github.com/lukoplt/AI-notebook/releases/latest">Download for Windows <span>↗</span></a>
+          </article>
+        </div>
+      </section>
+
+      <section class="final-cta" aria-labelledby="final-title">
+        <div class="final-beam" aria-hidden="true"></div>
+        <div class="final-content reveal">
+          <img src="docs/icon.png" alt="" width="88" height="88">
+          <h2 id="final-title">Bring your own knowledge.</h2>
+          <p>AI Notebook is free, open source, and ready for your next question.</p>
+          <div class="final-actions">
+            <a class="button button-light" href="https://github.com/lukoplt/AI-notebook/releases/latest" data-download>
+              <span data-download-label>Download latest</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5v10m0 0 4-4m-4 4-4-4M3 16.5h14"/></svg>
+            </a>
+            <a class="button button-outline" href="https://github.com/lukoplt/AI-notebook" target="_blank" rel="noreferrer">View on GitHub</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a class="footer-brand" href="#top">
+        <img src="docs/icon.png" alt="" width="28" height="28">
+        AI Notebook
+      </a>
+      <p>Private AI for your documents.</p>
+      <div class="footer-links">
+        <a href="https://github.com/lukoplt/AI-notebook/releases/latest">Releases</a>
+        <a href="https://github.com/lukoplt/AI-notebook/blob/main/LICENSE">MIT License</a>
+        <a href="https://github.com/lukoplt/AI-notebook">Source</a>
+      </div>
+      <span>© <span data-year>2026</span></span>
+    </footer>
+  </body>
+</html>

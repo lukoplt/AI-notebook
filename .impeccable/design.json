@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-13T00:00:00+02:00",
+  "title": "Design System: AI Notebook",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "oklch(20% 0.012 285)", "tonalRamp": ["oklch(15% 0.012 285)", "oklch(25% 0.012 285)", "oklch(38% 0.010 285)", "oklch(52% 0.008 285)", "oklch(65% 0.007 285)", "oklch(77% 0.006 285)", "oklch(88% 0.005 285)", "oklch(96% 0.004 285)"] },
+      "night": { "role": "neutral", "displayName": "Product Night", "canonical": "oklch(13% 0.018 285)", "tonalRamp": ["oklch(13% 0.018 285)", "oklch(24% 0.018 285)", "oklch(36% 0.016 285)", "oklch(49% 0.014 285)", "oklch(62% 0.012 285)", "oklch(75% 0.009 285)", "oklch(87% 0.006 285)", "oklch(96% 0.003 285)"] },
+      "paper": { "role": "neutral", "displayName": "Cool Paper", "canonical": "oklch(98% 0.006 270)", "tonalRamp": ["oklch(15% 0.010 270)", "oklch(25% 0.010 270)", "oklch(38% 0.009 270)", "oklch(52% 0.008 270)", "oklch(65% 0.008 270)", "oklch(77% 0.007 270)", "oklch(88% 0.006 270)", "oklch(98% 0.006 270)"] },
+      "surface": { "role": "neutral", "displayName": "Clean Surface", "canonical": "oklch(99.5% 0.002 270)", "tonalRamp": ["oklch(15% 0.005 270)", "oklch(25% 0.005 270)", "oklch(38% 0.004 270)", "oklch(52% 0.004 270)", "oklch(65% 0.003 270)", "oklch(77% 0.003 270)", "oklch(88% 0.002 270)", "oklch(99% 0.002 270)"] },
+      "notebook-blue": { "role": "primary", "displayName": "Notebook Blue", "canonical": "oklch(57% 0.205 261)", "tonalRamp": ["oklch(15% 0.08 261)", "oklch(26% 0.12 261)", "oklch(38% 0.16 261)", "oklch(50% 0.20 261)", "oklch(62% 0.18 261)", "oklch(74% 0.14 261)", "oklch(86% 0.08 261)", "oklch(95% 0.03 261)"] },
+      "notebook-violet": { "role": "primary", "displayName": "Notebook Violet", "canonical": "oklch(56% 0.22 292)", "tonalRamp": ["oklch(15% 0.08 292)", "oklch(26% 0.13 292)", "oklch(38% 0.18 292)", "oklch(50% 0.22 292)", "oklch(62% 0.19 292)", "oklch(74% 0.14 292)", "oklch(86% 0.08 292)", "oklch(95% 0.03 292)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Product Display", "purpose": "Hero statements only." },
+      "headline": { "displayName": "Narrative Headline", "purpose": "Major section turns." },
+      "body": { "displayName": "Reading Text", "purpose": "Explanations capped at 68 characters." }
+    },
+    "shadows": [
+      { "name": "product-float", "value": "0 40px 100px rgba(26,31,52,.18), 0 8px 24px rgba(26,31,52,.10)", "purpose": "Large application screenshots only." },
+      { "name": "control-lift", "value": "0 8px 24px rgba(26,31,52,.10)", "purpose": "Hovered primary controls." }
+    ],
+    "motion": [
+      { "name": "ease-out-quint", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Entrances and interactive feedback." },
+      { "name": "duration-fast", "value": "180ms", "purpose": "Control state changes." },
+      { "name": "duration-reveal", "value": "700ms", "purpose": "Viewport reveals." }
+    ],
+    "breakpoints": [
+      { "name": "compact", "value": "720px" },
+      { "name": "wide", "value": "1100px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main download action.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Download latest</a>",
+      "css": ".ds-btn-primary{display:inline-flex;min-height:44px;align-items:center;padding:14px 22px;border-radius:999px;background:#17171c;color:#fff;text-decoration:none;font:600 15px -apple-system,BlinkMacSystemFont,sans-serif;transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s cubic-bezier(.22,1,.36,1)}.ds-btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,31,52,.1)}.ds-btn-primary:focus-visible{outline:2px solid #316be8;outline-offset:3px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "A lower-emphasis route to supporting information.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">View on GitHub</a>",
+      "css": ".ds-btn-secondary{display:inline-flex;min-height:44px;align-items:center;padding:14px 22px;border:1px solid #d9dce6;border-radius:999px;background:#fff;color:#17171c;text-decoration:none;font:600 15px -apple-system,BlinkMacSystemFont,sans-serif;transition:transform .18s cubic-bezier(.22,1,.36,1),border-color .18s}.ds-btn-secondary:hover{transform:translateY(-2px);border-color:#aeb3c1}.ds-btn-secondary:focus-visible{outline:2px solid #316be8;outline-offset:3px}"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "chip",
+      "description": "A compact local-first proof point.",
+      "html": "<span class=\"ds-status\"><span></span>Runs locally</span>",
+      "css": ".ds-status{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#eaf6f0;color:#176747;font:600 13px -apple-system,BlinkMacSystemFont,sans-serif}.ds-status span{width:7px;height:7px;border-radius:50%;background:#1d815b}"
+    },
+    {
+      "name": "Compact Navigation",
+      "kind": "nav",
+      "description": "Sticky product navigation with one clear action.",
+      "html": "<nav class=\"ds-nav\"><strong>AI Notebook</strong><a href=\"#\">Download</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 10px 18px;border:1px solid rgba(217,220,230,.8);border-radius:999px;background:rgba(255,255,255,.92);color:#17171c;font:600 14px -apple-system,BlinkMacSystemFont,sans-serif}.ds-nav a{padding:10px 15px;border-radius:999px;background:#17171c;color:#fff;text-decoration:none}.ds-nav a:focus-visible{outline:2px solid #316be8;outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Luminous Private Workspace",
+    "overview": "AI Notebook is presented as a luminous native object emerging from a dark, private workspace. Dramatic product-scale typography, cinematic depth, and interactive real screenshots create a modern product narrative.",
+    "keyCharacteristics": ["Oversized product typography", "Dark product theater", "Interactive application screenshots", "Calm reduced-motion-safe movement"],
+    "rules": [
+      { "name": "The Luminous Field Rule", "body": "Blue and violet create atmosphere behind the product, never gradient text.", "section": "colors" },
+      { "name": "The One Sentence Rule", "body": "Every major section earns one concise sentence before supporting detail.", "section": "typography" },
+      { "name": "The Evidence Gets Depth Rule", "body": "The strongest shadow belongs to a real screenshot.", "section": "elevation" }
+    ],
+    "dos": ["Do lead with a real application screenshot.", "Do make local-first proof visible near downloads."],
+    "donts": ["Don't make the website look like the README was converted into stacked web sections.", "Don't resemble a generic AI startup template.", "Don't use feature-list storytelling, gradient headlines, or repeated feature-card grids."]
+  }
+}
