@@ -8,6 +8,7 @@ public enum StoreError: Error, Equatable, Sendable {
     case builtInProviderUndeletable
     case invalidTagName(String)
     case invalidSourceSetName(String)
+    case invalidPersonaName(String)
 }
 
 extension StoreError: LocalizedError {
@@ -27,6 +28,8 @@ extension StoreError: LocalizedError {
             "Invalid tag name: \"\(name)\"."
         case .invalidSourceSetName(let name):
             "Invalid source set name: \"\(name)\"."
+        case .invalidPersonaName(let name):
+            "Invalid persona name: \"\(name)\"."
         }
     }
 }

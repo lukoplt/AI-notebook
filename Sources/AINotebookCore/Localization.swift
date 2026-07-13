@@ -236,6 +236,12 @@ public struct AppText: Sendable {
         // Epic E1/E2 — live sources
         case watchFolderButton
         case recrawlSourceButton
+        // Epic C5 — personas
+        case personaMenu
+        case personaNone
+        case personaNew
+        case personaNamePlaceholder
+        case personaInstructionsPlaceholder
     }
 
     public let language: AppLanguage
@@ -481,6 +487,11 @@ public struct AppText: Sendable {
         case .webSearchChatToggle:       "Search the web for this message"
         case .watchFolderButton:         "Sync folder…"
         case .recrawlSourceButton:       "Refresh"
+        case .personaMenu:               "Persona"
+        case .personaNone:               "None"
+        case .personaNew:                "New persona…"
+        case .personaNamePlaceholder:    "Persona name"
+        case .personaInstructionsPlaceholder: "Instructions for this persona"
         }
     }
 
@@ -712,6 +723,11 @@ public struct AppText: Sendable {
         case .webSearchChatToggle:       "Hledat na webu pro tuto zprávu"
         case .watchFolderButton:         "Synchronizovat složku…"
         case .recrawlSourceButton:       "Obnovit"
+        case .personaMenu:               "Persona"
+        case .personaNone:               "Žádná"
+        case .personaNew:                "Nová persona…"
+        case .personaNamePlaceholder:    "Název persony"
+        case .personaInstructionsPlaceholder: "Instrukce pro tuto personu"
         }
     }
 }

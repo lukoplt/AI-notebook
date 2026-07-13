@@ -31,6 +31,11 @@ struct ChatView: View {
     @State private var newSetName = ""
     @State private var useWebForNextMessage = false
     @State private var chatProviders: [ProviderConfig] = []
+    @State private var personas: [Persona] = []
+    @State private var activePersona: Persona?
+    @State private var showNewPersona = false
+    @State private var newPersonaName = ""
+    @State private var newPersonaInstructions = ""
 
     private var t: AppText { settings.text }
 
@@ -119,6 +124,7 @@ struct ChatView: View {
     private var scopeToolbar: some View {
         HStack {
             Spacer()
+            personaMenu
             Button {
                 showingScopePopover = true
             } label: {
@@ -177,6 +183,79 @@ struct ChatView: View {
         }
         .padding(12)
         .frame(minWidth: 260, maxWidth: 380)
+    }
+
+    // C5 — persona picker.
+    private var personaMenu: some View {
+        Menu {
+            Button(t.string(.personaNone)) { activePersona = nil }
+            if !personas.isEmpty {
+                Divider()
+                ForEach(personas) { p in
+                    Button {
+                        applyPersona(p)
+                    } label: {
+                        if activePersona?.id == p.id { Label(p.name, systemImage: "checkmark") }
+                        else { Text(p.name) }
+                    }
+                }
+            }
+            Divider()
+            Button(t.string(.personaNew)) { showNewPersona = true }
+        } label: {
+            Label(activePersona?.name ?? t.string(.personaMenu), systemImage: "theatermasks")
+                .font(.caption)
+        }
+        .menuStyle(.borderlessButton)
+        .fixedSize()
+        .popover(isPresented: $showNewPersona, arrowEdge: .top) { newPersonaSheet }
+    }
+
+    private var newPersonaSheet: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(t.string(.personaNew)).font(.headline)
+            TextField(t.string(.personaNamePlaceholder), text: $newPersonaName)
+                .textFieldStyle(.roundedBorder)
+            TextEditor(text: $newPersonaInstructions)
+                .frame(width: 320, height: 100).border(.quaternary)
+            HStack {
+                Spacer()
+                Button(t.string(.save)) { saveNewPersona() }
+                    .disabled(newPersonaName.trimmingCharacters(in: .whitespaces).isEmpty)
+            }
+        }
+        .padding(16)
+    }
+
+    /// Applies a persona: its source set narrows scope, its model + instructions
+    /// are used for subsequent sends.
+    private func applyPersona(_ p: Persona) {
+        activePersona = p
+        if let setId = p.sourceSetId {
+            let members = (try? store.sourceSetMembers(setId: setId)) ?? []
+            let ready = Set(scopeSources.compactMap(\.id))
+            selectedSourceIds = Set(members).intersection(ready)
+        }
+    }
+
+    private func saveNewPersona() {
+        let name = newPersonaName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+        do {
+            // Capture the current model; a source set can be attached later.
+            let p = try store.createPersona(
+                notebookId: notebook.id!,
+                name: name,
+                instructions: newPersonaInstructions,
+                sourceSetId: nil,
+                model: "\(settings.selectedChatProviderId):\(settings.selectedChatModel)"
+            )
+            newPersonaName = ""
+            newPersonaInstructions = ""
+            showNewPersona = false
+            personas = (try? store.personas(notebookId: notebook.id!)) ?? []
+            applyPersona(p)
+        } catch { errorMessage = String(describing: error) }
     }
 
     private func applySourceSet(_ set: SourceSet) {
@@ -346,6 +425,7 @@ struct ChatView: View {
     @MainActor
     private func ensureSessions() async {
         chatProviders = (try? store.providers().filter(\.enabled)) ?? []
+        personas = (try? store.personas(notebookId: notebook.id!)) ?? []
         do {
             sessions = try store.chatSessions(notebookId: notebook.id!)
             if let first = sessions.first {
@@ -459,12 +539,15 @@ struct ChatView: View {
         followups = []
         defer { sending = false; streamingDraft = "" }
         do {
+            let personaInstructions = activePersona.map(\.instructions).flatMap { $0.isEmpty ? nil : $0 }
             let reply = try await chatHolder.engine.send(
                 sessionId: sid,
                 notebookId: notebook.id!,
                 userText: text,
                 sourceIds: effectiveSourceIds,
-                useWebSearch: settings.webSearchEnabled && useWebForNextMessage
+                useWebSearch: settings.webSearchEnabled && useWebForNextMessage,
+                model: activePersona?.model,
+                instructionsOverride: personaInstructions
             ) { token in
                 Task { @MainActor in streamingDraft += token }
             }

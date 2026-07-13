@@ -51,6 +51,8 @@ public actor ChatEngine {
         currentNoteContent: String? = nil,
         sourceIds: Set<Int64> = [],
         useWebSearch: Bool = false,
+        model: String? = nil,
+        instructionsOverride: String? = nil,
         onToken: @escaping @Sendable (String) -> Void
     ) async throws -> ChatMessage {
         // 1) Persist the user message.
@@ -67,10 +69,11 @@ public actor ChatEngine {
             sessionId: sessionId,
             notebookId: notebookId,
             queryText: userText,
-            model: chatModel,
+            model: model ?? chatModel,
             currentNoteContent: currentNoteContent,
             sourceIds: sourceIds,
             useWebSearch: useWebSearch,
+            instructionsOverride: instructionsOverride,
             onToken: onToken
         )
     }
@@ -121,6 +124,7 @@ public actor ChatEngine {
         currentNoteContent: String?,
         sourceIds: Set<Int64>,
         useWebSearch: Bool = false,
+        instructionsOverride: String? = nil,
         onToken: @escaping @Sendable (String) -> Void
     ) async throws -> ChatMessage {
         let storeRef = store
@@ -132,9 +136,13 @@ public actor ChatEngine {
             sourceIds: sourceIds
         )
 
-        // 3) Compose messages (with per-notebook instructions, FR-C1).
-        let instructions = try await MainActor.run {
-            try storeRef.notebookInstructions(id: notebookId)
+        // 3) Compose messages. A persona's instructions (FR-C5) override the
+        // per-notebook instructions (FR-C1) when supplied.
+        let instructions: String
+        if let override = instructionsOverride, !override.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            instructions = override
+        } else {
+            instructions = try await MainActor.run { try storeRef.notebookInstructions(id: notebookId) }
         }
         let systemContent = SystemPrompt.compose(
             hits: hits,
