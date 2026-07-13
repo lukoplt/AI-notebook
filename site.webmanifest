@@ -1,0 +1,18 @@
+{
+  "name": "AI Notebook",
+  "short_name": "AI Notebook",
+  "description": "Private, local-first AI research for your own documents.",
+  "id": "/AI-notebook/",
+  "start_url": "/AI-notebook/",
+  "scope": "/AI-notebook/",
+  "display": "browser",
+  "background_color": "#0c0c12",
+  "theme_color": "#0c0c12",
+  "icons": [
+    {
+      "src": "docs/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

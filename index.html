@@ -4,16 +4,92 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#08080c">
-    <meta name="description" content="Private AI for the documents on your desktop. AI Notebook is free, open source, and local-first.">
-    <meta property="og:title" content="AI Notebook | Every answer, rooted in your sources">
-    <meta property="og:description" content="Research with your own documents. Get cited answers. Keep everything on your machine.">
+    <meta name="color-scheme" content="dark light">
+    <meta name="author" content="Lukáš Oplt">
+    <meta name="description" content="Chat privately with PDFs, Office files, and web pages using local AI. A free, open-source NotebookLM alternative for macOS and Windows.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://lukoplt.github.io/AI-notebook/">
+
+    <meta property="og:site_name" content="AI Notebook">
+    <meta property="og:title" content="AI Notebook: Private AI for Your Documents">
+    <meta property="og:description" content="A free, open-source NotebookLM alternative for macOS and Windows. Chat with your sources, get cited answers, and keep your research private.">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="docs/screenshots/chat.png">
+    <meta property="og:url" content="https://lukoplt.github.io/AI-notebook/">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://lukoplt.github.io/AI-notebook/docs/og-ai-notebook.png">
+    <meta property="og:image:secure_url" content="https://lukoplt.github.io/AI-notebook/docs/og-ai-notebook.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="AI Notebook private research app showing a cited answer grounded in local documents">
+
     <meta name="twitter:card" content="summary_large_image">
-    <title>AI Notebook | Private AI for your documents</title>
-    <link rel="icon" href="docs/icon.png">
+    <meta name="twitter:title" content="AI Notebook: Private AI for Your Documents">
+    <meta name="twitter:description" content="A free, open-source NotebookLM alternative for macOS and Windows. Chat with your sources and keep your research private.">
+    <meta name="twitter:image" content="https://lukoplt.github.io/AI-notebook/docs/og-ai-notebook.png">
+    <meta name="twitter:image:alt" content="AI Notebook private research app showing a cited answer grounded in local documents">
+
+    <title>AI Notebook: Private, Local NotebookLM Alternative</title>
+    <link rel="icon" href="docs/icon.png" sizes="512x512" type="image/png">
+    <link rel="apple-touch-icon" href="docs/icon.png">
+    <link rel="manifest" href="site.webmanifest">
     <link rel="stylesheet" href="styles.css?v=mobile-polish-1">
     <script src="script.js" defer></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://lukoplt.github.io/AI-notebook/#website",
+            "url": "https://lukoplt.github.io/AI-notebook/",
+            "name": "AI Notebook",
+            "description": "Private, local-first AI research for your own documents.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://lukoplt.github.io/AI-notebook/#software",
+            "name": "AI Notebook",
+            "alternateName": "AI Notebook Local AI Research App",
+            "url": "https://lukoplt.github.io/AI-notebook/",
+            "mainEntityOfPage": { "@id": "https://lukoplt.github.io/AI-notebook/#website" },
+            "description": "A free, open-source, local-first NotebookLM alternative for macOS and Windows that answers questions about your documents with inline citations.",
+            "applicationCategory": "ProductivityApplication",
+            "applicationSubCategory": "Research and note-taking software",
+            "operatingSystem": "macOS 14 or later, Windows 10, Windows 11",
+            "isAccessibleForFree": true,
+            "downloadUrl": "https://github.com/lukoplt/AI-notebook/releases/latest",
+            "codeRepository": "https://github.com/lukoplt/AI-notebook",
+            "license": "https://github.com/lukoplt/AI-notebook/blob/main/LICENSE",
+            "image": "https://lukoplt.github.io/AI-notebook/docs/og-ai-notebook.png",
+            "screenshot": [
+              "https://lukoplt.github.io/AI-notebook/docs/screenshots/chat.png",
+              "https://lukoplt.github.io/AI-notebook/docs/screenshots/sources.png",
+              "https://lukoplt.github.io/AI-notebook/docs/screenshots/notes.png"
+            ],
+            "featureList": [
+              "Local AI with Ollama",
+              "Chat with PDFs, Office documents, web pages, and text",
+              "Inline citations linked to source passages",
+              "Private local storage for documents, notes, and conversations",
+              "Native apps for macOS and Windows"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+              "url": "https://github.com/lukoplt/AI-notebook/releases/latest"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Lukáš Oplt",
+              "url": "https://github.com/lukoplt"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
 
   <body>
@@ -51,7 +127,7 @@
         <div class="hero-copy reveal">
           <p class="hero-label"><span></span>Private AI for macOS and Windows</p>
           <h1 id="hero-title">Every answer.<br><em>Rooted in your sources.</em></h1>
-          <p class="hero-intro">A private research workspace that reads your documents, cites its answers, and runs on your machine.</p>
+          <p class="hero-intro">AI Notebook is a free, open-source NotebookLM alternative that reads your documents, cites its answers, and runs on your machine.</p>
           <div class="hero-actions">
             <a class="button button-light" href="https://github.com/lukoplt/AI-notebook/releases/latest" data-download>
               <span data-download-label>Download latest</span>

@@ -14,7 +14,9 @@
 [![Core CI](https://github.com/lukoplt/AI-notebook/actions/workflows/core-ci.yml/badge.svg)](https://github.com/lukoplt/AI-notebook/actions/workflows/core-ci.yml)
 [![Windows CI](https://github.com/lukoplt/AI-notebook/actions/workflows/windows-ci.yml/badge.svg)](https://github.com/lukoplt/AI-notebook/actions/workflows/windows-ci.yml)
 
-### ⬇️ [Download the latest release](https://github.com/lukoplt/AI-notebook/releases/latest) — macOS `.dmg` · Windows `.exe`
+### 🌐 [Explore AI Notebook](https://lukoplt.github.io/AI-notebook/) · ⬇️ [Download the latest release](https://github.com/lukoplt/AI-notebook/releases/latest)
+
+macOS `.dmg` · Windows `.exe`
 
 If AI Notebook is useful to you, please ⭐ **star the repo** — it helps others find it.
 
