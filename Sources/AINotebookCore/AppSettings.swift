@@ -4,9 +4,11 @@ import Foundation
 /// language preference. Created once at app launch and injected as an
 /// `@EnvironmentObject` into SwiftUI views.
 ///
-/// The `defaults` and `preferredLanguages` parameters exist so tests can
-/// inject an isolated suite + a controlled locale list. Production code
-/// calls `AppSettings()` with defaults.
+/// The `defaults` parameter exists so tests can inject an isolated suite.
+/// Production code calls `AppSettings()` with defaults.
+///
+/// First-run language is English; the OS locale is not consulted. Users who
+/// want Czech choose it explicitly in Settings, and that choice persists.
 @MainActor
 public final class AppSettings: ObservableObject {
     private enum Keys {
@@ -70,8 +72,7 @@ public final class AppSettings: ObservableObject {
     }
 
     public init(
-        defaults: UserDefaults = .standard,
-        preferredLanguages: [String] = Locale.preferredLanguages
+        defaults: UserDefaults = .standard
     ) {
         self.defaults = defaults
 
@@ -79,7 +80,8 @@ public final class AppSettings: ObservableObject {
            let stored = AppLanguage(rawValue: raw) {
             self.language = stored
         } else {
-            self.language = detectInitialLanguage(preferredLanguages: preferredLanguages)
+            // Default to English; users opt into Czech in Settings.
+            self.language = .english
         }
 
         self.hasCompletedOnboarding = defaults.bool(forKey: Keys.hasCompletedOnboarding)

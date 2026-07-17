@@ -126,7 +126,7 @@ public sealed partial class ChatPage : Page
     {
         var header = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6 };
         header.Children.Add(new FontIcon { Glyph = "\uE9D2" }); // quote-ish glyph
-        header.Children.Add(new TextBlock { Text = cvm.SourceTitle, Style = (Style)Resources["BaseTextBlockStyle"] });
+        header.Children.Add(new TextBlock { Text = cvm.SourceTitle, Style = (Style)Application.Current.Resources["BaseTextBlockStyle"] });
 
         // "Open page N" for a PDF source with a page hint.
         if (cvm.PageHint is int page && cvm.PdfFilePath is { } path)

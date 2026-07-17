@@ -103,10 +103,10 @@ public sealed partial class TransformationsPage : Page
         var row = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8 };
         row.Children.Add(new FontIcon { Glyph = "", Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Green) });
         row.Children.Add(new TextBlock { Text = ViewModel.ResultSavedTitle(), VerticalAlignment = VerticalAlignment.Center });
-        var open = new Button { Content = _t.Get("aiToolsOpenNoteButton"), Style = (Style)Resources["AccentButtonStyle"], Command = ViewModel.OpenResultNoteCommand };
+        var open = new Button { Content = _t.Get("aiToolsOpenNoteButton"), Style = (Style)Application.Current.Resources["AccentButtonStyle"], Command = ViewModel.OpenResultNoteCommand };
         row.Children.Add(open);
         panel.Children.Add(row);
-        panel.Children.Add(new TextBlock { Text = _t.Get("transformationResultTitle"), Style = (Style)Resources["BodyStrongTextBlockStyle"] });
+        panel.Children.Add(new TextBlock { Text = _t.Get("transformationResultTitle"), Style = (Style)Application.Current.Resources["BodyStrongTextBlockStyle"] });
         panel.Children.Add(new ScrollViewer { Content = new TextBlock { Text = ViewModel.ResultBody, TextWrapping = TextWrapping.Wrap, IsTextSelectionEnabled = true } });
         return panel;
     }
@@ -115,8 +115,8 @@ public sealed partial class TransformationsPage : Page
     {
         var row = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8 };
         row.Children.Add(new FontIcon { Glyph = "", Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Green) });
-        row.Children.Add(new TextBlock { Text = ViewModel.BatchSavedFormat(), Style = (Style)Resources["BodyStrongTextBlockStyle"], VerticalAlignment = VerticalAlignment.Center });
-        row.Children.Add(new Button { Content = _t.Get("aiToolsOpenNoteButton"), Style = (Style)Resources["AccentButtonStyle"], Command = ViewModel.OpenResultNoteCommand });
+        row.Children.Add(new TextBlock { Text = ViewModel.BatchSavedFormat(), Style = (Style)Application.Current.Resources["BodyStrongTextBlockStyle"], VerticalAlignment = VerticalAlignment.Center });
+        row.Children.Add(new Button { Content = _t.Get("aiToolsOpenNoteButton"), Style = (Style)Application.Current.Resources["AccentButtonStyle"], Command = ViewModel.OpenResultNoteCommand });
         return row;
     }
 
@@ -125,8 +125,8 @@ public sealed partial class TransformationsPage : Page
         var row = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 12 };
         row.Children.Add(new FontIcon { Glyph = "", FontSize = 28 });
         var col = new StackPanel { Spacing = 6 };
-        col.Children.Add(new TextBlock { Text = _t.Get("aiToolsEmptyTitle"), Style = (Style)Resources["BodyStrongTextBlockStyle"] });
-        col.Children.Add(new TextBlock { Text = _t.Get("aiToolsEmptyBody"), Foreground = (Microsoft.UI.Xaml.Media.Brush)Resources["TextFillColorSecondaryBrush"], TextWrapping = TextWrapping.Wrap });
+        col.Children.Add(new TextBlock { Text = _t.Get("aiToolsEmptyTitle"), Style = (Style)Application.Current.Resources["BodyStrongTextBlockStyle"] });
+        col.Children.Add(new TextBlock { Text = _t.Get("aiToolsEmptyBody"), Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["TextFillColorSecondaryBrush"], TextWrapping = TextWrapping.Wrap });
         row.Children.Add(col);
         return row;
     }

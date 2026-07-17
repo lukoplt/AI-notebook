@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using AINotebook.Core;
@@ -40,8 +39,10 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
         _path = path;
         _file = Load(path);
 
+        // First-run language is English; the OS locale is not consulted.
+        // Users who want Czech choose it in Settings, and it persists here.
         _language = AppLanguageExtensions.FromRawValue(_file.Language ?? "")
-            ?? LocaleDetection.DetectInitialLanguage(new[] { CultureInfo.CurrentUICulture.Name });
+            ?? AppLanguage.English;
 
         _hasCompletedOnboarding = _file.HasCompletedOnboarding ?? false;
         _selectedChatModel = _file.SelectedChatModel ?? "llama3.2:3b";

@@ -18,8 +18,8 @@ public static class AppLanguageExtensions
         _ => "English",
     };
 
-    // Returns null on unknown raw value (does NOT throw); Task 26's AppLanguageTests
-    // and LocaleDetection bind to this nullable form.
+    // Returns null on unknown raw value (does NOT throw); callers fall back to
+    // the English default when the persisted value is missing or unrecognized.
     public static AppLanguage? FromRawValue(string raw) => raw switch
     {
         "en" => AppLanguage.English,

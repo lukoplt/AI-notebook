@@ -80,7 +80,7 @@ public sealed partial class NotesChatPanel : UserControl
     {
         var header = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6 };
         header.Children.Add(new FontIcon { Glyph = "" }); // quote-ish glyph
-        header.Children.Add(new TextBlock { Text = cvm.SourceTitle, Style = (Style)Resources["BaseTextBlockStyle"] });
+        header.Children.Add(new TextBlock { Text = cvm.SourceTitle, Style = (Style)Application.Current.Resources["BaseTextBlockStyle"] });
 
         if (cvm.PageHint is int page && cvm.PdfFilePath is { } path)
         {

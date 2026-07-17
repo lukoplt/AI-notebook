@@ -84,7 +84,7 @@
     <value>Vítejte</value>
   </data>
   <data name="welcomeBody" xml:space="preserve">
-    <value>AI Notebook udržuje vše lokálně. K AI použijeme Ollamu spuštěnou na vašem Macu.</value>
+    <value>AI Notebook udržuje vše lokálně. K AI použijeme Ollamu spuštěnou na vašem počítači.</value>
   </data>
   <data name="continueLabel" xml:space="preserve">
     <value>Pokračovat</value>
@@ -93,7 +93,7 @@
     <value>Kontrola Ollamy</value>
   </data>
   <data name="onboardingDetectBody" xml:space="preserve">
-    <value>Hledáme spuštěnou Ollamu na vašem Macu.</value>
+    <value>Hledáme spuštěnou Ollamu na vašem počítači.</value>
   </data>
   <data name="onboardingDetectChecking" xml:space="preserve">
     <value>Hledám…</value>

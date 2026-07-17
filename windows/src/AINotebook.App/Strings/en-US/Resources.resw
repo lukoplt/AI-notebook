@@ -84,7 +84,7 @@
     <value>Welcome</value>
   </data>
   <data name="welcomeBody" xml:space="preserve">
-    <value>AI Notebook keeps everything local. To run AI, we&#x27;ll use Ollama on your Mac.</value>
+    <value>AI Notebook keeps everything local. To run AI, we&#x27;ll use Ollama on your PC.</value>
   </data>
   <data name="continueLabel" xml:space="preserve">
     <value>Continue</value>
@@ -93,7 +93,7 @@
     <value>Check Ollama</value>
   </data>
   <data name="onboardingDetectBody" xml:space="preserve">
-    <value>We&#x27;re looking for a running Ollama on your Mac.</value>
+    <value>We&#x27;re looking for a running Ollama on your PC.</value>
   </data>
   <data name="onboardingDetectChecking" xml:space="preserve">
     <value>Checking…</value>
