@@ -4,5 +4,5 @@ namespace AINotebook.Core;
 /// file (copied into the test output) and enforces the match on every build.
 public static class AINotebookVersion
 {
-    public const string Current = "0.11.0";
+    public const string Current = "0.12.0";
 }

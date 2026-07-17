@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.12.0] — 2026-07-17
+
+Windows bug-fix release.
+
+### Fixed
+- Windows: fix a crash when opening a notebook. Code-behind read
+  page-local `Resources["…"]` for framework theme styles, which throws in
+  WinUI; it now resolves them via `Application.Current.Resources`.
+- Windows: onboarding no longer says "Mac" — it reads "PC" (English) /
+  "počítači" (Czech).
+
+### Changed
+- Both platforms: the first-run language is now English; Czech is chosen
+  explicitly in Settings (a saved choice still wins). OS-locale
+  auto-detection was removed.
+
 ## [0.11.0] — 2026-07-13
 
 macOS reaches feature parity with Windows (Epics B–E), plus personas on
