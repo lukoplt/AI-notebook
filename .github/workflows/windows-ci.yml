@@ -1,11 +1,13 @@
 name: Windows CI
 
 on:
+  # No paths filter and an explicit pull_request trigger: this job is a
+  # required status check on main, so it must always report — a path-filtered
+  # or PR-less workflow leaves the check stuck on "Expected" and blocks merges.
   push:
     branches: [main, 'feat/**']
-    paths:
-      - 'windows/**'
-      - '.github/workflows/windows-ci.yml'
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
