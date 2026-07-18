@@ -7,8 +7,9 @@
     <Page.Resources>
         <!-- Tighten the Pivot header strip: the default 24px headers read as a
              giant menu. Lightweight-styling override; the font itself is set
-             by the HeaderTemplate below. -->
-        <Thickness x:Key="PivotHeaderItemMargin">0,0,4,0</Thickness>
+             by the HeaderTemplate below. 24px right margin keeps a clear gap
+             between tab labels without restoring the oversized default look. -->
+        <Thickness x:Key="PivotHeaderItemMargin">0,0,24,0</Thickness>
     </Page.Resources>
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
@@ -54,7 +55,9 @@
             <!-- C1: per-notebook AI instructions -->
             <PivotItem Header="{x:Bind ViewModel.SettingsText, Mode=OneWay}">
                 <ScrollViewer Padding="4,8">
-                    <StackPanel Spacing="12" MaxWidth="640">
+                    <!-- Left-aligned like every other tab; MaxWidth alone
+                         floats the column to the center of wide windows. -->
+                    <StackPanel Spacing="12" MaxWidth="640" HorizontalAlignment="Left">
                         <TextBlock x:Name="InstructionsLabel" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                         <TextBlock x:Name="InstructionsHint" Opacity="0.7" TextWrapping="Wrap"
                                    Style="{ThemeResource CaptionTextBlockStyle}"/>

@@ -40,6 +40,12 @@ public sealed partial class MainWindow : Window
     {
         // Mirror the mac .frame(minWidth: 900, minHeight: 600) initial size.
         AppWindow.Resize(new SizeInt32(1100, 760));
+
+        // Unpackaged apps get a generic window icon unless one is set
+        // explicitly; the .ico ships as Content next to the exe.
+        var icon = System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "app.ico");
+        if (System.IO.File.Exists(icon))
+            AppWindow.SetIcon(icon);
     }
 
     private void Route()
