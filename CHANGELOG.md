@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.12.1] — 2026-07-18
+
+Windows UI polish release.
+
+### Fixed
+- Windows: the notebook tab strip no longer renders as an oversized menu —
+  compact 14px headers instead of the 24px Pivot default.
+- Windows: surfaces are visually layered — a gray base behind the content
+  card, and the chat sessions sidebar and citation panel are drawn as
+  cards, so the chat is recognizable at a glance; the chat also gains a
+  visible send button (Ctrl+Enter still works) and an icon empty state.
+- Windows: Settings are reachable again — the navigation pane shows the
+  settings gear, which opens the settings dialog (it previously had no
+  entry point).
+- Windows: the sidebar header, "New notebook" button, and empty-state
+  labels were blank due to a data-context binding bug; they now show
+  their localized texts.
+
 ## [0.12.0] — 2026-07-17
 
 Windows bug-fix release.
