@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.12.2] — 2026-07-19
+
+Windows fixes.
+
+### Fixed
+- Windows: the app now shows its own icon (window title bar, taskbar,
+  Explorer, and shortcuts) instead of the generic executable icon.
+- Windows: notebook tab labels have a clear gap again — 0.12.1 packed
+  them together.
+- Windows: the notebook settings tab (custom AI instructions) is
+  left-aligned like the other tabs instead of floating to the center
+  on wide windows.
+
 ## [0.12.1] — 2026-07-18
 
 Windows UI polish release.
