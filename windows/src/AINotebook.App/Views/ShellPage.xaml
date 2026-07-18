@@ -23,11 +23,14 @@
         <muxc:NavigationView x:Name="Nav" Grid.Row="1"
         PaneDisplayMode="Left"
         IsBackButtonVisible="Collapsed"
-        IsSettingsVisible="False"
+        IsSettingsVisible="True"
+        ItemInvoked="Nav_ItemInvoked"
         OpenPaneLength="260">
 
         <muxc:NavigationView.PaneHeader>
-            <TextBlock Text="{Binding [notebooks]}" Style="{StaticResource BodyStrongTextBlockStyle}"
+            <!-- Text assigned in code-behind: Nav.DataContext is the page (for
+                 the MenuFlyout), which has no localized-string indexer. -->
+            <TextBlock x:Name="PaneHeaderText" Style="{StaticResource BodyStrongTextBlockStyle}"
                        Margin="12,8" />
         </muxc:NavigationView.PaneHeader>
 
@@ -38,7 +41,7 @@
                       SelectionChanged="NotebookList_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="core:Notebook">
-                        <Grid Padding="4,2" RightTapped="NotebookItem_RightTapped">
+                        <Grid Padding="8,6" RightTapped="NotebookItem_RightTapped">
                             <TextBlock Text="{x:Bind Name}" />
                             <FlyoutBase.AttachedFlyout>
                                 <MenuFlyout>
@@ -56,10 +59,11 @@
 
         <muxc:NavigationView.PaneFooter>
             <Button x:Name="NewButton" Click="New_Click" Margin="12,4"
-                    ToolTipService.ToolTip="{Binding [createNotebook]}">
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <FontIcon Glyph="&#xE710;" FontSize="14" />
-                    <TextBlock Text="{Binding [createNotebook]}" />
+                    <!-- Text assigned in code-behind (see PaneHeaderText note). -->
+                    <TextBlock x:Name="NewButtonText" />
                 </StackPanel>
             </Button>
         </muxc:NavigationView.PaneFooter>
@@ -69,7 +73,8 @@
             <StackPanel x:Name="EmptyState"
                         HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="12">
                 <FontIcon Glyph="&#xE721;" FontSize="48" Opacity="0.5" />
-                <TextBlock Text="{Binding [noNotebookSelected]}" Opacity="0.7"
+                <!-- Text assigned in code-behind (see PaneHeaderText note). -->
+                <TextBlock x:Name="EmptyStateText" Opacity="0.7"
                            HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>

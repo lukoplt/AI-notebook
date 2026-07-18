@@ -14,14 +14,20 @@
             <ColumnDefinition Width="{x:Bind CitationPanelWidth, Mode=OneWay}"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Sessions sidebar -->
-        <Grid Grid.Column="0" Padding="12">
+        <!-- Sessions sidebar: a card so it reads as a separate panel, not as
+             loose text floating next to the conversation. -->
+        <Border Grid.Column="0" Margin="0,0,12,0" Padding="10"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1" CornerRadius="8">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <TextBlock x:Name="SessionsLabel" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <TextBlock x:Name="SessionsLabel" Style="{ThemeResource BodyStrongTextBlockStyle}"
+                           VerticalAlignment="Center"/>
                 <Button x:Name="NewSessionButton" HorizontalAlignment="Right" Command="{x:Bind ViewModel.NewSessionCommand}"
                         Content="&#xE710;" FontFamily="Segoe MDL2 Assets"/>
             </Grid>
@@ -45,9 +51,10 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
+        </Border>
 
         <!-- Chat surface -->
-        <Grid Grid.Column="1" Padding="16">
+        <Grid Grid.Column="1" Padding="4,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
@@ -55,10 +62,14 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" x:Name="EmptyState"
-                       Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay}"
-                       HorizontalAlignment="Center" VerticalAlignment="Center"
-                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            <StackPanel Grid.Row="0" Spacing="10"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay}">
+                <FontIcon Glyph="&#xE8F2;" FontSize="36" Opacity="0.5"
+                          HorizontalAlignment="Center"/>
+                <TextBlock x:Name="EmptyState" HorizontalAlignment="Center"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            </StackPanel>
 
             <ScrollViewer Grid.Row="0" x:Name="MessagesScroller"
                           Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}">
@@ -197,28 +208,48 @@
                 </StackPanel>
             </StackPanel>
 
-            <TextBox Grid.Row="3" x:Name="InputBox" Margin="0,8,0,0"
-                     Text="{x:Bind ViewModel.Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="120"
-                     IsEnabled="{x:Bind ViewModel.Sending, Mode=OneWay, Converter={StaticResource InvertBool}}"
-                     Visibility="{x:Bind ViewModel.IsEditMode, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}">
-                <TextBox.KeyboardAccelerators>
-                    <KeyboardAccelerator Modifiers="Control" Key="Enter" Invoked="OnSendAccelerator"/>
-                </TextBox.KeyboardAccelerators>
-            </TextBox>
+            <!-- Composer: input + a visible send button so the surface is
+                 recognizable as a chat at a glance (Ctrl+Enter still works). -->
+            <Grid Grid.Row="3" Margin="0,8,0,0" ColumnSpacing="8"
+                  Visibility="{x:Bind ViewModel.IsEditMode, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" x:Name="InputBox"
+                         Text="{x:Bind ViewModel.Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="120"
+                         IsEnabled="{x:Bind ViewModel.Sending, Mode=OneWay, Converter={StaticResource InvertBool}}">
+                    <TextBox.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="Enter" Invoked="OnSendAccelerator"/>
+                    </TextBox.KeyboardAccelerators>
+                </TextBox>
+                <Button Grid.Column="1" x:Name="SendButton"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        VerticalAlignment="Bottom"
+                        Command="{x:Bind ViewModel.SendCommand}">
+                    <FontIcon Glyph="&#xE724;" FontSize="14"/>
+                </Button>
+            </Grid>
         </Grid>
 
-        <!-- C4: citation panel -->
-        <Grid Grid.Column="2" Padding="12"
-              Visibility="{x:Bind ViewModel.IsCitationPanelOpen, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+        <!-- C4: citation panel (card, mirrors the sessions sidebar) -->
+        <Border Grid.Column="2" Margin="12,0,0,0" Padding="10"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1" CornerRadius="8"
+                Visibility="{x:Bind ViewModel.IsCitationPanelOpen, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <TextBlock x:Name="CitationPanelTitle" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.CloseCitationPanelCommand}">
-                    <FontIcon Glyph="&#xE711;" FontSize="14"/>
+                <TextBlock x:Name="CitationPanelTitle" Style="{ThemeResource BodyStrongTextBlockStyle}"
+                           VerticalAlignment="Center"/>
+                <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.CloseCitationPanelCommand}"
+                        Background="Transparent" BorderThickness="0">
+                    <FontIcon Glyph="&#xE711;" FontSize="12"/>
                 </Button>
             </Grid>
             <ScrollViewer Grid.Row="1" Margin="0,8,0,0">
@@ -238,5 +269,6 @@
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
+        </Border>
     </Grid>
 </Page>

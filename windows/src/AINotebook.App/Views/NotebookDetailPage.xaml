@@ -4,6 +4,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
+    <Page.Resources>
+        <!-- Tighten the Pivot header strip: the default 24px headers read as a
+             giant menu. Lightweight-styling override; the font itself is set
+             by the HeaderTemplate below. -->
+        <Thickness x:Key="PivotHeaderItemMargin">0,0,4,0</Thickness>
+    </Page.Resources>
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -11,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Grid.Row="0" Padding="24,24,24,16" Spacing="4">
+        <StackPanel Grid.Row="0" Padding="24,16,24,8" Spacing="4">
             <TextBlock Text="{x:Bind ViewModel.Notebook.Name, Mode=OneWay}"
                        Style="{StaticResource TitleTextBlockStyle}" />
             <TextBlock Text="{x:Bind ViewModel.Notebook.Description, Mode=OneWay}"
@@ -25,6 +31,14 @@
         <Pivot Grid.Row="1" x:Name="Tabs"
                SelectedIndex="{x:Bind TabIndex, Mode=TwoWay}"
                Margin="16,0,16,16">
+            <!-- Compact 14px tab labels; no explicit Foreground so the
+                 selected / unselected header states still tint the text. -->
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" FontSize="14" FontWeight="SemiBold"
+                               Margin="0,0,0,2"/>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
             <PivotItem Header="{x:Bind ViewModel.SourcesText, Mode=OneWay}">
                 <Grid x:Name="SourcesHost" />
             </PivotItem>

@@ -28,6 +28,13 @@ public sealed partial class ShellPage : Page
         DataContext = _l; // enables {Binding [key]} localized lookups
         Nav.DataContext = this; // RenameText/DeleteText for the MenuFlyout
 
+        // Everything inside Nav inherits Nav.DataContext (this page), which has
+        // no localized-string indexer — assign the texts directly instead.
+        PaneHeaderText.Text = _l["notebooks"];
+        NewButtonText.Text = _l["createNotebook"];
+        ToolTipService.SetToolTip(NewButton, _l["createNotebook"]);
+        EmptyStateText.Text = _l["noNotebookSelected"];
+
         ViewModel.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(ShellViewModel.SelectedNotebook))
@@ -65,6 +72,27 @@ public sealed partial class ShellPage : Page
             if (DetailHost.Children[i] is NotebookDetailPage) DetailHost.Children.RemoveAt(i);
         if (nb is not null)
             DetailHost.Children.Add(new NotebookDetailPage(nb));
+    }
+
+    // Gear item in the nav pane — the only entry point to app settings.
+    private bool _settingsOpen;
+    private async void Nav_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    {
+        if (!args.IsSettingsInvoked || _settingsOpen) return;
+        _settingsOpen = true; // ShowAsync throws if a second dialog opens meanwhile
+        try
+        {
+            var dialog = new SettingsDialog(App.Current.Services.GetRequiredService<LocalizedStrings>())
+            {
+                XamlRoot = this.XamlRoot
+            };
+            await dialog.ShowAsync();
+        }
+        finally
+        {
+            _settingsOpen = false;
+            Nav.SelectedItem = null; // the notebook list is the only selection surface
+        }
     }
 
     private void NotebookList_SelectionChanged(object sender, SelectionChangedEventArgs e)

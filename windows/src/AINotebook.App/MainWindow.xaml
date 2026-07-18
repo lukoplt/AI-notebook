@@ -3,7 +3,10 @@
     x:Class="AINotebook.App.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid>
+    <!-- Base layer: the gray "Mica-like" backdrop the NavigationView content
+         card sits on. Without it every surface is the same white and the UI
+         reads as one flat sheet. -->
+    <Grid Background="{ThemeResource SolidBackgroundFillColorBaseBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
