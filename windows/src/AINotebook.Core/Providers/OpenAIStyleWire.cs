@@ -56,9 +56,31 @@ internal static class OpenAIStyleWire
         if (resp.StatusCode == HttpStatusCode.Unauthorized)
             throw new ProviderAuthException("Invalid API key (401).");
         if (resp.StatusCode == (HttpStatusCode)429)
-            throw new ProviderRateLimitException("Rate limit exceeded (429).");
+            throw new ProviderRateLimitException("Rate limit exceeded (429).", RetryAfter(resp));
         if (!resp.IsSuccessStatusCode)
             throw new ProviderException($"HTTP {(int)resp.StatusCode}.");
+    }
+
+    /// <summary>
+    /// The server's Retry-After hint, or null when it sent none. HTTP allows
+    /// both forms — delta-seconds and an HTTP-date — and HttpClient parses them
+    /// into <c>Delta</c> and <c>Date</c> respectively, so both are handled.
+    /// A past or negative date yields null rather than a negative delay.
+    /// (macOS reads the same header in ProviderWire.error(forStatus:), but only
+    /// the delta-seconds form.)
+    /// </summary>
+    private static TimeSpan? RetryAfter(HttpResponseMessage resp)
+    {
+        var header = resp.Headers.RetryAfter;
+        if (header is null) return null;
+        if (header.Delta is { } delta)
+            return delta > TimeSpan.Zero ? delta : null;
+        if (header.Date is { } date)
+        {
+            var wait = date - DateTimeOffset.UtcNow;
+            return wait > TimeSpan.Zero ? wait : null;
+        }
+        return null;
     }
 
     /// The one OpenAI-shape SSE runner: send, map status, split lines, parse

@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.13.0] — 2026-07-24
+
+Code-review fixes across both platforms, plus per-provider regenerate on
+Windows.
+
+### Added
+- Windows: "Regenerate with …" — regenerate the last answer through a
+  specific provider, from the regenerate menu. macOS has had this since
+  Epic C3.
+
+### Fixed
+- Windows: fix random crashes when background work overlapped with the UI.
+  The store keeps a single SQLite connection, which is not thread-safe, but
+  it was used concurrently by the embedding worker, the folder watcher, the
+  retriever, and every `Task.Run` in the view models. All database access is
+  now serialized. (macOS was never affected — GRDB's `DatabaseQueue` already
+  serializes.)
+- Windows: an assistant message is now tagged with the model that actually
+  produced it, instead of the model captured when the chat engine was built.
+- Windows: the provider router no longer discards a provider-qualified model,
+  which is what "Regenerate with …" above needs to reach a chosen provider.
+- Windows: a rate-limited provider's `Retry-After` is now honored instead of
+  retrying after the app's own much shorter backoff.
+- Windows: backups are written with SQLite's online-backup API. The previous
+  code checkpointed a write-ahead log that was never enabled and then copied
+  the database file, which could capture a partial write.
+- Both platforms: attachment reads and writes can no longer escape the
+  attachments folder. The filename was already reduced to a single path
+  component; the note-folder segment beside it was not, and it arrives from
+  the editor's `attachment://` URL — so a crafted link in a note reached one
+  directory above the attachments root.
+- Both platforms: a retried answer no longer renders appended to the partial
+  text of the attempt that failed.
+- Windows: a credential that cannot be removed from Credential Manager now
+  reports the failure instead of being silently treated as deleted.
+
 ## [0.12.2] — 2026-07-19
 
 Windows fixes.

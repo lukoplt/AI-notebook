@@ -34,6 +34,12 @@ public sealed partial class ChatPage : Page
         CitationPanelTitle.Text = _t.Get(StringKey.CitationPanelTitle);
         ToolTipService.SetToolTip(EditLastButton, _t.Get(StringKey.ChatEditButton));
         ToolTipService.SetToolTip(RegenerateButton, _t.Get(StringKey.ChatRegenerateButton));
+        RegenerateMenuItem.Text = _t.Get(StringKey.ChatRegenerateButton);
+        RegenerateWithSubMenu.Text = _t.Get(StringKey.ChatRegenerateWithButton);
+        // MenuFlyoutSubItem.Items has no ItemsSource, so the per-provider
+        // entries are built in code whenever the provider list changes.
+        ViewModel.ChatProviders.CollectionChanged += (_, _) => RebuildRegenerateWithMenu();
+        RebuildRegenerateWithMenu();
         CommitEditButton.Content = _t.Get(StringKey.UnsavedSaveButton);
         CancelEditButton.Content = _t.Get(StringKey.CancelButton);
         SourceSetsLabel.Text = _t.Get(StringKey.SourceSetsSectionTitle);
@@ -51,6 +57,23 @@ public sealed partial class ChatPage : Page
 
     // Called by the shell when the notebook changes (mirrors .task(id: notebook.id)).
     public async void Load(long notebookId) => await ViewModel.LoadAsync(notebookId);
+
+    /// C3: one entry per enabled provider; picking one regenerates the last
+    /// answer through that provider (the VM builds the provider-qualified key).
+    private void RebuildRegenerateWithMenu()
+    {
+        RegenerateWithSubMenu.Items.Clear();
+        foreach (var provider in ViewModel.ChatProviders)
+        {
+            var item = new MenuFlyoutItem
+            {
+                Text = provider.Name,
+                Command = ViewModel.RegenerateWithCommand,
+                CommandParameter = provider
+            };
+            RegenerateWithSubMenu.Items.Add(item);
+        }
+    }
 
     private void ScrollToBottom() => MessagesScroller.ChangeView(null, MessagesScroller.ScrollableHeight, null);
 

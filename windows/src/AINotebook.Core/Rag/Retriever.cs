@@ -90,6 +90,18 @@ public sealed class Retriever
     private List<(long ChunkId, long SourceId, string Snippet)> FtsTopK(
         long notebookId, string query, int k, IReadOnlyCollection<long>? sourceIds)
     {
+        // The store owns a single, non-thread-safe SqliteConnection and this
+        // runs on whatever thread the EmbedAsync continuation landed on, so
+        // hold the store's gate for the whole command.
+        lock (_store.Gate)
+        {
+            return FtsTopKLocked(notebookId, query, k, sourceIds);
+        }
+    }
+
+    private List<(long ChunkId, long SourceId, string Snippet)> FtsTopKLocked(
+        long notebookId, string query, int k, IReadOnlyCollection<long>? sourceIds)
+    {
         var conn = _store.Connection;
         using var cmd = conn.CreateCommand();
         var sourceFilter = "";
@@ -128,9 +140,18 @@ public sealed class Retriever
 
     private Dictionary<long, string> Snippets(IReadOnlyList<long> chunkIds)
     {
-        var result = new Dictionary<long, string>();
-        if (chunkIds.Count == 0) return result;
+        if (chunkIds.Count == 0) return new Dictionary<long, string>();
 
+        // Same reason as FtsTopK: single shared connection, background thread.
+        lock (_store.Gate)
+        {
+            return SnippetsLocked(chunkIds);
+        }
+    }
+
+    private Dictionary<long, string> SnippetsLocked(IReadOnlyList<long> chunkIds)
+    {
+        var result = new Dictionary<long, string>();
         var conn = _store.Connection;
         var placeholders = string.Join(",", chunkIds.Select((_, i) => "$p" + i));
         using var cmd = conn.CreateCommand();

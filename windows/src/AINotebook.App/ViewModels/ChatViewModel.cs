@@ -57,6 +57,13 @@ public partial class ChatViewModel : ObservableObject
     // C2: source set picker.
     public ObservableCollection<SourceSet> SourceSets { get; } = new();
 
+    // C3: enabled providers offered in the "Regenerate with" menu, so the last
+    // answer can be re-generated through a specific provider (macOS parity —
+    // ChatView.swift's regenerate Menu). Empty means the menu shows only the
+    // plain Regenerate entry.
+    public ObservableCollection<ProviderConfig> ChatProviders { get; } = new();
+    public bool HasChatProviders => ChatProviders.Count > 0;
+
     // E3: per-message web search toggle.
     [ObservableProperty] public partial bool UseWebSearch { get; set; }
 
@@ -101,7 +108,21 @@ public partial class ChatViewModel : ObservableObject
         _notebookId = notebookId;
         LoadScopeSources();
         LoadSourceSets();
+        LoadChatProviders();
         await EnsureSessionsAsync();
+    }
+
+    // C3: providers for the "Regenerate with" menu — enabled ones only, same
+    // filter macOS applies (ChatView.swift: `store.providers().filter(\.enabled)`).
+    private void LoadChatProviders()
+    {
+        ChatProviders.Clear();
+        try
+        {
+            foreach (var p in _store.Providers().Where(p => p.Enabled)) ChatProviders.Add(p);
+        }
+        catch { }
+        OnPropertyChanged(nameof(HasChatProviders));
     }
 
     // C2: load saved source sets for the notebook.
@@ -266,7 +287,22 @@ public partial class ChatViewModel : ObservableObject
 
     // C3: regenerate — delete last exchange, re-send same question
     [RelayCommand]
-    private async Task RegenerateAsync()
+    private Task RegenerateAsync() => RegenerateCoreAsync(null);
+
+    /// <summary>
+    /// C3: regenerate the last answer through a specific provider. The engine
+    /// gets a provider-qualified `"{providerId}:{model}"` key, which
+    /// <see cref="Services.ProviderRouter.StreamAsync"/> validates against the
+    /// providers table and routes accordingly — and which the stored message is
+    /// then tagged with. Mirrors ChatView.swift's per-provider regenerate menu.
+    /// </summary>
+    [RelayCommand]
+    private Task RegenerateWithAsync(ProviderConfig? provider) =>
+        provider is null
+            ? Task.CompletedTask
+            : RegenerateCoreAsync($"{provider.Id}:{_settings.SelectedChatModel}");
+
+    private async Task RegenerateCoreAsync(string? modelOverride)
     {
         if (SelectedSession?.Id is not { } sid) return;
         var lastUser = Messages.LastOrDefault(m => m.Message?.Role == ChatRole.User);
@@ -275,7 +311,7 @@ public partial class ChatViewModel : ObservableObject
         _store.DeleteLastExchange(sid);
         Input = text;
         IsEditMode = false;
-        await SendAsync();
+        await SendCoreAsync(modelOverride);
     }
 
     // C3: commit edit — delete last exchange then send new text
@@ -288,7 +324,7 @@ public partial class ChatViewModel : ObservableObject
         _store.DeleteLastExchange(sid);
         Input = text;
         IsEditMode = false;
-        await SendAsync();
+        await SendCoreAsync(null);
     }
 
     [RelayCommand]
@@ -308,7 +344,14 @@ public partial class ChatViewModel : ObservableObject
     private void CloseCitationPanel() => IsCitationPanelOpen = false;
 
     [RelayCommand(CanExecute = nameof(CanSend))]
-    private async Task SendAsync()
+    private Task SendAsync() => SendCoreAsync(null);
+
+    /// <param name="modelOverride">
+    /// Provider-qualified `"{providerId}:{model}"` key for FR-C3 regenerate-
+    /// with-model, or null for the default path (the router then uses the live
+    /// Settings selection).
+    /// </param>
+    private async Task SendCoreAsync(string? modelOverride)
     {
         if (SelectedSession?.Id is not { } sid) return;
         var text = Input.Trim();
@@ -329,7 +372,11 @@ public partial class ChatViewModel : ObservableObject
                 sid, _notebookId, text,
                 currentNoteContent: null, sourceIds: SelectedSourceIds(),
                 webResults: webResults,
-                onToken: token => _dispatcher.TryEnqueue(() => StreamingDraft += token));
+                model: modelOverride,
+                onToken: token => _dispatcher.TryEnqueue(() => StreamingDraft += token),
+                // A retry restarts the answer from scratch, so drop whatever the
+                // failed attempt already streamed instead of appending to it.
+                onRetry: () => _dispatcher.TryEnqueue(() => StreamingDraft = ""));
             await ReloadMessagesAsync();
             await GenerateFollowupsAsync(text);
         }

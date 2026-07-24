@@ -191,11 +191,22 @@
                             Visibility="{x:Bind ViewModel.CanEditLast, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
                         <FontIcon Glyph="&#xE70F;" FontSize="14"/>
                     </Button>
-                    <Button x:Name="RegenerateButton"
-                            Command="{x:Bind ViewModel.RegenerateCommand}"
-                            Visibility="{x:Bind ViewModel.CanEditLast, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                    <!-- C3: plain regenerate, plus a per-provider "regenerate
+                         with" list (macOS parity — ChatView.swift's Menu). -->
+                    <DropDownButton x:Name="RegenerateButton"
+                                    Visibility="{x:Bind ViewModel.CanEditLast, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
                         <FontIcon Glyph="&#xE72C;" FontSize="14"/>
-                    </Button>
+                        <DropDownButton.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem x:Name="RegenerateMenuItem"
+                                                Command="{x:Bind ViewModel.RegenerateCommand}"/>
+                                <MenuFlyoutSeparator
+                                    Visibility="{x:Bind ViewModel.HasChatProviders, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+                                <MenuFlyoutSubItem x:Name="RegenerateWithSubMenu"
+                                                   Visibility="{x:Bind ViewModel.HasChatProviders, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                     <!-- E3: web search per-message toggle -->
                     <ToggleButton x:Name="WebSearchToggle"
                                   IsChecked="{x:Bind ViewModel.UseWebSearch, Mode=TwoWay}">
