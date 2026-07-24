@@ -14,10 +14,15 @@ namespace AINotebook.App.Services;
 /// The two interfaces are handled differently (mirrors
 /// Sources/AINotebookCore/Providers/ProviderRouter.swift):
 ///
-/// - <see cref="StreamAsync"/> (chat): the `model` parameter is ignored.
-///   Legacy callers (ChatEngine etc.) capture their model at launch; the
-///   router always reads the live (provider, model) selection so a Settings
-///   change takes effect immediately on the next call.
+/// - <see cref="StreamAsync"/> (chat): the `model` parameter is HONORED as a
+///   composite `"{providerId}:{rawModel}"` key, but only when the prefix
+///   before the first colon is a REAL provider id — raw chat model names
+///   routinely contain colons themselves (`llama3.2:3b`), so a bare colon is
+///   not enough to call something composite. That validated form is how FR-C3
+///   "regenerate with this model" reaches a specific provider. Everything else
+///   (the default send path, whose callers captured their model at launch)
+///   falls back to the live (provider, model) selection, so a Settings change
+///   takes effect immediately on the next call.
 /// - <see cref="EmbedAsync"/>: the `model` parameter is HONORED as a
 ///   composite `"{providerId}:{rawModel}"` key when it contains a colon.
 ///   <see cref="AINotebook.Core.Rag.Embedder"/> snapshots this composite key
@@ -70,12 +75,25 @@ public sealed class ProviderRouter : IChatStreaming, IEmbeddingProducing
     // ── IChatStreaming ──────────────────────────────────────────────────────
 
     public IAsyncEnumerable<string> StreamAsync(
-        string model,   // ignored — router reads live settings
+        string model,   // provider-qualified key when it names a real provider — see class doc
         IReadOnlyList<ChatTurn> messages,
         CancellationToken ct = default)
     {
-        var providerId = _settings.SelectedChatProviderId;
-        var activeModel = _settings.SelectedChatModel;
+        string providerId;
+        string activeModel;
+        // Validate the prefix against the providers table before treating this
+        // as composite (macOS parity — ProviderRouter.swift's stream). Without
+        // the lookup, an ordinary Ollama tag like `llama3.2:3b` would be split
+        // into provider `llama3.2` / model `3b` and routed to the fallback.
+        if (ParseCompositeKey(model) is { } parsed && _store.Provider(parsed.ProviderId) is not null)
+        {
+            (providerId, activeModel) = parsed;
+        }
+        else
+        {
+            providerId = _settings.SelectedChatProviderId;
+            activeModel = _settings.SelectedChatModel;
+        }
         var adapter = GetChatAdapter(providerId);
         return adapter.StreamAsync(activeModel, messages, ct);
     }

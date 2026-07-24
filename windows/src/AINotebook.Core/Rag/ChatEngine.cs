@@ -33,8 +33,15 @@ public sealed class ChatEngine
         string? currentNoteContent = null, IReadOnlyCollection<long>? sourceIds = null,
         IReadOnlyList<WebSearchResult>? webResults = null,
         string? model = null, string? instructionsOverride = null,
-        Action<string>? onToken = null, CancellationToken ct = default)
+        Action<string>? onToken = null, Action? onRetry = null, CancellationToken ct = default)
     {
+        // The model actually used for this turn: an explicit override (FR-C3
+        // regenerate-with-model) wins over the model captured when the engine
+        // was built. Resolved once so the network call and the row we persist
+        // can never disagree — they used to, because step 6 wrote ChatModel
+        // while step 4 streamed with `model ?? ChatModel`.
+        var activeModel = model ?? ChatModel;
+
         // 1) Persist the user message.
         _store.AppendMessage(new ChatMessage(null, sessionId, ChatRole.User, userText, Array.Empty<Citation>(), DateTime.UtcNow));
 
@@ -77,7 +84,7 @@ public sealed class ChatEngine
             try
             {
                 var partial = "";
-                await foreach (var token in _chat.StreamAsync(model ?? ChatModel, turns, ct))
+                await foreach (var token in _chat.StreamAsync(activeModel, turns, ct))
                 {
                     partial += token;
                     onToken?.Invoke(token);
@@ -95,8 +102,18 @@ public sealed class ChatEngine
                     throw;
                 if (attempt >= RetryAttempts) throw;
                 attempt++;
-                var delayMs = RetryBackoffMillis * (int)Math.Pow(2, attempt - 1);
-                await Task.Delay(delayMs, ct);
+
+                // Tokens from the attempt that just failed have already been
+                // handed to onToken, so the caller's buffer holds a partial
+                // answer that the retry would append to. Tell it to discard.
+                onRetry?.Invoke();
+
+                // Honor the server's Retry-After on a 429 instead of coming
+                // straight back after our own (much shorter) backoff — macOS
+                // parity, ChatEngine.swift's .rateLimit case.
+                var backoff = TimeSpan.FromMilliseconds(RetryBackoffMillis * Math.Pow(2, attempt - 1));
+                var delay = (ex as ProviderRateLimitException)?.RetryAfter ?? backoff;
+                await Task.Delay(delay, ct);
             }
         }
 
@@ -112,8 +129,9 @@ public sealed class ChatEngine
             citations.Add(new Citation(m, h.ChunkId, h.SourceId, h.Snippet));
         }
 
-        // 6) Persist the assistant message with the active chat model.
-        var stored = new ChatMessage(null, sessionId, ChatRole.Assistant, assembled, citations, DateTime.UtcNow, ChatModel);
+        // 6) Persist the assistant message tagged with the model that produced
+        // it (FR-C3) — activeModel, not the engine's construction-time default.
+        var stored = new ChatMessage(null, sessionId, ChatRole.Assistant, assembled, citations, DateTime.UtcNow, activeModel);
         _store.AppendMessage(stored);
         return stored;
     }

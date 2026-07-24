@@ -2,7 +2,18 @@ namespace AINotebook.Core.Providers;
 
 public class ProviderException(string message, Exception? inner = null) : Exception(message, inner);
 public sealed class ProviderAuthException(string message) : ProviderException(message);
-public sealed class ProviderRateLimitException(string message) : ProviderException(message);
+/// <summary>
+/// A 429 from the provider. <see cref="RetryAfter"/> carries the server's
+/// Retry-After hint when it sent one, so <c>ChatEngine</c> can wait the
+/// requested interval instead of hammering back after its own short backoff.
+/// Mirrors Sources/AINotebookCore/Providers/ProviderError.swift's
+/// <c>.rateLimit(retryAfterSeconds:)</c>.
+/// </summary>
+public sealed class ProviderRateLimitException(string message, TimeSpan? retryAfter = null)
+    : ProviderException(message)
+{
+    public TimeSpan? RetryAfter { get; } = retryAfter;
+}
 public sealed class ProviderRefusalException(string message) : ProviderException(message);
 
 /// <summary>

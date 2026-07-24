@@ -53,7 +53,8 @@ public actor ChatEngine {
         useWebSearch: Bool = false,
         model: String? = nil,
         instructionsOverride: String? = nil,
-        onToken: @escaping @Sendable (String) -> Void
+        onToken: @escaping @Sendable (String) -> Void,
+        onRetry: @escaping @Sendable () -> Void = {}
     ) async throws -> ChatMessage {
         // 1) Persist the user message.
         let storeRef = store
@@ -74,7 +75,8 @@ public actor ChatEngine {
             sourceIds: sourceIds,
             useWebSearch: useWebSearch,
             instructionsOverride: instructionsOverride,
-            onToken: onToken
+            onToken: onToken,
+            onRetry: onRetry
         )
     }
 
@@ -88,7 +90,8 @@ public actor ChatEngine {
         currentNoteContent: String? = nil,
         sourceIds: Set<Int64> = [],
         model: String? = nil,
-        onToken: @escaping @Sendable (String) -> Void
+        onToken: @escaping @Sendable (String) -> Void,
+        onRetry: @escaping @Sendable () -> Void = {}
     ) async throws -> ChatMessage {
         let storeRef = store
         let history = try await MainActor.run { try storeRef.messages(sessionId: sessionId) }
@@ -108,7 +111,8 @@ public actor ChatEngine {
             model: model ?? chatModel,
             currentNoteContent: currentNoteContent,
             sourceIds: sourceIds,
-            onToken: onToken
+            onToken: onToken,
+            onRetry: onRetry
         )
     }
 
@@ -125,7 +129,8 @@ public actor ChatEngine {
         sourceIds: Set<Int64>,
         useWebSearch: Bool = false,
         instructionsOverride: String? = nil,
-        onToken: @escaping @Sendable (String) -> Void
+        onToken: @escaping @Sendable (String) -> Void,
+        onRetry: @escaping @Sendable () -> Void = {}
     ) async throws -> ChatMessage {
         let storeRef = store
         // 2) Retrieve context.
@@ -188,6 +193,10 @@ public actor ChatEngine {
                     case .rateLimit(let retryAfterSeconds):
                         if attempt >= retryAttempts { throw providerError }
                         attempt += 1
+                        // Tokens from the failed attempt already reached
+                        // onToken, so the caller's buffer holds a partial
+                        // answer this retry would append to. Tell it to drop.
+                        onRetry()
                         let fallback = Double(retryBackoffMillis) * pow(2.0, Double(attempt - 1)) / 1000.0
                         let seconds = retryAfterSeconds ?? fallback
                         try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
@@ -198,6 +207,7 @@ public actor ChatEngine {
                 }
                 if attempt >= retryAttempts { throw error }
                 attempt += 1
+                onRetry()
                 let delayNs = UInt64(retryBackoffMillis * Int(pow(2.0, Double(attempt - 1)))) * 1_000_000
                 try? await Task.sleep(nanoseconds: delayNs)
             }

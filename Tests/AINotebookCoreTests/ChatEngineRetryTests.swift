@@ -106,6 +106,60 @@ final class ChatEngineRetryTests: XCTestCase {
         XCTAssertEqual(chat.attempts, 1)
     }
 
+    /// Tokens from a failed attempt have already reached `onToken`, so the
+    /// caller's buffer holds a partial answer the retry would append to. The
+    /// engine must tell it to discard. Windows parity:
+    /// ChatEngineModelAndRetryTests.OnRetryFiresOncePerFailedAttempt.
+    func testOnRetryFiresOncePerFailedAttempt() async throws {
+        let (store, sessionId, notebookId) = try makeChatFixture()
+        let chat = FlakyChat(failuresRemaining: 2, tokens: ["ok"])
+        let engine = makeEngine(store: store, chat: chat)
+
+        // A stand-in for the view's streamingDraft: appended per token, cleared
+        // on retry. Without the clear it would read "partialpartialok".
+        actor Draft {
+            private(set) var text = ""
+            private(set) var clears = 0
+            func append(_ t: String) { text += t }
+            func clear() { text = ""; clears += 1 }
+        }
+        let draft = Draft()
+
+        _ = try await engine.send(
+            sessionId: sessionId, notebookId: notebookId, userText: "hi",
+            onToken: { t in Task { await draft.append(t) } },
+            onRetry: { Task { await draft.clear() } }
+        )
+
+        XCTAssertEqual(chat.attempts, 3, "initial + 2 retries")
+        // Let the detached Tasks above settle before reading.
+        try await Task.sleep(nanoseconds: 50_000_000)
+        let clears = await draft.clears
+        XCTAssertEqual(clears, 2, "one clear per failed attempt")
+    }
+
+    func testOnRetryIsNotFiredWhenTheFirstAttemptSucceeds() async throws {
+        let (store, sessionId, notebookId) = try makeChatFixture()
+        let chat = FlakyChat(failuresRemaining: 0, tokens: ["ok"])
+        let engine = makeEngine(store: store, chat: chat)
+
+        let counter = Counter()
+        _ = try await engine.send(
+            sessionId: sessionId, notebookId: notebookId, userText: "hi",
+            onToken: { _ in },
+            onRetry: { Task { await counter.bump() } }
+        )
+
+        try await Task.sleep(nanoseconds: 50_000_000)
+        let n = await counter.value
+        XCTAssertEqual(n, 0)
+    }
+
+    actor Counter {
+        private(set) var value = 0
+        func bump() { value += 1 }
+    }
+
     func testRateLimitRetriesWithServerHint() async throws {
         let (store, sessionId, notebookId) = try makeChatFixture()
         let chat = ThrowingChat(error: ProviderError.rateLimit(retryAfterSeconds: 0.01))

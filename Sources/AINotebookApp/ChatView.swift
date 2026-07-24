@@ -508,10 +508,16 @@ struct ChatView: View {
                 sessionId: sid,
                 notebookId: notebook.id!,
                 sourceIds: effectiveSourceIds,
-                model: model
-            ) { token in
-                Task { @MainActor in streamingDraft += token }
-            }
+                model: model,
+                onToken: { token in
+                    Task { @MainActor in streamingDraft += token }
+                },
+                onRetry: {
+                    // Drop the failed attempt's partial text so the retry does
+                    // not render appended to it.
+                    Task { @MainActor in streamingDraft = "" }
+                }
+            )
             await reloadMessages()
         } catch {
             errorMessage = providerErrorText(error, text: settings.text)
@@ -547,10 +553,16 @@ struct ChatView: View {
                 sourceIds: effectiveSourceIds,
                 useWebSearch: settings.webSearchEnabled && useWebForNextMessage,
                 model: activePersona?.model,
-                instructionsOverride: personaInstructions
-            ) { token in
-                Task { @MainActor in streamingDraft += token }
-            }
+                instructionsOverride: personaInstructions,
+                onToken: { token in
+                    Task { @MainActor in streamingDraft += token }
+                },
+                onRetry: {
+                    // Drop the failed attempt's partial text so the retry does
+                    // not render appended to it.
+                    Task { @MainActor in streamingDraft = "" }
+                }
+            )
             await reloadMessages()
             await generateFollowups(userText: text, answer: reply.content)
         } catch {

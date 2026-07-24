@@ -1,6 +1,12 @@
 import Foundation
 import GRDB
 
+public enum AttachmentStoreError: Error, Equatable, Sendable {
+    /// The note-folder segment reduced to a traversal component (`..`, `.`, or
+    /// empty) instead of a note UUID.
+    case invalidNoteFolder(String)
+}
+
 @MainActor
 public final class AttachmentStore {
 
@@ -32,7 +38,7 @@ public final class AttachmentStore {
         mime: String,
         bytes: Data
     ) throws -> NoteAttachment {
-        let folder = root.appendingPathComponent(noteUuid, isDirectory: true)
+        let folder = root.appendingPathComponent(try Self.safeSegment(noteUuid), isDirectory: true)
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         let resolved = uniqueFilename(in: folder, requested: Self.safeFilename(filename))
         let url = folder.appendingPathComponent(resolved)
@@ -52,7 +58,7 @@ public final class AttachmentStore {
 
     public func read(noteUuid: String, filename: String) throws -> Data {
         let url = root
-            .appendingPathComponent(noteUuid, isDirectory: true)
+            .appendingPathComponent(try Self.safeSegment(noteUuid), isDirectory: true)
             .appendingPathComponent(Self.safeFilename(filename))
         return try Data(contentsOf: url)
     }
@@ -66,6 +72,23 @@ public final class AttachmentStore {
         return base
     }
 
+    /// The same reduction for the note-folder segment, which used to be joined
+    /// onto `root` raw — so a `..` reaching this far escaped the attachments
+    /// root by one level, into the directory holding the database. The scheme
+    /// handler hands us the URL host, so the value is not trusted.
+    ///
+    /// Unlike `safeFilename` this throws instead of substituting a default:
+    /// every legitimate caller passes a real note UUID, so anything reducing to
+    /// a traversal segment is a bug or an attack, and failing closed is the
+    /// only correct answer.
+    static func safeSegment(_ requested: String) throws -> String {
+        let base = (requested as NSString).lastPathComponent
+        guard !base.isEmpty, base != ".", base != ".." else {
+            throw AttachmentStoreError.invalidNoteFolder(requested)
+        }
+        return base
+    }
+
     public func list(noteId: Int64) throws -> [NoteAttachment] {
         try store.runOnDatabase { db in
             try NoteAttachment
@@ -76,7 +99,7 @@ public final class AttachmentStore {
     }
 
     public func deleteFolder(noteUuid: String) throws {
-        let folder = root.appendingPathComponent(noteUuid, isDirectory: true)
+        let folder = root.appendingPathComponent(try Self.safeSegment(noteUuid), isDirectory: true)
         if FileManager.default.fileExists(atPath: folder.path) {
             try FileManager.default.removeItem(at: folder)
         }
