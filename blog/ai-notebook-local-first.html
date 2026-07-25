@@ -1,0 +1,537 @@
+<!-- Paste this entire fragment into Blogger's HTML editor. -->
+<style>
+  body.item-view .post-title,
+  body.item-view .post-header {
+    display: none;
+  }
+
+  .ainb-post {
+    --ainb-ink: #1a1a21;
+    --ainb-night: #0d0d15;
+    --ainb-paper: #f7f8fc;
+    --ainb-surface: #fcfcfe;
+    --ainb-muted: #666974;
+    --ainb-line: #dfe1e9;
+    --ainb-blue: #3068df;
+    --ainb-blue-dark: #2356bc;
+    --ainb-mint: #247a59;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    color: var(--ainb-ink);
+    background: var(--ainb-paper);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.72;
+    overflow-wrap: normal;
+    word-break: normal;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ainb-post,
+  .ainb-post * {
+    box-sizing: border-box;
+  }
+
+  .ainb-post img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+
+  .ainb-post a {
+    color: inherit;
+  }
+
+  .ainb-post a:focus-visible {
+    outline: 2px solid var(--ainb-blue);
+    outline-offset: 4px;
+  }
+
+  .ainb-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(34px, 7vw, 68px) clamp(22px, 6vw, 54px) 0;
+    border-radius: 24px;
+    color: #f8f8fb;
+    background:
+      radial-gradient(circle at 18% 15%, rgba(48, 104, 223, 0.6), transparent 38%),
+      radial-gradient(circle at 86% 15%, rgba(112, 69, 232, 0.4), transparent 35%),
+      var(--ainb-night);
+  }
+
+  .ainb-kicker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 20px;
+    color: #d7dcf0;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .ainb-kicker::before {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #63d8a0;
+    box-shadow: 0 0 0 6px rgba(99, 216, 160, 0.12);
+    content: "";
+  }
+
+  .ainb-post h1,
+  .ainb-post h2,
+  .ainb-post h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    text-wrap: balance;
+  }
+
+  .ainb-post h1 {
+    max-width: 620px;
+    margin: 0;
+    color: #f8f8fb;
+    font-size: clamp(38px, 7vw, 58px);
+    font-weight: 760;
+    letter-spacing: -0.055em;
+    line-height: 0.99;
+  }
+
+  .ainb-standfirst {
+    max-width: 580px;
+    margin: 24px 0 0;
+    color: #d4d5de;
+    font-size: clamp(18px, 3vw, 22px);
+    line-height: 1.5;
+  }
+
+  .ainb-byline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 24px 0 30px;
+    color: #aeb0bc;
+    font-size: 13px;
+  }
+
+  .ainb-byline strong {
+    color: #f8f8fb;
+  }
+
+  .ainb-hero-image {
+    width: calc(100% + 2 * clamp(22px, 6vw, 54px));
+    max-width: none !important;
+    margin-left: calc(-1 * clamp(22px, 6vw, 54px));
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .ainb-copy {
+    max-width: 650px;
+    padding: clamp(42px, 8vw, 76px) 20px;
+    margin: 0 auto;
+  }
+
+  .ainb-copy > p:first-of-type {
+    margin-top: 0;
+    font-size: clamp(20px, 3vw, 24px);
+    font-weight: 540;
+    letter-spacing: -0.018em;
+    line-height: 1.55;
+  }
+
+  .ainb-copy p {
+    margin: 20px 0;
+  }
+
+  .ainb-copy h2 {
+    margin: clamp(54px, 9vw, 82px) 0 20px;
+    color: var(--ainb-ink);
+    font-size: clamp(31px, 6vw, 46px);
+    font-weight: 740;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+  }
+
+  .ainb-copy h3 {
+    margin: 42px 0 12px;
+    color: var(--ainb-ink);
+    font-size: clamp(22px, 4vw, 27px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  .ainb-copy a:not(.ainb-button) {
+    color: var(--ainb-blue-dark);
+    text-decoration-color: rgba(35, 86, 188, 0.35);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .ainb-toc {
+    padding: 22px 0;
+    margin: 40px 0 52px;
+    border-top: 1px solid var(--ainb-line);
+    border-bottom: 1px solid var(--ainb-line);
+  }
+
+  .ainb-toc > p {
+    margin: 0 0 10px;
+    color: var(--ainb-muted);
+    font-size: 12px;
+    font-weight: 750;
+  }
+
+  .ainb-toc ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 24px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    counter-reset: ainb-toc;
+  }
+
+  .ainb-toc li {
+    counter-increment: ainb-toc;
+  }
+
+  .ainb-toc a {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    color: var(--ainb-muted);
+    font-size: 14px;
+    line-height: 1.45;
+    text-decoration: none;
+  }
+
+  .ainb-toc a::before {
+    color: var(--ainb-blue);
+    content: "0" counter(ainb-toc);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ainb-pullquote {
+    padding: 30px 0;
+    margin: clamp(48px, 8vw, 72px) 0;
+    border-top: 1px solid var(--ainb-line);
+    border-bottom: 1px solid var(--ainb-line);
+    color: var(--ainb-blue-dark);
+    font-size: clamp(25px, 5vw, 36px);
+    font-weight: 690;
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+  }
+
+  .ainb-table-wrap {
+    width: 100%;
+    margin: 28px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ainb-comparison {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .ainb-comparison th,
+  .ainb-comparison td {
+    padding: 14px 10px;
+    border-bottom: 1px solid var(--ainb-line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .ainb-comparison th {
+    color: var(--ainb-muted);
+    font-size: 12px;
+  }
+
+  .ainb-comparison th:first-child,
+  .ainb-comparison td:first-child {
+    padding-left: 0;
+  }
+
+  .ainb-comparison td:nth-child(2) {
+    color: var(--ainb-mint);
+    font-weight: 650;
+  }
+
+  .ainb-steps {
+    padding: 0;
+    margin: 28px 0;
+    list-style: none;
+    counter-reset: ainb-steps;
+  }
+
+  .ainb-steps li {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 14px;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--ainb-line);
+    counter-increment: ainb-steps;
+  }
+
+  .ainb-steps li::before {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 50%;
+    color: #f8f8fb;
+    background: var(--ainb-ink);
+    font-size: 12px;
+    font-weight: 750;
+    content: counter(ainb-steps);
+  }
+
+  .ainb-steps strong {
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .ainb-steps span {
+    color: var(--ainb-muted);
+  }
+
+  .ainb-figure {
+    margin: clamp(44px, 8vw, 72px) -34px;
+  }
+
+  .ainb-figure img {
+    border: 1px solid var(--ainb-line);
+    border-radius: 18px;
+    box-shadow: 0 24px 58px rgba(33, 38, 62, 0.13);
+  }
+
+  .ainb-figure figcaption {
+    max-width: 520px;
+    margin: 12px auto 0;
+    color: var(--ainb-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .ainb-cta {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(28px, 6vw, 48px);
+    margin-top: clamp(58px, 10vw, 90px);
+    border-radius: 24px;
+    color: #f8f8fb;
+    background:
+      radial-gradient(circle at 100% 100%, rgba(112, 69, 232, 0.52), transparent 42%),
+      var(--ainb-night);
+  }
+
+  .ainb-cta h2 {
+    max-width: 500px;
+    margin: 0;
+    color: #f8f8fb;
+    font-size: clamp(30px, 6vw, 44px);
+  }
+
+  .ainb-cta p {
+    max-width: 500px;
+    color: #d1d2db;
+  }
+
+  .ainb-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .ainb-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    color: var(--ainb-night) !important;
+    background: #f8f8fb;
+    font-size: 14px;
+    font-weight: 750;
+    text-decoration: none;
+  }
+
+  .ainb-button-secondary {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #f8f8fb !important;
+    background: transparent;
+  }
+
+  .ainb-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 20px 8px;
+    border-top: 1px solid var(--ainb-line);
+    color: var(--ainb-muted);
+    font-size: 12px;
+  }
+
+  .ainb-footer a {
+    color: var(--ainb-ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  @media (max-width: 680px) {
+    .ainb-post {
+      font-size: 16px;
+    }
+
+    .ainb-hero {
+      border-radius: 18px;
+    }
+
+    .ainb-toc ol {
+      grid-template-columns: 1fr;
+    }
+
+    .ainb-figure {
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+    .ainb-footer {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ainb-post *,
+    .ainb-post *::before,
+    .ainb-post *::after {
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+
+<div class="ainb-post">
+  <header class="ainb-hero">
+    <p class="ainb-kicker">Building in public</p>
+    <h1>I built a private, offline alternative to NotebookLM.</h1>
+    <p class="ainb-standfirst">AI Notebook lets you ask questions of your own documents, get answers with exact citations, and keep the entire research workflow on your machine.</p>
+    <div class="ainb-byline">
+      <span>By <strong>Lukáš Oplt</strong></span>
+      <span>8 min read</span>
+      <span>Open source</span>
+    </div>
+    <img class="ainb-hero-image" src="https://lukoplt.github.io/AI-notebook/docs/og-ai-notebook.png" alt="AI Notebook showing a cited answer grounded in local research documents" width="1200" height="630">
+  </header>
+
+  <!--more-->
+
+  <main class="ainb-copy">
+    <p>I use AI to make sense of long documents, but I have never liked the hidden trade: to get a useful answer, I first have to upload the source material somewhere else. That may be acceptable for a public paper. It is a different decision for private notes, client documents, internal research, or an unfinished idea.</p>
+
+    <p>So I built <a href="https://lukoplt.github.io/AI-notebook/">AI Notebook</a>, a free, open-source desktop app for macOS and Windows. It brings the familiar “chat with your sources” workflow to a native application, with local storage, local retrieval, and local AI through Ollama.</p>
+
+    <nav class="ainb-toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#workflow">The workflow</a></li>
+        <li><a href="#local-first">Local first</a></li>
+        <li><a href="#under-the-hood">Under the hood</a></li>
+        <li><a href="#try-it">Try it</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="problem">The useful part of NotebookLM, without the upload</h2>
+
+    <p>The best thing about source-grounded AI is not the chat box. It is the ability to move through unfamiliar material quickly while seeing where every claim came from. A good answer should not ask for blind trust. It should take you back to the paragraph, page, or passage that supports it.</p>
+
+    <p>AI Notebook was designed around that principle. Add PDFs, Word documents, PowerPoint decks, spreadsheets, plain text, Markdown, or web pages. The app indexes the content and lets you ask questions across one source, a selected set, or the entire notebook.</p>
+
+    <blockquote class="ainb-pullquote">The goal is not to replace reading. It is to make the path from a question to the right passage dramatically shorter.</blockquote>
+
+    <div class="ainb-table-wrap" role="region" aria-label="AI Notebook comparison" tabindex="0">
+      <table class="ainb-comparison">
+        <thead>
+          <tr>
+            <th scope="col">Choice</th>
+            <th scope="col">AI Notebook</th>
+            <th scope="col">Typical cloud notebook</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Where it runs</td><td>Your computer</td><td>Browser and cloud</td></tr>
+          <tr><td>Document storage</td><td>Local SQLite database</td><td>Remote service</td></tr>
+          <tr><td>Offline use</td><td>Yes, with Ollama</td><td>Usually no</td></tr>
+          <tr><td>Model choice</td><td>Local or bring your own provider</td><td>Platform models</td></tr>
+          <tr><td>Source code</td><td>Open, MIT licensed</td><td>Proprietary</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="workflow">From raw sources to useful work</h2>
+
+    <p>I wanted the app to be more than a retrieval demo. Research rarely ends with one answer. You collect material, ask questions, notice connections, write something down, and repeat. That loop is the product.</p>
+
+    <ol class="ainb-steps">
+      <li><div><strong>Collect</strong><span>Bring documents and web pages into a dedicated notebook.</span></div></li>
+      <li><div><strong>Ground</strong><span>Let local indexing make every source searchable by meaning and exact terms.</span></div></li>
+      <li><div><strong>Ask</strong><span>Chat across the material and open citations directly from each answer.</span></div></li>
+      <li><div><strong>Write</strong><span>Turn useful findings into editable notes with history and attachments.</span></div></li>
+      <li><div><strong>Transform</strong><span>Reuse prompts for summaries, key points, entities, or your own recurring tasks.</span></div></li>
+    </ol>
+
+    <figure class="ainb-figure">
+      <img src="https://lukoplt.github.io/AI-notebook/docs/screenshots/sources.png" alt="A source library in AI Notebook containing indexed clean energy documents" width="2696" height="1776" loading="lazy">
+      <figcaption>Sources are collected, processed, and searched inside a notebook.</figcaption>
+    </figure>
+
+    <p>The citations are deliberately visible. Answers include numbered references that open the exact source snippet, so it is easy to check context instead of treating generated text as a final authority.</p>
+
+    <h2 id="local-first">Local first is a real boundary</h2>
+
+    <p>“Private” can become a vague marketing word, so here is what it means in AI Notebook. Source text, chunks, embeddings, notes, and chat history live in a local SQLite database. With Ollama selected, AI requests do not leave your device. The workflow can run without an internet connection once the models are installed.</p>
+
+    <p>You can still choose a cloud or network model when a task needs one. AI Notebook supports OpenAI, Anthropic, OpenAI-compatible endpoints, and OpenWebUI. That is an explicit choice, not a hidden dependency. API keys are stored in the operating system credential vault rather than the notebook database.</p>
+
+    <figure class="ainb-figure">
+      <img src="https://lukoplt.github.io/AI-notebook/docs/screenshots/notes.png" alt="The AI Notebook note editor beside a source-grounded conversation" width="2696" height="1776" loading="lazy">
+      <figcaption>Notes stay beside the research that produced them and become searchable context themselves.</figcaption>
+    </figure>
+
+    <h2 id="under-the-hood">What happens under the hood</h2>
+
+    <p>When a source is added, the app extracts its text, divides it into useful chunks, and creates embeddings locally. Search combines semantic similarity with keyword matching through Reciprocal Rank Fusion. This matters because research questions contain both concepts and exact language. A person may ask about an idea using different words, then need a precise name, number, or phrase in the same session.</p>
+
+    <p>The retrieved passages are sent to the selected language model as context. The answer streams back with citation markers that are mapped to the supporting chunks. The result is a compact retrieval-augmented generation workflow that remains understandable and inspectable.</p>
+
+    <h3>Two native apps, one product</h3>
+
+    <p>The macOS application is built with Swift 6 and SwiftUI. The Windows application uses .NET 10 and WinUI 3. They share the same product model and privacy principles while respecting the interaction patterns of each platform. This takes more work than wrapping a website, but a research tool benefits from feeling at home on the machine where the documents already live.</p>
+
+    <h3>Why open source matters here</h3>
+
+    <p>A privacy claim is stronger when people can inspect the code behind it. AI Notebook is available under the MIT license. You can review how sources are stored, see when network calls are made, build the app yourself, or adapt it to your own workflow.</p>
+
+    <section class="ainb-cta" id="try-it" aria-labelledby="try-it-title">
+      <h2 id="try-it-title">Make your documents useful without giving them away.</h2>
+      <p>AI Notebook is free for macOS and Windows. Download the latest release, connect Ollama, and start with one document you already know well.</p>
+      <div class="ainb-actions">
+        <a class="ainb-button" href="https://github.com/lukoplt/AI-notebook/releases/latest">Download AI Notebook</a>
+        <a class="ainb-button ainb-button-secondary" href="https://github.com/lukoplt/AI-notebook">View source on GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ainb-footer">
+    <span>Written and built by Lukáš Oplt.</span>
+    <a href="https://lukoplt.github.io/AI-notebook/">Explore AI Notebook</a>
+  </footer>
+</div>
