@@ -1,5 +1,49 @@
 # Changelog
 
+## [0.14.0] — 2026-08-24
+
+Windows catches up on personas and bulk note actions, macOS gains
+continuous folder watching, and retrieval finally has numbers behind it.
+
+### Added
+- Windows: personas — a named preset of instructions, source set and model,
+  picked from the chat toolbar. macOS has had this since Epic C5.
+- Windows: multi-select in the notes list, with bulk delete behind a
+  confirmation. Sources already had it.
+- macOS: a watched folder now stays watched. Picking a folder starts an
+  FSEvents watcher that re-syncs on every change — new files ingested,
+  edited files re-ingested by content hash, unchanged files skipped —
+  instead of syncing once and forgetting the folder. Matches the Windows
+  folder watcher.
+- A local retrieval evaluation harness (`swift run ainotebook-eval`) with a
+  fixture corpus of 12 documents and 30 queries, reporting recall at three
+  candidate-window settings. It never runs in CI. Results and the resulting
+  decision are in `docs/eval/README.md`.
+
+### Fixed
+- Both platforms: exporting a notebook no longer loses notes that share a
+  title. Two notes named alike produced two archive entries with one name,
+  and the extractor kept whichever it saw last. (macOS was already correct;
+  this brings Windows in line.)
+- Windows: filenames inside an exported ZIP are sanitized against both path
+  separators rather than whichever the host platform considers invalid, so
+  an archive is safe to extract wherever it was written.
+
+### Changed
+- The FR-D3 cross-encoder reranker is dropped for now. The evaluation above
+  shows retrieval is not the limiting factor — with a wide enough candidate
+  window every expected passage is retrieved — while the top-8 cut leaves a
+  third of them just below the line. Returning more passages recovers most
+  of that at no cost beyond prompt length, so a reranker is not worth
+  shipping an ONNX model on Windows and a CoreML model on macOS. Revisit if
+  prompt context later becomes the binding constraint.
+
+### Internal
+- Windows Core test coverage went from 273 to 336 tests, covering tags,
+  source sets, personas, export, global search, contextual enrichment,
+  folder watching and web search — none of which had any tests. macOS went
+  from 357 to 367.
+
 ## [0.13.0] — 2026-07-24
 
 Code-review fixes across both platforms, plus per-provider regenerate on

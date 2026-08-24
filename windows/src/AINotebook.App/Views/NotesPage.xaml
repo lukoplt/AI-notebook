@@ -19,6 +19,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -26,11 +27,17 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" x:Name="NotesTitle" Style="{ThemeResource SubtitleTextBlockStyle}"
                            VerticalAlignment="Center"/>
+                <!-- W-6 (B6): multi-select mode for bulk delete -->
+                <ToggleButton Grid.Column="1" x:Name="BulkModeToggle" Margin="4,0,0,0"
+                              IsChecked="{x:Bind ViewModel.IsBulkMode, Mode=TwoWay}">
+                    <FontIcon Glyph="&#xE762;" FontSize="14"/>
+                </ToggleButton>
                 <!-- B1: export selected note -->
-                <Button Grid.Column="1" x:Name="ExportNoteButton" Margin="4,0,0,0"
+                <Button Grid.Column="2" x:Name="ExportNoteButton" Margin="4,0,0,0"
                         Visibility="{x:Bind ViewModel.HasSelectedNote, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
                     <FontIcon Glyph="&#xEDE1;" FontSize="14"/>
                     <Button.Flyout>
@@ -40,7 +47,7 @@
                         </MenuFlyout>
                     </Button.Flyout>
                 </Button>
-                <Button Grid.Column="2" x:Name="NewButtonTop" Margin="4,0,0,0"
+                <Button Grid.Column="3" x:Name="NewButtonTop" Margin="4,0,0,0"
                         Command="{x:Bind ViewModel.CreateBlankCommand}"/>
             </Grid>
             <!-- B9: search box -->
@@ -48,8 +55,13 @@
                      x:Name="SearchBox"
                      Text="{x:Bind ViewModel.SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      PlaceholderText="{x:Bind SearchPlaceholder}"/>
+            <!-- W-6: bulk action bar, visible only while notes are ticked -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,0,0,4"
+                        Visibility="{x:Bind ViewModel.HasBulkSelection, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                <Button x:Name="BulkDeleteButton" Click="OnBulkDeleteNotes"/>
+            </StackPanel>
             <!-- B8: tags for selected note -->
-            <StackPanel Grid.Row="2" Margin="0,0,0,4" Spacing="4"
+            <StackPanel Grid.Row="3" Margin="0,0,0,4" Spacing="4"
                         Visibility="{x:Bind ViewModel.HasSelectedNote, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
                 <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentNoteTags, Mode=OneWay}">
                     <ItemsControl.ItemsPanel>
@@ -75,7 +87,7 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <ListView Grid.Row="3" x:Name="NotesList"
+            <ListView Grid.Row="4" x:Name="NotesList"
                       ItemsSource="{x:Bind ViewModel.FilteredNotes, Mode=OneWay}"
                       SelectionChanged="OnNotesSelectionChanged">
                 <ListView.ItemTemplate>
@@ -89,7 +101,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <StackPanel Grid.Row="3" x:Name="EmptyNotes" Visibility="Collapsed"
+            <StackPanel Grid.Row="4" x:Name="EmptyNotes" Visibility="Collapsed"
                         VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
                 <FontIcon Glyph="&#xE70B;" FontSize="32"/>
                 <TextBlock x:Name="EmptyNotesText" TextWrapping="Wrap" TextAlignment="Center"/>

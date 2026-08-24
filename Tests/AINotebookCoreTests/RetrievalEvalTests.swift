@@ -69,3 +69,88 @@ final class RetrievalEvalTests: XCTestCase {
         XCTAssertFalse(report.perQuery[0].hit)
     }
 }
+
+/// Embedder whose cosine against the query is dictated by a `score=<x>` marker
+/// in the chunk text, so a test can place a gold chunk at an exact rank.
+/// Query vectors are `[1, 0]`; a chunk carrying `score=s` embeds as
+/// `[s, sqrt(1 - s*s)]`, which is a unit vector whose cosine with `[1, 0]` is
+/// exactly `s`.
+private struct ScoredEmbedder: EmbeddingProducing {
+    func embed(model: String, inputs: [String]) async throws -> [[Float]] {
+        inputs.map { text in
+            guard let range = text.range(of: "score="),
+                  let s = Float(text[range.upperBound...].prefix(6)) else {
+                return [1, 0]
+            }
+            return [s, (1 - s * s).squareRoot()]
+        }
+    }
+}
+
+/// The eval must be able to fetch a wide candidate window and *then* cut to the
+/// production top-k, because that is how the reranker headroom in FR-D2 is
+/// measured: a reranker cannot promote a chunk the retriever never fetched.
+@MainActor
+final class RetrievalEvalFetchWindowTests: XCTestCase {
+
+    /// 20 chunks whose cosine descends 0.99, 0.98, … so rank is fully
+    /// determined. No chunk contains the query token, so the FTS branch
+    /// contributes nothing and vector rank alone decides the outcome.
+    private func makeCorpus() throws -> (NotebookStore, Int64, [SourceChunk]) {
+        let store = try NotebookStore(path: .inMemory)
+        let nb = try store.createNotebook(name: "Fetch window")
+        let src = try store.createSource(
+            notebookId: nb.id!, type: .text, title: "Corpus", uri: nil, rawPath: nil)
+        let drafts = (0..<20).map { i in
+            ChunkDraft(text: "passage \(i) score=\(String(format: "%.4f", 0.99 - Float(i) * 0.01))",
+                       tokenCount: 4)
+        }
+        try store.replaceChunks(sourceId: src.id!, chunks: drafts)
+        let chunks = try store.chunks(sourceId: src.id!)
+        return (store, nb.id!, chunks)
+    }
+
+    private func embedAll(_ store: NotebookStore, _ chunks: [SourceChunk]) async throws {
+        let embedder = ScoredEmbedder()
+        for chunk in chunks {
+            let vec = try await embedder.embed(model: "m", inputs: [chunk.text])[0]
+            try store.storeEmbedding(chunkId: chunk.id!, model: "m", vector: EmbeddingVector(values: vec))
+        }
+    }
+
+    func testResultsAreCutToKEvenWhenTheFetchWindowIsWider() async throws {
+        let (store, nbId, chunks) = try makeCorpus()
+        try await embedAll(store, chunks)
+        let retriever = Retriever(store: store, client: ScoredEmbedder(), model: "m")
+
+        // chunks[1] is vector rank 2; chunks[9] is rank 10. Fetch 20 either way,
+        // but cut at 3 — so only the first survives.
+        let near = try await RetrievalEval.run(
+            retriever: retriever, notebookId: nbId,
+            queries: [EvalQuery(text: "zzz", goldChunkIds: [chunks[1].id!])], k: 3, fetchK: 20)
+        XCTAssertEqual(near.meanRecall, 1.0, accuracy: 0.0001, near.summary)
+
+        let far = try await RetrievalEval.run(
+            retriever: retriever, notebookId: nbId,
+            queries: [EvalQuery(text: "zzz", goldChunkIds: [chunks[9].id!])], k: 3, fetchK: 20)
+        XCTAssertEqual(far.meanRecall, 0.0, accuracy: 0.0001, far.summary)
+        XCTAssertEqual(far.k, 3, "the report reports the cut, not the fetch window")
+    }
+
+    func testFetchWindowBoundsWhatCanBeRetrievedAtAll() async throws {
+        let (store, nbId, chunks) = try makeCorpus()
+        try await embedAll(store, chunks)
+        let retriever = Retriever(store: store, client: ScoredEmbedder(), model: "m")
+        let gold = [EvalQuery(text: "zzz", goldChunkIds: [chunks[14].id!])]
+
+        // Cut is 20 both times; only the fetch window differs. A chunk outside
+        // the window cannot appear no matter how generous the cut is.
+        let narrow = try await RetrievalEval.run(
+            retriever: retriever, notebookId: nbId, queries: gold, k: 20, fetchK: 10)
+        XCTAssertEqual(narrow.meanRecall, 0.0, accuracy: 0.0001, narrow.summary)
+
+        let wide = try await RetrievalEval.run(
+            retriever: retriever, notebookId: nbId, queries: gold, k: 20, fetchK: 20)
+        XCTAssertEqual(wide.meanRecall, 1.0, accuracy: 0.0001, wide.summary)
+    }
+}

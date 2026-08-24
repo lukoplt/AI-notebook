@@ -27,9 +27,19 @@ public static class ExportService
         using (var archive = new ZipArchive(ms, ZipArchiveMode.Create, leaveOpen: true))
         {
             var notes = store.Notes(notebookId);
+            // Two notes can easily share a title ("Meeting notes"), and they
+            // then sanitise to the same filename. Without this de-duplication
+            // the archive holds two entries with one name and the extractor
+            // keeps whichever it saw last — exporting would lose a note.
+            // Mirrors ExportService.swift's usedNames pass.
+            var usedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var note in notes)
             {
-                var safeName = SanitizeFilename(note.Title) + ".md";
+                var baseName = SanitizeFilename(note.Title);
+                var candidate = baseName;
+                for (var n = 2; !usedNames.Add(candidate); n++)
+                    candidate = $"{baseName}-{n}";
+                var safeName = candidate + ".md";
                 var entry = archive.CreateEntry($"notes/{safeName}", CompressionLevel.Fastest);
                 using var w = new StreamWriter(entry.Open(), Encoding.UTF8);
                 w.Write(ExportNoteMarkdown(note));
@@ -55,7 +65,12 @@ public static class ExportService
 
     private static string SanitizeFilename(string raw)
     {
-        var invalid = Path.GetInvalidFileNameChars();
+        // Path.GetInvalidFileNameChars() is platform-dependent — on Unix it is
+        // just '\0' and '/', so a backslash would survive sanitisation and the
+        // resulting zip entry ("notes/..\..\evil.md") would be read as a
+        // traversal by any extractor on Windows. Both separators are rejected
+        // explicitly so the archive is safe wherever it was written.
+        var invalid = Path.GetInvalidFileNameChars().Concat(['/', '\\']).ToHashSet();
         var sb = new StringBuilder();
         foreach (var c in raw)
             sb.Append(invalid.Contains(c) ? '_' : c);

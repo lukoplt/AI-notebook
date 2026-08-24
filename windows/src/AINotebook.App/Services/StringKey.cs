@@ -67,6 +67,8 @@ public enum StringKey
     NotebookInstructionsLabel, NotebookInstructionsPlaceholder, NotebookInstructionsSaved,
     SourceSetsSectionTitle, AddSourceSetButton, SourceSetNamePlaceholder, DeleteSourceSetTitle,
     ChatEditButton, ChatRegenerateWithButton,
+    // FR-C5 personas (macOS parity: Localization.swift persona* keys).
+    PersonaMenu, PersonaNone, PersonaNew, PersonaNamePlaceholder, PersonaInstructionsPlaceholder,
     CitationPanelTitle, CitationPanelEmpty,
     // Epic D: retrieval quality.
     ContextualEnrichmentLabel, ContextualEnrichmentHint,

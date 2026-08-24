@@ -57,6 +57,16 @@ public partial class ChatViewModel : ObservableObject
     // C2: source set picker.
     public ObservableCollection<SourceSet> SourceSets { get; } = new();
 
+    // C5: personas — a named preset of instructions + source set + model.
+    // macOS parity: ChatView.swift's persona menu (None / list / New…).
+    public ObservableCollection<Persona> Personas { get; } = new();
+    [ObservableProperty] public partial Persona? ActivePersona { get; set; }
+    [ObservableProperty] public partial string NewPersonaName { get; set; } = "";
+    [ObservableProperty] public partial string NewPersonaInstructions { get; set; } = "";
+
+    /// Label on the persona button: the active persona's name, or "Persona".
+    public string PersonaButtonText => ActivePersona?.Name ?? _t.Get(StringKey.PersonaMenu);
+
     // C3: enabled providers offered in the "Regenerate with" menu, so the last
     // answer can be re-generated through a specific provider (macOS parity —
     // ChatView.swift's regenerate Menu). Empty means the menu shows only the
@@ -108,6 +118,7 @@ public partial class ChatViewModel : ObservableObject
         _notebookId = notebookId;
         LoadScopeSources();
         LoadSourceSets();
+        LoadPersonas();
         LoadChatProviders();
         await EnsureSessionsAsync();
     }
@@ -174,6 +185,60 @@ public partial class ChatViewModel : ObservableObject
         }
         catch (Exception ex) { ErrorMessage = ex.ToString(); }
     }
+
+    // C5: load this notebook's saved personas.
+    private void LoadPersonas()
+    {
+        Personas.Clear();
+        try { foreach (var p in _store.Personas(_notebookId)) Personas.Add(p); } catch { }
+    }
+
+    /// C5: activate a persona. Its source set (when it has one) narrows the
+    /// scope selection immediately; its instructions and model are applied on
+    /// the next send, in <see cref="SendCoreAsync"/>.
+    [RelayCommand]
+    private void ApplyPersona(Persona? persona)
+    {
+        if (persona is null) return;
+        ActivePersona = persona;
+        if (persona.SourceSetId is not { } setId) return;
+        try
+        {
+            var memberIds = _store.SourceSetMembers(setId).ToHashSet();
+            foreach (var s in ScopeSources) s.IsSelected = memberIds.Contains(s.Id);
+            OnPropertyChanged(nameof(ScopeButtonText));
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+    }
+
+    // C5: back to the notebook's own instructions and the Settings model.
+    [RelayCommand]
+    private void ClearPersona() => ActivePersona = null;
+
+    /// C5: save a new persona from the name and instructions typed into the
+    /// flyout, capturing the current provider:model the way macOS does. A
+    /// source set can be attached later; there is no picker for it yet on
+    /// either platform.
+    [RelayCommand]
+    private void CreatePersona()
+    {
+        var name = NewPersonaName.Trim();
+        if (name.Length == 0) return;
+        try
+        {
+            var persona = _store.CreatePersona(
+                _notebookId, name, NewPersonaInstructions,
+                sourceSetId: null,
+                model: $"{_settings.SelectedChatProviderId}:{_settings.SelectedChatModel}");
+            NewPersonaName = "";
+            NewPersonaInstructions = "";
+            Personas.Add(persona);
+            ApplyPersona(persona);
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+    }
+
+    partial void OnActivePersonaChanged(Persona? value) => OnPropertyChanged(nameof(PersonaButtonText));
 
     // Tier 3: populate the scope picker with this notebook's Ready sources (all selected).
     private void LoadScopeSources()
@@ -368,11 +433,19 @@ public partial class ChatViewModel : ObservableObject
             {
                 try { webResults = await _webSearch.SearchAsync(text); } catch { }
             }
+            // C5: an active persona supplies the model and the instructions
+            // unless the caller passed an explicit override (regenerate-with).
+            // Blank persona instructions fall through to the notebook's own
+            // (FR-C1) rather than blanking the system prompt.
+            var personaInstructions = string.IsNullOrWhiteSpace(ActivePersona?.Instructions)
+                ? null : ActivePersona!.Instructions;
+
             await _chatHolder.Engine.SendAsync(
                 sid, _notebookId, text,
                 currentNoteContent: null, sourceIds: SelectedSourceIds(),
                 webResults: webResults,
-                model: modelOverride,
+                model: modelOverride ?? ActivePersona?.Model,
+                instructionsOverride: personaInstructions,
                 onToken: token => _dispatcher.TryEnqueue(() => StreamingDraft += token),
                 // A retry restarts the answer from scratch, so drop whatever the
                 // failed attempt already streamed instead of appending to it.

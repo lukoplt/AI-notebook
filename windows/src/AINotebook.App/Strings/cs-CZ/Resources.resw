@@ -665,6 +665,21 @@
   <data name="citationPanelEmpty" xml:space="preserve">
     <value>Tato zpráva nemá citace</value>
   </data>
+  <data name="personaMenu" xml:space="preserve">
+    <value>Persona</value>
+  </data>
+  <data name="personaNone" xml:space="preserve">
+    <value>Žádná</value>
+  </data>
+  <data name="personaNew" xml:space="preserve">
+    <value>Nová persona…</value>
+  </data>
+  <data name="personaNamePlaceholder" xml:space="preserve">
+    <value>Název persony</value>
+  </data>
+  <data name="personaInstructionsPlaceholder" xml:space="preserve">
+    <value>Instrukce pro tuto personu</value>
+  </data>
   <data name="contextualEnrichmentLabel" xml:space="preserve">
     <value>Kontextuální obohacení</value>
   </data>
