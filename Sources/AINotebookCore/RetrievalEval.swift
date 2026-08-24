@@ -38,16 +38,32 @@ public struct EvalReport: Sendable, Equatable {
 
 public enum RetrievalEval {
     /// Runs every query through the hybrid retriever and aggregates recall@k.
+    ///
+    /// `fetchK` is how many candidates the retriever is asked for; `k` is how
+    /// many of them are kept. They are separate because the two answer separate
+    /// questions. `k` measures what the user actually sees. `fetchK` measures
+    /// what a reranker would have to work with — a reranker only reorders the
+    /// candidate window, so it can never promote a chunk that was never
+    /// fetched. Running the same queries at `k = fetchK = 8` and again at
+    /// `k = 8, fetchK = 24` and `k = fetchK = 24` bounds how much a reranker
+    /// could possibly add, without needing a reranker to exist yet.
+    ///
+    /// Defaults to `fetchK == k`, which is the production pipeline.
     public static func run(
         retriever: Retriever,
         notebookId: Int64,
         queries: [EvalQuery],
-        k: Int = 8
+        k: Int = 8,
+        fetchK: Int? = nil
     ) async throws -> EvalReport {
+        // Deliberately not clamped up to `k`: a caller asking for a window
+        // narrower than the cut gets at most `window` results, which is the
+        // truthful answer. Silently widening would hide a bad eval config.
+        let window = fetchK ?? k
         var reports: [EvalQueryReport] = []
         for q in queries {
-            let hits = try await retriever.search(notebookId: notebookId, query: q.text, topK: k)
-            let retrieved = Set(hits.map(\.chunkId))
+            let fetched = try await retriever.search(notebookId: notebookId, query: q.text, topK: window)
+            let retrieved = Set(fetched.prefix(k).map(\.chunkId))
             let found = q.goldChunkIds.intersection(retrieved)
             let recall = q.goldChunkIds.isEmpty ? 0 : Double(found.count) / Double(q.goldChunkIds.count)
             reports.append(EvalQueryReport(query: q.text, recall: recall, hit: !found.isEmpty))

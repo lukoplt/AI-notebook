@@ -15,6 +15,11 @@ let package = Package(
         .executable(
             name: "AINotebookApp",
             targets: ["AINotebookApp"]
+        ),
+        // FR-D2 local retrieval eval. Never run in CI — see eval/README.md.
+        .executable(
+            name: "ainotebook-eval",
+            targets: ["RetrievalEvalRunner"]
         )
     ],
     dependencies: [
@@ -37,6 +42,10 @@ let package = Package(
             resources: [
                 .copy("Resources/editor")
             ]
+        ),
+        .executableTarget(
+            name: "RetrievalEvalRunner",
+            dependencies: ["AINotebookCore"]
         ),
         .testTarget(
             name: "AINotebookCoreTests",
