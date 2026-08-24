@@ -1,14 +1,14 @@
 # AI Notebook — detailní zadání vývoje
 
-*Baseline: **v0.13.0** (code-review fixy na obou platformách), 2026-08-24. Dual-platform: macOS (Swift/SwiftUI, `Sources/`) + Windows (.NET 10 / WinUI 3, `windows/`). Tento dokument je závazné zadání — nahrazuje předchozí rámcový roadmap.*
+*Baseline: **v0.13.0** + neuvolněná práce na větvi `feat/w4-eval-c5-windows-parity`, 2026-08-24. Dual-platform: macOS (Swift/SwiftUI, `Sources/`) + Windows (.NET 10 / WinUI 3, `windows/`). Tento dokument je závazné zadání — nahrazuje předchozí rámcový roadmap.*
 
 ---
 
 ## 0. Kontext a současný stav
 
-Obě platformy sdílejí datový model a RAG pipeline. **Epic M (parita macOS) je hotový a smergovaný** — macOS dohnal Windows na Epicy B–E i C5 persony (release v0.11.0, commit `1a1deef`). Schéma je na obou platformách na **v18**. Zbývá už jen krátký seznam jednotlivých FR (§1) plus testový dluh (§6).
+Obě platformy sdílejí datový model a RAG pipeline. **Epic M (parita macOS) je hotový a smergovaný** — macOS dohnal Windows na Epicy B–E i C5 persony (release v0.11.0, commit `1a1deef`). Schéma je na obou platformách na **v18** a testový dluh Epiců B–E je splacený (§6). Zbývají **tři** položky (§1) plus jedno otevřené rozhodnutí (§0.3).
 
-**Testy (baseline v0.13.0):** macOS **357** zelených (`swift test`), Windows Core **273** zelených (`dotnet test tests/AINotebook.Core.Tests`).
+**Testy:** macOS **367** zelených (`swift test`), Windows Core **336** zelených (`dotnet test tests/AINotebook.Core.Tests`). Oproti v0.13.0 (357 / 273) přibylo 8 testů FSEvents watcheru, 2 testy eval harnessu a 63 testů Windows Core (§6).
 
 > **Poznámka k ověřitelnosti:** `AINotebook.Core` i `AINotebook.Core.Tests` cílí na `net10.0` (ne `-windows`), takže **Windows Core testy jdou spustit i na macOS**. Jen `AINotebook.App`/`AINotebook.App.Tests` cílí na `net10.0-windows10.0.19041.0` a ověří je až Windows CI. Praktický důsledek: veškerá Core logika (storage, RAG, ingesce, provideři) se dá vyvíjet TDD i mimo Windows; XAML/ViewModel vrstva je blind port ověřený CI.
 
@@ -28,24 +28,26 @@ Obě platformy sdílejí datový model a RAG pipeline. **Epic M (parita macOS) j
 | Citace odpovědi: popover (macOS) / panel (Windows) — FR-C4 | ✅ obě |
 | **Epic B:** export MD (B1), export ZIP (B2), backup/restore (B3), ⌘/Ctrl+K global search (B4), drag & drop (B5), bulk delete + bulk summarize zdrojů (B6), náhled zdroje (B7), tagy (B8), hledání v poznámkách (B9) | ✅ obě |
 | **Epic C:** per-notebook instrukce (C1), source sets (C2), edit + regenerace s volbou modelu (C3) | ✅ obě |
-| **Epic E:** folder sync (E1, one-shot na macOS — viz M-1), re-crawl URL (E2), opt-in web search (E3) | ✅ obě |
+| **Epic E:** kontinuální sledování složky (E1 — `FolderWatchService` / `FolderWatcher`), re-crawl URL (E2), opt-in web search (E3) | ✅ obě |
 
 ### 0.2 Zbývající rozdíly mezi platformami
 
 | FR | Funkce | Windows | macOS | Kam patří |
 |---|---|---|---|---|
 | B1 | Export poznámky → **PDF** | ✅ (`EditorWebView.ExportPdfAsync` → `CoreWebView2.PrintToPdfAsync`) | ❌ (chybí `WKWebView.createPDF`) | **M-2** |
-| B6 | Bulk operace **poznámek** (multi-select + delete) | ❌ (`NotesViewModel` nemá bulk) | ✅ (`NotesView.bulkMode`) | **W-6** |
-| C5 | Persony — **UI picker** | ❌ (Core hotové: `NotebookStore.Personas`, v18) | ✅ (`ChatView` persona menu) | **W-3** |
-| E1 | **Kontinuální** sledování složky | ✅ (`FolderWatchService` + `FileSystemWatcher`) | ❌ (jen one-shot „Sync folder…", `SourceListView.swift:342`) | **M-1** |
+
+Zbylé tři rozdíly z předchozí verze tohoto dokumentu jsou vyřešené: Windows dostal
+persona picker (W-3) i bulk delete poznámek (W-6), macOS dostal kontinuální
+sledování složky přes FSEvents (M-1). **Jediná zbývající nerovnost je PDF export na macOS.**
 
 ### 0.3 Co je nedodělané na obou platformách
 
 | FR | Funkce | Stav | Kam patří |
 |---|---|---|---|
-| D1 | Contextual chunk enrichment | Core hotové na obou (`ContextualEnricher`, sloupec `source_chunks.context`, v14), ale **nikde se nevolá**: macOS nemá settings toggle ani hook v `IngestionService`; Windows má DI registraci v `App.xaml.cs` a stringy `contextualEnrichmentLabel/Hint`, ale `EnrichSourceAsync` nemá call-site. Funkce je tedy *mrtvá* — zapnout ji má smysl až po měření D2. | **D1-wire** (gated na W-4) |
-| D2 | Mini eval sada (recall@8) | `RetrievalEval` harness + testy matematiky hotové na macOS; chybí fixture korpus, runner a zaznamenaný výsledek. | **W-4** |
-| D3 | Cross-encoder reranker | Nezapracován záměrně — gate na W-4. | **W-5** (podmíněné) |
+| D1 | Contextual chunk enrichment | Core hotové na obou (`ContextualEnricher`, sloupec `source_chunks.context`, v14), ale **nikde se nevolá**: macOS nemá settings toggle ani hook v `IngestionService`; Windows má DI registraci v `App.xaml.cs` a stringy, ale `EnrichSourceAsync` nemá call-site. | **D1-wire** |
+| D1 | **Rozpor se specifikací: počet LLM volání** | FR-D1 říká „jeden LLM průchod **na zdroj** (ne na chunk — kontext per dokument, sdílený)". Obě implementace ale volají model **jednou na každý chunk** (`ContextualEnricher.EnrichSourceAsync` iteruje `foreach chunk`). U zdroje s 50 chunky to je 50 volání místo 1. Testy tento počet záměrně **neověřují**, aby současné chování nezabetonovaly (`ContextualEnricherTests`). | **rozhodnutí** |
+| D2 | Mini eval sada (recall@8) | ✅ **hotovo** — fixture korpus `eval/`, runner `swift run ainotebook-eval`, výsledky a rozhodnutí v [`docs/eval/README.md`](eval/README.md). |  |
+| D3 | Cross-encoder reranker | ❌ **NO-GO** na základě D2 — viz W-5 níže. |  |
 
 ### 0.4 Číslování migrací — parita obnovena
 
@@ -60,58 +62,83 @@ v16/v17 jsou **Windows-only opravy dat**, které na macOS nemají protějšek (m
 
 ## 1. Zbývající práce — přehled
 
-Rozsah se zúžil z „dva velké epicy" na **šest adresných položek**:
+Z původních osmi položek zbývají **tři**:
 
 | ID | Práce | Platforma | Priorita |
 |---|---|---|---|
-| **W-4** | Retrieval eval sada (FR-D2): fixture korpus + runner + zaznamenaný recall@8 | macOS (harness sdílený) | **1 — blokuje W-5 i D1-wire** |
-| **W-5** | Reranker (FR-D3) — *podmíněné výsledkem W-4* | obě | 2 (jen při „go") |
-| **W-3** | Persony: ViewModel + XAML picker | Windows | 3 |
-| **W-6** | Bulk operace poznámek (multi-select + delete) | Windows | 3 |
-| **T-1** | Testový dluh Epiců B–E (§6) | Windows (Core spustitelné i na macOS) | 3 |
-| **M-1** | FSEvents watcher místo one-shot folder syncu | macOS | 4 |
-| **M-2** | Export poznámky do PDF (`WKWebView.createPDF`) | macOS | 5 |
-| **D1-wire** | Zapojit `ContextualEnricher` do ingesce + settings toggle | obě | 6 (gated na W-4) |
+| **R-1** | Oddělit `fetchK` od `topK` v produkčním `Retriever` a zvednout cut (doporučení z W-4) | obě | **1** |
+| **M-2** | Export poznámky do PDF (`WKWebView.createPDF`) | macOS | 2 |
+| **D1-wire** | Zapojit `ContextualEnricher` do ingesce + settings toggle — **až po rozhodnutí o počtu volání (§0.3)** | obě | 3 |
+
+Hotovo v tomto kole: **W-4** (eval sada), **W-5** (rozhodnuto NO-GO), **W-3** (persony na Windows),
+**W-6** (bulk poznámky na Windows), **T-1** (testový dluh §6), **M-1** (FSEvents watcher).
 
 Detailní specifikace FR zůstávají v Epicích B–E níže a slouží jako závazné zadání.
 
 ---
 
+## R-1 Oddělit fetchK od topK *(nové, z výsledků W-4)*
+
+`Retriever.search(topK:)` používá jedno číslo jak pro velikost kandidátního okna, tak
+pro počet vrácených výsledků. Eval (W-4) ukázal, že **retrieval není úzké hrdlo — je jím ořez**:
+při okně přes celý korpus dosáhne recall 1.000, ale `recall@8` zůstává 0.633, protože
+11 z 30 zlatých chunků skončí na pozicích 9–27.
+
+- `recall@8` = 0.633, `recall@16` = 0.867, `recall@24` = 0.933 (NaturalLanguage embedder).
+- Zvednout cut je **zdarma** (jen prompt tokeny) a získá většinu toho, co by přinesl reranker.
+- Rozdělení `fetchK`/`topK` je zároveň jediný seam, na který by šel reranker někdy pověsit.
+
+**Akceptační kritérium:** `Retriever.search` přijímá `fetchK` nezávisle na `topK`,
+default zachovává dnešní chování, a eval se znovu spustí s `--embedder ollama`.
+
 ## Epic W / M — zbývající položky
 
-### W-4 Retrieval eval sada (FR-D2) — *blokující*
+### W-4 Retrieval eval sada (FR-D2) — ✅ hotovo
 
-Fixture korpus (10 dokumentů, 30 dotazů se zlatými chunky) + runner měřící **recall@8**; spouští se lokálně, **ne v CI** (běh proti reálným embeddingům je pomalý a závislý na Ollamě).
+Fixture korpus `eval/corpus` (12 dokumentů, 48 chunků produkčním chunkerem) + `eval/queries.json`
+(30 dotazů; zlatý chunk se určuje citací fráze, ne indexem, takže fixture přežije rechunking)
++ runner `swift run ainotebook-eval` se třemi embeddery (`lexical` offline floor,
+`nl` offline sémantický, `ollama` reálný). Nikdy neběží v CI.
 
-**Návrh měření musí odpovědět na otázku, kterou W-5 potřebuje.** Samotné `recall@8` nestačí — reranker nemění *retrieval*, jen *pořadí* uvnitř kandidátní množiny. Proto se měří trojice:
+`RetrievalEval.run` dostal parametr `fetchK` — samotné `recall@8` na otázku o rerankeru
+odpovědět nejde, protože reranker jen přeskládá kandidátní okno a nikdy nevytáhne chunk,
+který se nenačetl. Produkční chování se nemění (`fetchK` defaultuje na `k`).
 
-1. `recall@8` — dnešní pipeline (fetch 8 + 8 → RRF → top 8).
-2. `recall@8` při širším kandidátním okně (fetch N ≫ 8 → RRF → top 8) — kolik dnešní RRF ztratí *ořezem*.
-3. `recall@N` — strop kandidátní množiny; tolik by uměl vytáhnout **dokonalý** reranker.
+**Výsledky a plné zdůvodnění: [`docs/eval/README.md`](eval/README.md).**
 
-**Headroom rerankeru = `recall@N` − `recall@8`.** Malý headroom ⇒ reranker nemá co zlepšovat ⇒ **no-go** pro W-5 bez ohledu na to, jak dobrý ten cross-encoder je.
+### W-5 Reranker (FR-D3) — ❌ NO-GO
 
-**Gate:** výsledek se zapisuje do `docs/eval/` a cituje se v rozhodnutí o W-5 i D1-wire.
+Reranker má reálnou práci (0.30–0.37 recallu leží v pouhém přeskládání), ale jeho hodnota
+není „víc recallu" — je to *recall širokého cutu za cenu kontextu úzkého*. A `recall@16` = 0.867
+je k dispozici zdarma. K tomu produkce nemá seam `fetchK`/`topK`, na který by se dal pověsit,
+a jakmile ten seam vznikne (R-1), levná varianta je změna konfigurace.
 
-### W-5 Reranker (FR-D3) — *podmíněné W-4*
+Místo W-5 tedy: **R-1**, pak znovuměření s `--embedder ollama`. Cross-encoder se otevře
+znovu jen tehdy, když se po zvednutí cutu ukáže jako úzké hrdlo kontextové okno.
 
-Lokální cross-encoder top-K → top-8 (ONNX MiniLM na Windows, CoreML na macOS). **Zavést jen pokud W-4 prokáže zisk;** jinak vypustit a poznamenat do CHANGELOG.
+### W-3 Persony na Windows (FR-C5) — ✅ hotovo
 
-### W-3 Persony na Windows (FR-C5)
+`ChatViewModel` má `Personas`, `ActivePersona` a příkazy Apply/Clear/Create; `ChatPage.xaml`
+má `DropDownButton` s flyoutem „Žádná / uložené persony / nová". `SendCoreAsync` předává
+personě model a instrukce, přičemž explicitní `modelOverride` z regenerate-with má přednost
+a prázdné instrukce propadnou na notebookové (FR-C1). +5 EN/CZ klíčů (239, bylo 234).
 
-Core je hotové (`Migrator` v18, `Persona` v `Models/Tag.cs`, `NotebookStore.Personas.cs`, `ChatEngine` přijímá `model` + `instructionsOverride`). Chybí:
-- `PersonaViewModel` / rozšíření `ChatViewModel` o kolekci person, aktivní personu a „vytvořit personu z aktuálního nastavení".
-- Picker v `ChatPage.xaml` (paritní s macOS `ChatView` menu: „Bez persony" / seznam / „Nová…").
-- Aplikace persony = instrukce (override) + source set (scope) + model.
-- EN+CZ stringy, aktualizace počtu klíčů v `LocalizedStringsTests`.
+### W-6 Bulk operace poznámek na Windows (FR-B6 zbytek) — ✅ hotovo
 
-### W-6 Bulk operace poznámek na Windows (FR-B6 zbytek)
+`NotesViewModel` má `IsBulkMode`, výběrovou množinu plněnou stránkou a `BulkDeleteAsync`
+s confirm dialogem. `NotesPage` přepíná `ListView` mezi `Single` a `Multiple`; v bulk režimu
+zaškrtávání neotevírá poznámky (jinak by na každý klik naskočil unsaved-changes gate).
 
-`NotesViewModel` dostane `IsBulkMode`, `SelectedNoteIds`, `BulkDeleteAsync` s confirm dialogem — paritní se `SourcesViewModel.BulkDeleteAsync` a s macOS `NotesView`.
+### M-1 FSEvents watcher (FR-E1 zbytek, macOS) — ✅ hotovo
 
-### M-1 FSEvents watcher (FR-E1 zbytek, macOS)
+`FolderWatcher` (Core, testovatelný — 8 testů) obaluje FSEvents stream s debounce;
+`FolderWatchController` (App) ho drží přes SwiftUI redrawy a zahazuje sync, pokud už jeden běží.
+Tlačítko teď přepíná stav a při zapnutí jednou hned syncuje. Sledování je in-memory
+per-session, stejně jako na Windows.
 
-`LiveSourceSync.syncFolder` je testovaná change-detection logika; App vrstva ji dnes volá jen jednou z „Sync folder…" (`SourceListView.swift:342`). Doplnit `FolderWatcher` postavený na `DispatchSource`/FSEvents, který sync spouští při změně složky (s debounce), drží sledovanou cestu napříč starty a jde vypnout. Paritní s Windows `FolderWatchService`.
+Dvě chyby, které odhalily testy: `kFSEventStreamCreateFlagIgnoreSelf` potlačoval všechny
+události způsobené vlastním procesem, a watch se registroval na nerozřešené cestě
+(FSEvents doručuje kanonické cesty, takže složka přes symlink nikdy neodpovídala vlastním událostem).
 
 ### M-2 Export poznámky do PDF (FR-B1 PDF část, macOS)
 
@@ -132,7 +159,7 @@ Settings toggle (default **off**), jeden LLM průchod na zdroj při ingesci, vý
 - **FR-B3 Záloha databáze** + obnovení ze zálohy s confirm dialogem. — *✅ obě (Windows přes SQLite online-backup API, macOS přes GRDB backup).*
 - **FR-B4 Globální vyhledávání** (Cmd/Ctrl+K paleta) napříč notebooky. — *✅ obě.*
 - **FR-B5 Drag & drop** souborů na Sources + fronta ingesce s progress. — *✅ obě.*
-- **FR-B6 Hromadné operace:** multi-select zdrojů i poznámek; bulk delete (confirm), bulk summarize zdrojů. — *Zdroje ✅ obě; poznámky ✅ macOS / ❌ Windows (W-6).*
+- **FR-B6 Hromadné operace:** multi-select zdrojů i poznámek; bulk delete (confirm), bulk summarize zdrojů. — *✅ obě.*
 - **FR-B7 Náhled zdroje:** chunky, metadata, u PDF číslo stránky, „Otevřít originál". — *✅ obě.*
 - **FR-B8 Tagy** pro poznámky a zdroje (v12) + filtr. — *✅ obě.*
 - **FR-B9 Vyhledávání v poznámkách** (`notes_fts`). — *✅ obě.*
@@ -152,7 +179,7 @@ Settings toggle (default **off**), jeden LLM průchod na zdroj při ingesci, vý
 - **FR-C2 Pojmenované sady zdrojů** (`source_sets` + `source_set_members`, v13). — *✅ obě.*
 - **FR-C3 Editace odeslané zprávy + regenerace** s volbou *(provider, model)*, badge modelu (`chat_messages.model`, v13). — *✅ obě.*
 - **FR-C4 Citační panel / popover.** — *✅ obě.*
-- **FR-C5 Persony (presety):** instrukce + sada zdrojů + model; picker v chatu (v18). — *Core ✅ obě; UI ✅ macOS / ❌ Windows (W-3).*
+- **FR-C5 Persony (presety):** instrukce + sada zdrojů + model; picker v chatu (v18). — *✅ obě.*
 
 **Akceptační kritéria:** instrukce ovlivní odpověď (prompt-assembly test); sada zdrojů omezí retrieval (unit test filtru); regenerace jiným modelem vytvoří novou odpověď bez ztráty historie; citační panel ukazuje právě zdroje z `citations` dané zprávy; persona aplikuje instrukci + sadu + model na nový chat.
 
@@ -160,38 +187,48 @@ Settings toggle (default **off**), jeden LLM průchod na zdroj při ingesci, vý
 
 ## Epic D — Kvalita retrievalu
 
-- **FR-D1 Contextual chunk enrichment:** při ingesci volitelně (settings toggle, default off) vygenerovat 1–2větný kontext dokumentu a předřadit jej textu chunku před embeddingem. Sloupec `source_chunks.context` (v14). Jeden LLM průchod **na zdroj**, ne na chunk. — *Core ✅ obě, nezapojeno (D1-wire).*
-- **FR-D2 Mini eval sada:** viz **W-4**. Bez měření nezapínat D1 defaultně. — *Harness ✅ macOS, korpus + běh chybí.*
-- **FR-D3 Reranker:** viz **W-5**. Zavést jen pokud D2 prokáže zisk. — *❌ obě.*
+- **FR-D1 Contextual chunk enrichment:** při ingesci volitelně (settings toggle, default off) vygenerovat 1–2větný kontext dokumentu a předřadit jej textu chunku před embeddingem. Sloupec `source_chunks.context` (v14). Jeden LLM průchod **na zdroj**, ne na chunk. — *Core ✅ obě, nezapojeno (D1-wire); implementace volá model na chunk — rozpor viz §0.3.*
+- **FR-D2 Mini eval sada:** viz **W-4**. — *✅ hotovo; výsledky v [`docs/eval/README.md`](eval/README.md).*
+- **FR-D3 Reranker:** viz **W-5**. — *❌ **NO-GO** na základě D2; místo něj **R-1**.*
 
 ---
 
 ## Epic E — Živé zdroje a nástroje
 
-- **FR-E1 Sledovaná složka:** porovnat mtime/hash, změněné reindexovat, smazané označit stale (ne mazat). `sources.last_synced_at`, `sources.content_hash` (v15). — *✅ Windows (kontinuální); macOS one-shot (M-1).*
+- **FR-E1 Sledovaná složka:** porovnat mtime/hash, změněné reindexovat, smazané označit stale (ne mazat). `sources.last_synced_at`, `sources.content_hash` (v15). — *✅ obě, kontinuální (`FolderWatchService` / `FolderWatcher`).*
 - **FR-E2 Re-crawl URL** — diff hash → reindex. — *✅ obě.*
 - **FR-E3 Opt-in web search** v chatu (per-message toggle, default off); výsledky jako **user-message context, ne system prompt**. — *✅ obě.*
 
 ---
 
-## 6. Testový dluh Epiců B–E
+## 6. Testový dluh Epiců B–E — ✅ splaceno
 
-Implementace B–E přinesla migrace a několik oprav testů, ne plné pokrytí akceptačních kritérií.
+Windows Core mělo pro osm subsystémů **nula testů**. Doplněno (273 → 336):
 
-**Windows Core (`net10.0` — spustitelné i mimo Windows, žádná výmluva):** chybí testy pro
-`NotebookStore.Tags`, `NotebookStore.SourceSets`, `NotebookStore.Personas`, `ExportService`,
-`NotebookStore.Search` (global search), `ContextualEnricher`, `FolderWatchService`, `WebSearchAdapter`.
-Sada `windows/tests/AINotebook.Core.Tests/` dnes tato témata nepokrývá vůbec. → **T-1**
+| Soubor | Pokrývá |
+|---|---|
+| `Storage/NotebookStoreTagsTests.cs` | FR-B8 — reuse tagu, replace-not-append u `SetNoteTags`, cascade při mazání tagu i poznámky |
+| `Storage/NotebookStoreSourceSetsTests.cs` | FR-C2 — scope na notebook, replace členů, cascade při mazání zdroje |
+| `Storage/NotebookStorePersonasTests.cs` | FR-C5 — round-trip všech polí, nullable source set/model, cascade s notebookem |
+| `Storage/NotebookStoreSearchTests.cs` | FR-B9 + FR-B4 — snippet, scope, reindex po editaci, odolnost proti rozbitým FTS dotazům |
+| `Rag/ExportServiceTests.cs` | FR-B1/B2 + bezpečnost — zip-slip, únik cest, izolace notebooku |
+| `Rag/ContextualEnricherTests.cs` | FR-D1 — co se ukládá, co se posílá, prázdný zdroj, cancellation |
+| `Ingestion/FolderWatchServiceTests.cs` | FR-E1 — lifecycle + reálné souborové události (polling, ne sleep) |
+| `Providers/WebSearchAdapterTests.cs` | FR-E3 — mapování DDG odpovědi + **bezpečnostní regrese: výsledky jdou do user turnu, ne do system promptu** |
 
-Cílené případy:
+**Dvě reálné vady nalezené při psaní testů (obě v `ExportService`, obě opravené):**
 
-- **B:** ExportService — round-trip ZIP (manifest validní, přílohy i `rawPath` soubory přítomné); PDF export produkuje neprázdný validní soubor; DB backup → restore obnoví identická data; GlobalSearch najde poznámku i zdroj napříč notebooky a vrátí správný skok-cíl; tag filtr + text search kombinace; `notes_fts` relevance.
-- **C:** per-notebook instrukce se propíše do `SystemPrompt`; source set omezí retrieval scope; regenerace jiným modelem vytvoří nový `chat_messages` řádek s `model` a nezničí historii; persona CRUD + aplikace.
-- **D:** contextual enrichment předřadí kontext před embeddingem a udělá **jeden** LLM průchod na zdroj (ověřit počet volání); eval runner (W-4) vypíše recall@8 nad fixture korpusem.
-- **E:** folder watch detekuje změněný/smazaný soubor (mtime/hash) a označí stale, ne smaže; re-crawl reindexuje jen při změně hashe; **web search výsledky jdou do user-message contextu, ne do system promptu** (bezpečnostní regrese test).
-- **UI-kompoziční smoke testy:** každý nový tab/dialog instancuje reálnou stránku, ne placeholder.
+1. Sanitace názvu souboru se spoléhala jen na `Path.GetInvalidFileNameChars()`, což je
+   platform-dependent — na Unixu obsahuje jen `\0` a `/`, takže zpětná lomítka v názvu
+   poznámky přežila do jména zip entry, kterou Windows extractor přečte jako traversal.
+   Obě lomítka se teď odmítají explicitně. (Swift `ExportService` to dělal správně už dřív.)
+2. Poznámky se stejným názvem kolidovaly — dvě entry se stejným jménem, extractor si nechá
+   poslední, takže **export tiše ztratil poznámku**. Doplněna de-duplikace podle vzoru z `ExportService.swift`.
 
----
+**macOS zbytek:** `FolderWatcherTests` (8 testů) + `RetrievalEvalFetchWindowTests` (2 testy).
+
+**Co zůstává nepokryté:** `AINotebook.App.Tests` cílí na `net10.0-windows`, takže ViewModel
+a XAML vrstva (persona picker, bulk poznámky) je ověřená až Windows CI, ne lokálně.
 
 ## 7. Průřezové požadavky (platí pro všechny epicy)
 
@@ -223,10 +260,15 @@ Cílené případy:
 
 | Pořadí | Práce | Cílový release |
 |---|---|---|
-| 1 | **W-4** eval sada (D2) → rozhodnutí o **W-5** | v0.14.0 |
-| 2 | **W-3** persony UI + **W-6** bulk poznámky (Windows) + **T-1** testový dluh | v0.14.0 |
-| 3 | **M-1** FSEvents watcher (macOS) | v0.14.0 |
-| 4 | **W-5** reranker — *jen při „go" z W-4* | v0.15.0 |
-| 5 | **M-2** PDF export macOS + **D1-wire** (gated na W-4) | v0.15.0 |
+| 1 | Vydat rozpracované: W-4 eval + W-3 + W-6 + T-1 + M-1 | **v0.14.0** |
+| 2 | **R-1** oddělení `fetchK`/`topK` + znovuměření s `--embedder ollama` | v0.15.0 |
+| 3 | Rozhodnout **počet LLM volání u D1** (§0.3), pak **D1-wire** | v0.15.0 |
+| 4 | **M-2** PDF export na macOS | v0.16.0 |
 
-**Priorita:** W-4 jde první, protože blokuje dvě rozhodnutí (W-5 i D1-wire) — bez čísel se ani jedno nezapíná. Zbytek jsou malé adresné položky, které dotahují paritu (W-3, W-6, M-1) a testové pokrytí (T-1); jdou dodávat po samostatných PR. Každý PR musí držet průřezové požadavky (§7) — zvlášť identická čísla migrací a EN+CZ stringy.
+**Priorita:** R-1 je teď nejvýš, protože ho doporučuje měření a je to zároveň jediná
+cesta, po které by se dal někdy dodělat reranker. D1-wire je zablokovaný otázkou z §0.3 —
+zapojit enrichment, který dělá 50 LLM volání na dokument místo jednoho, by byl drahý omyl.
+M-2 je poslední zbývající nerovnost mezi platformami a je malé.
+
+Každý PR musí držet průřezové požadavky (§7) — zvlášť identická čísla migrací
+(další feature migrace = **v19 na obou**) a EN+CZ stringy.
