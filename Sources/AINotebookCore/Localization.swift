@@ -235,6 +235,8 @@ public struct AppText: Sendable {
         case webSearchChatToggle
         // Epic E1/E2 — live sources
         case watchFolderButton
+        case watchFolderStopButton
+        case watchFolderActiveLabel
         case recrawlSourceButton
         // Epic C5 — personas
         case personaMenu
@@ -485,7 +487,9 @@ public struct AppText: Sendable {
         case .chatEdit:                  "Edit"
         case .webSearchToggle:           "Enable web search"
         case .webSearchChatToggle:       "Search the web for this message"
-        case .watchFolderButton:         "Sync folder…"
+        case .watchFolderButton:         "Watch folder…"
+        case .watchFolderStopButton:     "Stop watching"
+        case .watchFolderActiveLabel:    "Watching"
         case .recrawlSourceButton:       "Refresh"
         case .personaMenu:               "Persona"
         case .personaNone:               "None"
@@ -721,7 +725,9 @@ public struct AppText: Sendable {
         case .chatEdit:                  "Upravit"
         case .webSearchToggle:           "Povolit hledání na webu"
         case .webSearchChatToggle:       "Hledat na webu pro tuto zprávu"
-        case .watchFolderButton:         "Synchronizovat složku…"
+        case .watchFolderButton:         "Sledovat složku…"
+        case .watchFolderStopButton:     "Přestat sledovat"
+        case .watchFolderActiveLabel:    "Sleduji"
         case .recrawlSourceButton:       "Obnovit"
         case .personaMenu:               "Persona"
         case .personaNone:               "Žádná"

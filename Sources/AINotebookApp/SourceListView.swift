@@ -23,6 +23,9 @@ struct SourceListView: View {
     @State private var sourceTagIds: [Int64: Set<Int64>] = [:]
     @State private var bulkMode = false
     @State private var selectedIds: Set<Int64> = []
+    /// E1 — continuous folder watching. A @StateObject because the watcher has
+    /// to outlive the view struct SwiftUI rebuilds on every redraw.
+    @StateObject private var folderWatch = FolderWatchController()
 
     private var t: AppText { settings.text }
 
@@ -76,7 +79,7 @@ struct SourceListView: View {
                         selectedIds.removeAll()
                     }
                 }
-                Button(settings.text.string(.watchFolderButton)) { syncFolderAction() }
+                folderWatchButton
                 Button(settings.text.string(.addSourceButton)) {
                     showingAdd = true
                 }
@@ -338,22 +341,46 @@ struct SourceListView: View {
         }
     }
 
-    /// E1 — pick a folder and sync it (ingest new, re-ingest changed, skip
-    /// unchanged). One-shot; a continuous FSEvents watcher can call the same
-    /// LiveSourceSync.syncFolder.
-    private func syncFolderAction() {
+    /// E1 — start or stop watching a folder. While watching, every change in
+    /// the folder re-runs the same `LiveSourceSync.syncFolder` the old one-shot
+    /// button ran, so new files are ingested, edited files are re-ingested by
+    /// content hash, and unchanged files are skipped.
+    @ViewBuilder
+    private var folderWatchButton: some View {
+        if folderWatch.isWatching {
+            HStack(spacing: 6) {
+                if folderWatch.isSyncing {
+                    ProgressView().controlSize(.small)
+                }
+                Text(folderWatch.watchedFolder?.lastPathComponent ?? "")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .help(folderWatch.watchedFolder?.path ?? "")
+                Button(settings.text.string(.watchFolderStopButton)) { folderWatch.stop() }
+            }
+            .accessibilityLabel(settings.text.string(.watchFolderActiveLabel))
+        } else {
+            Button(settings.text.string(.watchFolderButton)) { startWatchingFolder() }
+        }
+    }
+
+    private func startWatchingFolder() {
         let panel = NSOpenPanel()
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = false
         guard panel.runModal() == .OK, let folder = panel.url, let notebookId = notebook.id else { return }
-        Task {
-            do {
-                _ = try await LiveSourceSync(store: store, ingestion: ingestion.service)
-                    .syncFolder(notebookId: notebookId, folder: folder)
-                await reload()
-            } catch { errorMessage = String(describing: error) }
+        folderWatch.start(folder: folder) { folder in
+            await syncWatchedFolder(notebookId: notebookId, folder: folder)
         }
+    }
+
+    private func syncWatchedFolder(notebookId: Int64, folder: URL) async {
+        do {
+            _ = try await LiveSourceSync(store: store, ingestion: ingestion.service)
+                .syncFolder(notebookId: notebookId, folder: folder)
+            await reload()
+        } catch { errorMessage = String(describing: error) }
     }
 
     private func delete(_ source: Source) {
