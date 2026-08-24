@@ -185,6 +185,49 @@
                             </Flyout>
                         </Button.Flyout>
                     </Button>
+                    <!-- C5: persona picker — None / saved personas / new.
+                         macOS parity: ChatView.swift's persona Menu. -->
+                    <DropDownButton x:Name="PersonaButton"
+                                    Content="{x:Bind ViewModel.PersonaButtonText, Mode=OneWay}">
+                        <DropDownButton.Flyout>
+                            <Flyout>
+                                <StackPanel Spacing="6" MinWidth="240">
+                                    <Button x:Name="PersonaNoneButton"
+                                            Command="{x:Bind ViewModel.ClearPersonaCommand}"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Left" Padding="6,4"/>
+                                    <ItemsControl ItemsSource="{x:Bind ViewModel.Personas, Mode=OneWay}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Persona">
+                                                <Button Content="{x:Bind Name}" Tag="{x:Bind}"
+                                                        Click="OnApplyPersona"
+                                                        HorizontalAlignment="Stretch"
+                                                        HorizontalContentAlignment="Left"
+                                                        Padding="6,4" Margin="0,2"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <Border Margin="0,4,0,0"
+                                            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+                                            BorderThickness="0,1,0,0" Padding="0,6,0,0">
+                                        <StackPanel Spacing="4">
+                                            <TextBlock x:Name="PersonaNewLabel"
+                                                       Style="{ThemeResource CaptionTextBlockStyle}"
+                                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                            <TextBox x:Name="PersonaNameBox"
+                                                     Text="{x:Bind ViewModel.NewPersonaName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBox x:Name="PersonaInstructionsBox"
+                                                     AcceptsReturn="True" TextWrapping="Wrap" Height="80"
+                                                     Text="{x:Bind ViewModel.NewPersonaInstructions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button x:Name="PersonaSaveButton"
+                                                    Command="{x:Bind ViewModel.CreatePersonaCommand}"
+                                                    Padding="6,4"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Flyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                     <!-- C3: edit/regen actions -->
                     <Button x:Name="EditLastButton"
                             Command="{x:Bind ViewModel.EditLastCommand}"

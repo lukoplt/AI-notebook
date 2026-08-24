@@ -665,6 +665,21 @@
   <data name="citationPanelEmpty" xml:space="preserve">
     <value>No citations for this message</value>
   </data>
+  <data name="personaMenu" xml:space="preserve">
+    <value>Persona</value>
+  </data>
+  <data name="personaNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="personaNew" xml:space="preserve">
+    <value>New persona…</value>
+  </data>
+  <data name="personaNamePlaceholder" xml:space="preserve">
+    <value>Persona name</value>
+  </data>
+  <data name="personaInstructionsPlaceholder" xml:space="preserve">
+    <value>Instructions for this persona</value>
+  </data>
   <data name="contextualEnrichmentLabel" xml:space="preserve">
     <value>Contextual enrichment</value>
   </data>

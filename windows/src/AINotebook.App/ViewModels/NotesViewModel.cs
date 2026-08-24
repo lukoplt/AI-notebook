@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +34,13 @@ public partial class NotesViewModel : ObservableObject
     [ObservableProperty] public partial string DraftBody { get; set; } = "";
     [ObservableProperty] public partial string? ErrorMessage { get; set; }
     [ObservableProperty] public partial string SearchQuery { get; set; } = "";
+
+    // W-6 (FR-B6): multi-select + bulk delete for notes — parity with
+    // SourcesViewModel's bulk mode and with macOS NotesView.bulkMode.
+    [ObservableProperty] public partial bool IsBulkMode { get; set; }
+    private readonly HashSet<long> _bulkSelection = new();
+    public int BulkSelectionCount => _bulkSelection.Count;
+    public bool HasBulkSelection => _bulkSelection.Count > 0;
 
     // Unsaved-changes gate.
     private long? _pendingSelectionId;
@@ -237,4 +245,41 @@ public partial class NotesViewModel : ObservableObject
         NoteOrigin.Transformation => _t.Get("noteOriginTransformation"),
         _ => ""
     };
+
+    /// W-6: the page owns the ListView, so it reports which notes are ticked
+    /// and the view model holds the set the bulk delete acts on.
+    public void SetBulkSelection(IEnumerable<long> ids)
+    {
+        _bulkSelection.Clear();
+        foreach (var id in ids) _bulkSelection.Add(id);
+        OnPropertyChanged(nameof(BulkSelectionCount));
+        OnPropertyChanged(nameof(HasBulkSelection));
+    }
+
+    [RelayCommand]
+    private void ToggleBulkMode()
+    {
+        IsBulkMode = !IsBulkMode;
+        if (!IsBulkMode) SetBulkSelection(Array.Empty<long>());
+    }
+
+    /// W-6: delete every ticked note. The page confirms first — this runs after
+    /// the user has already said yes. Deleting the open note also clears the
+    /// editor, otherwise it would keep showing a row that no longer exists.
+    [RelayCommand]
+    private async Task BulkDeleteAsync()
+    {
+        var ids = _bulkSelection.ToList();
+        if (ids.Count == 0) return;
+        try
+        {
+            var openNoteDeleted = SelectedNote?.Id is { } openId && ids.Contains(openId);
+            await Task.Run(() => { foreach (var id in ids) _store.DeleteNote(id); });
+            if (openNoteDeleted) SelectedNote = null;
+            IsBulkMode = false;
+            SetBulkSelection(Array.Empty<long>());
+            await ReloadAsync();
+        }
+        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+    }
 }

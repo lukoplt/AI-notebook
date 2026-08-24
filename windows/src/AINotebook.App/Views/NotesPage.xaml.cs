@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.App.Dialogs;
@@ -36,6 +37,8 @@ public sealed partial class NotesPage : Page
         EmptyNotesText.Text = _t.Get("notesEmptyState");
         NoSelectionText.Text = _t.Get("notesEmptyState");
         AddTagText.Text = _t.Get(StringKey.AddTagButton);
+        ToolTipService.SetToolTip(BulkModeToggle, _t.Get(StringKey.BulkSelectButton));
+        BulkDeleteButton.Content = _t.Get(StringKey.BulkDeleteSelectedButton);
         ToolTipService.SetToolTip(ExportNoteButton, _t.Get(StringKey.ExportNoteButton));
         ExportMarkdownItem.Text = _t.Get(StringKey.ExportNoteMarkdown);
         ExportPdfItem.Text = _t.Get(StringKey.ExportNotePdf);
@@ -71,15 +74,69 @@ public sealed partial class NotesPage : Page
             SyncSelectionToList();
             ReconfigureEditor();
         }
+        else if (e.PropertyName == nameof(NotesViewModel.IsBulkMode))
+        {
+            ApplyBulkMode();
+        }
     }
 
     private void OnNotesSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (_suppressSelection) return;
+
+        // W-6: while multi-select is on, ticking rows chooses what to delete —
+        // it must not open notes, or the unsaved-changes gate would fire on
+        // every tick.
+        if (ViewModel.IsBulkMode)
+        {
+            ViewModel.SetBulkSelection(
+                NotesList.SelectedItems.OfType<Note>()
+                    .Where(n => n.Id is not null).Select(n => n.Id!.Value));
+            return;
+        }
+
         var id = (NotesList.SelectedItem as Note)?.Id;
         // Route through the gate; if the gate cancels, snap back happens via ApplySelection.
         ViewModel.AttemptSelect(id);
         SyncSelectionToList();   // re-sync if the gate kept the old selection
+    }
+
+    /// W-6: switch the list between opening notes and ticking them. Selection is
+    /// cleared on both transitions, because a Single selection carried into
+    /// Multiple mode would arrive pre-ticked and a Multiple selection carried
+    /// back would silently open a note.
+    private void ApplyBulkMode()
+    {
+        _suppressSelection = true;
+        // SelectedItems throws when SelectionMode is Single, so clear through
+        // whichever accessor is legal for the mode we are still in.
+        if (NotesList.SelectionMode == ListViewSelectionMode.Multiple)
+            NotesList.SelectedItems.Clear();
+        else
+            NotesList.SelectedItem = null;
+        NotesList.SelectionMode = ViewModel.IsBulkMode
+            ? ListViewSelectionMode.Multiple
+            : ListViewSelectionMode.Single;
+        _suppressSelection = false;
+        ViewModel.SetBulkSelection(Array.Empty<long>());
+        if (!ViewModel.IsBulkMode) SyncSelectionToList();
+    }
+
+    private async void OnBulkDeleteNotes(object sender, RoutedEventArgs e)
+    {
+        var count = ViewModel.BulkSelectionCount;
+        if (count == 0) return;
+        var dialog = new ContentDialog
+        {
+            Title = _t.Get(StringKey.BulkDeleteSelectedButton),
+            Content = string.Format(_t.Get(StringKey.BulkDeleteConfirmFormat), count),
+            PrimaryButtonText = _t.Get(StringKey.Delete),
+            CloseButtonText = _t.Get(StringKey.Cancel),
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = XamlRoot
+        };
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            await ViewModel.BulkDeleteCommand.ExecuteAsync(null);
     }
 
     private void SyncSelectionToList()

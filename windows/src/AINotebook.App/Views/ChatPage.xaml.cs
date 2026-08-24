@@ -44,6 +44,13 @@ public sealed partial class ChatPage : Page
         CancelEditButton.Content = _t.Get(StringKey.CancelButton);
         SourceSetsLabel.Text = _t.Get(StringKey.SourceSetsSectionTitle);
         AddSourceSetButton.Content = _t.Get(StringKey.AddSourceSetButton);
+        // C5 personas
+        PersonaNoneButton.Content = _t.Get(StringKey.PersonaNone);
+        PersonaNewLabel.Text = _t.Get(StringKey.PersonaNew);
+        PersonaNameBox.PlaceholderText = _t.Get(StringKey.PersonaNamePlaceholder);
+        PersonaInstructionsBox.PlaceholderText = _t.Get(StringKey.PersonaInstructionsPlaceholder);
+        PersonaSaveButton.Content = _t.Get(StringKey.Save);
+        ToolTipService.SetToolTip(PersonaButton, _t.Get(StringKey.PersonaMenu));
         ToolTipService.SetToolTip(WebSearchToggle, _t.Get(StringKey.WebSearchToggleLabel));
         ViewModel.Messages.CollectionChanged += (_, _) => ScrollToBottom();
         ViewModel.PropertyChanged += (_, e) =>
@@ -106,6 +113,13 @@ public sealed partial class ChatPage : Page
         ViewModel.SaveAsNoteCommand.Execute(vm);
 
     // C2: apply a source set as the chat scope preset.
+    // C5: activate the persona carried in the button's Tag.
+    private void OnApplyPersona(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement { Tag: Persona persona })
+            ViewModel.ApplyPersonaCommand.Execute(persona);
+    }
+
     private void OnApplySourceSet(object sender, RoutedEventArgs e)
     {
         if (sender is FrameworkElement { Tag: SourceSet set })
