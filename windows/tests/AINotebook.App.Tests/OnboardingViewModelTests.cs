@@ -20,6 +20,9 @@ internal sealed class OnbFakeSettings : ISettingsService
     public string SelectedEmbeddingProviderId { get; set; } = ProviderConfig.OllamaId;
     public bool AutoCheckUpdates { get; set; } = true;
     public DateTimeOffset? LastUpdateCheckUtc { get; set; }
+    public bool WebSearchEnabled { get; set; }
+    public string RightPanel { get; set; } = "";
+    public double RightPanelWidth { get; set; } = 360;
 }
 
 internal sealed class FakeOllama : IOllamaOnboarding

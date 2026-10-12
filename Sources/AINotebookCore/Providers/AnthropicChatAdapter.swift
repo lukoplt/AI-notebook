@@ -6,7 +6,6 @@ import Foundation
 /// surfaced as `ProviderError.refusal` instead of an empty answer (FR-A10).
 public struct AnthropicChatAdapter: ChatStreaming {
     static let apiVersion = "2023-06-01"
-    static let maxTokens = 8192
 
     /// Offered when GET /v1/models is unreachable (roadmap FR-A3 fallback).
     public static let defaultModels: [ProviderModelInfo] = [
@@ -38,38 +37,41 @@ public struct AnthropicChatAdapter: ChatStreaming {
         }
     }
 
-    func makeRequest(model: String, messages: [ChatTurn]) throws -> URLRequest {
-        let systemTexts = messages.filter { $0.role == .system }.map(\.content)
-        let system = systemTexts.isEmpty ? nil : systemTexts.joined(separator: "\n\n")
-        let wire = messages
+    func makeRequest(model: String, messages: [ChatTurn], options: ChatRequestOptions = .defaults) throws -> URLRequest {
+        try options.validate()
+        let canonical = ProviderWire.canonicalMessages(messages)
+        let system = canonical.first.flatMap { $0.role == .system ? $0.content : nil }
+        let wire = canonical
             .filter { $0.role != .system }
             .map { ProviderWire.WireMessage(role: ProviderWire.wireRole($0.role), content: $0.content) }
 
-        var req = URLRequest(url: try ProviderWire.url(base: baseURL, path: "/v1/messages"))
+        var req = URLRequest(url: try ProviderAPIRoot.build(type: .anthropic, baseURL: baseURL, endpoint: .chat))
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.setValue("text/event-stream", forHTTPHeaderField: "Accept")
         req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         req.setValue(Self.apiVersion, forHTTPHeaderField: "anthropic-version")
         req.httpBody = try JSONEncoder().encode(RequestBody(
-            model: model, maxTokens: Self.maxTokens, system: system, messages: wire, stream: true
+            model: model, maxTokens: options.maxOutputTokens, system: system, messages: wire, stream: true
         ))
         return req
     }
 
     public func stream(model: String, messages: [ChatTurn]) -> AsyncThrowingStream<String, Error> {
+        stream(model: model, messages: messages, options: .defaults)
+    }
+
+    public func stream(model: String, messages: [ChatTurn], options: ChatRequestOptions)
+        -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    let request = try makeRequest(model: model, messages: messages)
+                    let request = try makeRequest(model: model, messages: messages, options: options)
                     let (bytes, response) = try await session.bytes(for: request)
                     if let http = response as? HTTPURLResponse,
-                       let err = ProviderWire.error(
-                        forStatus: http.statusCode,
-                        retryAfter: http.value(forHTTPHeaderField: "Retry-After"),
-                        body: ""
-                       ) {
-                        continuation.finish(throwing: err)
+                       !(200..<300).contains(http.statusCode) {
+                        let body = try await ProviderWire.readErrorBody(bytes)
+                        continuation.finish(throwing: ProviderWire.chatError(response: http, body: body, anthropic: true))
                         return
                     }
                     for try await line in bytes.lines {
@@ -117,7 +119,7 @@ public struct AnthropicChatAdapter: ChatStreaming {
     public static func listModels(
         baseURL: String, apiKey: String, session: URLSession = .shared
     ) async throws -> [ProviderModelInfo] {
-        var req = URLRequest(url: try ProviderWire.url(base: baseURL, path: "/v1/models"))
+        var req = URLRequest(url: try ProviderAPIRoot.build(type: .anthropic, baseURL: baseURL, endpoint: .models))
         req.httpMethod = "GET"
         req.setValue(apiKey, forHTTPHeaderField: "x-api-key")
         req.setValue(apiVersion, forHTTPHeaderField: "anthropic-version")

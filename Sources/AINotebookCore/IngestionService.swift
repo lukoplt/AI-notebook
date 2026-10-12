@@ -1,3 +1,4 @@
+import CryptoKit
 import Foundation
 
 /// Orchestrates: type-detect → text-extract → chunk → persist, updating
@@ -15,19 +16,31 @@ public final class IngestionService: @unchecked Sendable {
     }
 
     private let store: NotebookStore
-    private let plain:  TextExtractor
-    private let pdf:    TextExtractor
+    private let plain:  TextExtractor?
+    private let pdf:    TextExtractor?
     private let web:    TextExtractor
-    private let office: TextExtractor
+    private let office: TextExtractor?
     private let onChunksWritten: (@Sendable () async -> Void)?
+    private let leaseClock: any IngestLeaseClock
+    private let detector: LanguageDetector
+    private let embeddingSelection: (@Sendable (Int64) async throws -> EmbeddingSelection?)?
+    /// The process-wide durable folder runtime, when the app installed one.
+    public let folderRuntime: FolderIngestionRuntime?
 
+    /// File extractors left `nil` use the bounded canonical path (scalar
+    /// chunks v2, encoding/descriptor/language/page map). Injected legacy
+    /// extractors keep their exact behaviour for compatibility tests.
     public init(
         store: NotebookStore,
-        plain:  TextExtractor = PlainTextExtractor(),
-        pdf:    TextExtractor = PDFExtractor(),
+        plain:  TextExtractor? = nil,
+        pdf:    TextExtractor? = nil,
         web:    TextExtractor = WebExtractor(),
-        office: TextExtractor = OfficeExtractor(),
-        onChunksWritten: (@Sendable () async -> Void)? = nil
+        office: TextExtractor? = nil,
+        onChunksWritten: (@Sendable () async -> Void)? = nil,
+        leaseClock: any IngestLeaseClock = SystemIngestLeaseClock(),
+        folderRuntime: FolderIngestionRuntime? = nil,
+        detector: LanguageDetector = .bundled(),
+        embeddingSelection: (@Sendable (Int64) async throws -> EmbeddingSelection?)? = nil
     ) {
         self.store = store
         self.plain = plain
@@ -35,6 +48,21 @@ public final class IngestionService: @unchecked Sendable {
         self.web = web
         self.office = office
         self.onChunksWritten = onChunksWritten
+        self.leaseClock = leaseClock
+        self.folderRuntime = folderRuntime
+        self.detector = detector
+        self.embeddingSelection = embeddingSelection
+    }
+
+    /// The injected legacy extractor for a file kind, or nil for the canonical path.
+    private func legacyExtractor(for kind: SourceType) -> TextExtractor? {
+        switch kind {
+        case .pdf: return pdf
+        case .text, .markdown: return plain
+        case .docx, .pptx, .xlsx: return office
+        case .web: return web
+        case .note, .email: return nil
+        }
     }
 
     @discardableResult
@@ -52,32 +80,14 @@ public final class IngestionService: @unchecked Sendable {
                 rawPath: url.path
             )
         }
-        return try await runPipeline(for: source) { [self] in
-            switch kind {
-            case .pdf:
-                let extracted = try await pdf.extract(from: url, kind: kind)
-                let pages: [(String, Int)]
-                if let hints = extracted.pageHints {
-                    let split = extracted.text.split(separator: "\u{0C}", omittingEmptySubsequences: false)
-                    pages = zip(split, hints).map { (String($0.0), $0.1) }
-                } else {
-                    pages = [(extracted.text, 0)]
-                }
-                return (extracted, Chunker.chunkPaged(pages))
-            case .text, .markdown:
-                let e = try await plain.extract(from: url, kind: kind)
-                return (e, Chunker.chunk(e.text))
-            case .docx, .pptx, .xlsx:
-                let e = try await office.extract(from: url, kind: kind)
-                return (e, Chunker.chunk(e.text))
-            case .web:
-                let e = try await web.extract(from: url, kind: kind)
-                return (e, Chunker.chunk(e.text))
-            case .note:
-                // .note sources are managed via Notebook notes, not file ingestion.
-                throw IngestionError.unsupportedExtension(url.pathExtension)
-            }
+        return try await runFile(source: source, url: url, kind: kind)
+    }
+
+    private func runFile(source: Source, url: URL, kind: SourceType) async throws -> Source {
+        if let legacy = legacyExtractor(for: kind) {
+            return try await runPipeline(for: source) { try await legacy.extract(from: url, kind: kind) }
         }
+        return try await runCanonicalPipeline(for: source, url: url, kind: kind)
     }
 
     @discardableResult
@@ -92,8 +102,7 @@ public final class IngestionService: @unchecked Sendable {
             )
         }
         return try await runPipeline(for: source) {
-            let e = ExtractedText(title: title, text: text)
-            return (e, Chunker.chunk(text))
+            ExtractedText(title: title, text: text)
         }
     }
 
@@ -109,8 +118,7 @@ public final class IngestionService: @unchecked Sendable {
             )
         }
         return try await runPipeline(for: source) { [self] in
-            let e = try await web.extract(from: url, kind: .web)
-            return (e, Chunker.chunk(e.text))
+            try await web.extract(from: url, kind: .web)
         }
     }
 
@@ -118,63 +126,134 @@ public final class IngestionService: @unchecked Sendable {
     /// watch / URL re-crawl, FR-E1/E2). Ported from the Windows `ReIngestAsync`.
     @discardableResult
     public func reIngest(sourceId: Int64) async throws -> Source {
-        let source = try await MainActor.run { try store.source(id: sourceId) }
-        guard let source else { throw IngestionError.unsupportedExtension("(source \(sourceId) not found)") }
-        let url: URL
-        if let raw = source.rawPath { url = URL(fileURLWithPath: raw) }
-        else if let uri = source.uri, let u = URL(string: uri) { url = u }
-        else { throw IngestionError.unsupportedExtension("(source \(sourceId) has no path/URI)") }
+        let loaded = try await MainActor.run { () throws -> (Source, Bool)? in
+            guard let source = try store.source(id: sourceId) else { return nil }
+            let inFolder = try store.runOnDatabase {
+                try Int64.fetchOne($0, sql: "SELECT folder_id FROM sources WHERE id=?", arguments: [sourceId])
+            } != nil
+            return (source, inFolder)
+        }
+        guard let (source, inFolder) = loaded else { throw IngestionError.unsupportedExtension("(source \(sourceId) not found)") }
+        if inFolder {
+            // Folder files are re-read only through the durable, fenced worker.
+            let clock = leaseClock
+            return try await MainActor.run { () throws -> Source in
+                try store.requestSourceExtraction(sourceId: sourceId, now: clock.now())
+                return try store.source(id: sourceId) ?? source
+            }
+        }
         let kind = source.type
+        if let raw = source.rawPath {
+            return try await runFile(source: source, url: URL(fileURLWithPath: raw), kind: kind)
+        }
+        guard let uri = source.uri, let url = URL(string: uri) else {
+            throw IngestionError.unsupportedExtension("(source \(sourceId) has no path/URI)")
+        }
         return try await runPipeline(for: source) { [self] in
             switch kind {
-            case .pdf:
-                let extracted = try await pdf.extract(from: url, kind: kind)
-                let pages: [(String, Int)]
-                if let hints = extracted.pageHints {
-                    let split = extracted.text.split(separator: "\u{0C}", omittingEmptySubsequences: false)
-                    pages = zip(split, hints).map { (String($0.0), $0.1) }
-                } else {
-                    pages = [(extracted.text, 0)]
-                }
-                return (extracted, Chunker.chunkPaged(pages))
-            case .text, .markdown:
-                let e = try await plain.extract(from: url, kind: kind)
-                return (e, Chunker.chunk(e.text))
-            case .docx, .pptx, .xlsx:
-                let e = try await office.extract(from: url, kind: kind)
-                return (e, Chunker.chunk(e.text))
-            case .web:
-                let e = try await web.extract(from: url, kind: kind)
-                return (e, Chunker.chunk(e.text))
-            case .note:
-                throw IngestionError.unsupportedExtension("note")
+            case .note: throw IngestionError.unsupportedExtension("note")
+            default: return try await web.extract(from: url, kind: kind)
             }
         }
     }
 
+    /// Bounded canonical extraction for loose files: the same preparation and
+    /// fenced metadata/page-map/embed-job publication as folder sources.
+    private func runCanonicalPipeline(for sourceIn: Source, url: URL, kind: SourceType) async throws -> Source {
+        let sourceId = sourceIn.id!, notebookId = sourceIn.notebookId
+        let limits = IngestionLimits.defaults, detector = self.detector
+        return try await withLease(sourceId: sourceId) { [self] fence in
+            let document = try await BoundedDocumentExtractor().extract(url: url, kind: kind, rules: .defaults)
+            let (hash, size) = try Self.streamingHash(url, maxBytes: limits.fileBytes)
+            let prepared = try FolderExtractionWorker.prepare(document: document, contentHash: hash, sizeBytes: size,
+                                                              filename: url.lastPathComponent, limits: limits, detector: detector)
+            var selection: EmbeddingSelection?
+            if let embeddingSelection {
+                selection = try await FolderExtractionWorker.publishableSelection(notebookId, embeddingSelection)
+            }
+            try Task.checkCancellation()
+            return try await MainActor.run {
+                try store.publishLooseExtraction(sourceId: sourceId, draft: prepared.draft, chunks: prepared.chunks,
+                    metadata: prepared.metadata, embeddingSelection: selection, fence: fence, now: leaseClock.now()) != nil
+            }
+        }
+    }
+
+    /// Bounded streaming SHA-256 of a local file; never buffers the whole file.
+    static func streamingHash(_ url: URL, maxBytes: Int64) throws -> (String, Int64) {
+        let handle = try FileHandle(forReadingFrom: url)
+        defer { try? handle.close() }
+        var digest = SHA256()
+        var total: Int64 = 0
+        while true {
+            try Task.checkCancellation()
+            guard let block = try handle.read(upToCount: 65_536), !block.isEmpty else { break }
+            total += Int64(block.count)
+            guard total <= maxBytes else { throw FolderIngestionLimit.fileLimit }
+            digest.update(data: block)
+        }
+        return (digest.finalize().map { String(format: "%02x", $0) }.joined(), total)
+    }
+
+    private enum FolderIngestionLimit: Error { case fileLimit }
+
     private func runPipeline(
         for sourceIn: Source,
-        extract: () async throws -> (ExtractedText, [ChunkDraft])
+        extract: @escaping () async throws -> ExtractedText
     ) async throws -> Source {
-        var source = sourceIn
-        do {
-            try await MainActor.run {
-                try store.updateSourceStatus(id: source.id!, status: .chunking, error: nil)
+        let sourceId = sourceIn.id!
+        return try await withLease(sourceId: sourceId) { [self] fence in
+            let extracted = try await extract()
+            try Task.checkCancellation()
+            let assembled = ExtractedRevisionAssembly.make(extracted: extracted, kind: sourceIn.type)
+            return try await MainActor.run {
+                try Task.checkCancellation()
+                return try store.commitExtraction(sourceId: sourceId, draft: assembled.draft,
+                    chunks: assembled.chunks, fence: fence, now: leaseClock.now()) != nil
             }
-            let (_, chunks) = try await extract()
-            try await MainActor.run {
-                try store.replaceChunks(sourceId: source.id!, chunks: chunks)
-                try store.updateSourceStatus(id: source.id!, status: .ready, error: nil)
-            }
-            await onChunksWritten?()
-            source.status = .ready
-            return source
-        } catch {
-            let message = String(describing: error)
-            try? await MainActor.run {
-                try store.updateSourceStatus(id: source.id!, status: .error, error: message)
-            }
-            throw error
         }
+    }
+
+    /// Foreground lease bracket shared by legacy and canonical paths. A
+    /// cancelled attempt becomes a visible `cancelled` refresh error (never a
+    /// permanently pending refresh); other errors fail the fenced job.
+    private func withLease(sourceId: Int64, body: @escaping (JobFence) async throws -> Bool) async throws -> Source {
+        let fence = try await MainActor.run {
+            try Task.checkCancellation()
+            return try store.beginExtraction(sourceId: sourceId, now: leaseClock.now(), leaseToken: UUID().uuidString)
+        }
+        let renewal = ExtractionLeaseRenewal.start(store: store, fence: fence, clock: leaseClock)
+        return try await withTaskCancellationHandler {
+            do {
+                let committed = try await body(fence)
+                renewal.cancel()
+                await renewal.value
+                let source = try await MainActor.run { () throws -> Source in
+                    guard let fresh = try store.source(id: sourceId) else { throw StorageV19Error.notFound }
+                    return fresh
+                }
+                if committed { await onChunksWritten?() }
+                return source
+            } catch {
+                renewal.cancel()
+                await renewal.value
+                let cancelled = error is CancellationError || Task.isCancelled
+                _ = try? await MainActor.run {
+                    if cancelled {
+                        return try store.cancelIngestJob(id: fence.jobId, fence: fence, now: leaseClock.now())
+                    }
+                    return try store.failJob(fence: fence, error: Self.code(error), now: leaseClock.now())
+                }
+                throw error
+            }
+        } onCancel: {
+            renewal.cancel()
+        }
+    }
+
+    private static func code(_ error: Error) -> String {
+        if let error = error as? AINotebookCore.IngestionError { return error.code }
+        if error is FolderIngestionLimit { return "fileLimit" }
+        return String(describing: error)
     }
 }

@@ -6,6 +6,12 @@ namespace AINotebook.Core.Tests.Providers;
 public class ProviderTypeTests
 {
     [Fact]
+    public void OpenAI_default_is_the_exact_versioned_API_root()
+    {
+        Assert.Equal("https://api.openai.com/v1", ProviderType.OpenAI.DefaultBaseUrl());
+    }
+
+    [Fact]
     public void OpenWebUI_storage_string_roundtrips()
     {
         Assert.Equal("openwebui", ProviderType.OpenWebUI.ToStorageString());

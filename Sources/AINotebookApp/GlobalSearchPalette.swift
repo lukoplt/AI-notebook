@@ -19,7 +19,7 @@ struct GlobalSearchPalette: View {
         VStack(alignment: .leading, spacing: 0) {
             TextField(settings.text.string(.globalSearchPlaceholder), text: $query)
                 .textFieldStyle(.plain)
-                .font(.title3)
+                .tokenFont(.headline)
                 .padding(16)
                 .onChange(of: query) { _, q in
                     result = (try? store.globalSearch(query: q)) ?? GlobalSearchResult(notes: [], sources: [])
@@ -36,7 +36,7 @@ struct GlobalSearchPalette: View {
             VStack {
                 Spacer()
                 Text(query.isEmpty ? settings.text.string(.globalSearchTitle) : settings.text.string(.globalSearchEmpty))
-                    .foregroundStyle(.secondary)
+                    .tokenForeground(.text2)
                 Spacer()
             }
             .frame(maxWidth: .infinity)
@@ -52,7 +52,7 @@ struct GlobalSearchPalette: View {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(hit.title).fontWeight(.medium)
                                     Text(strippedSnippet(hit.snippet))
-                                        .font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                                        .tokenFont(.caption).tokenForeground(.text2).lineLimit(1)
                                 }
                             }
                             .buttonStyle(.plain)

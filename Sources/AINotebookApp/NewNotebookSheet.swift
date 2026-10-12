@@ -17,7 +17,7 @@ struct NewNotebookSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(settings.text.string(.createNotebook))
-                .font(.title3)
+                .tokenFont(.headline)
                 .bold()
 
             TextField(settings.text.string(.notebookName), text: $name)
@@ -33,8 +33,8 @@ struct NewNotebookSheet: View {
 
             if let errorMessage {
                 Text(errorMessage)
-                    .foregroundStyle(.red)
-                    .font(.caption)
+                    .tokenForeground(.danger)
+                    .tokenFont(.caption)
             }
 
             HStack {

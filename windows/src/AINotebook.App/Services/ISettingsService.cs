@@ -15,4 +15,10 @@ public interface ISettingsService : INotifyPropertyChanged
     string SelectedEmbeddingProviderId { get; set; } // default = Ollama well-known ID
     bool AutoCheckUpdates { get; set; }
     DateTimeOffset? LastUpdateCheckUtc { get; set; }
+    /// Shows the per-message web search toggle in the composer "+" menu (macOS AppSettings.webSearchEnabled).
+    bool WebSearchEnabled { get; set; }
+    /// Remembered right panel segment name; empty = collapsed (UI redesign §2.3).
+    string RightPanel { get; set; }
+    /// Remembered right panel width in epx (clamped to tokens panelMin…panelMax by the shell).
+    double RightPanelWidth { get; set; }
 }

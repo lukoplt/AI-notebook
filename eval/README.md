@@ -9,8 +9,23 @@ swift run ainotebook-eval --embedder nl         # offline semantic (Apple Natura
 swift run ainotebook-eval --embedder ollama     # the real pipeline; needs a local Ollama
 ```
 
-Never run in CI — the `ollama` mode needs a model server, and this is a
-deliberate local measurement rather than a per-commit gate.
+The original English path above keeps its hashing embedder and existing gold
+policy. The [multilingual assets](multilingual/README.md) use exact scalar
+occurrences and separate lexical, hybrid and candidate recall. WP1 Tasks 6/7
+add the following commands (the shared asset stage alone does not add runners):
+
+```bash
+swift run ainotebook-eval --dataset multilingual --root eval/multilingual --validate-only
+swift run ainotebook-eval --dataset multilingual --mode lexical --json /tmp/wp1-swift.json --out /tmp/wp1-swift.md
+dotnet run --project windows/tools/AINotebook.Eval -- --dataset multilingual --root eval/multilingual --validate-only
+dotnet run --project windows/tools/AINotebook.Eval -- --dataset multilingual --mode lexical --json /tmp/wp1-windows.json --out /tmp/wp1-windows.md
+```
+
+Deterministic Core tests and shared fixture checks run in CI on both platforms.
+Live Ollama runs and hardware measurements are opt-in; they require a running
+local server and an already installed model. Multilingual `--mode lexical`
+makes no embedding calls. An explicit live run uses `--mode ollama --model NAME`.
+On Windows, use output paths under `$env:TEMP` instead of `/tmp`.
 
 ## Layout
 

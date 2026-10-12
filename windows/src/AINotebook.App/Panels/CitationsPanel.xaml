@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Right panel › Citations (spec §2.3): the current answer's citations — title, path, page, the
+  saved snapshot text and "Open original" / "Open note"; the clicked [N] is highlighted and
+  scrolled to. "Open original" is resolved and validated by Core at click time (WP8).
+-->
+<UserControl
+    x:Class="AINotebook.App.Panels.CitationsPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AINotebook.App.ViewModels"
+    xmlns:panels="using:AINotebook.App.Panels">
+    <Grid Padding="12,0,12,12" RowSpacing="{StaticResource Space8}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- WP8: click-time original status (changed / unavailable / outside folder) -->
+        <Grid ColumnSpacing="{StaticResource Space8}"
+              Visibility="{x:Bind ViewModel.CitationStatus, Mode=OneWay, Converter={StaticResource StringToVisibility}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <FontIcon Glyph="{StaticResource IconWarning}" Style="{StaticResource RowIcon}" Foreground="{ThemeResource WarningBrush}" />
+            <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.CitationStatus, Mode=OneWay}" Style="{StaticResource TextCaption}"
+                       Foreground="{ThemeResource Text2Brush}" TextWrapping="Wrap" />
+        </Grid>
+
+        <TextBlock x:Name="EmptyText" Grid.Row="1" Style="{StaticResource TextBody}" Foreground="{ThemeResource Text2Brush}"
+                   TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"
+                   Visibility="{x:Bind EmptyVisibility(ViewModel.PanelCitations.Count), Mode=OneWay}" />
+
+        <ListView x:Name="CitationList" Grid.Row="1" SelectionMode="None"
+                  ItemsSource="{x:Bind ViewModel.PanelCitations, Mode=OneWay}"
+                  ItemContainerStyle="{StaticResource FlatListItemStyle}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="vm:CitationViewModel">
+                    <Grid Margin="0,4">
+                        <Border Background="{ThemeResource Surface2Brush}" CornerRadius="{StaticResource RadiusMd}" />
+                        <Border BorderBrush="{ThemeResource FocusBrush}" BorderThickness="2" CornerRadius="{StaticResource RadiusMd}"
+                                Visibility="{x:Bind IsFocused, Converter={StaticResource BoolToVisibility}}" />
+                        <StackPanel Padding="{StaticResource Pad12}" Spacing="{StaticResource Space4}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                                <Border Background="{ThemeResource Surface1Brush}" CornerRadius="{StaticResource RadiusPill}" Padding="6,0">
+                                    <TextBlock Text="{x:Bind Marker}" Style="{StaticResource TextMono}" FontSize="{StaticResource FontSizeCaption}"
+                                               Foreground="{ThemeResource Text2Brush}" />
+                                </Border>
+                                <TextBlock Text="{x:Bind SourceTitle}" Style="{StaticResource TextBody}" FontWeight="SemiBold"
+                                           Foreground="{ThemeResource Text1Brush}" TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+                            <TextBlock Text="{x:Bind PathText}" Style="{StaticResource SecondaryCaption}" TextTrimming="CharacterEllipsis"
+                                       Visibility="{x:Bind PathText, Converter={StaticResource NullToCollapsed}}" />
+                            <TextBlock Text="{x:Bind panels:CitationsPanel.PageText(PageHint)}" Style="{StaticResource SecondaryCaption}"
+                                       Visibility="{x:Bind panels:CitationsPanel.PageVisibility(PageHint)}" />
+                            <TextBlock Text="{x:Bind Snippet}" Style="{StaticResource TextCaption}" Foreground="{ThemeResource Text2Brush}"
+                                       TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                            <HyperlinkButton Padding="0" Tag="{x:Bind}" Click="OnOpenCitation" Foreground="{ThemeResource FocusBrush}"
+                                             Content="{x:Bind panels:CitationsPanel.OpenLabel(NoteIdToOpen)}" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

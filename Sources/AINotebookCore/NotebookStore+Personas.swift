@@ -5,7 +5,7 @@ import GRDB
 extension NotebookStore {
 
     public func personas(notebookId: Int64) throws -> [Persona] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Row.fetchAll(
                 db,
                 sql: "SELECT id, notebook_id, name, instructions, source_set_id, model, created_at FROM personas WHERE notebook_id=? ORDER BY name ASC",

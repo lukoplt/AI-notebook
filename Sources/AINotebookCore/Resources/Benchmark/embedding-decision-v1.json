@@ -1,0 +1,11 @@
+{
+  "contract": "embedding-decision",
+  "parameters": {
+    "evidenceShareBp": 6000,
+    "fetchK": 32,
+    "topK": 16
+  },
+  "profileId": null,
+  "status": "pending",
+  "version": 1
+}

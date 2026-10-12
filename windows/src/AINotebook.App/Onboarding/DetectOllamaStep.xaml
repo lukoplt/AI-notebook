@@ -3,28 +3,29 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Loaded="OnLoaded" Unloaded="OnUnloaded">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20" Padding="40" MaxWidth="520">
-        <FontIcon x:Name="StatusIcon" FontSize="48" HorizontalAlignment="Center" Glyph="&#xE9A9;" />
-        <TextBlock x:Name="TitleText" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" />
-        <TextBlock x:Name="BodyText" TextWrapping="Wrap" TextAlignment="Center"
-                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+    <StackPanel HorizontalAlignment="Center" Spacing="{StaticResource Space16}">
+        <FontIcon x:Name="StatusIcon" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource Space32}"
+                  HorizontalAlignment="Center" Glyph="&#xE9A9;" Foreground="{ThemeResource Text2Brush}" />
+        <TextBlock x:Name="TitleText" Style="{StaticResource TextTitle}" Foreground="{ThemeResource Text1Brush}"
+                   HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
+        <TextBlock x:Name="BodyText" Style="{StaticResource TextBody}" TextWrapping="Wrap" TextAlignment="Center"
+                   Foreground="{ThemeResource Text2Brush}" />
 
-        <StackPanel x:Name="FoundPanel" Spacing="12" HorizontalAlignment="Center" Visibility="Collapsed">
-            <TextBlock x:Name="FoundText" HorizontalAlignment="Center"
-                       Foreground="{ThemeResource SystemFillColorSuccessBrush}" />
+        <StackPanel x:Name="FoundPanel" Spacing="{StaticResource Space12}" HorizontalAlignment="Center" Visibility="Collapsed">
+            <TextBlock x:Name="FoundText" Style="{StaticResource TextBody}" HorizontalAlignment="Center"
+                       Foreground="{ThemeResource SuccessBrush}" />
             <Button x:Name="ContinueButton" HorizontalAlignment="Center"
-                    Style="{ThemeResource AccentButtonStyle}" Click="OnContinue">
+                    Style="{StaticResource PrimaryButtonStyle}" Click="OnContinue">
                 <Button.KeyboardAccelerators>
                     <KeyboardAccelerator Key="Enter" />
                 </Button.KeyboardAccelerators>
             </Button>
         </StackPanel>
 
-        <StackPanel x:Name="WaitingPanel" Spacing="12" HorizontalAlignment="Center">
-            <ProgressRing IsActive="True" Width="28" Height="28" HorizontalAlignment="Center" />
-            <TextBlock x:Name="WaitingText" HorizontalAlignment="Center"
-                       Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
-            <Button x:Name="DownloadButton" HorizontalAlignment="Center" Click="OnOpenDownload" />
+        <StackPanel x:Name="WaitingPanel" Spacing="{StaticResource Space12}" HorizontalAlignment="Center">
+            <ProgressRing IsActive="True" Width="{StaticResource Space24}" Height="{StaticResource Space24}" HorizontalAlignment="Center" />
+            <TextBlock x:Name="WaitingText" Style="{StaticResource SecondaryCaption}" HorizontalAlignment="Center" TextWrapping="Wrap" />
+            <Button x:Name="DownloadButton" HorizontalAlignment="Center" Style="{StaticResource QuietButtonStyle}" Click="OnOpenDownload" />
         </StackPanel>
     </StackPanel>
 </UserControl>

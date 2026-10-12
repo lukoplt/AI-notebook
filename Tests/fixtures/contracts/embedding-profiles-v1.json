@@ -1,0 +1,554 @@
+{
+  "cases": [
+    {
+      "expected": "search_query: Kdo ručí?",
+      "formatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512",
+      "kind": "format",
+      "name": "nomic-v2-256-query-cs",
+      "profileId": "nomic-v2-256",
+      "purpose": "query",
+      "text": "Kdo ručí?"
+    },
+    {
+      "expected": "search_document: Záruka platí.",
+      "formatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+      "kind": "format",
+      "name": "nomic-v2-256-document-sk",
+      "profileId": "nomic-v2-256",
+      "purpose": "document",
+      "text": "Záruka platí."
+    },
+    {
+      "expected": "search_query: Kdo ručí?",
+      "formatVersion": "wp7:nomic-v2-768:query:split1:scalarpool1:prefixl2:ctx512",
+      "kind": "format",
+      "name": "nomic-v2-768-query-cs",
+      "profileId": "nomic-v2-768",
+      "purpose": "query",
+      "text": "Kdo ručí?"
+    },
+    {
+      "expected": "search_document: Záruka platí.",
+      "formatVersion": "wp7:nomic-v2-768:document:split1:scalarpool1:prefixl2:ctx512",
+      "kind": "format",
+      "name": "nomic-v2-768-document-sk",
+      "profileId": "nomic-v2-768",
+      "purpose": "document",
+      "text": "Záruka platí."
+    },
+    {
+      "expected": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:Kdo ručí?",
+      "formatVersion": "wp7:qwen3-06b-256:query:split1:scalarpool1:prefixl2:ctx32768",
+      "kind": "format",
+      "name": "qwen3-06b-256-query-cs",
+      "profileId": "qwen3-06b-256",
+      "purpose": "query",
+      "text": "Kdo ručí?"
+    },
+    {
+      "expected": "Záruka platí.",
+      "formatVersion": "wp7:qwen3-06b-256:document:split1:scalarpool1:prefixl2:ctx32768",
+      "kind": "format",
+      "name": "qwen3-06b-256-document-sk",
+      "profileId": "qwen3-06b-256",
+      "purpose": "document",
+      "text": "Záruka platí."
+    },
+    {
+      "expected": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:Kdo ručí?",
+      "formatVersion": "wp7:qwen3-06b-512:query:split1:scalarpool1:prefixl2:ctx32768",
+      "kind": "format",
+      "name": "qwen3-06b-512-query-cs",
+      "profileId": "qwen3-06b-512",
+      "purpose": "query",
+      "text": "Kdo ručí?"
+    },
+    {
+      "expected": "Záruka platí.",
+      "formatVersion": "wp7:qwen3-06b-512:document:split1:scalarpool1:prefixl2:ctx32768",
+      "kind": "format",
+      "name": "qwen3-06b-512-document-sk",
+      "profileId": "qwen3-06b-512",
+      "purpose": "document",
+      "text": "Záruka platí."
+    },
+    {
+      "expected": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:Kdo ručí?",
+      "formatVersion": "wp7:qwen3-06b-1024:query:split1:scalarpool1:prefixl2:ctx32768",
+      "kind": "format",
+      "name": "qwen3-06b-1024-query-cs",
+      "profileId": "qwen3-06b-1024",
+      "purpose": "query",
+      "text": "Kdo ručí?"
+    },
+    {
+      "expected": "Záruka platí.",
+      "formatVersion": "wp7:qwen3-06b-1024:document:split1:scalarpool1:prefixl2:ctx32768",
+      "kind": "format",
+      "name": "qwen3-06b-1024-document-sk",
+      "profileId": "qwen3-06b-1024",
+      "purpose": "document",
+      "text": "Záruka platí."
+    },
+    {
+      "expected": "Kdo ručí?",
+      "formatVersion": "wp7:bge-m3-1024:query:split1:scalarpool1:prefixl2:ctx8192",
+      "kind": "format",
+      "name": "bge-m3-1024-query-cs",
+      "profileId": "bge-m3-1024",
+      "purpose": "query",
+      "text": "Kdo ručí?"
+    },
+    {
+      "expected": "Záruka platí.",
+      "formatVersion": "wp7:bge-m3-1024:document:split1:scalarpool1:prefixl2:ctx8192",
+      "kind": "format",
+      "name": "bge-m3-1024-document-sk",
+      "profileId": "bge-m3-1024",
+      "purpose": "document",
+      "text": "Záruka platí."
+    },
+    {
+      "expected": "Kdo ručí?",
+      "formatVersion": "wp7:paraphrase-768:query:split1:scalarpool1:prefixl2:ctx512",
+      "kind": "format",
+      "name": "paraphrase-768-query-cs",
+      "profileId": "paraphrase-768",
+      "purpose": "query",
+      "text": "Kdo ručí?"
+    },
+    {
+      "expected": "Záruka platí.",
+      "formatVersion": "wp7:paraphrase-768:document:split1:scalarpool1:prefixl2:ctx512",
+      "kind": "format",
+      "name": "paraphrase-768-document-sk",
+      "profileId": "paraphrase-768",
+      "purpose": "document",
+      "text": "Záruka platí."
+    },
+    {
+      "document": "wp7:qwen3-06b-512:document:split1:scalarpool1:prefixl2:ctx8192",
+      "effectiveLimit": 8192,
+      "kind": "formatVersion",
+      "name": "qwen3-06b-512-ctx8192",
+      "profileId": "qwen3-06b-512",
+      "query": "wp7:qwen3-06b-512:query:split1:scalarpool1:prefixl2:ctx8192"
+    },
+    {
+      "document": "wp7:bge-m3-1024:document:split1:scalarpool1:prefixl2:ctx4096",
+      "effectiveLimit": 4096,
+      "kind": "formatVersion",
+      "name": "bge-m3-1024-ctx4096",
+      "profileId": "bge-m3-1024",
+      "query": "wp7:bge-m3-1024:query:split1:scalarpool1:prefixl2:ctx4096"
+    },
+    {
+      "document": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+      "effectiveLimit": 512,
+      "kind": "formatVersion",
+      "name": "nomic-v2-256-ctx512",
+      "profileId": "nomic-v2-256",
+      "query": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+    },
+    {
+      "error": "unknownProfile",
+      "kind": "require",
+      "name": "unknown-profile",
+      "profileId": "nomic-v2-128"
+    },
+    {
+      "error": "unknownProfile",
+      "kind": "require",
+      "name": "unknown-profile-model-spelling",
+      "profileId": "nomic-embed-text-v2-moe"
+    },
+    {
+      "dims": 256,
+      "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+      "error": null,
+      "kind": "identity",
+      "model": "nomic-embed-text-v2-moe",
+      "name": "identity-ok",
+      "profileId": "nomic-v2-256",
+      "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+    },
+    {
+      "dims": 768,
+      "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+      "error": "profileIdentityMismatch",
+      "kind": "identity",
+      "model": "nomic-embed-text-v2-moe",
+      "name": "wrong-dims",
+      "profileId": "nomic-v2-256",
+      "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+    },
+    {
+      "dims": 1024,
+      "docFormatVersion": "wp7:bge-m3-1024:document:split1:scalarpool1:prefixl2:ctx8192",
+      "error": "profileIdentityMismatch",
+      "kind": "identity",
+      "model": "bge-m3:latest",
+      "name": "wrong-model",
+      "profileId": "bge-m3-1024",
+      "queryFormatVersion": "wp7:bge-m3-1024:query:split1:scalarpool1:prefixl2:ctx8192"
+    },
+    {
+      "dims": 256,
+      "docFormatVersion": "wp7:qwen3-06b-256:document:split1:scalarpool1:prefixl2:ctx4096",
+      "error": "profileIdentityMismatch",
+      "kind": "identity",
+      "model": "qwen3-embedding:0.6b",
+      "name": "mixed-context",
+      "profileId": "qwen3-06b-256",
+      "queryFormatVersion": "wp7:qwen3-06b-256:query:split1:scalarpool1:prefixl2:ctx8192"
+    },
+    {
+      "dims": 768,
+      "docFormatVersion": "wp7:paraphrase-768:document:split1:scalarpool1:prefixl2:ctx1024",
+      "error": "profileIdentityMismatch",
+      "kind": "identity",
+      "model": "paraphrase-multilingual",
+      "name": "context-above-ceiling",
+      "profileId": "paraphrase-768",
+      "queryFormatVersion": "wp7:paraphrase-768:query:split1:scalarpool1:prefixl2:ctx1024"
+    },
+    {
+      "dims": 2,
+      "expectedMillionths": [
+        600000,
+        800000
+      ],
+      "kind": "project",
+      "name": "nomic-project",
+      "nativeDims": 3,
+      "vector": [
+        3,
+        4,
+        12
+      ]
+    },
+    {
+      "dims": 3,
+      "expectedMillionths": [
+        0,
+        600000,
+        800000
+      ],
+      "kind": "project",
+      "name": "project-full-dims",
+      "nativeDims": 3,
+      "vector": [
+        0,
+        3,
+        4
+      ]
+    },
+    {
+      "dims": 2,
+      "error": "invalidEmbedding",
+      "kind": "project",
+      "name": "project-zero",
+      "nativeDims": 2,
+      "vector": [
+        0,
+        0
+      ]
+    },
+    {
+      "dims": 2,
+      "error": "invalidEmbedding",
+      "kind": "project",
+      "name": "project-zero-prefix",
+      "nativeDims": 3,
+      "vector": [
+        0,
+        0,
+        5
+      ]
+    },
+    {
+      "dims": 2,
+      "error": "invalidEmbedding",
+      "kind": "project",
+      "name": "project-nan",
+      "nativeDims": 2,
+      "vector": [
+        "NaN",
+        1
+      ]
+    },
+    {
+      "dims": 2,
+      "error": "invalidEmbedding",
+      "kind": "project",
+      "name": "project-infinity",
+      "nativeDims": 2,
+      "vector": [
+        "Infinity",
+        1
+      ]
+    },
+    {
+      "dims": 2,
+      "error": "invalidEmbedding",
+      "kind": "project",
+      "name": "project-wrong-length",
+      "nativeDims": 2,
+      "vector": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "dims": 3,
+      "error": "invalidEmbedding",
+      "kind": "project",
+      "name": "project-dims-above-native",
+      "nativeDims": 2,
+      "vector": [
+        1,
+        2
+      ]
+    },
+    {
+      "expectedMillionths": [
+        447214,
+        894427
+      ],
+      "kind": "pool",
+      "name": "pool",
+      "scalarWeights": [
+        1,
+        2
+      ],
+      "vectors": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "error": "invalidEmbedding",
+      "kind": "pool",
+      "name": "pool-zero-sum",
+      "scalarWeights": [
+        1,
+        1
+      ],
+      "vectors": [
+        [
+          1,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ]
+    },
+    {
+      "error": "invalidEmbedding",
+      "kind": "pool",
+      "name": "pool-nonfinite",
+      "scalarWeights": [
+        1,
+        1
+      ],
+      "vectors": [
+        [
+          1,
+          0
+        ],
+        [
+          "-Infinity",
+          0
+        ]
+      ]
+    },
+    {
+      "error": "invalidEmbedding",
+      "kind": "pool",
+      "name": "pool-wrong-length",
+      "scalarWeights": [
+        1,
+        1
+      ],
+      "vectors": [
+        [
+          1,
+          0
+        ],
+        [
+          1
+        ]
+      ]
+    },
+    {
+      "error": "invalidEmbedding",
+      "kind": "pool",
+      "name": "pool-zero-weight",
+      "scalarWeights": [
+        0,
+        1
+      ],
+      "vectors": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "error": "invalidEmbedding",
+      "kind": "pool",
+      "name": "pool-count-mismatch",
+      "scalarWeights": [
+        1,
+        1
+      ],
+      "vectors": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "error": "invalidEmbedding",
+      "kind": "pool",
+      "name": "pool-empty",
+      "scalarWeights": [],
+      "vectors": []
+    },
+    {
+      "kind": "bisect",
+      "left": "ab",
+      "name": "bisect-astral",
+      "right": "😀cd",
+      "text": "ab😀cd"
+    },
+    {
+      "kind": "bisect",
+      "left": "😀",
+      "name": "bisect-astral-left",
+      "right": "😀😀",
+      "text": "😀😀😀"
+    },
+    {
+      "error": "inputCannotFit",
+      "kind": "bisect",
+      "name": "bisect-one",
+      "text": "a"
+    },
+    {
+      "error": "inputCannotFit",
+      "kind": "bisect",
+      "name": "bisect-empty",
+      "text": ""
+    }
+  ],
+  "contract": "embedding-profiles",
+  "formatPolicy": "wp7:<profileId>:<purpose>:split1:scalarpool1:prefixl2:ctx<effectiveLimit>",
+  "profiles": [
+    {
+      "ceilingSource": "model-card",
+      "dims": 256,
+      "documentPrefix": "search_document: ",
+      "id": "nomic-v2-256",
+      "matryoshka": true,
+      "maxInputTokens": 512,
+      "model": "nomic-embed-text-v2-moe",
+      "nativeDims": 768,
+      "queryPrefix": "search_query: ",
+      "tokenizerId": "nomic-ai/nomic-embed-text-v2-moe"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 768,
+      "documentPrefix": "search_document: ",
+      "id": "nomic-v2-768",
+      "matryoshka": true,
+      "maxInputTokens": 512,
+      "model": "nomic-embed-text-v2-moe",
+      "nativeDims": 768,
+      "queryPrefix": "search_query: ",
+      "tokenizerId": "nomic-ai/nomic-embed-text-v2-moe"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 256,
+      "documentPrefix": "",
+      "id": "qwen3-06b-256",
+      "matryoshka": true,
+      "maxInputTokens": 32768,
+      "model": "qwen3-embedding:0.6b",
+      "nativeDims": 1024,
+      "queryPrefix": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:",
+      "tokenizerId": "Qwen/Qwen3-Embedding-0.6B"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 512,
+      "documentPrefix": "",
+      "id": "qwen3-06b-512",
+      "matryoshka": true,
+      "maxInputTokens": 32768,
+      "model": "qwen3-embedding:0.6b",
+      "nativeDims": 1024,
+      "queryPrefix": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:",
+      "tokenizerId": "Qwen/Qwen3-Embedding-0.6B"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 1024,
+      "documentPrefix": "",
+      "id": "qwen3-06b-1024",
+      "matryoshka": true,
+      "maxInputTokens": 32768,
+      "model": "qwen3-embedding:0.6b",
+      "nativeDims": 1024,
+      "queryPrefix": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:",
+      "tokenizerId": "Qwen/Qwen3-Embedding-0.6B"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 1024,
+      "documentPrefix": "",
+      "id": "bge-m3-1024",
+      "matryoshka": false,
+      "maxInputTokens": 8192,
+      "model": "bge-m3",
+      "nativeDims": 1024,
+      "queryPrefix": "",
+      "tokenizerId": "BAAI/bge-m3"
+    },
+    {
+      "ceilingSource": "ollama-512",
+      "dims": 768,
+      "documentPrefix": "",
+      "id": "paraphrase-768",
+      "matryoshka": false,
+      "maxInputTokens": 512,
+      "model": "paraphrase-multilingual",
+      "nativeDims": 768,
+      "queryPrefix": "",
+      "tokenizerId": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+    }
+  ],
+  "vectorSentinels": [
+    "NaN",
+    "Infinity",
+    "-Infinity"
+  ],
+  "version": 1
+}

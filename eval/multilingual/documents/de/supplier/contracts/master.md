@@ -1,0 +1,21 @@
+# Liefervereinbarung für Erle-Filtereinsätze
+
+Datum: 3. Oktober 2026
+Verantwortlich: Tobias Auen, Lieferantenbetreuung
+Vertragsnummer: DE-ERL-527
+
+Die Beschaffungsstelle Feldbogen bestellt bei der fiktiven Fertigung Erle austauschbare Filtereinsätze für geschlossene Prüfkreisläufe. Gegenstand dieser Vereinbarung sind Lieferung, Wareneingangsdokumentation und die Bearbeitung nachgewiesener Materialfehler. Die Einsätze werden zunächst im Ersatzteillager verwahrt; ihr späterer Einbau erfolgt nach einem getrennten Arbeitsauftrag. Verpackungsetiketten müssen Artikelbezeichnung, Fertigungscharge und Zuordnung zur Bestellung eindeutig erkennen lassen.
+
+Bei der Anlieferung prüft die Lagerverantwortliche die äußere Verpackung auf Feuchtigkeit und Beschädigungen. Auffälligkeiten werden vor dem Öffnen fotografisch dokumentiert. Eine unbeschädigte Verpackung ersetzt keine Kontrolle des Inhalts. Stichprobenartig werden Kennzeichnung und Abmessungen mit der freigegebenen Zeichnung verglichen. Die Prüfschablone bleibt Eigentum der Beschaffungsstelle und darf nicht zusammen mit Rücksendungen verschickt werden. Für die erste Lieferung sind sechs wiederverwendbare Transportkästen vorgesehen.
+
+Abweichende Filterausführungen benötigen eine schriftliche Änderungsfreigabe. Eine identische Außenabmessung genügt nicht, wenn sich Werkstoff oder Durchlässigkeit unterscheiden. Der Lieferant legt für jede freigegebene Variante ein eigenes Produktblatt bei. Überzählige Beiblätter werden im Wareneingangsordner gesammelt, damit Schichten keine widersprüchlichen Hinweise verwenden. Die Lagerung erfolgt trocken und ohne direkte Sonneneinstrahlung. Die vierteljährliche Bestandsaufnahme bleibt von Beanstandungen unabhängig. Für bereits eingebaute Einsätze bleibt die Chargenzuordnung im Anlagenbuch erhalten; ausgetauschte Kennzeichnungen dürfen den ursprünglichen Lieferscheinverweis nicht verdecken.
+
+Für die Erle-Filter gilt eine Gewährleistungsfrist von 22 Monaten.
+
+Die Frist beginnt mit der dokumentierten Warenannahme. Beanstandungen enthalten mindestens Chargennummer, beobachtetes Fehlerbild und Angaben zur bisherigen Lagerung. Die Beschaffungsstelle schickt beschädigte Einsätze erst nach Abstimmung zurück, damit ein Untersuchungsauftrag mit der Sendung verbunden werden kann. Erle bestätigt den Prüfauftrag schriftlich und benennt eine zuständige Kontaktperson. Eine vorläufige Ersatzlieferung stellt noch keine abschließende Bewertung der Fehlerursache dar.
+
+Bei gemeinsam bestätigten Materialfehlern erstellt der Lieferant einen nachvollziehbaren Maßnahmenbericht. Darin werden betroffene Fertigungsschritte, mögliche Schwesterchargen und vorgesehene Abhilfemaßnahmen beschrieben. Vermutungen sind als solche zu kennzeichnen. Werden weitere Lagerbestände vorsorglich gesperrt, hält die Beschaffungsstelle Umfang und Zeitpunkt der Sperrung fest. Die Freigabe erfolgt erst nach einer dokumentierten Entscheidung; eine neue Verpackungskennzeichnung allein hebt die Sperrung nicht auf.
+
+Für den laufenden Informationsaustausch genügt die bestehende Bestellreferenz. Zusätzliche interne Aktenzeichen des Lieferanten dürfen ergänzt werden, müssen jedoch eindeutig zugeordnet bleiben. Lieferscheine und Beanstandungsunterlagen werden gemeinsam archiviert. Rückfragen zur Rechnungsstellung bearbeitet die Finanzstelle getrennt von der technischen Untersuchung, damit eine offene Buchungsfrage keine Materialprüfung verzögert. Die Anlieferung findet grundsätzlich am westlichen Lagertor statt; eine Änderung des Ankunftsfensters stimmt die Spedition unmittelbar mit der Lagerleitung ab.
+
+Am Ende des ersten Lieferquartals vergleichen beide Seiten Verpackungszustand, Kennzeichnungsqualität und tatsächlichen Verbrauch. Diese Besprechung dient der Verbesserung des Bestellablaufs und verändert keine zugesicherten Produkteigenschaften. Für eine vereinfachte Nachbestellung erstellt die Beschaffungsstelle eine Liste freigegebener Varianten. Veraltete Produktblätter bleiben zur Nachvollziehbarkeit erhalten, werden jedoch deutlich als überholt markiert. Neue Beschäftigte erhalten bei der Einarbeitung ein Beispiel für eine vollständig dokumentierte Warenannahme einschließlich der zugehörigen Prüfvermerke.

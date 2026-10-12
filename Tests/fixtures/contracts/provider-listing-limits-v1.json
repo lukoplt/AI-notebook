@@ -1,0 +1,361 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 131072,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 32768,
+          "source": "auto"
+        },
+        "window": 131072
+      },
+      "listing": "{\"data\": [{\"id\": \"other\", \"max_model_len\": 4096, \"object\": \"model\", \"owned_by\": \"unit\"}, {\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 131072, \"object\": \"model\", \"owned_by\": \"unit\"}], \"object\": \"list\"}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "vllm-max-model-len",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 65536,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 32768,
+          "source": "auto"
+        },
+        "window": 65536
+      },
+      "listing": "{\"data\": [{\"context_length\": 65536, \"id\": \"example-org/Example-Chat-3.5-128B\", \"object\": \"model\", \"owned_by\": \"unit\", \"top_provider\": {\"context_length\": 32768}}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "openrouter-context-length",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 16384,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 16384,
+          "source": "auto"
+        },
+        "window": 16384
+      },
+      "listing": "{\"data\": [{\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_context_length\": 16384, \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "lmstudio-max-context-length",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 8192,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        },
+        "window": 8192
+      },
+      "listing": "{\"data\": [{\"context_window\": 8192, \"id\": \"example-org/Example-Chat-3.5-128B\", \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "groq-context-window",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 200000,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 32768,
+          "source": "auto"
+        },
+        "window": 200000
+      },
+      "listing": "{\"data\": [{\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_input_tokens\": 200000, \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "litellm-max-input-tokens",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 40960,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 32768,
+          "source": "auto"
+        },
+        "window": 40960
+      },
+      "listing": "{\"data\": [{\"id\": \"example-org/Example-Chat-3.5-128B\", \"object\": \"model\", \"owned_by\": \"unit\", \"top_provider\": {\"context_length\": 40960}}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "openrouter-top-provider-only",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 24576,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 24576,
+          "source": "auto"
+        },
+        "window": 24576
+      },
+      "listing": "{\"data\": [{\"id\": \"example-org/Example-Chat-3.5-128B\", \"info\": {\"params\": {\"num_ctx\": 24576}}, \"name\": \"Example Chat\", \"object\": \"model\", \"openai\": {\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 131072}, \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "openwebui-num-ctx",
+      "type": "openwebui"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 131072,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 32768,
+          "source": "auto"
+        },
+        "window": 131072
+      },
+      "listing": "{\"data\": [{\"connection_type\": \"external\", \"id\": \"example-org/Example-Chat-3.5-128B\", \"name\": \"Example Chat\", \"object\": \"model\", \"openai\": {\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 131072, \"object\": \"model\"}, \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "openwebui-proxied-upstream",
+      "type": "openwebui"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": null,
+          "isAssumed": true,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        },
+        "window": null
+      },
+      "listing": "{\"data\": [{\"id\": \"llama3:8b\", \"name\": \"llama3\", \"object\": \"model\", \"ollama\": {\"details\": {}, \"name\": \"llama3:8b\"}, \"owned_by\": \"unit\"}]}",
+      "model": "llama3:8b",
+      "name": "openwebui-ollama-no-metadata",
+      "type": "openwebui"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 4096,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 4096,
+          "source": "auto"
+        },
+        "window": 4096
+      },
+      "listing": "{\"data\": [{\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 4096, \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "small-window-below-default",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 512,
+          "isAssumed": false,
+          "maxOutputTokens": 511,
+          "runtimeContext": 512,
+          "source": "auto"
+        },
+        "window": 512
+      },
+      "listing": "{\"data\": [{\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 512, \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "tiny-window",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": 12288,
+          "isAssumed": false,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 12288,
+          "source": "auto"
+        },
+        "window": 12288
+      },
+      "listing": "{\"data\": [{\"context_length\": true, \"context_window\": 1, \"id\": \"example-org/Example-Chat-3.5-128B\", \"info\": {\"params\": {\"num_ctx\": 12288}}, \"max_context_length\": \"32768\", \"max_input_tokens\": 2147483648, \"max_model_len\": 131072.5, \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "invalid-values-skipped",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": null,
+          "isAssumed": true,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        },
+        "window": null
+      },
+      "listing": "{\"data\": [{\"id\": \"example-org/example-chat-3.5-128b\", \"max_model_len\": 131072, \"object\": \"model\", \"owned_by\": \"unit\"}, {\"id\": \"example-org/Example-Chat-3.5-128B:latest\", \"max_model_len\": 4096, \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "exact-id-only",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": null,
+          "isAssumed": true,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        },
+        "window": null
+      },
+      "listing": "{\"data\": [{\"id\": \"example-org/Example-Chat-3.5-128B\", \"object\": \"model\", \"owned_by\": \"unit\"}, {\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 131072, \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "first-matching-item",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": null,
+          "isAssumed": true,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        },
+        "window": null
+      },
+      "listing": "{\"models\": [{\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 131072, \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "no-data-array",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": null,
+          "isAssumed": true,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        },
+        "window": null
+      },
+      "listing": "{\"data\": {\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 131072}}",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "data-not-list",
+      "type": "openwebui"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": null,
+          "isAssumed": true,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        },
+        "window": null
+      },
+      "listing": "[{\"id\": \"example-org/Example-Chat-3.5-128B\", \"max_model_len\": 131072, \"object\": \"model\", \"owned_by\": \"unit\"}]",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "top-level-array",
+      "type": "openai_compatible"
+    },
+    {
+      "expected": {
+        "limits": {
+          "contextWindow": null,
+          "isAssumed": true,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        },
+        "window": null
+      },
+      "listing": "{\"data\": [{\"context_length\": 1047576, \"id\": \"gpt-4.1\", \"object\": \"model\", \"owned_by\": \"unit\"}]}",
+      "model": "gpt-4.1",
+      "name": "openai-type-not-listed",
+      "type": "openai"
+    },
+    {
+      "expected": {
+        "error": "decoding",
+        "limits": {
+          "contextWindow": null,
+          "isAssumed": true,
+          "maxOutputTokens": 1024,
+          "runtimeContext": 8192,
+          "source": "auto"
+        }
+      },
+      "listing": "{\"data\": [",
+      "model": "example-org/Example-Chat-3.5-128B",
+      "name": "malformed-json",
+      "type": "openai_compatible"
+    }
+  ],
+  "contract": "provider-listing-limits",
+  "keyPaths": [
+    [
+      "context_length"
+    ],
+    [
+      "max_model_len"
+    ],
+    [
+      "max_context_length"
+    ],
+    [
+      "context_window"
+    ],
+    [
+      "max_input_tokens"
+    ],
+    [
+      "top_provider",
+      "context_length"
+    ],
+    [
+      "info",
+      "params",
+      "num_ctx"
+    ],
+    [
+      "openai",
+      "context_length"
+    ],
+    [
+      "openai",
+      "max_model_len"
+    ],
+    [
+      "openai",
+      "max_context_length"
+    ],
+    [
+      "openai",
+      "context_window"
+    ],
+    [
+      "openai",
+      "max_input_tokens"
+    ]
+  ],
+  "listedRuntimeCap": 32768,
+  "listingTypes": [
+    "openwebui",
+    "openai_compatible"
+  ],
+  "version": 1
+}

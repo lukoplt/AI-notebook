@@ -30,6 +30,8 @@ public final class FolderWatcher: @unchecked Sendable {
     /// dozens.
     private let debounce: TimeInterval
     private let onChange: @Sendable () -> Void
+    /// Runtime mode: raw classified event kinds, no native quiet period.
+    private let onEvent: (@Sendable (String) -> Void)?
 
     private let queue = DispatchQueue(label: "com.ainotebook.folderwatcher")
     private var stream: FSEventStreamRef?
@@ -45,6 +47,33 @@ public final class FolderWatcher: @unchecked Sendable {
         self.latency = latency
         self.debounce = debounce
         self.onChange = onChange
+        self.onEvent = nil
+    }
+
+    /// Runtime mode: forwards one classified kind per FSEvents event
+    /// (`created`, `changed`, `renamed`, `deleted`, `overflow`). Event paths are
+    /// hints only; the durable runtime owns debouncing and rescans.
+    public init(folder: URL, onEvent: @escaping @Sendable (String) -> Void) {
+        self.folder = folder
+        self.latency = 0.2
+        self.debounce = 0
+        self.onChange = {}
+        self.onEvent = onEvent
+    }
+
+    /// Maps FSEvents flags to a watcher event kind.
+    static func kind(flags: FSEventStreamEventFlags) -> String {
+        let value = Int(flags)
+        let overflow = kFSEventStreamEventFlagMustScanSubDirs | kFSEventStreamEventFlagUserDropped
+            | kFSEventStreamEventFlagKernelDropped | kFSEventStreamEventFlagRootChanged
+        if value & overflow != 0 { return "overflow" }
+        if value & kFSEventStreamEventFlagItemRenamed != 0 { return "renamed" }
+        if value & kFSEventStreamEventFlagItemRemoved != 0 { return "deleted" }
+        let changed = kFSEventStreamEventFlagItemModified | kFSEventStreamEventFlagItemInodeMetaMod
+            | kFSEventStreamEventFlagItemChangeOwner | kFSEventStreamEventFlagItemXattrMod
+        if value & changed != 0 { return "changed" }
+        if value & kFSEventStreamEventFlagItemCreated != 0 { return "created" }
+        return "changed"
     }
 
     deinit { stopStream() }
@@ -73,14 +102,18 @@ public final class FolderWatcher: @unchecked Sendable {
             let flags = UInt32(
                 kFSEventStreamCreateFlagFileEvents
                 | kFSEventStreamCreateFlagNoDefer
+                | kFSEventStreamCreateFlagWatchRoot
             )
             guard let created = FSEventStreamCreate(
                 kCFAllocatorDefault,
-                { _, info, _, _, _, _ in
+                { _, info, count, _, eventFlags, _ in
                     guard let info else { return }
-                    Unmanaged<FolderWatcher>.fromOpaque(info)
-                        .takeUnretainedValue()
-                        .scheduleChange()
+                    let watcher = Unmanaged<FolderWatcher>.fromOpaque(info).takeUnretainedValue()
+                    if let onEvent = watcher.onEvent {
+                        for index in 0..<count { onEvent(FolderWatcher.kind(flags: eventFlags[index])) }
+                    } else {
+                        watcher.scheduleChange()
+                    }
                 },
                 &context,
                 // FSEvents reports canonical paths, so a watch registered on
@@ -97,7 +130,11 @@ public final class FolderWatcher: @unchecked Sendable {
             // Dispatch queue rather than a run loop: the watcher has to work
             // from a plain background context, not only from the main thread.
             FSEventStreamSetDispatchQueue(created, queue)
-            FSEventStreamStart(created)
+            guard FSEventStreamStart(created) else {
+                FSEventStreamInvalidate(created)
+                FSEventStreamRelease(created)
+                throw WatchError.couldNotCreateStream(path: folder.path)
+            }
             stream = created
         }
     }

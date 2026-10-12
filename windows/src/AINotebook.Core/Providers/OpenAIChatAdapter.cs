@@ -10,9 +10,6 @@ namespace AINotebook.Core.Providers;
 /// </summary>
 public sealed class OpenAIChatAdapter : IChatStreaming
 {
-    private const string ChatPath = "/v1/chat/completions";
-    private const string ModelsPath = "/v1/models";
-
     private readonly HttpClient _http;
     private readonly string _baseUrl;
     private readonly string? _apiKey;
@@ -20,7 +17,7 @@ public sealed class OpenAIChatAdapter : IChatStreaming
     public OpenAIChatAdapter(HttpClient http, string baseUrl, string? apiKey = null)
     {
         _http = http;
-        _baseUrl = baseUrl.TrimEnd('/');
+        _baseUrl = baseUrl;
         _apiKey = apiKey;
     }
 
@@ -28,13 +25,21 @@ public sealed class OpenAIChatAdapter : IChatStreaming
         string model,
         IReadOnlyList<ChatTurn> messages,
         CancellationToken ct = default)
+        => StreamAsync(model, messages, ChatRequestOptions.Defaults, ct);
+
+    public IAsyncEnumerable<string> StreamAsync(
+        string model,
+        IReadOnlyList<ChatTurn> messages,
+        ChatRequestOptions options,
+        CancellationToken ct = default)
     {
-        var req = OpenAIStyleWire.BuildChatRequest(_baseUrl, ChatPath, _apiKey, model, messages);
+        options.Validate();
+        var req = OpenAIStyleWire.BuildChatRequest(_baseUrl, ProviderType.OpenAI, _apiKey, model, messages, options);
         return OpenAIStyleWire.StreamAsync(_http, req, ct);
     }
 
     /// <summary>
-    /// GET {base}/v1/models → {"data":[{"id","name"?}]}. Throws on ANY
+    /// GET {base}/models → {"data":[{"id","name"?}]}. Throws on ANY
     /// failure (macOS parity) — 401 → ProviderAuthException, other HTTP
     /// failures → ProviderException, network errors / cancellation propagate.
     /// Callers that need a UI-safe empty-list-on-failure surface (the model
@@ -44,5 +49,5 @@ public sealed class OpenAIChatAdapter : IChatStreaming
     /// </summary>
     public static Task<IReadOnlyList<ProviderModelInfo>> ListModelsAsync(
         HttpClient http, string baseUrl, string? apiKey, CancellationToken ct = default)
-        => OpenAIStyleWire.ListModelsAsync(http, baseUrl, ModelsPath, apiKey, ct);
+        => OpenAIStyleWire.ListModelsAsync(http, baseUrl, ProviderType.OpenAI, apiKey, ct);
 }

@@ -1,0 +1,1165 @@
+{
+  "contract": "embedding-plan",
+  "version": 1,
+  "constants": {
+    "spreadsheetTypes": [
+      "xlsx"
+    ],
+    "spreadsheetChunkCap": 64,
+    "roundScanFactor": 16,
+    "textHash": "sha256-hex-utf8"
+  },
+  "cases": [
+    {
+      "name": "classify-pdf",
+      "operation": "classify",
+      "input": {
+        "sourceType": "pdf"
+      },
+      "expected": {
+        "priorityClass": 0,
+        "embedCap": null
+      }
+    },
+    {
+      "name": "classify-text",
+      "operation": "classify",
+      "input": {
+        "sourceType": "text"
+      },
+      "expected": {
+        "priorityClass": 0,
+        "embedCap": null
+      }
+    },
+    {
+      "name": "classify-markdown",
+      "operation": "classify",
+      "input": {
+        "sourceType": "markdown"
+      },
+      "expected": {
+        "priorityClass": 0,
+        "embedCap": null
+      }
+    },
+    {
+      "name": "classify-web",
+      "operation": "classify",
+      "input": {
+        "sourceType": "web"
+      },
+      "expected": {
+        "priorityClass": 0,
+        "embedCap": null
+      }
+    },
+    {
+      "name": "classify-docx",
+      "operation": "classify",
+      "input": {
+        "sourceType": "docx"
+      },
+      "expected": {
+        "priorityClass": 0,
+        "embedCap": null
+      }
+    },
+    {
+      "name": "classify-pptx",
+      "operation": "classify",
+      "input": {
+        "sourceType": "pptx"
+      },
+      "expected": {
+        "priorityClass": 0,
+        "embedCap": null
+      }
+    },
+    {
+      "name": "classify-xlsx",
+      "operation": "classify",
+      "input": {
+        "sourceType": "xlsx"
+      },
+      "expected": {
+        "priorityClass": 1,
+        "embedCap": 64
+      }
+    },
+    {
+      "name": "classify-note",
+      "operation": "classify",
+      "input": {
+        "sourceType": "note"
+      },
+      "expected": {
+        "priorityClass": 0,
+        "embedCap": null
+      }
+    },
+    {
+      "name": "classify-email",
+      "operation": "classify",
+      "input": {
+        "sourceType": "email"
+      },
+      "expected": {
+        "priorityClass": 0,
+        "embedCap": null
+      }
+    },
+    {
+      "name": "hash-empty",
+      "operation": "textHash",
+      "input": {
+        "text": ""
+      },
+      "expected": {
+        "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "hash-ascii",
+      "operation": "textHash",
+      "input": {
+        "text": "a"
+      },
+      "expected": {
+        "hash": "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"
+      }
+    },
+    {
+      "name": "hash-czech",
+      "operation": "textHash",
+      "input": {
+        "text": "Příliš žluťoučký kůň úpěl ďábelské ódy"
+      },
+      "expected": {
+        "hash": "6f33ad2f13da6ec45a14dd2854c3bf486310af3832123272feb4d78461b8c96c"
+      }
+    },
+    {
+      "name": "hash-nfc",
+      "operation": "textHash",
+      "input": {
+        "text": "café"
+      },
+      "expected": {
+        "hash": "850f7dc43910ff890f8879c0ed26fe697c93a067ad93a7d50f466a7028a9bf4e"
+      }
+    },
+    {
+      "name": "hash-nfd",
+      "operation": "textHash",
+      "input": {
+        "text": "café"
+      },
+      "expected": {
+        "hash": "81ef060bcd98adc7824eb5c1ada83c32491b16018e11e79f00ab9d09e04b015a"
+      }
+    },
+    {
+      "name": "hash-crlf",
+      "operation": "textHash",
+      "input": {
+        "text": "line\r\n"
+      },
+      "expected": {
+        "hash": "893e89e669b5a4f9e5136d565f51e341a0c5e5531816c9c1a806d90df66a45f4"
+      }
+    },
+    {
+      "name": "hash-emoji",
+      "operation": "textHash",
+      "input": {
+        "text": "📄 report"
+      },
+      "expected": {
+        "hash": "db37b1d4dd3a8bd8cfdcd0d7ee5b9327d5236ac8041f699e39dfa54ab2ee29ab"
+      }
+    },
+    {
+      "name": "priority-non-spreadsheet-first",
+      "operation": "build",
+      "input": {
+        "batchSize": 2,
+        "sources": [
+          {
+            "id": 1,
+            "type": "xlsx",
+            "chunks": [
+              "x1a",
+              "x1b"
+            ]
+          },
+          {
+            "id": 2,
+            "type": "pdf",
+            "chunks": [
+              "p2a",
+              "p2b",
+              "p2c"
+            ]
+          },
+          {
+            "id": 3,
+            "type": "docx",
+            "chunks": [
+              "d3a"
+            ]
+          },
+          {
+            "id": 4,
+            "type": "xlsx",
+            "chunks": [
+              "x4a"
+            ]
+          },
+          {
+            "id": 5,
+            "type": "email",
+            "chunks": [
+              "e5a"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "calls": [
+          [
+            "p2a",
+            "p2b"
+          ],
+          [
+            "p2c",
+            "d3a"
+          ],
+          [
+            "e5a",
+            "x1a"
+          ],
+          [
+            "x1b",
+            "x4a"
+          ]
+        ],
+        "providerInputs": 8,
+        "copied": 0,
+        "chunkProgress": {
+          "done": 8,
+          "total": 8
+        },
+        "sourceProgress": {
+          "done": 5,
+          "total": 5
+        },
+        "unembedded": []
+      }
+    },
+    {
+      "name": "spreadsheet-cap-64",
+      "operation": "build",
+      "input": {
+        "batchSize": 64,
+        "sources": [
+          {
+            "id": 1,
+            "type": "xlsx",
+            "chunks": [
+              "row 0",
+              "row 1",
+              "row 2",
+              "row 3",
+              "row 4",
+              "row 5",
+              "row 6",
+              "row 7",
+              "row 8",
+              "row 9",
+              "row 10",
+              "row 11",
+              "row 12",
+              "row 13",
+              "row 14",
+              "row 15",
+              "row 16",
+              "row 17",
+              "row 18",
+              "row 19",
+              "row 20",
+              "row 21",
+              "row 22",
+              "row 23",
+              "row 24",
+              "row 25",
+              "row 26",
+              "row 27",
+              "row 28",
+              "row 29",
+              "row 30",
+              "row 31",
+              "row 32",
+              "row 33",
+              "row 34",
+              "row 35",
+              "row 36",
+              "row 37",
+              "row 38",
+              "row 39",
+              "row 40",
+              "row 41",
+              "row 42",
+              "row 43",
+              "row 44",
+              "row 45",
+              "row 46",
+              "row 47",
+              "row 48",
+              "row 49",
+              "row 50",
+              "row 51",
+              "row 52",
+              "row 53",
+              "row 54",
+              "row 55",
+              "row 56",
+              "row 57",
+              "row 58",
+              "row 59",
+              "row 60",
+              "row 61",
+              "row 62",
+              "row 63",
+              "row 64",
+              "row 65",
+              "row 66",
+              "row 67",
+              "row 68",
+              "row 69"
+            ]
+          },
+          {
+            "id": 2,
+            "type": "text",
+            "chunks": [
+              "line 0",
+              "line 1",
+              "line 2",
+              "line 3",
+              "line 4",
+              "line 5",
+              "line 6",
+              "line 7",
+              "line 8",
+              "line 9",
+              "line 10",
+              "line 11",
+              "line 12",
+              "line 13",
+              "line 14",
+              "line 15",
+              "line 16",
+              "line 17",
+              "line 18",
+              "line 19",
+              "line 20",
+              "line 21",
+              "line 22",
+              "line 23",
+              "line 24",
+              "line 25",
+              "line 26",
+              "line 27",
+              "line 28",
+              "line 29",
+              "line 30",
+              "line 31",
+              "line 32",
+              "line 33",
+              "line 34",
+              "line 35",
+              "line 36",
+              "line 37",
+              "line 38",
+              "line 39",
+              "line 40",
+              "line 41",
+              "line 42",
+              "line 43",
+              "line 44",
+              "line 45",
+              "line 46",
+              "line 47",
+              "line 48",
+              "line 49",
+              "line 50",
+              "line 51",
+              "line 52",
+              "line 53",
+              "line 54",
+              "line 55",
+              "line 56",
+              "line 57",
+              "line 58",
+              "line 59",
+              "line 60",
+              "line 61",
+              "line 62",
+              "line 63",
+              "line 64",
+              "line 65",
+              "line 66",
+              "line 67",
+              "line 68",
+              "line 69"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "calls": [
+          [
+            "line 0",
+            "line 1",
+            "line 2",
+            "line 3",
+            "line 4",
+            "line 5",
+            "line 6",
+            "line 7",
+            "line 8",
+            "line 9",
+            "line 10",
+            "line 11",
+            "line 12",
+            "line 13",
+            "line 14",
+            "line 15",
+            "line 16",
+            "line 17",
+            "line 18",
+            "line 19",
+            "line 20",
+            "line 21",
+            "line 22",
+            "line 23",
+            "line 24",
+            "line 25",
+            "line 26",
+            "line 27",
+            "line 28",
+            "line 29",
+            "line 30",
+            "line 31",
+            "line 32",
+            "line 33",
+            "line 34",
+            "line 35",
+            "line 36",
+            "line 37",
+            "line 38",
+            "line 39",
+            "line 40",
+            "line 41",
+            "line 42",
+            "line 43",
+            "line 44",
+            "line 45",
+            "line 46",
+            "line 47",
+            "line 48",
+            "line 49",
+            "line 50",
+            "line 51",
+            "line 52",
+            "line 53",
+            "line 54",
+            "line 55",
+            "line 56",
+            "line 57",
+            "line 58",
+            "line 59",
+            "line 60",
+            "line 61",
+            "line 62",
+            "line 63"
+          ],
+          [
+            "line 64",
+            "line 65",
+            "line 66",
+            "line 67",
+            "line 68",
+            "line 69",
+            "row 0",
+            "row 1",
+            "row 2",
+            "row 3",
+            "row 4",
+            "row 5",
+            "row 6",
+            "row 7",
+            "row 8",
+            "row 9",
+            "row 10",
+            "row 11",
+            "row 12",
+            "row 13",
+            "row 14",
+            "row 15",
+            "row 16",
+            "row 17",
+            "row 18",
+            "row 19",
+            "row 20",
+            "row 21",
+            "row 22",
+            "row 23",
+            "row 24",
+            "row 25",
+            "row 26",
+            "row 27",
+            "row 28",
+            "row 29",
+            "row 30",
+            "row 31",
+            "row 32",
+            "row 33",
+            "row 34",
+            "row 35",
+            "row 36",
+            "row 37",
+            "row 38",
+            "row 39",
+            "row 40",
+            "row 41",
+            "row 42",
+            "row 43",
+            "row 44",
+            "row 45",
+            "row 46",
+            "row 47",
+            "row 48",
+            "row 49",
+            "row 50",
+            "row 51",
+            "row 52",
+            "row 53",
+            "row 54",
+            "row 55",
+            "row 56",
+            "row 57"
+          ],
+          [
+            "row 58",
+            "row 59",
+            "row 60",
+            "row 61",
+            "row 62",
+            "row 63"
+          ]
+        ],
+        "providerInputs": 134,
+        "copied": 0,
+        "chunkProgress": {
+          "done": 134,
+          "total": 134
+        },
+        "sourceProgress": {
+          "done": 2,
+          "total": 2
+        },
+        "unembedded": [
+          [
+            1,
+            64
+          ],
+          [
+            1,
+            65
+          ],
+          [
+            1,
+            66
+          ],
+          [
+            1,
+            67
+          ],
+          [
+            1,
+            68
+          ],
+          [
+            1,
+            69
+          ]
+        ]
+      }
+    },
+    {
+      "name": "dedup-template-copies",
+      "operation": "build",
+      "input": {
+        "batchSize": 3,
+        "sources": [
+          {
+            "id": 1,
+            "type": "xlsx",
+            "chunks": [
+              "Header A",
+              "Row 1",
+              "Row 2"
+            ]
+          },
+          {
+            "id": 2,
+            "type": "xlsx",
+            "chunks": [
+              "Header A",
+              "Row 1",
+              "Row 2"
+            ]
+          },
+          {
+            "id": 3,
+            "type": "xlsx",
+            "chunks": [
+              "Header A",
+              "Row 1",
+              "Row 2"
+            ]
+          },
+          {
+            "id": 4,
+            "type": "xlsx",
+            "chunks": [
+              "Header A",
+              "Row 1",
+              "Row 2"
+            ]
+          },
+          {
+            "id": 5,
+            "type": "pdf",
+            "chunks": [
+              "Row 1",
+              "unique pdf"
+            ]
+          },
+          {
+            "id": 6,
+            "type": "docx",
+            "chunks": [
+              "same",
+              "same",
+              "other"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "calls": [
+          [
+            "Row 1",
+            "unique pdf",
+            "same"
+          ],
+          [
+            "other",
+            "Header A",
+            "Row 2"
+          ]
+        ],
+        "providerInputs": 6,
+        "copied": 11,
+        "chunkProgress": {
+          "done": 17,
+          "total": 17
+        },
+        "sourceProgress": {
+          "done": 6,
+          "total": 6
+        },
+        "unembedded": []
+      }
+    },
+    {
+      "name": "dedup-is-exact",
+      "operation": "build",
+      "input": {
+        "batchSize": 4,
+        "sources": [
+          {
+            "id": 1,
+            "type": "text",
+            "chunks": [
+              "café",
+              "café",
+              "Café",
+              "café "
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "calls": [
+          [
+            "café",
+            "café",
+            "Café",
+            "café "
+          ]
+        ],
+        "providerInputs": 4,
+        "copied": 0,
+        "chunkProgress": {
+          "done": 4,
+          "total": 4
+        },
+        "sourceProgress": {
+          "done": 1,
+          "total": 1
+        },
+        "unembedded": []
+      }
+    },
+    {
+      "name": "round-scan-limit",
+      "operation": "build",
+      "input": {
+        "batchSize": 2,
+        "sources": [
+          {
+            "id": 1,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 2,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 3,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 4,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 5,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 6,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 7,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 8,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 9,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 10,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 11,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 12,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 13,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 14,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 15,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 16,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 17,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 18,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 19,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 20,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 21,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 22,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 23,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 24,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 25,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 26,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 27,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 28,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 29,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 30,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 31,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 32,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 33,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 34,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 35,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 36,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 37,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 38,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 39,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 40,
+            "type": "text",
+            "chunks": [
+              "a"
+            ]
+          },
+          {
+            "id": 41,
+            "type": "text",
+            "chunks": [
+              "b"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "calls": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ],
+        "providerInputs": 2,
+        "copied": 39,
+        "chunkProgress": {
+          "done": 41,
+          "total": 41
+        },
+        "sourceProgress": {
+          "done": 41,
+          "total": 41
+        },
+        "unembedded": []
+      }
+    },
+    {
+      "name": "spreadsheet-cap-then-dedup",
+      "operation": "build",
+      "input": {
+        "batchSize": 4,
+        "sources": [
+          {
+            "id": 1,
+            "type": "xlsx",
+            "chunks": [
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2",
+              "cell 0",
+              "cell 1",
+              "cell 2"
+            ]
+          },
+          {
+            "id": 2,
+            "type": "markdown",
+            "chunks": [
+              "cell 1",
+              "note"
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "calls": [
+          [
+            "cell 1",
+            "note",
+            "cell 0",
+            "cell 2"
+          ]
+        ],
+        "providerInputs": 4,
+        "copied": 62,
+        "chunkProgress": {
+          "done": 66,
+          "total": 66
+        },
+        "sourceProgress": {
+          "done": 2,
+          "total": 2
+        },
+        "unembedded": [
+          [
+            1,
+            64
+          ],
+          [
+            1,
+            65
+          ]
+        ]
+      }
+    }
+  ]
+}

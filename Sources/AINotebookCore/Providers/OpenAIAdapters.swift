@@ -15,11 +15,16 @@ public struct OpenAIChatAdapter: ChatStreaming {
     }
 
     public func stream(model: String, messages: [ChatTurn]) -> AsyncThrowingStream<String, Error> {
+        stream(model: model, messages: messages, options: .defaults)
+    }
+
+    public func stream(model: String, messages: [ChatTurn], options: ChatRequestOptions)
+        -> AsyncThrowingStream<String, Error> {
         let request: URLRequest
         do {
             request = try ProviderWire.openAIStyleChatRequest(
-                base: baseURL, path: "/v1/chat/completions",
-                apiKey: apiKey, model: model, messages: messages
+                base: baseURL, type: .openai,
+                apiKey: apiKey, model: model, messages: messages, options: options
             )
         } catch {
             return AsyncThrowingStream { $0.finish(throwing: error) }
@@ -31,12 +36,12 @@ public struct OpenAIChatAdapter: ChatStreaming {
         baseURL: String, apiKey: String?, session: URLSession = .shared
     ) async throws -> [ProviderModelInfo] {
         try await ProviderWire.listOpenAIStyleModels(
-            base: baseURL, path: "/v1/models", apiKey: apiKey, session: session
+            base: baseURL, type: .openai, apiKey: apiKey, session: session
         )
     }
 }
 
-/// `POST {base}/v1/embeddings` — OpenAI and compatible servers.
+/// `POST {base}/embeddings` — OpenAI and compatible servers.
 public struct OpenAIEmbeddingAdapter: EmbeddingProducing {
     let baseURL: String
     let apiKey: String?
@@ -59,7 +64,7 @@ public struct OpenAIEmbeddingAdapter: EmbeddingProducing {
     }
 
     public func embed(model: String, inputs: [String]) async throws -> [[Float]] {
-        var req = URLRequest(url: try ProviderWire.url(base: baseURL, path: "/v1/embeddings"))
+        var req = URLRequest(url: try ProviderAPIRoot.build(type: .openai, baseURL: baseURL, endpoint: .embeddings))
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         if let apiKey, !apiKey.isEmpty {

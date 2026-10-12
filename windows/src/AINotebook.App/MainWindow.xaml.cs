@@ -1,10 +1,8 @@
 using AINotebook.App.Onboarding;
 using AINotebook.App.Services;
-using AINotebook.App.Views;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Windowing;
+using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Windows.Graphics;
 
@@ -21,10 +19,16 @@ public sealed partial class MainWindow : Window
         _settings = App.Current.Services.GetRequiredService<ISettingsService>();
         _l = App.Current.Services.GetRequiredService<ILocalizedStrings>();
 
-        Title = "AI Notebook";
-        NoteMenu.Title = _l["notesSectionTitle"];
-        MenuSave.Text = "Save";              // literal, as in the mac app
-        MenuHistory.Text = _l["historyButton"];
+        Title = _l.Get(StringKey.AppName);
+        AppTitleText.Text = Title;
+        _l.PropertyChanged += (_, _) => { Title = _l.Get(StringKey.AppName); AppTitleText.Text = Title; };
+
+        // Codex-style chrome: content under the caption buttons, the strip above it drags the window.
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar(AppTitleBar);
+        // Mica needs Windows 11; elsewhere the backdrop would be a flat system colour, so use the token.
+        if (!MicaController.IsSupported())
+            RootGrid.Background = (Brush)Application.Current.Resources["BgSidebarBrush"];
         ApplyMinSize();
 
         _settings.PropertyChanged += (_, e) =>
@@ -39,7 +43,7 @@ public sealed partial class MainWindow : Window
     private void ApplyMinSize()
     {
         // Mirror the mac .frame(minWidth: 900, minHeight: 600) initial size.
-        AppWindow.Resize(new SizeInt32(1100, 760));
+        AppWindow.Resize(new SizeInt32(1200, 800));
 
         // Unpackaged apps get a generic window icon unless one is set
         // explicitly; the .ico ships as Content next to the exe.
@@ -50,42 +54,10 @@ public sealed partial class MainWindow : Window
 
     private void Route()
     {
-        if (!_settings.HasCompletedOnboarding)
-        {
-            RootHost.Children.Clear();
-            RootHost.Children.Add(new OnboardingPage());
-        }
-        else
-        {
-            RootHost.Children.Clear();
-            RootHost.Children.Add(new Views.ShellPage());
-        }
-    }
-
-    private void OnMenuSave(object sender, RoutedEventArgs e)
-    {
-        if (CurrentPage is NotesPage notes) notes.TriggerManualSave();   // calls Editor.FlushPendingSave()
-    }
-
-    private void OnMenuHistory(object sender, RoutedEventArgs e)
-    {
-        if (CurrentPage is NotesPage notes) notes.TriggerHistory();      // calls ViewModel.ShowHistoryCommand
-    }
-
-    /// The page currently hosted by the active tab. Resolves the live NotesPage from the
-    /// visual tree when the Notes tab is active so the window-level accelerators forward to it.
-    private object? CurrentPage => FindActiveNotesPage(RootHost);
-
-    private static NotesPage? FindActiveNotesPage(DependencyObject? root)
-    {
-        if (root is null) return null;
-        if (root is NotesPage np) return np;
-        int count = VisualTreeHelper.GetChildrenCount(root);
-        for (int i = 0; i < count; i++)
-        {
-            var found = FindActiveNotesPage(VisualTreeHelper.GetChild(root, i));
-            if (found is not null) return found;
-        }
-        return null;
+        RootHost.Children.Clear();
+        // Save (Ctrl+S) and History (Ctrl+Shift+H) live on the note document's top bar now; the
+        // window-level menu bar is gone (spec §2.4).
+        if (!_settings.HasCompletedOnboarding) RootHost.Children.Add(new OnboardingPage());
+        else RootHost.Children.Add(new Shell.ShellPage());
     }
 }

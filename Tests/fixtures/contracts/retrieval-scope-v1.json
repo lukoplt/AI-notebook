@@ -1,0 +1,775 @@
+{
+  "cases": [
+    {
+      "active": 90,
+      "name": "all",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020,
+        4010
+      ],
+      "scope": {
+        "kind": "all"
+      },
+      "vectorChunkIds": [
+        1010,
+        4010
+      ]
+    },
+    {
+      "active": 90,
+      "name": "folder10",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020
+      ],
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "vectorChunkIds": [
+        1010
+      ]
+    },
+    {
+      "active": 90,
+      "name": "union-source4-folder10",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020,
+        4010
+      ],
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          4
+        ]
+      },
+      "vectorChunkIds": [
+        1010,
+        4010
+      ]
+    },
+    {
+      "active": 90,
+      "embeddingCalls": 0,
+      "name": "empty",
+      "notebookId": 1,
+      "publishedChunkIds": [],
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "sqlCalls": 0,
+      "vectorChunkIds": []
+    },
+    {
+      "active": null,
+      "name": "other-notebook",
+      "notebookId": 2,
+      "publishedChunkIds": [
+        5010
+      ],
+      "scope": {
+        "kind": "all"
+      },
+      "vectorChunkIds": []
+    },
+    {
+      "active": 90,
+      "name": "wrong-notebook-ids",
+      "notebookId": 1,
+      "publishedChunkIds": [],
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          5
+        ]
+      },
+      "vectorChunkIds": []
+    },
+    {
+      "active": 90,
+      "name": "unpublished",
+      "notebookId": 1,
+      "publishedChunkIds": [],
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          6
+        ]
+      },
+      "vectorChunkIds": []
+    },
+    {
+      "active": null,
+      "name": "no-active",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020,
+        4010
+      ],
+      "scope": {
+        "kind": "all"
+      },
+      "vectorChunkIds": []
+    },
+    {
+      "active": 90,
+      "afterPublishedChunkIds": [
+        4010
+      ],
+      "afterVectorChunkIds": [
+        4010
+      ],
+      "events": [
+        {
+          "kind": "setAvailability",
+          "sourceId": 1,
+          "value": "missing"
+        }
+      ],
+      "name": "revoke-availability",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020,
+        4010
+      ],
+      "scope": {
+        "kind": "all"
+      },
+      "vectorChunkIds": [
+        1010,
+        4010
+      ]
+    },
+    {
+      "active": 90,
+      "afterPublishedChunkIds": [
+        4010
+      ],
+      "afterVectorChunkIds": [
+        4010
+      ],
+      "events": [
+        {
+          "kind": "setEligible",
+          "sourceId": 1,
+          "value": 0
+        }
+      ],
+      "name": "revoke-eligible",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020,
+        4010
+      ],
+      "scope": {
+        "kind": "all"
+      },
+      "vectorChunkIds": [
+        1010,
+        4010
+      ]
+    },
+    {
+      "active": 90,
+      "afterPublishedChunkIds": [],
+      "afterVectorChunkIds": [],
+      "events": [
+        {
+          "folderId": 20,
+          "kind": "setFolder",
+          "relPath": "1.txt",
+          "sourceId": 1
+        }
+      ],
+      "name": "revoke-membership",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020
+      ],
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "vectorChunkIds": [
+        1010
+      ]
+    },
+    {
+      "active": 90,
+      "afterPublishedChunkIds": [
+        1020
+      ],
+      "afterVectorChunkIds": [
+        1010
+      ],
+      "events": [
+        {
+          "folderId": 10,
+          "kind": "setFolder",
+          "relPath": "4.txt",
+          "sourceId": 4
+        }
+      ],
+      "name": "join-membership",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020
+      ],
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "vectorChunkIds": [
+        1010
+      ]
+    },
+    {
+      "active": 90,
+      "afterPublishedChunkIds": [
+        1020,
+        4010
+      ],
+      "afterVectorChunkIds": [
+        1010,
+        4010
+      ],
+      "events": [
+        {
+          "kind": "publish",
+          "revisionId": 103,
+          "sourceId": 1
+        }
+      ],
+      "name": "publish-during-query",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020,
+        4010
+      ],
+      "scope": {
+        "kind": "all"
+      },
+      "vectorChunkIds": [
+        1010,
+        4010
+      ]
+    },
+    {
+      "active": 90,
+      "afterPublishedChunkIds": [
+        1020,
+        4010
+      ],
+      "afterVectorChunkIds": [
+        1010,
+        4010
+      ],
+      "events": [
+        {
+          "kind": "switchGeneration",
+          "newId": 91,
+          "oldId": 90
+        }
+      ],
+      "name": "switch-during-query",
+      "notebookId": 1,
+      "publishedChunkIds": [
+        1020,
+        4010
+      ],
+      "scope": {
+        "kind": "all"
+      },
+      "vectorChunkIds": [
+        1010,
+        4010
+      ]
+    }
+  ],
+  "contract": "retrieval-scope",
+  "seed": {
+    "chunks": [
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 1010,
+        "ord": 0,
+        "revisionId": 101,
+        "sourceId": 1,
+        "text": "needle revision 101",
+        "tokenCount": 4
+      },
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 1020,
+        "ord": 0,
+        "revisionId": 102,
+        "sourceId": 1,
+        "text": "needle revision 102",
+        "tokenCount": 4
+      },
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 2010,
+        "ord": 0,
+        "revisionId": 201,
+        "sourceId": 2,
+        "text": "needle revision 201",
+        "tokenCount": 4
+      },
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 3010,
+        "ord": 0,
+        "revisionId": 301,
+        "sourceId": 3,
+        "text": "needle revision 301",
+        "tokenCount": 4
+      },
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 4010,
+        "ord": 0,
+        "revisionId": 401,
+        "sourceId": 4,
+        "text": "needle revision 401",
+        "tokenCount": 4
+      },
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 4020,
+        "ord": 0,
+        "revisionId": 402,
+        "sourceId": 4,
+        "text": "needle revision 402",
+        "tokenCount": 4
+      },
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 5010,
+        "ord": 0,
+        "revisionId": 501,
+        "sourceId": 5,
+        "text": "needle revision 501",
+        "tokenCount": 4
+      },
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 6010,
+        "ord": 0,
+        "revisionId": 601,
+        "sourceId": 6,
+        "text": "needle revision 601",
+        "tokenCount": 4
+      },
+      {
+        "charEnd": null,
+        "charStart": null,
+        "id": 7010,
+        "ord": 0,
+        "revisionId": 701,
+        "sourceId": 7,
+        "text": "needle revision 701",
+        "tokenCount": 4
+      }
+    ],
+    "embeddings": [
+      {
+        "chunkId": 1010,
+        "generationId": 90,
+        "vector": [
+          1,
+          0
+        ]
+      },
+      {
+        "chunkId": 2010,
+        "generationId": 90,
+        "vector": [
+          1,
+          0
+        ]
+      },
+      {
+        "chunkId": 3010,
+        "generationId": 90,
+        "vector": [
+          1,
+          0
+        ]
+      },
+      {
+        "chunkId": 4010,
+        "generationId": 90,
+        "vector": [
+          1,
+          0
+        ]
+      },
+      {
+        "chunkId": 7010,
+        "generationId": 90,
+        "vector": [
+          1,
+          0
+        ]
+      },
+      {
+        "chunkId": 1020,
+        "generationId": 91,
+        "vector": [
+          0,
+          1
+        ]
+      }
+    ],
+    "folders": [
+      {
+        "createdAt": "2026-01-01 00:00:00.000",
+        "displayName": "f10",
+        "id": 10,
+        "ignoreGlobs": [],
+        "includeExts": [
+          "txt"
+        ],
+        "limits": {},
+        "notebookId": 1,
+        "pathIdentity": {
+          "components": [
+            "fixture",
+            "f10"
+          ],
+          "volumeId": "fixture"
+        },
+        "rootPath": "/fixture/f10"
+      },
+      {
+        "createdAt": "2026-01-01 00:00:00.000",
+        "displayName": "f20",
+        "id": 20,
+        "ignoreGlobs": [],
+        "includeExts": [
+          "txt"
+        ],
+        "limits": {},
+        "notebookId": 1,
+        "pathIdentity": {
+          "components": [
+            "fixture",
+            "f20"
+          ],
+          "volumeId": "fixture"
+        },
+        "rootPath": "/fixture/f20"
+      }
+    ],
+    "generations": [
+      {
+        "chunkerVersion": "legacy",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "dims": 2,
+        "docFormatVersion": "legacy",
+        "endpointRevision": "legacy",
+        "id": 90,
+        "model": "m",
+        "modelDigest": null,
+        "normalization": "legacy",
+        "notebookId": 1,
+        "providerId": "legacy",
+        "queryFormatVersion": "legacy",
+        "state": "active"
+      },
+      {
+        "chunkerVersion": "legacy",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "dims": 2,
+        "docFormatVersion": "legacy",
+        "endpointRevision": "legacy",
+        "id": 91,
+        "model": "m",
+        "modelDigest": null,
+        "normalization": "legacy",
+        "notebookId": 1,
+        "providerId": "legacy",
+        "queryFormatVersion": "legacy",
+        "state": "retired"
+      }
+    ],
+    "manifest": [
+      {
+        "generationId": 90,
+        "reason": null,
+        "revisionId": 101,
+        "sourceId": 1,
+        "state": "done"
+      },
+      {
+        "generationId": 90,
+        "reason": null,
+        "revisionId": 201,
+        "sourceId": 2,
+        "state": "done"
+      },
+      {
+        "generationId": 90,
+        "reason": null,
+        "revisionId": 301,
+        "sourceId": 3,
+        "state": "done"
+      },
+      {
+        "generationId": 90,
+        "reason": null,
+        "revisionId": 401,
+        "sourceId": 4,
+        "state": "done"
+      },
+      {
+        "generationId": 90,
+        "reason": null,
+        "revisionId": 701,
+        "sourceId": 7,
+        "state": "done"
+      },
+      {
+        "generationId": 91,
+        "reason": null,
+        "revisionId": 102,
+        "sourceId": 1,
+        "state": "done"
+      }
+    ],
+    "notebooks": [
+      {
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 1,
+        "name": "n1",
+        "updatedAt": "2026-01-01 00:00:00.000"
+      },
+      {
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 2,
+        "name": "n2",
+        "updatedAt": "2026-01-01 00:00:00.000"
+      }
+    ],
+    "revisions": [
+      {
+        "canonicalText": "needle revision 101",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-101",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 101,
+        "revision": 1,
+        "sourceId": 1,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "needle revision 102",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-102",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 102,
+        "revision": 2,
+        "sourceId": 1,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "needle revision 201",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-201",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 201,
+        "revision": 1,
+        "sourceId": 2,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "needle revision 301",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-301",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 301,
+        "revision": 1,
+        "sourceId": 3,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "needle revision 401",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-401",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 401,
+        "revision": 1,
+        "sourceId": 4,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "needle revision 402",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-402",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 402,
+        "revision": 2,
+        "sourceId": 4,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "needle revision 501",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-501",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 501,
+        "revision": 1,
+        "sourceId": 5,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "needle revision 601",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-601",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 601,
+        "revision": 1,
+        "sourceId": 6,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "needle revision 701",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-701",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 701,
+        "revision": 1,
+        "sourceId": 7,
+        "textFormatVersion": 1
+      }
+    ],
+    "sources": [
+      {
+        "availability": "present",
+        "currentRevision": 102,
+        "eligible": 1,
+        "folderId": 10,
+        "id": 1,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 102,
+        "relPath": "1.txt",
+        "status": "ready",
+        "title": "1.txt",
+        "type": "text"
+      },
+      {
+        "availability": "missing",
+        "currentRevision": 201,
+        "eligible": 1,
+        "folderId": 10,
+        "id": 2,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 201,
+        "relPath": "2.txt",
+        "status": "ready",
+        "title": "2.txt",
+        "type": "text"
+      },
+      {
+        "availability": "present",
+        "currentRevision": 301,
+        "eligible": 0,
+        "folderId": 20,
+        "id": 3,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 301,
+        "relPath": "3.txt",
+        "status": "ready",
+        "title": "3.txt",
+        "type": "text"
+      },
+      {
+        "availability": "present",
+        "currentRevision": 402,
+        "eligible": 1,
+        "folderId": null,
+        "id": 4,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 401,
+        "relPath": null,
+        "status": "error",
+        "title": "4.txt",
+        "type": "text"
+      },
+      {
+        "availability": "present",
+        "currentRevision": 501,
+        "eligible": 1,
+        "folderId": null,
+        "id": 5,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 2,
+        "publishedRevisionId": 501,
+        "relPath": null,
+        "status": "ready",
+        "title": "5.txt",
+        "type": "text"
+      },
+      {
+        "availability": "present",
+        "currentRevision": 601,
+        "eligible": 1,
+        "folderId": 20,
+        "id": 6,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": null,
+        "relPath": "6.txt",
+        "status": "ready",
+        "title": "6.txt",
+        "type": "text"
+      },
+      {
+        "availability": "unavailable",
+        "currentRevision": 701,
+        "eligible": 1,
+        "folderId": 20,
+        "id": 7,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 701,
+        "relPath": "7.txt",
+        "status": "ready",
+        "title": "7.txt",
+        "type": "text"
+      }
+    ]
+  },
+  "version": 1
+}

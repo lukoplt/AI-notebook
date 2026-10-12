@@ -1,0 +1,1423 @@
+{
+  "cases": [
+    {
+      "args": [
+        "--dataset",
+        "multilingual"
+      ],
+      "expected": {
+        "fetch_k": 32,
+        "host": "http://127.0.0.1:11434",
+        "json_path": null,
+        "markdown_path": null,
+        "mode": "lexical",
+        "model": null,
+        "root": "eval/multilingual",
+        "top_k": 16,
+        "validate_only": false
+      },
+      "name": "default-multilingual-lexical"
+    },
+    {
+      "args": [
+        "--dataset",
+        "multilingual",
+        "--top-k",
+        "2",
+        "--fetch-k",
+        "4"
+      ],
+      "expected": {
+        "fetch_k": 4,
+        "host": "http://127.0.0.1:11434",
+        "json_path": null,
+        "markdown_path": null,
+        "mode": "lexical",
+        "model": null,
+        "root": "eval/multilingual",
+        "top_k": 2,
+        "validate_only": false
+      },
+      "name": "explicit-top-fetch"
+    },
+    {
+      "args": [
+        "--dataset",
+        "multilingual",
+        "--top-k",
+        "0"
+      ],
+      "expected": {
+        "error": "usage"
+      },
+      "name": "zero-top-k"
+    },
+    {
+      "args": [
+        "--dataset",
+        "multilingual",
+        "--top-k",
+        "4",
+        "--fetch-k",
+        "2"
+      ],
+      "expected": {
+        "error": "usage"
+      },
+      "name": "fetch-below-top-k"
+    },
+    {
+      "args": [
+        "--dataset",
+        "multilingual",
+        "--unknown"
+      ],
+      "expected": {
+        "error": "usage"
+      },
+      "name": "unknown-flag",
+      "subcases": [
+        {
+          "args": [
+            "--dataset",
+            "english"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-dataset"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            "hybrid"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-mode"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            "ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-ollama-model"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            "ollama",
+            "--model",
+            ""
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "empty-ollama-model"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--root",
+            ""
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "empty-root"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--json",
+            ""
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "empty-json-path"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--out",
+            ""
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "empty-markdown-path"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            ""
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "empty-host"
+        },
+        {
+          "args": [
+            "--dataset",
+            ""
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "empty-dataset"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            ""
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "empty-mode"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "extra"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "unexpected-positional"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--validate-only",
+            "true"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "validate-only-unexpected-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k=2"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "unknown-equals-flag"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--root",
+            "--validate-only"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-value-before-next-flag"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            "-1"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "negative-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            "1.5"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "fractional-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            "1e1"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "exponent-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            "+2"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "signed-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            "NaN"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "nonfinite-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            " 2 "
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "whitespace-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            "２"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "non-ascii-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            "9223372036854775808"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "overflow-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--fetch-k",
+            "0"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "zero-fetch-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--fetch-k",
+            "-1"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "negative-fetch-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--fetch-k",
+            "32.5"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "fractional-fetch-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--fetch-k",
+            "1e2"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "exponent-fetch-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--fetch-k",
+            "３２"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "non-ascii-fetch-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--fetch-k",
+            "9223372036854775808"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "overflow-fetch-k"
+        },
+        {
+          "args": [
+            "--dataset"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-dataset-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--dataset",
+            "multilingual"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-dataset"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--root"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-root-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--root",
+            "eval/multilingual",
+            "--root",
+            "eval/multilingual"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-root"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-mode-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            "lexical",
+            "--mode",
+            "lexical"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-mode"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            "ollama",
+            "--model"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-model-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            "ollama",
+            "--model",
+            "nomic-embed-text-v2-moe",
+            "--model",
+            "nomic-embed-text-v2-moe"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-model"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-host-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://127.0.0.1:11434",
+            "--host",
+            "http://127.0.0.1:11434"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-host"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-top-k-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--top-k",
+            "16",
+            "--top-k",
+            "16"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-top-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--fetch-k"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-fetch-k-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--fetch-k",
+            "32",
+            "--fetch-k",
+            "32"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-fetch-k"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--json"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-json-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--json",
+            "eval-result.json",
+            "--json",
+            "eval-result.json"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-json"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--out"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "missing-out-value"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--out",
+            "eval-result.md",
+            "--out",
+            "eval-result.md"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-out"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--validate-only",
+            "--validate-only"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "repeated-validate-only"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "localhost:11434"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-missing-scheme"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "ftp://localhost"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-unsupported-scheme"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http:///ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-missing-authority"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://:11434"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-empty-hostname"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-empty-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:0"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-zero-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:65536"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-overflow-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:-1"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-negative-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:+1"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-positive-signed-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:abc"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-nondigit-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:１２"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-non-ascii-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://user:pass@localhost/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-userinfo"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://@localhost/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-empty-userinfo"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama?key=x"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-query"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama?"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-empty-query"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama#part"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-fragment"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama#"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-empty-fragment"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "\thttp://localhost/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-leading-control"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://local\nhost/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-inner-control"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama\u0000"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-trailing-control"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-del-control"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-c1-control"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://local host/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-whitespace"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama root"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-path-whitespace"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost/ollama root"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-inner-unicode-whitespace"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://bad_host/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-underscore"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://-bad.example/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-leading-hyphen"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://bad-.example/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-trailing-hyphen"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://a..example/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-empty-label"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost../ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-double-root-dot"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://höst.example/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-non-ascii"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://host%20name/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-percent-escape"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.example/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-label-too-long"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-hostname-too-long"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://256.2.3.4/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipv4-out-of-range"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://01.2.3.4/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipv4-leading-zero"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://127.1/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipv4-short"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://[::1/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipv6-unclosed"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://2001:db8::1/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipv6-unbracketed"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://[oops]/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipv6-invalid-literal"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://[::1]junk/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipv6-authority-suffix"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://[fe80::1%25en0]/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipv6-scoped"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://[v1.a]/ollama"
+          ],
+          "expected": {
+            "error": "usage"
+          },
+          "name": "invalid-host-ipvfuture"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--root",
+            "fixtures/eval source",
+            "--mode",
+            "lexical",
+            "--json",
+            "results/report.json",
+            "--out",
+            "results/report.md",
+            "--validate-only"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "http://127.0.0.1:11434",
+            "json_path": "results/report.json",
+            "markdown_path": "results/report.md",
+            "mode": "lexical",
+            "model": null,
+            "root": "fixtures/eval source",
+            "top_k": 16,
+            "validate_only": true
+          },
+          "name": "explicit-root-outputs-validate-only"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            "ollama",
+            "--model",
+            "nomic-embed-text-v2-moe",
+            "--host",
+            "http://localhost:11434",
+            "--top-k",
+            "2",
+            "--fetch-k",
+            "4"
+          ],
+          "expected": {
+            "fetch_k": 4,
+            "host": "http://localhost:11434",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "ollama",
+            "model": "nomic-embed-text-v2-moe",
+            "root": "eval/multilingual",
+            "top_k": 2,
+            "validate_only": false
+          },
+          "name": "explicit-ollama"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--mode",
+            "ollama",
+            "--model",
+            "nomic-embed-text-v2-moe",
+            "--host",
+            "https://localhost/ollama"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "https://localhost/ollama",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "ollama",
+            "model": "nomic-embed-text-v2-moe",
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "prefixed-host"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "https://localhost/ollama///"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "https://localhost/ollama",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "lexical",
+            "model": null,
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "host-trailing-slashes-normalized"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            " https://localhost/ollama  "
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "https://localhost/ollama",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "lexical",
+            "model": null,
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "host-surrounding-whitespace-normalized"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://[::1]:11434/ollama"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "http://[::1]:11434/ollama",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "lexical",
+            "model": null,
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "host-bracketed-ipv6"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:1"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "http://localhost:1",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "lexical",
+            "model": null,
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "host-minimum-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://localhost:65535"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "http://localhost:65535",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "lexical",
+            "model": null,
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "host-maximum-port"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "https://xn--hst-sna.example./ollama"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "https://xn--hst-sna.example./ollama",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "lexical",
+            "model": null,
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "host-idna-root-dot"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://1234/ollama"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "http://1234/ollama",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "lexical",
+            "model": null,
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "host-single-numeric-label"
+        },
+        {
+          "args": [
+            "--dataset",
+            "multilingual",
+            "--host",
+            "http://127.0.0.1./ollama"
+          ],
+          "expected": {
+            "fetch_k": 32,
+            "host": "http://127.0.0.1./ollama",
+            "json_path": null,
+            "markdown_path": null,
+            "mode": "lexical",
+            "model": null,
+            "root": "eval/multilingual",
+            "top_k": 16,
+            "validate_only": false
+          },
+          "name": "host-ipv4-root-dot"
+        }
+      ]
+    },
+    {
+      "args": [
+        "--dataset",
+        "multilingual",
+        "--mode",
+        "lexical",
+        "--model",
+        "nomic-embed-text-v2-moe"
+      ],
+      "expected": {
+        "error": "usage"
+      },
+      "name": "lexical-model"
+    }
+  ],
+  "contract": "eval-cli",
+  "version": 1
+}

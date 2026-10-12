@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "unicodeVersion": "15.1.0",
+  "normalizationTablesVersion": "ucd-15.1.0-default-full-v1",
+  "archive": {
+    "url": "https://www.unicode.org/Public/zipped/15.1.0/UCD.zip",
+    "sha256": "cb1c663d053926500cd501229736045752713a066bd75802098598b7a7056177"
+  },
+  "files": [
+    {
+      "name": "UnicodeData.txt",
+      "url": "https://www.unicode.org/Public/15.1.0/ucd/UnicodeData.txt",
+      "sha256": "2fc713e6a31a87c4850a37fe2caffa4218180fadb5de86b43a143ddb4581fb86"
+    },
+    {
+      "name": "CaseFolding.txt",
+      "url": "https://www.unicode.org/Public/15.1.0/ucd/CaseFolding.txt",
+      "sha256": "4e55acfdc32825a22e87670e9056a3bf94ad7c5400065778e9e10f8314372bcf"
+    },
+    {
+      "name": "DerivedNormalizationProps.txt",
+      "url": "https://www.unicode.org/Public/15.1.0/ucd/DerivedNormalizationProps.txt",
+      "sha256": "8875dccee2bc1a7c1fe568a3b502a9e78c9e0495afd96b6568b4294d0ed1f7e1"
+    },
+    {
+      "name": "NormalizationTest.txt",
+      "url": "https://www.unicode.org/Public/15.1.0/ucd/NormalizationTest.txt",
+      "sha256": "871238e37e3be0696ec2bd0891119a041b052da1a84485eda05a5438724b223e"
+    }
+  ],
+  "license": {
+    "url": "https://www.unicode.org/license.txt",
+    "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+    "retrievedAt": "2026-10-09",
+    "licenseId": "Unicode-3.0"
+  },
+  "tableSha256": "407889e2ac750a0daca62b65c9a3b4e282d85c1aae978b5cc30d88e67acd7eb9",
+  "normalizationRows": 19074
+}

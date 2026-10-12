@@ -15,7 +15,7 @@
         <TextBox Header="{Binding L[notebookDescription]}"
                  AcceptsReturn="True" TextWrapping="Wrap" Height="80"
                  Text="{x:Bind ViewModel.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+        <TextBlock Foreground="{ThemeResource DangerBrush}"
                    Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
                    Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource NullToCollapsed}}" />
     </StackPanel>

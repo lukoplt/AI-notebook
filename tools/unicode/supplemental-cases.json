@@ -1,0 +1,3299 @@
+{
+  "contracts/lang-artifact-validation-v1.json": {
+    "contract": "lang-artifact-validation",
+    "version": 1,
+    "cases": [
+      {
+        "name": "schema-key-kelvin-sign",
+        "rawArtifact": "{\"contract\":\"lang-detector\",\"version\":1,\"kind\":\"synthetic\",\"modelId\":\"synthetic-aaaa-bbbb-v1\",\"targets\":[\"xa\",\"xb\"],\"normalizationTablesVersion\":\"ucd-15.1.0-default-full-v1\",\"alpha\":1,\"parameters\":{\"maxFeaturesPerProfile\":[3,3,3],\"orderWeights\":[1,2,3],\"scoreScale\":1024,\"lengthBucketStarts\":[12,32,80,200],\"minLetters\":12,\"minWords\":3,\"mixedDominanceBp\":7000,\"inputCapScalars\":256,\"textCapScalars\":256,\"windowCount\":3,\"windowScalars\":14},\"vocabulary\":[{\"order\":1,\"features\":[[-2],[-1],[97],[98],[99]]},{\"order\":2,\"features\":[[-1,97],[-1,98],[-1,99],[97,-2],[97,97],[98,-2],[98,98],[99,-2],[99,99]]},{\"order\":3,\"features\":[[-1,97,97],[-1,98,98],[-1,99,99],[97,97,-2],[97,97,97],[98,98,-2],[98,98,98],[99,99,-2],[99,99,99]]}],\"profiles\":[{\"id\":\"background\",\"priorWeight\":-1125,\"orders\":[{\"order\":1,\"weights\":[-1835,-1835,-2424,-2424,-976],\"unknownWeight\":-2424},{\"order\":2,\"weights\":[-3424,-3424,-2191,-3424,-2557,-3424,-2557,-2191,-1137],\"unknownWeight\":-2094},{\"order\":3,\"weights\":[-3225,-3225,-1993,-3225,-2702,-3225,-2702,-1993,-1335],\"unknownWeight\":-2101}]},{\"id\":\"xa\",\"priorWeight\":-1125,\"orders\":[{\"order\":1,\"weights\":[-1835,-1835,-682,-2731,-2731],\"unknownWeight\":-4379},{\"order\":2,\"weights\":[-1917,-3565,-3565,-1917,-862,-3565,-2855,-3565,-2855],\"unknownWeight\":-4275},{\"order\":3,\"weights\":[-1727,-3375,-3375,-1727,-1070,-3375,-2960,-3375,-2960],\"unknownWeight\":-4085}]},{\"id\":\"xb\",\"priorWeight\":-1125,\"orders\":[{\"order\":1,\"weights\":[-1835,-1835,-2731,-682,-2731],\"unknownWeight\":-4379},{\"order\":2,\"weights\":[-3565,-1917,-3565,-3565,-2855,-1917,-862,-3565,-2855],\"unknownWeight\":-4275},{\"order\":3,\"weights\":[-3375,-1727,-3375,-3375,-2960,-1727,-1070,-3375,-2960],\"unknownWeight\":-4085}]}],\"thresholds\":[{\"start\":12,\"enabled\":1,\"minWinningScore\":-15000,\"minMargin\":4000,\"minKnownCoverageBp\":9000},{\"start\":32,\"enabled\":1,\"minWinningScore\":-8000,\"minMargin\":4000,\"minKnownCoverageBp\":9000},{\"start\":80,\"enabled\":0,\"minWinningScore\":-15000,\"minMargin\":4000,\"minKnownCoverageBp\":9000},{\"start\":200,\"enabled\":1,\"minWinningScore\":-15000,\"minMargin\":4000,\"minKnownCoverageBp\":9000}],\"attribution\":{\"sourceIds\":[],\"licenseIds\":[],\"attributionPath\":\"\",\"attributionSha256\":\"\",\"noticePath\":\"\",\"noticeSha256\":\"\"}}\n",
+        "valid": false
+      },
+      {
+        "name": "schema-key-kelvin-sign-with-ascii-sibling",
+        "rawArtifact": "{\"contract\":\"lang-detector\",\"version\":1,\"kind\":\"synthetic\",\"modelId\":\"synthetic-aaaa-bbbb-v1\",\"targets\":[\"xa\",\"xb\"],\"normalizationTablesVersion\":\"ucd-15.1.0-default-full-v1\",\"alpha\":1,\"parameters\":{\"maxFeaturesPerProfile\":[3,3,3],\"orderWeights\":[1,2,3],\"scoreScale\":1024,\"lengthBucketStarts\":[12,32,80,200],\"minLetters\":12,\"minWords\":3,\"mixedDominanceBp\":7000,\"inputCapScalars\":256,\"textCapScalars\":256,\"windowCount\":3,\"windowScalars\":14},\"vocabulary\":[{\"order\":1,\"features\":[[-2],[-1],[97],[98],[99]]},{\"order\":2,\"features\":[[-1,97],[-1,98],[-1,99],[97,-2],[97,97],[98,-2],[98,98],[99,-2],[99,99]]},{\"order\":3,\"features\":[[-1,97,97],[-1,98,98],[-1,99,99],[97,97,-2],[97,97,97],[98,98,-2],[98,98,98],[99,99,-2],[99,99,99]]}],\"profiles\":[{\"id\":\"background\",\"priorWeight\":-1125,\"orders\":[{\"order\":1,\"weights\":[-1835,-1835,-2424,-2424,-976],\"unknownWeight\":-2424},{\"order\":2,\"weights\":[-3424,-3424,-2191,-3424,-2557,-3424,-2557,-2191,-1137],\"unknownWeight\":-2094},{\"order\":3,\"weights\":[-3225,-3225,-1993,-3225,-2702,-3225,-2702,-1993,-1335],\"unknownWeight\":-2101}]},{\"id\":\"xa\",\"priorWeight\":-1125,\"orders\":[{\"order\":1,\"weights\":[-1835,-1835,-682,-2731,-2731],\"unknownWeight\":-4379},{\"order\":2,\"weights\":[-1917,-3565,-3565,-1917,-862,-3565,-2855,-3565,-2855],\"unknownWeight\":-4275},{\"order\":3,\"weights\":[-1727,-3375,-3375,-1727,-1070,-3375,-2960,-3375,-2960],\"unknownWeight\":-4085}]},{\"id\":\"xb\",\"priorWeight\":-1125,\"orders\":[{\"order\":1,\"weights\":[-1835,-1835,-2731,-682,-2731],\"unknownWeight\":-4379},{\"order\":2,\"weights\":[-3565,-1917,-3565,-3565,-2855,-1917,-862,-3565,-2855],\"unknownWeight\":-4275},{\"order\":3,\"weights\":[-3375,-1727,-3375,-3375,-2960,-1727,-1070,-3375,-2960],\"unknownWeight\":-4085}]}],\"thresholds\":[{\"start\":12,\"enabled\":1,\"minWinningScore\":-15000,\"minMargin\":4000,\"minKnownCoverageBp\":9000,\"minKnownCoverageBp\":9000},{\"start\":32,\"enabled\":1,\"minWinningScore\":-8000,\"minMargin\":4000,\"minKnownCoverageBp\":9000,\"minKnownCoverageBp\":9000},{\"start\":80,\"enabled\":0,\"minWinningScore\":-15000,\"minMargin\":4000,\"minKnownCoverageBp\":9000,\"minKnownCoverageBp\":9000},{\"start\":200,\"enabled\":1,\"minWinningScore\":-15000,\"minMargin\":4000,\"minKnownCoverageBp\":9000,\"minKnownCoverageBp\":9000}],\"attribution\":{\"sourceIds\":[],\"licenseIds\":[],\"attributionPath\":\"\",\"attributionSha256\":\"\",\"noticePath\":\"\",\"noticeSha256\":\"\"}}\n",
+        "valid": false
+      }
+    ]
+  },
+  "contracts/lang-loading-v1.json": {
+    "contract": "lang-loading",
+    "version": 1,
+    "cases": [
+      {
+        "name": "dependency-unknown-key",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/environment/dependencies",
+          "value": [
+            {
+              "name": "x",
+              "version": "1",
+              "unexpected": 0
+            }
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "short-exporter-commit",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/environment/exporterGitCommit",
+          "value": "000000000000000000000000000000000000000"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "invalid-source-calendar-date",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/corpus/0/files/0/snapshotDate",
+          "value": "2025-02-29"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "duplicate-source-language",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/corpus/0/languageMappings/1/sourceLanguage",
+          "value": "ces"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "unattributed-source",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/corpus/0/id",
+          "value": "unattributed-source"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "unattributed-license",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/corpus/0/licenseIds",
+          "value": [
+            "unattributed-license"
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "duplicate-negative-language",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/negativeLanguages",
+          "value": [
+            "fr",
+            "fr"
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "split-shares-do-not-sum",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/split/splitBp/train",
+          "value": 7999
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "seed-outside-json-safe-range",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/split/seed",
+          "value": 9007199254740992
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "missing-cap-row",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/caps",
+          "value": [
+            {
+              "split": "train",
+              "language": "cs",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "de",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "en",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "fr",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "hr",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "hu",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "nl",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "pl",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "sk",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "train",
+              "language": "sl",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "cs",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "de",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "en",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "fr",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "hr",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "hu",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "nl",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "pl",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "sk",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "validation",
+              "language": "sl",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "cs",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "de",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "en",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "fr",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "hr",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "hu",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "nl",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "pl",
+              "maxOriginalRecords": 0
+            },
+            {
+              "split": "test",
+              "language": "sk",
+              "maxOriginalRecords": 0
+            }
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "groups-without-originals",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/counts/0/originalGroups",
+          "value": 1
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "support-exceeds-counts",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/support/0/evaluated",
+          "value": 1
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "empty-denominator-nonnull-rate",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/metrics/0/rateBp",
+          "value": 0
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "numerator-exceeds-denominator",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/metrics/0/numerator",
+          "value": 1
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "large-inconsistent-metric",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/metrics/0",
+          "value": {
+            "split": "validation",
+            "bucketStart": 0,
+            "language": "cs",
+            "name": "acceptedError",
+            "numerator": 9007199254740991,
+            "denominator": 9007199254740991,
+            "rateBp": 10000
+          }
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "unsorted-calibration-margins",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/calibration/candidates/0/minMargins",
+          "value": [
+            2,
+            1
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "missing-disabled-buckets",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/calibration/disabledBuckets",
+          "value": []
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "calibration-scalar-spelling",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/calibration/tieBreak",
+          "value": [
+            "minWinningScoreDescending",
+            "minMarginDescending",
+            "minKnownCoverageBpDescending"
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "none-augmentation-with-lengths",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/augmentation/0/lengths",
+          "value": [
+            1
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "duplicate-augmentation-split",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/augmentation/0/splits",
+          "value": [
+            "train",
+            "train"
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "changed-minimum-group-support",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/minimumSupport/groupsPerTarget",
+          "value": 199
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "unknown-document-source",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/documentMetrics",
+          "value": [
+            {
+              "sourceId": "unknown",
+              "goldLabel": "mixed",
+              "predictedLabel": "und",
+              "count": 1
+            }
+          ]
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "valid-leap-day",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/createdAt",
+          "value": "2024-02-29T23:59:59Z"
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "valid-month-end-leap-second",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/createdAt",
+          "value": "2016-12-31T23:59:60Z"
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "invalid-leap-day",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/createdAt",
+          "value": "2025-02-29T00:00:00Z"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "invalid-hour",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/createdAt",
+          "value": "2024-02-29T24:00:00Z"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "invalid-second",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/createdAt",
+          "value": "2016-12-31T23:59:61Z"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "leap-second-before-midnight",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/createdAt",
+          "value": "2016-12-31T12:00:60Z"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "leap-second-before-month-end",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/createdAt",
+          "value": "2016-12-30T23:59:60Z"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "timestamp-offset-instead-of-z",
+        "operation": "setManifestValue",
+        "input": {
+          "resource": "lang-detector-v1.manifest.json",
+          "pointer": "/createdAt",
+          "value": "2024-02-29T23:59:59+00:00"
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "model-identity-ascii",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/modelId",
+              "value": "K"
+            },
+            {
+              "resource": "lang-detector-v1.json",
+              "pointer": "/modelId",
+              "value": "K"
+            }
+          ],
+          "refreshArtifactDigest": true
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "model-identity-kelvin-sign",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/modelId",
+              "value": "K"
+            },
+            {
+              "resource": "lang-detector-v1.json",
+              "pointer": "/modelId",
+              "value": "K"
+            }
+          ],
+          "refreshArtifactDigest": true
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "consistent-nonzero-text-counts-disabled-buckets",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "augmentation-validation-independent-groups-1",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/algorithm",
+              "value": "strip-marks-v1"
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/splits",
+              "value": [
+                "validation"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/outputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/augmented",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "augmentation-validation-independent-groups-2",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/algorithm",
+              "value": "strip-marks-v1"
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/splits",
+              "value": [
+                "validation"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/outputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/augmented",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "augmentation-train-independent-groups-1",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/algorithm",
+              "value": "strip-marks-v1"
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/splits",
+              "value": [
+                "train"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/outputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/augmented",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "empty-prefix-configuration-zero-output",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/algorithm",
+              "value": "scalar-prefix-v1"
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "empty-prefix-configuration-cannot-produce-output",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/algorithm",
+              "value": "scalar-prefix-v1"
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/splits",
+              "value": [
+                "validation"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/outputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/augmented",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "concat-one-output-per-anchor-and-length",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/algorithm",
+              "value": "concat-v1"
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/lengths",
+              "value": [
+                64
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/splits",
+              "value": [
+                "validation"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/outputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/augmented",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "concat-outputs-exceed-one-per-anchor-and-length",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/algorithm",
+              "value": "concat-v1"
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/lengths",
+              "value": [
+                64
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/splits",
+              "value": [
+                "validation"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/outputCount",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/augmented",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "concat-without-lengths-cannot-produce-output",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/files/0/records",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus/0/originalRecords",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/algorithm",
+              "value": "concat-v1"
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/splits",
+              "value": [
+                "validation"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/outputCount",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/augmented",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 2
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            }
+          ],
+          "refreshArtifactDigest": false
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "owned-documents-outside-text-counts",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus",
+              "value": [
+                {
+                  "id": "wp4-loader-test-only",
+                  "files": [
+                    {
+                      "role": "sentences",
+                      "url": "https://example.invalid/wp4-loader-test-only",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 0
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 0,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    }
+                  ]
+                },
+                {
+                  "id": "wp1-test-documents",
+                  "files": [
+                    {
+                      "role": "ownedExamples",
+                      "url": "https://example.invalid/wp1-test-document",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 1
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 1,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    },
+                    {
+                      "sourceLanguage": "und",
+                      "detectorLanguage": "und"
+                    },
+                    {
+                      "sourceLanguage": "mul",
+                      "detectorLanguage": "mul"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/documentMetrics",
+              "value": [
+                {
+                  "sourceId": "wp1-test-documents",
+                  "goldLabel": "mixed",
+                  "predictedLabel": "und",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            }
+          ],
+          "refreshArtifactDigest": true
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "other-source-cannot-fund-owned-documents",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus",
+              "value": [
+                {
+                  "id": "wp4-loader-test-only",
+                  "files": [
+                    {
+                      "role": "sentences",
+                      "url": "https://example.invalid/wp4-loader-test-only",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 1
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 1,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    }
+                  ]
+                },
+                {
+                  "id": "wp1-test-documents",
+                  "files": [
+                    {
+                      "role": "ownedExamples",
+                      "url": "https://example.invalid/wp1-test-document",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 0
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 0,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    },
+                    {
+                      "sourceLanguage": "und",
+                      "detectorLanguage": "und"
+                    },
+                    {
+                      "sourceLanguage": "mul",
+                      "detectorLanguage": "mul"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/documentMetrics",
+              "value": [
+                {
+                  "sourceId": "wp1-test-documents",
+                  "goldLabel": "mixed",
+                  "predictedLabel": "und",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            }
+          ],
+          "refreshArtifactDigest": true
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      },
+      {
+        "name": "owned-technical-text-and-0-documents",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus",
+              "value": [
+                {
+                  "id": "wp4-loader-test-only",
+                  "files": [
+                    {
+                      "role": "sentences",
+                      "url": "https://example.invalid/wp4-loader-test-only",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 0
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 0,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    }
+                  ]
+                },
+                {
+                  "id": "wp1-test-documents",
+                  "files": [
+                    {
+                      "role": "ownedExamples",
+                      "url": "https://example.invalid/wp1-test-document",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 3
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 3,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    },
+                    {
+                      "sourceLanguage": "und",
+                      "detectorLanguage": "und"
+                    },
+                    {
+                      "sourceLanguage": "mul",
+                      "detectorLanguage": "mul"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/documentMetrics",
+              "value": [
+                {
+                  "sourceId": "wp1-test-documents",
+                  "goldLabel": "mixed",
+                  "predictedLabel": "und",
+                  "count": 0
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            }
+          ],
+          "refreshArtifactDigest": true
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "owned-technical-text-and-1-documents",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus",
+              "value": [
+                {
+                  "id": "wp4-loader-test-only",
+                  "files": [
+                    {
+                      "role": "sentences",
+                      "url": "https://example.invalid/wp4-loader-test-only",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 0
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 0,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    }
+                  ]
+                },
+                {
+                  "id": "wp1-test-documents",
+                  "files": [
+                    {
+                      "role": "ownedExamples",
+                      "url": "https://example.invalid/wp1-test-document",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 4
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 4,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    },
+                    {
+                      "sourceLanguage": "und",
+                      "detectorLanguage": "und"
+                    },
+                    {
+                      "sourceLanguage": "mul",
+                      "detectorLanguage": "mul"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/documentMetrics",
+              "value": [
+                {
+                  "sourceId": "wp1-test-documents",
+                  "goldLabel": "mixed",
+                  "predictedLabel": "und",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            }
+          ],
+          "refreshArtifactDigest": true
+        },
+        "expected": {
+          "isAvailable": true
+        }
+      },
+      {
+        "name": "document-records-cannot-fund-text-counts",
+        "operation": "setResourceValues",
+        "input": {
+          "changes": [
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/corpus",
+              "value": [
+                {
+                  "id": "wp4-loader-test-only",
+                  "files": [
+                    {
+                      "role": "sentences",
+                      "url": "https://example.invalid/wp4-loader-test-only",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 0
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 0,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    }
+                  ]
+                },
+                {
+                  "id": "wp1-test-documents",
+                  "files": [
+                    {
+                      "role": "ownedExamples",
+                      "url": "https://example.invalid/wp1-test-document",
+                      "snapshotDate": "2026-10-09",
+                      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                      "formatVersion": "wp4-invented-empty-v1",
+                      "records": 3
+                    }
+                  ],
+                  "licenseIds": [
+                    "LicenseRef-WP4-Test-Only"
+                  ],
+                  "licenseSelectionPolicy": "Wholly invented zero-record fixture; no corpus was downloaded.",
+                  "languageSelectionPolicy": "All ten mapped languages; zero source records.",
+                  "deduplicationPolicy": "none; translation links only",
+                  "translationGroupPolicy": "translation-components-sha256-v1; no records or links",
+                  "originalRecords": 3,
+                  "languageMappings": [
+                    {
+                      "sourceLanguage": "ces",
+                      "detectorLanguage": "cs"
+                    },
+                    {
+                      "sourceLanguage": "deu",
+                      "detectorLanguage": "de"
+                    },
+                    {
+                      "sourceLanguage": "eng",
+                      "detectorLanguage": "en"
+                    },
+                    {
+                      "sourceLanguage": "fra",
+                      "detectorLanguage": "fr"
+                    },
+                    {
+                      "sourceLanguage": "hrv",
+                      "detectorLanguage": "hr"
+                    },
+                    {
+                      "sourceLanguage": "hun",
+                      "detectorLanguage": "hu"
+                    },
+                    {
+                      "sourceLanguage": "nld",
+                      "detectorLanguage": "nl"
+                    },
+                    {
+                      "sourceLanguage": "pol",
+                      "detectorLanguage": "pl"
+                    },
+                    {
+                      "sourceLanguage": "slk",
+                      "detectorLanguage": "sk"
+                    },
+                    {
+                      "sourceLanguage": "slv",
+                      "detectorLanguage": "sl"
+                    },
+                    {
+                      "sourceLanguage": "und",
+                      "detectorLanguage": "und"
+                    },
+                    {
+                      "sourceLanguage": "mul",
+                      "detectorLanguage": "mul"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/0/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/10/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/caps/20/maxOriginalRecords",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/augmentation/0/inputCount",
+              "value": 3
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/1/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/51/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originals",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/counts/101/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/0/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/originalGroups",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/support/40/evaluated",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/7/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/207/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/227/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/denominator",
+              "value": 1
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/metrics/427/rateBp",
+              "value": 0
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/documentMetrics",
+              "value": [
+                {
+                  "sourceId": "wp1-test-documents",
+                  "goldLabel": "mixed",
+                  "predictedLabel": "und",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.manifest.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            },
+            {
+              "resource": "lang-detector-v1.json",
+              "pointer": "/attribution/sourceIds",
+              "value": [
+                "wp4-loader-test-only",
+                "wp1-test-documents"
+              ]
+            }
+          ],
+          "refreshArtifactDigest": true
+        },
+        "expected": {
+          "isAvailable": false
+        }
+      }
+    ]
+  },
+  "contracts/lang-json-validation-v1.json": {
+    "contract": "lang-json-validation",
+    "version": 1,
+    "cases": [
+      {
+        "name": "json-empty-object",
+        "rawJson": "{}\n",
+        "valid": true
+      },
+      {
+        "name": "json-integer-extremes",
+        "rawJson": "{\"a\":-9223372036854775808,\"b\":9223372036854775807}\n",
+        "valid": true
+      },
+      {
+        "name": "json-literals-and-surrogate-pair",
+        "rawJson": "{\"a\":true,\"b\":false,\"c\":null,\"d\":\"\\uD801\\uDC00\"}\n",
+        "valid": true
+      },
+      {
+        "name": "json-positive-integer-overflow",
+        "rawJson": "{\"a\":9223372036854775808}\n",
+        "valid": false
+      },
+      {
+        "name": "json-negative-integer-overflow",
+        "rawJson": "{\"a\":-9223372036854775809}\n",
+        "valid": false
+      },
+      {
+        "name": "json-leading-zero",
+        "rawJson": "{\"a\":01}\n",
+        "valid": false
+      },
+      {
+        "name": "json-exponent",
+        "rawJson": "{\"a\":1e0}\n",
+        "valid": false
+      },
+      {
+        "name": "json-fraction",
+        "rawJson": "{\"a\":1.0}\n",
+        "valid": false
+      },
+      {
+        "name": "json-escaped-duplicate-nested-key",
+        "rawJson": "{\"a\":{\"x\":1,\"\\u0078\":2}}\n",
+        "valid": false
+      },
+      {
+        "name": "json-unpaired-high-surrogate",
+        "rawJson": "{\"a\":\"\\ud800\"}\n",
+        "valid": false
+      },
+      {
+        "name": "json-unpaired-low-surrogate",
+        "rawJson": "{\"a\":\"\\udc00\"}\n",
+        "valid": false
+      },
+      {
+        "name": "json-unpaired-surrogate-before-letter",
+        "rawJson": "{\"a\":\"\\ud800A\"}\n",
+        "valid": false
+      },
+      {
+        "name": "json-two-root-values",
+        "rawJson": "{}{}\n",
+        "valid": false
+      },
+      {
+        "name": "json-nonobject-root",
+        "rawJson": "[]\n",
+        "valid": false
+      },
+      {
+        "name": "json-object-trailing-comma",
+        "rawJson": "{\"a\":1,}\n",
+        "valid": false
+      },
+      {
+        "name": "json-array-trailing-comma",
+        "rawJson": "{\"a\":[1,]}\n",
+        "valid": false
+      },
+      {
+        "name": "json-unescaped-control",
+        "rawJson": "{\"a\":\"\u001f\"}\n",
+        "valid": false
+      },
+      {
+        "name": "json-depth-overflow",
+        "rawJson": "{\"a\":[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[0]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}\n",
+        "valid": false
+      }
+    ]
+  }
+}

@@ -25,6 +25,9 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
         public string? SelectedEmbeddingProviderId { get; set; }
         public bool? AutoCheckUpdates { get; set; }
         public string? LastUpdateCheckUtc { get; set; }
+        public bool? WebSearchEnabled { get; set; }
+        public string? RightPanel { get; set; }
+        public double? RightPanelWidth { get; set; }
     }
 
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
@@ -50,6 +53,9 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
         _selectedChatProviderId = _file.SelectedChatProviderId ?? ProviderConfig.OllamaId;
         _selectedEmbeddingProviderId = _file.SelectedEmbeddingProviderId ?? ProviderConfig.OllamaId;
         _autoCheckUpdates = _file.AutoCheckUpdates ?? true;
+        _webSearchEnabled = _file.WebSearchEnabled ?? false;
+        _rightPanel = _file.RightPanel ?? "";
+        _rightPanelWidth = _file.RightPanelWidth ?? 360;
         _lastUpdateCheckUtc = DateTimeOffset.TryParse(_file.LastUpdateCheckUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out var t) ? t : null;
     }
 
@@ -142,6 +148,27 @@ public sealed partial class SettingsService : ObservableObject, ISettingsService
     {
         get => _lastUpdateCheckUtc;
         set { if (SetField(ref _lastUpdateCheckUtc, value)) { _file.LastUpdateCheckUtc = value?.ToString("o"); Save(); } }
+    }
+
+    private bool _webSearchEnabled;
+    public bool WebSearchEnabled
+    {
+        get => _webSearchEnabled;
+        set { if (SetField(ref _webSearchEnabled, value)) { _file.WebSearchEnabled = value; Save(); } }
+    }
+
+    private string _rightPanel;
+    public string RightPanel
+    {
+        get => _rightPanel;
+        set { if (SetField(ref _rightPanel, value)) { _file.RightPanel = value; Save(); } }
+    }
+
+    private double _rightPanelWidth;
+    public double RightPanelWidth
+    {
+        get => _rightPanelWidth;
+        set { if (SetField(ref _rightPanelWidth, value)) { _file.RightPanelWidth = value; Save(); } }
     }
 
     private bool SetField<T>(ref T field, T value, [CallerMemberName] string? name = null)

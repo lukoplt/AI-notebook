@@ -121,6 +121,11 @@
           "SQLitePCLRaw.core": "3.0.3"
         }
       },
+      "System.Numerics.Tensors": {
+        "type": "Transitive",
+        "resolved": "9.0.0",
+        "contentHash": "hyJB4UlpAi19Xr9AXzu2NuagKC4lPfHObNMEAA0HmqFz2rX7wKgzeYzO/jM/eBHDhnUGFFEjk5cOoJaxqg5J4A=="
+      },
       "xunit.abstractions": {
         "type": "Transitive",
         "resolved": "2.0.3",
@@ -168,7 +173,8 @@
           "Dapper": "[2.1.79, )",
           "Microsoft.Data.Sqlite": "[9.0.16, )",
           "PdfPig": "[0.1.14, )",
-          "SQLitePCLRaw.bundle_e_sqlite3": "[3.0.3, )"
+          "SQLitePCLRaw.bundle_e_sqlite3": "[3.0.3, )",
+          "System.Numerics.Tensors": "[9.0.0, )"
         }
       }
     }

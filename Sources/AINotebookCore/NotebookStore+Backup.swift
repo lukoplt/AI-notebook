@@ -21,7 +21,7 @@ extension NotebookStore {
     /// Replaces the live database contents with those of the backup file at
     /// `url`, then refreshes the published notebook list. Destructive — the
     /// caller must confirm first (FR-B3 confirm dialog).
-    public func restoreDatabase(from url: URL) throws {
+    @MainActor public func restoreDatabase(from url: URL) throws {
         let source = try DatabaseQueue(path: url.path)
         try source.backup(to: dbQueue)
         try refresh()

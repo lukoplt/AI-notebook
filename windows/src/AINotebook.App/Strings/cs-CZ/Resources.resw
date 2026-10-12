@@ -30,7 +30,7 @@
     <value>Verze</value>
   </data>
   <data name="notebooks" xml:space="preserve">
-    <value>Poznámkové bloky</value>
+    <value>Notebooky</value>
   </data>
   <data name="sources" xml:space="preserve">
     <value>Zdroje</value>
@@ -45,19 +45,19 @@
     <value>Transformace</value>
   </data>
   <data name="noNotebookSelected" xml:space="preserve">
-    <value>Žádný blok není vybrán</value>
+    <value>Žádný notebook není vybrán</value>
   </data>
   <data name="createNotebook" xml:space="preserve">
-    <value>Vytvořit blok</value>
+    <value>Vytvořit notebook</value>
   </data>
   <data name="renameNotebook" xml:space="preserve">
-    <value>Přejmenovat blok</value>
+    <value>Přejmenovat notebook</value>
   </data>
   <data name="deleteNotebook" xml:space="preserve">
-    <value>Smazat blok</value>
+    <value>Smazat notebook</value>
   </data>
   <data name="notebookName" xml:space="preserve">
-    <value>Název bloku</value>
+    <value>Název notebooku</value>
   </data>
   <data name="notebookDescription" xml:space="preserve">
     <value>Popis (volitelný)</value>
@@ -75,7 +75,7 @@
     <value>Smazat</value>
   </data>
   <data name="confirmDeleteNotebook" xml:space="preserve">
-    <value>Opravdu smazat tento blok? Akci nelze vrátit zpět.</value>
+    <value>Opravdu smazat tento notebook? Akci nelze vrátit zpět.</value>
   </data>
   <data name="cannotBeEmpty" xml:space="preserve">
     <value>Název nesmí být prázdný.</value>
@@ -135,16 +135,13 @@
     <value>Hotovo</value>
   </data>
   <data name="onboardingDoneBody" xml:space="preserve">
-    <value>Teď můžete vytvořit svůj první poznámkový blok.</value>
+    <value>Teď můžete vytvořit svůj první notebook.</value>
   </data>
   <data name="ollamaUnreachable" xml:space="preserve">
     <value>Nelze se připojit k Ollamě. Je spuštěná?</value>
   </data>
   <data name="startUsingApp" xml:space="preserve">
     <value>Začít používat aplikaci</value>
-  </data>
-  <data name="sourcesSectionTitle" xml:space="preserve">
-    <value>Zdroje</value>
   </data>
   <data name="addSourceButton" xml:space="preserve">
     <value>Přidat zdroj</value>
@@ -224,12 +221,6 @@
   <data name="chatSendButton" xml:space="preserve">
     <value>Odeslat</value>
   </data>
-  <data name="chatEmptyState" xml:space="preserve">
-    <value>Začněte položením otázky.</value>
-  </data>
-  <data name="chatErrorPrefix" xml:space="preserve">
-    <value>Chyba chatu: </value>
-  </data>
   <data name="chatCitationsSectionTitle" xml:space="preserve">
     <value>Citace</value>
   </data>
@@ -239,9 +230,6 @@
   <data name="chatRegenerateButton" xml:space="preserve">
     <value>Znovu vygenerovat</value>
   </data>
-  <data name="chatSessionsLabel" xml:space="preserve">
-    <value>Konverzace</value>
-  </data>
   <data name="chatNewSessionButton" xml:space="preserve">
     <value>Nová konverzace</value>
   </data>
@@ -250,9 +238,6 @@
   </data>
   <data name="chatSaveAsNoteButton" xml:space="preserve">
     <value>Uložit jako poznámku</value>
-  </data>
-  <data name="notesSectionTitle" xml:space="preserve">
-    <value>Poznámky</value>
   </data>
   <data name="notesEmptyState" xml:space="preserve">
     <value>Zatím žádné poznámky. Vytvořte ji nebo uložte z chatu.</value>
@@ -290,14 +275,8 @@
   <data name="transformationRunButton" xml:space="preserve">
     <value>Spustit</value>
   </data>
-  <data name="transformationResultTitle" xml:space="preserve">
-    <value>Výsledek</value>
-  </data>
   <data name="transformationRunningStatus" xml:space="preserve">
     <value>Probíhá…</value>
-  </data>
-  <data name="transformationEditButton" xml:space="preserve">
-    <value>Upravit šablony</value>
   </data>
   <data name="transformationEditorTitle" xml:space="preserve">
     <value>Vlastní transformace</value>
@@ -322,9 +301,6 @@
   </data>
   <data name="reembedConfirmYes" xml:space="preserve">
     <value>Přeindexovat</value>
-  </data>
-  <data name="embeddingSectionTitle" xml:space="preserve">
-    <value>Vektorizace</value>
   </data>
   <data name="currentModelLabel" xml:space="preserve">
     <value>Aktuální model</value>
@@ -413,12 +389,6 @@
   <data name="aiToolsSectionTitle" xml:space="preserve">
     <value>AI nástroje</value>
   </data>
-  <data name="aiToolsEmptyTitle" xml:space="preserve">
-    <value>Co jsou AI nástroje?</value>
-  </data>
-  <data name="aiToolsEmptyBody" xml:space="preserve">
-    <value>Vyber šablonu, vyber zdroj, klikni Spustit. Výstup se uloží jako nová poznámka v tomto notebooku.</value>
-  </data>
   <data name="aiToolsScopeAllSources" xml:space="preserve">
     <value>Všechny zdroje</value>
   </data>
@@ -427,9 +397,6 @@
   </data>
   <data name="aiToolsPreviewButton" xml:space="preserve">
     <value>Náhled promptu</value>
-  </data>
-  <data name="aiToolsHistoryButton" xml:space="preserve">
-    <value>Historie</value>
   </data>
   <data name="aiToolsResultSavedFormat" xml:space="preserve">
     <value>Uloženo jako poznámka: {0}</value>
@@ -454,21 +421,6 @@
   </data>
   <data name="aiToolsDescriptionPlaceholder" xml:space="preserve">
     <value>Krátký popis (zobrazí se pod názvem šablony)</value>
-  </data>
-  <data name="unsavedChangesTitle" xml:space="preserve">
-    <value>Neuložené změny</value>
-  </data>
-  <data name="unsavedChangesMessage" xml:space="preserve">
-    <value>Tato poznámka má neuložené úpravy. Uložit před přepnutím?</value>
-  </data>
-  <data name="unsavedSaveButton" xml:space="preserve">
-    <value>Uložit</value>
-  </data>
-  <data name="unsavedDiscardButton" xml:space="preserve">
-    <value>Zahodit</value>
-  </data>
-  <data name="chatFollowupsLabel" xml:space="preserve">
-    <value>Návrhy navazujících otázek</value>
   </data>
   <data name="sourceSummaryLabel" xml:space="preserve">
     <value>Shrnutí</value>
@@ -545,9 +497,6 @@
   <data name="embeddingProviderPickerLabel" xml:space="preserve">
     <value>Poskytovatel embeddingů</value>
   </data>
-  <data name="noteSearchPlaceholder" xml:space="preserve">
-    <value>Hledat poznámky…</value>
-  </data>
   <data name="sourcePreviewTitle" xml:space="preserve">
     <value>Náhled zdroje</value>
   </data>
@@ -559,9 +508,6 @@
   </data>
   <data name="sourcePreviewButton" xml:space="preserve">
     <value>Náhled</value>
-  </data>
-  <data name="exportNoteButton" xml:space="preserve">
-    <value>Exportovat poznámku</value>
   </data>
   <data name="exportNoteMarkdown" xml:space="preserve">
     <value>Exportovat jako Markdown</value>
@@ -638,9 +584,6 @@
   <data name="notebookInstructionsPlaceholder" xml:space="preserve">
     <value>Instrukce vložené do každého chatu a transformace v tomto notebooku…</value>
   </data>
-  <data name="notebookInstructionsSaved" xml:space="preserve">
-    <value>Instrukce uloženy</value>
-  </data>
   <data name="sourceSetsSectionTitle" xml:space="preserve">
     <value>Sady zdrojů</value>
   </data>
@@ -656,9 +599,6 @@
   <data name="chatEditButton" xml:space="preserve">
     <value>Upravit</value>
   </data>
-  <data name="chatRegenerateWithButton" xml:space="preserve">
-    <value>Znovu vygenerovat s…</value>
-  </data>
   <data name="citationPanelTitle" xml:space="preserve">
     <value>Citace</value>
   </data>
@@ -667,9 +607,6 @@
   </data>
   <data name="personaMenu" xml:space="preserve">
     <value>Persona</value>
-  </data>
-  <data name="personaNone" xml:space="preserve">
-    <value>Žádná</value>
   </data>
   <data name="personaNew" xml:space="preserve">
     <value>Nová persona…</value>
@@ -697,9 +634,6 @@
   </data>
   <data name="urlRefreshingStatus" xml:space="preserve">
     <value>Obnovovám…</value>
-  </data>
-  <data name="webSearchToggleLabel" xml:space="preserve">
-    <value>Webové vyhledávání</value>
   </data>
   <data name="webSearchResultsTitle" xml:space="preserve">
     <value>Výsledky z webu</value>
@@ -733,5 +667,653 @@
   </data>
   <data name="updateStatusFailed" xml:space="preserve">
     <value>Kontrola aktualizací se nezdařila.</value>
+  </data>
+  <data name="addFolderButton" xml:space="preserve">
+    <value>Přidat složku…</value>
+  </data>
+  <data name="folderLastFullScan" xml:space="preserve">
+    <value>Poslední úplný sken</value>
+  </data>
+  <data name="folderNeverScanned" xml:space="preserve">
+    <value>Dosud neskenováno</value>
+  </data>
+  <data name="folderWatchEnabled" xml:space="preserve">
+    <value>Sledovat změny</value>
+  </data>
+  <data name="folderScanNow" xml:space="preserve">
+    <value>Skenovat teď</value>
+  </data>
+  <data name="folderVerifyAll" xml:space="preserve">
+    <value>Ověřit vše</value>
+  </data>
+  <data name="folderRulesTitle" xml:space="preserve">
+    <value>Pravidla složky</value>
+  </data>
+  <data name="folderIncludeExtensions" xml:space="preserve">
+    <value>Zahrnuté přípony</value>
+  </data>
+  <data name="folderIgnoreGlobs" xml:space="preserve">
+    <value>Ignorované vzory (jeden na řádek)</value>
+  </data>
+  <data name="folderMaxFileBytes" xml:space="preserve">
+    <value>Nejvýše bajtů souboru</value>
+  </data>
+  <data name="folderMaxOfficeBytes" xml:space="preserve">
+    <value>Nejvýše rozbalených bajtů Office</value>
+  </data>
+  <data name="folderMaxTextScalars" xml:space="preserve">
+    <value>Nejvýše znaků textu</value>
+  </data>
+  <data name="folderMaxPdfPages" xml:space="preserve">
+    <value>Nejvýše stran PDF</value>
+  </data>
+  <data name="folderMaxChunks" xml:space="preserve">
+    <value>Nejvýše pasáží na soubor</value>
+  </data>
+  <data name="folderMaxCells" xml:space="preserve">
+    <value>Nejvýše buněk tabulky</value>
+  </data>
+  <data name="folderEncodingFallback" xml:space="preserve">
+    <value>Náhradní kódování textu</value>
+  </data>
+  <data name="folderEncodingNone" xml:space="preserve">
+    <value>Pouze striktní UTF</value>
+  </data>
+  <data name="folderEncodingCp1250" xml:space="preserve">
+    <value>Windows-1250</value>
+  </data>
+  <data name="folderEncodingUsed" xml:space="preserve">
+    <value>Kódování</value>
+  </data>
+  <data name="folderRulesInvalid" xml:space="preserve">
+    <value>Zkontrolujte vzory, přípony a kladné limity.</value>
+  </data>
+  <data name="folderRemoveButton" xml:space="preserve">
+    <value>Odebrat z notebooku</value>
+  </data>
+  <data name="folderRemoveConfirm" xml:space="preserve">
+    <value>Odebrat tuto složku z notebooku?</value>
+  </data>
+  <data name="folderRemoveKeepsFiles" xml:space="preserve">
+    <value>Soubory na disku zůstanou zachovány.</value>
+  </data>
+  <data name="folderSearchable" xml:space="preserve">
+    <value>Prohledatelné</value>
+  </data>
+  <data name="folderNotSearchable" xml:space="preserve">
+    <value>Dosud neprohledatelné</value>
+  </data>
+  <data name="folderCurrent" xml:space="preserve">
+    <value>Aktuální</value>
+  </data>
+  <data name="folderRefreshPending" xml:space="preserve">
+    <value>Čeká na aktualizaci</value>
+  </data>
+  <data name="folderRefreshError" xml:space="preserve">
+    <value>Aktualizace selhala</value>
+  </data>
+  <data name="folderSkipped" xml:space="preserve">
+    <value>Přeskočené</value>
+  </data>
+  <data name="folderMissing" xml:space="preserve">
+    <value>Chybějící</value>
+  </data>
+  <data name="folderUnavailable" xml:space="preserve">
+    <value>Nedostupné</value>
+  </data>
+  <data name="folderAtLeast" xml:space="preserve">
+    <value>Alespoň</value>
+  </data>
+  <data name="folderOverlapError" xml:space="preserve">
+    <value>Tato složka se překrývá se složkou již přidanou do notebooku.</value>
+  </data>
+  <data name="folderReadError" xml:space="preserve">
+    <value>Složku nebo soubor se nepodařilo přečíst.</value>
+  </data>
+  <data name="folderLimitError" xml:space="preserve">
+    <value>Byl překročen limit extrakce.</value>
+  </data>
+  <data name="folderEncodingError" xml:space="preserve">
+    <value>Kódování textu není podporováno.</value>
+  </data>
+  <data name="folderDocumentError" xml:space="preserve">
+    <value>Dokument je poškozený nebo nepodporovaný.</value>
+  </data>
+  <data name="sourceErrorMissingPart" xml:space="preserve">
+    <value>Dokument je neúplný: chybí povinná část.</value>
+  </data>
+  <data name="sourceErrorDamaged" xml:space="preserve">
+    <value>Soubor je poškozený nebo nejde o platný dokument.</value>
+  </data>
+  <data name="sourceErrorNotDownloaded" xml:space="preserve">
+    <value>Soubor je jen v cloudovém úložišti a nepodařilo se ho stáhnout.</value>
+  </data>
+  <data name="scopeWholeNotebook" xml:space="preserve">
+    <value>Celý notebook</value>
+  </data>
+  <data name="scopeSelection" xml:space="preserve">
+    <value>Vybrané položky</value>
+  </data>
+  <data name="scopeFolders" xml:space="preserve">
+    <value>Složky</value>
+  </data>
+  <data name="scopeSourceSets" xml:space="preserve">
+    <value>Sady zdrojů</value>
+  </data>
+  <data name="scopeSources" xml:space="preserve">
+    <value>Jednotlivé zdroje</value>
+  </data>
+  <data name="scopeEmpty" xml:space="preserve">
+    <value>Nejsou vybrány žádné zdroje</value>
+  </data>
+  <data name="reindexButton" xml:space="preserve">
+    <value>Přeindexovat</value>
+  </data>
+  <data name="reindexProgress" xml:space="preserve">
+    <value>Průběh přeindexování</value>
+  </data>
+  <data name="reindexDiscovering" xml:space="preserve">
+    <value>Připravuje se nový index</value>
+  </data>
+  <data name="reindexPausedForChat" xml:space="preserve">
+    <value>Indexování na pozadí je pozastaveno kvůli chatu</value>
+  </data>
+  <data name="reindexFailed" xml:space="preserve">
+    <value>Přeindexování selhalo; stávající vyhledávání zůstává dostupné.</value>
+  </data>
+  <data name="reindexDualSpaceNote" xml:space="preserve">
+    <value>Stávající index zůstává dostupný během vytváření nového indexu. Dočasně je potřeba více místa na disku.</value>
+  </data>
+  <data name="reindexDiscard" xml:space="preserve">
+    <value>Zahodit nový index</value>
+  </data>
+  <data name="reindexRetry" xml:space="preserve">
+    <value>Zkusit přeindexování znovu</value>
+  </data>
+  <data name="chatOverviewToggle" xml:space="preserve">
+    <value>Přehled</value>
+  </data>
+  <data name="contextPreviewBeforeSend" xml:space="preserve">
+    <value>Zobrazit, co se pošle</value>
+  </data>
+  <data name="contextPreviewSent" xml:space="preserve">
+    <value>Zobrazit odeslaný kontext</value>
+  </data>
+  <data name="contextPreviewTitle" xml:space="preserve">
+    <value>Náhled kontextu</value>
+  </data>
+  <data name="contextPreviewPreparing" xml:space="preserve">
+    <value>Připravuji kontext…</value>
+  </data>
+  <data name="contextPreviewUnavailable" xml:space="preserve">
+    <value>Tento náhled kontextu už není v paměti.</value>
+  </data>
+  <data name="contextPreviewEstimatedTokens" xml:space="preserve">
+    <value>Odhad tokenů</value>
+  </data>
+  <data name="contextPreviewAssumedLimit" xml:space="preserve">
+    <value>Velikost kontextu předpokládaná aplikací</value>
+  </data>
+  <data name="contextPreviewMessages" xml:space="preserve">
+    <value>Logické zprávy</value>
+  </data>
+  <data name="contextPreviewWireOrder" xml:space="preserve">
+    <value>Pořadí odeslaných zpráv</value>
+  </data>
+  <data name="contextPreviewOptions" xml:space="preserve">
+    <value>Nastavení požadavku</value>
+  </data>
+  <data name="contextPreviewIncluded" xml:space="preserve">
+    <value>Zahrnutý obsah</value>
+  </data>
+  <data name="contextPreviewOmitted" xml:space="preserve">
+    <value>Vynechaný obsah</value>
+  </data>
+  <data name="contextPreviewCoverage" xml:space="preserve">
+    <value>Pokrytí rozsahu a dotazu</value>
+  </data>
+  <data name="contextPreviewRecalculate" xml:space="preserve">
+    <value>Přepočítat náhled</value>
+  </data>
+  <data name="contextPreviewClose" xml:space="preserve">
+    <value>Zavřít náhled</value>
+  </data>
+  <data name="contextTooSmall" xml:space="preserve">
+    <value>Kontext je příliš malý. Zvětšete ho nebo zkraťte instrukce.</value>
+  </data>
+  <data name="citationOpenOriginal" xml:space="preserve">
+    <value>Otevřít originál</value>
+  </data>
+  <data name="citationRevisionChanged" xml:space="preserve">
+    <value>Originál se od této odpovědi změnil.</value>
+  </data>
+  <data name="citationOriginalUnavailable" xml:space="preserve">
+    <value>Originál není dostupný.</value>
+  </data>
+  <data name="citationOriginalOutsideFolder" xml:space="preserve">
+    <value>Originál je mimo vybranou složku.</value>
+  </data>
+  <data name="contextOmittedEvidenceBudget" xml:space="preserve">
+    <value>Vyčerpán rozpočet důkazů</value>
+  </data>
+  <data name="contextOmittedTopK" xml:space="preserve">
+    <value>Dosažen limit pasáží</value>
+  </data>
+  <data name="contextOmittedHistoryBudget" xml:space="preserve">
+    <value>Celý tah konverzace se nevešel</value>
+  </data>
+  <data name="contextOmittedMapBudget" xml:space="preserve">
+    <value>Vyčerpán rozpočet mapy</value>
+  </data>
+  <data name="contextOmittedExternalBudget" xml:space="preserve">
+    <value>Doplňující kontext se nevešel</value>
+  </data>
+  <data name="contextOmittedTruncated" xml:space="preserve">
+    <value>Úryvek zkrácen na hranici věty</value>
+  </data>
+  <data name="contextOmittedDuplicate" xml:space="preserve">
+    <value>Duplicitní úryvek</value>
+  </data>
+  <data name="contextOmittedRevisionMismatch" xml:space="preserve">
+    <value>Jiná revize dokumentu</value>
+  </data>
+  <data name="contextOmittedNeighbourBudget" xml:space="preserve">
+    <value>Sousední úryvek se nevešel</value>
+  </data>
+  <data name="contextOmittedLegacyNoSpan" xml:space="preserve">
+    <value>Starší úryvek nemá údaje o pozici</value>
+  </data>
+  <data name="contextOmittedEmptySelection" xml:space="preserve">
+    <value>Nejsou vybrány žádné zdroje</value>
+  </data>
+  <data name="folderShowFiles" xml:space="preserve">
+    <value>Zobrazit soubory</value>
+  </data>
+  <data name="folderHideFiles" xml:space="preserve">
+    <value>Skrýt soubory</value>
+  </data>
+  <data name="folderFilesCount" xml:space="preserve">
+    <value>Soubory: {shown} / {total}</value>
+  </data>
+  <data name="folderLoadMoreFiles" xml:space="preserve">
+    <value>Načíst další soubory</value>
+  </data>
+  <data name="folderNoFiles" xml:space="preserve">
+    <value>Ze složky zatím nejsou žádné soubory</value>
+  </data>
+  <data name="sourceLanguageLabel" xml:space="preserve">
+    <value>Jazyk</value>
+  </data>
+  <data name="sourceLanguageMixed" xml:space="preserve">
+    <value>Více jazyků</value>
+  </data>
+  <data name="shellNewChat" xml:space="preserve">
+    <value>Nový chat</value>
+  </data>
+  <data name="shellSearch" xml:space="preserve">
+    <value>Hledat</value>
+  </data>
+  <data name="shellNewNotebook" xml:space="preserve">
+    <value>Nový notebook</value>
+  </data>
+  <data name="shellShowMore" xml:space="preserve">
+    <value>Zobrazit další ({0})</value>
+  </data>
+  <data name="shellShowLess" xml:space="preserve">
+    <value>Zobrazit méně</value>
+  </data>
+  <data name="shellUpdateAvailable" xml:space="preserve">
+    <value>Aktualizace k dispozici</value>
+  </data>
+  <data name="notebookInstructionsMenu" xml:space="preserve">
+    <value>Instrukce…</value>
+  </data>
+  <data name="deleteChat" xml:space="preserve">
+    <value>Smazat chat</value>
+  </data>
+  <data name="confirmDeleteChat" xml:space="preserve">
+    <value>Smazat tento chat i jeho zprávy?</value>
+  </data>
+  <data name="shellTogglePanel" xml:space="preserve">
+    <value>Zobrazit nebo skrýt panel</value>
+  </data>
+  <data name="shellMore" xml:space="preserve">
+    <value>Další</value>
+  </data>
+  <data name="panelContext" xml:space="preserve">
+    <value>Kontext</value>
+  </data>
+  <data name="panelNoteChat" xml:space="preserve">
+    <value>Chat k poznámce</value>
+  </data>
+  <data name="shellEmptyAppTitle" xml:space="preserve">
+    <value>Začni přidáním složky nebo vytvořením notebooku</value>
+  </data>
+  <data name="openFolderAsNotebook" xml:space="preserve">
+    <value>Otevřít složku jako notebook…</value>
+  </data>
+  <data name="shellBack" xml:space="preserve">
+    <value>Zpět</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Zavřít</value>
+  </data>
+  <data name="chatEmptyTitle" xml:space="preserve">
+    <value>Na čem pracujeme?</value>
+  </data>
+  <data name="composerPlaceholder" xml:space="preserve">
+    <value>Zeptej se na cokoliv v notebooku…</value>
+  </data>
+  <data name="composerAdd" xml:space="preserve">
+    <value>Přidat</value>
+  </data>
+  <data name="composerAddFile" xml:space="preserve">
+    <value>Přidat soubor…</value>
+  </data>
+  <data name="composerAddUrl" xml:space="preserve">
+    <value>Přidat URL…</value>
+  </data>
+  <data name="composerWebSearch" xml:space="preserve">
+    <value>Hledat na webu</value>
+  </data>
+  <data name="composerOverviewMode" xml:space="preserve">
+    <value>Režim Přehled</value>
+  </data>
+  <data name="composerRunTool" xml:space="preserve">
+    <value>Spustit nástroj</value>
+  </data>
+  <data name="composerPreviewContext" xml:space="preserve">
+    <value>Náhled kontextu</value>
+  </data>
+  <data name="composerScope" xml:space="preserve">
+    <value>Rozsah</value>
+  </data>
+  <data name="composerModel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="composerRegenerateWith" xml:space="preserve">
+    <value>Přegenerovat s</value>
+  </data>
+  <data name="composerModelSettings" xml:space="preserve">
+    <value>Nastavení modelu…</value>
+  </data>
+  <data name="composerEditing" xml:space="preserve">
+    <value>Upravuješ poslední zprávu</value>
+  </data>
+  <data name="messageCopy" xml:space="preserve">
+    <value>Kopírovat</value>
+  </data>
+  <data name="chatRetry" xml:space="preserve">
+    <value>Zkusit znovu</value>
+  </data>
+  <data name="chatReplyNoteTitle" xml:space="preserve">
+    <value>Odpověď z chatu — {0}</value>
+  </data>
+  <data name="noteSavedNotice" xml:space="preserve">
+    <value>Uloženo jako poznámka</value>
+  </data>
+  <data name="openNote" xml:space="preserve">
+    <value>Otevřít poznámku</value>
+  </data>
+  <data name="chooseNotebook" xml:space="preserve">
+    <value>Notebook</value>
+  </data>
+  <data name="personaChipNone" xml:space="preserve">
+    <value>Bez persony</value>
+  </data>
+  <data name="sourcesAddText" xml:space="preserve">
+    <value>Přidat text…</value>
+  </data>
+  <data name="folderSummaryFiles" xml:space="preserve">
+    <value>Soubory: {0}</value>
+  </data>
+  <data name="folderSummaryErrors" xml:space="preserve">
+    <value>Chyby: {0}</value>
+  </data>
+  <data name="notesSearchPlaceholder" xml:space="preserve">
+    <value>Hledat v poznámkách</value>
+  </data>
+  <data name="toolHistory" xml:space="preserve">
+    <value>Historie nástrojů</value>
+  </data>
+  <data name="contextPanelHint" xml:space="preserve">
+    <value>Napiš otázku a tlačítkem s okem zobraz, co se pošle.</value>
+  </data>
+  <data name="contextPanelDraft" xml:space="preserve">
+    <value>Další zpráva</value>
+  </data>
+  <data name="contextPanelBackToDraft" xml:space="preserve">
+    <value>Zobrazit další zprávu</value>
+  </data>
+  <data name="citationsPanelEmpty" xml:space="preserve">
+    <value>Klikni na číslo citace v odpovědi a uvidíš její zdroj.</value>
+  </data>
+  <data name="citationPage" xml:space="preserve">
+    <value>s. {0}</value>
+  </data>
+  <data name="settingsGeneral" xml:space="preserve">
+    <value>Obecné</value>
+  </data>
+  <data name="settingsModelsLimits" xml:space="preserve">
+    <value>Modely a limity</value>
+  </data>
+  <data name="settingsIndexing" xml:space="preserve">
+    <value>Indexace</value>
+  </data>
+  <data name="settingsTools" xml:space="preserve">
+    <value>Nástroje</value>
+  </data>
+  <data name="settingsAbout" xml:space="preserve">
+    <value>O aplikaci</value>
+  </data>
+  <data name="webSearchToggle" xml:space="preserve">
+    <value>Povolit hledání na webu</value>
+  </data>
+  <data name="toolScopeSource" xml:space="preserve">
+    <value>Jeden zdroj</value>
+  </data>
+  <data name="settingsUpdates" xml:space="preserve">
+    <value>Aktualizace</value>
+  </data>
+  <data name="settingsLimits" xml:space="preserve">
+    <value>Limity kontextu</value>
+  </data>
+  <data name="aboutLicense" xml:space="preserve">
+    <value>Licence</value>
+  </data>
+  <data name="aboutNotice" xml:space="preserve">
+    <value>Licence třetích stran</value>
+  </data>
+  <data name="aboutSourceCode" xml:space="preserve">
+    <value>Zdrojový kód</value>
+  </data>
+  <data name="aboutCredits" xml:space="preserve">
+    <value>S ♥ vytvořil Lukáš Oplt</value>
+  </data>
+  <data name="toolScope" xml:space="preserve">
+    <value>Rozsah</value>
+  </data>
+  <data name="toolsPickTemplate" xml:space="preserve">
+    <value>Vyber nebo vytvoř vlastní šablonu</value>
+  </data>
+  <data name="documentExport" xml:space="preserve">
+    <value>Exportovat</value>
+  </data>
+  <data name="renameChat" xml:space="preserve">
+    <value>Přejmenovat</value>
+  </data>
+  <data name="renameChatTitle" xml:space="preserve">
+    <value>Přejmenovat chat</value>
+  </data>
+  <data name="chatStopButton" xml:space="preserve">
+    <value>Zastavit</value>
+  </data>
+  <data name="chatStopped" xml:space="preserve">
+    <value>Zastaveno</value>
+  </data>
+  <data name="indexingScanning" xml:space="preserve">
+    <value>Kontroluji složku… nalezeno souborů: {count}</value>
+  </data>
+  <data name="indexingExtracting" xml:space="preserve">
+    <value>Zpracovávám soubory {done} / {total}</value>
+  </data>
+  <data name="indexingEmbedding" xml:space="preserve">
+    <value>Indexuji úseky {done} / {total}</value>
+  </data>
+  <data name="indexingPreparing" xml:space="preserve">
+    <value>Připravuji index…</value>
+  </data>
+  <data name="indexingRetrying" xml:space="preserve">
+    <value>Poskytovatel embeddingů není dostupný — další pokus za {seconds} s</value>
+  </data>
+  <data name="indexingRetryNow" xml:space="preserve">
+    <value>Zkusit hned</value>
+  </data>
+  <data name="indexingBlockedNoModel" xml:space="preserve">
+    <value>Není nastavený model pro embeddingy; funguje jen fulltextové vyhledávání.</value>
+  </data>
+  <data name="indexingBlockedProviderDisabled" xml:space="preserve">
+    <value>Poskytovatel embeddingů je vypnutý; funguje jen fulltextové vyhledávání.</value>
+  </data>
+  <data name="indexingBlockedConsent" xml:space="preserve">
+    <value>Poskytovatel embeddingů potřebuje před indexováním váš souhlas.</value>
+  </data>
+  <data name="indexingBlockedCredential" xml:space="preserve">
+    <value>API klíč poskytovatele embeddingů se nepodařilo načíst.</value>
+  </data>
+  <data name="indexingFailed" xml:space="preserve">
+    <value>Indexování selhalo ({code})</value>
+  </data>
+  <data name="indexingRuntimeFailed" xml:space="preserve">
+    <value>Indexování na pozadí se nepodařilo spustit ({code})</value>
+  </data>
+  <data name="indexingOpenSettings" xml:space="preserve">
+    <value>Otevřít nastavení</value>
+  </data>
+  <data name="indexingReady" xml:space="preserve">
+    <value>Prohledávatelné · souborů: {count}</value>
+  </data>
+  <data name="indexingLexicalOnly" xml:space="preserve">
+    <value>Jen fulltextové vyhledávání</value>
+  </data>
+  <data name="indexingBuildIndex" xml:space="preserve">
+    <value>Vytvořit index</value>
+  </data>
+  <data name="indexingSourceErrors" xml:space="preserve">
+    <value>Nepodařilo se přečíst souborů: {count}</value>
+  </data>
+  <data name="folderChecking" xml:space="preserve">
+    <value>Kontroluji…</value>
+  </data>
+  <data name="folderNoChanges" xml:space="preserve">
+    <value>Beze změn · aktuálních souborů: {count}</value>
+  </data>
+  <data name="folderChangedFiles" xml:space="preserve">
+    <value>Změněných souborů: {count}</value>
+  </data>
+  <data name="indexingExtractingSlowed" xml:space="preserve">
+    <value>Zpracovávám soubory {done} / {total} · zpomaleno, systému dochází paměť</value>
+  </data>
+  <data name="indexingExtractingPaused" xml:space="preserve">
+    <value>Pozastaveno: systému dochází paměť · soubory {done} / {total}</value>
+  </data>
+  <data name="indexingWithScan" xml:space="preserve">
+    <value>{status} · kontroluji složku…</value>
+  </data>
+  <data name="indexingSourceErrorsGaveUp" xml:space="preserve">
+    <value>Nepodařilo se přečíst souborů: {count} (vzdáno po 3 pokusech)</value>
+  </data>
+  <data name="indexingRetryAllFailed" xml:space="preserve">
+    <value>Zkusit znovu vše neúspěšné</value>
+  </data>
+  <data name="sourceRetryButton" xml:space="preserve">
+    <value>Zkusit znovu</value>
+  </data>
+  <data name="sourceGaveUp" xml:space="preserve">
+    <value>Vzdáno po 3 pokusech</value>
+  </data>
+  <data name="contextPreviewSetContextSize" xml:space="preserve">
+    <value>Nastavit velikost kontextu</value>
+  </data>
+  <data name="providerPresetLabel" xml:space="preserve">
+    <value>Předvolba</value>
+  </data>
+  <data name="providerPresetCustom" xml:space="preserve">
+    <value>Vlastní</value>
+  </data>
+  <data name="providerPresetLocalHelp" xml:space="preserve">
+    <value>Spusťte místní server a ověřte kořen API. Klíč API je volitelný.</value>
+  </data>
+  <data name="providerPresetRemoteHelp" xml:space="preserve">
+    <value>Zadejte klíč API a ověřte kořen API.</value>
+  </data>
+  <data name="providerPresetCustomHelp" xml:space="preserve">
+    <value>Zadejte přesný kořen API včetně verze a cesty proxy.</value>
+  </data>
+  <data name="providerRefreshModels" xml:space="preserve">
+    <value>Obnovit modely</value>
+  </data>
+  <data name="providerManualModelId" xml:space="preserve">
+    <value>ID modelu</value>
+  </data>
+  <data name="providerApplyModel" xml:space="preserve">
+    <value>Použít ID modelu</value>
+  </data>
+  <data name="providerListingVerified" xml:space="preserve">
+    <value>Seznam modelů byl ověřen. Generování nebylo testováno.</value>
+  </data>
+  <data name="providerListingUnsupported" xml:space="preserve">
+    <value>Seznam modelů není dostupný; generování nebylo ověřeno. Zadejte ID modelu ručně.</value>
+  </data>
+  <data name="providerRuntimeContext" xml:space="preserve">
+    <value>Použitý kontext</value>
+  </data>
+  <data name="providerMaxOutputTokens" xml:space="preserve">
+    <value>Maximum tokenů odpovědi</value>
+  </data>
+  <data name="providerContextWindow" xml:space="preserve">
+    <value>Limit kontextu modelu</value>
+  </data>
+  <data name="providerContextUnknown" xml:space="preserve">
+    <value>Neznámý</value>
+  </data>
+  <data name="providerLimitsAssumption" xml:space="preserve">
+    <value>Předpoklad aplikace</value>
+  </data>
+  <data name="providerLimitsUserOverride" xml:space="preserve">
+    <value>Uživatelské nastavení</value>
+  </data>
+  <data name="providerLimitsSave" xml:space="preserve">
+    <value>Uložit limity</value>
+  </data>
+  <data name="providerLimitsReset" xml:space="preserve">
+    <value>Obnovit automatické nastavení</value>
+  </data>
+  <data name="providerLimitsInvalid" xml:space="preserve">
+    <value>Zadejte kladná celá čísla. Maximum odpovědi musí být menší než použitý kontext, který nesmí překročit známý limit modelu.</value>
+  </data>
+  <data name="providerInvalidRoot" xml:space="preserve">
+    <value>Zadejte kořen API HTTP nebo HTTPS bez přihlašovacích údajů, dotazu a fragmentu.</value>
+  </data>
+  <data name="providerContextTooLong" xml:space="preserve">
+    <value>Poskytovatel odmítl délku požadavku. Snižte použitý kontext.</value>
+  </data>
+  <data name="providerEmbeddingSelectionConverted" xml:space="preserve">
+    <value>Předchozí poskytovatel embeddingů podporuje pouze chat. Embeddingy nyní používají místní Ollamu (nomic-embed-text).</value>
+  </data>
+  <data name="providerConnectionFailed" xml:space="preserve">
+    <value>K poskytovateli se nepodařilo připojit.</value>
+  </data>
+  <data name="providerResponseInvalid" xml:space="preserve">
+    <value>Poskytovatel vrátil neočekávanou odpověď.</value>
+  </data>
+  <data name="providerRequestFailed" xml:space="preserve">
+    <value>Požadavek poskytovateli selhal.</value>
+  </data>
+  <data name="providerSelectionUnavailable" xml:space="preserve">
+    <value>V Nastavení vyberte povoleného poskytovatele.</value>
+  </data>
+  <data name="providerEndpointUnsupported" xml:space="preserve">
+    <value>Tento poskytovatel nepodporuje požadovanou operaci.</value>
   </data>
 </root>

@@ -1,0 +1,210 @@
+{
+  "contract": "storage-v20",
+  "version": 1,
+  "schemaDDL": "\nCREATE TABLE generation_text_hashes (\n generation_id INTEGER NOT NULL REFERENCES index_generations(id) ON DELETE CASCADE,\n chunk_id INTEGER NOT NULL REFERENCES source_chunks(id) ON DELETE CASCADE,\n text_hash TEXT NOT NULL CHECK(length(text_hash)=64),\n copied INTEGER NOT NULL CHECK(copied IN (0,1)),\n PRIMARY KEY(generation_id,chunk_id)\n) WITHOUT ROWID;\nCREATE INDEX idx_generation_text_hashes_hash ON generation_text_hashes(generation_id,text_hash);\nCREATE INDEX idx_generation_text_hashes_chunk ON generation_text_hashes(chunk_id);\nCREATE INDEX idx_generation_text_hashes_copied ON generation_text_hashes(generation_id) WHERE copied=1;\n",
+  "migration": "v20_embedding_dedup",
+  "decisions": {
+    "backfill": "none: vectors stored before v20 have no ledger row and are re-embedded at most once when a later duplicate needs them",
+    "contract": "docs/contracts/embedding-plan-v1.md section 5"
+  },
+  "cases": [
+    {
+      "name": "fresh-schema",
+      "queries": [
+        {
+          "name": "columns-generation_text_hashes",
+          "sql": "SELECT name,CASE WHEN upper(type) LIKE '%INT%' THEN 'INTEGER' WHEN upper(type) LIKE '%TEXT%' THEN 'TEXT' ELSE 'OTHER' END,\"notnull\",dflt_value,pk FROM pragma_table_info('generation_text_hashes') ORDER BY cid",
+          "rows": [
+            [
+              "generation_id",
+              "INTEGER",
+              1,
+              null,
+              1
+            ],
+            [
+              "chunk_id",
+              "INTEGER",
+              1,
+              null,
+              2
+            ],
+            [
+              "text_hash",
+              "TEXT",
+              1,
+              null,
+              0
+            ],
+            [
+              "copied",
+              "INTEGER",
+              1,
+              null,
+              0
+            ]
+          ]
+        },
+        {
+          "name": "foreign-keys-generation_text_hashes",
+          "sql": "SELECT \"from\",\"table\",\"to\",on_update,on_delete,match FROM pragma_foreign_key_list('generation_text_hashes') ORDER BY \"from\",\"table\",\"to\"",
+          "rows": [
+            [
+              "chunk_id",
+              "source_chunks",
+              "id",
+              "NO ACTION",
+              "CASCADE",
+              "NONE"
+            ],
+            [
+              "generation_id",
+              "index_generations",
+              "id",
+              "NO ACTION",
+              "CASCADE",
+              "NONE"
+            ]
+          ]
+        },
+        {
+          "name": "indexes-generation_text_hashes",
+          "sql": "SELECT CASE WHEN il.origin='c' THEN il.name ELSE NULL END,il.\"unique\",il.origin,il.partial,ii.seqno,ii.name FROM pragma_index_list('generation_text_hashes') il JOIN pragma_index_info(il.name) ii ORDER BY il.origin,il.\"unique\",il.partial,il.name,ii.seqno",
+          "rows": [
+            [
+              "idx_generation_text_hashes_chunk",
+              0,
+              "c",
+              0,
+              0,
+              "chunk_id"
+            ],
+            [
+              "idx_generation_text_hashes_hash",
+              0,
+              "c",
+              0,
+              0,
+              "generation_id"
+            ],
+            [
+              "idx_generation_text_hashes_hash",
+              0,
+              "c",
+              0,
+              1,
+              "text_hash"
+            ],
+            [
+              "idx_generation_text_hashes_copied",
+              0,
+              "c",
+              1,
+              0,
+              "generation_id"
+            ],
+            [
+              null,
+              1,
+              "pk",
+              0,
+              0,
+              "generation_id"
+            ],
+            [
+              null,
+              1,
+              "pk",
+              0,
+              1,
+              "chunk_id"
+            ]
+          ]
+        },
+        {
+          "name": "partial-index-predicates",
+          "sql": "SELECT name,lower(replace(replace(replace(substr(sql,instr(upper(sql),'WHERE')+5),' ',''),char(10),''),char(13),'')) FROM sqlite_master WHERE name='idx_generation_text_hashes_copied' ORDER BY name",
+          "rows": [
+            [
+              "idx_generation_text_hashes_copied",
+              "copied=1"
+            ]
+          ]
+        },
+        {
+          "name": "without-rowid",
+          "sql": "SELECT name,upper(replace(replace(replace(sql,' ',''),char(10),''),char(13),'')) LIKE '%)WITHOUTROWID' FROM sqlite_master WHERE type='table' AND name='generation_text_hashes' ORDER BY name",
+          "rows": [
+            [
+              "generation_text_hashes",
+              1
+            ]
+          ]
+        },
+        {
+          "name": "column-count",
+          "sql": "SELECT count(*) FROM pragma_table_info('generation_text_hashes') WHERE name IN ('generation_id','chunk_id','text_hash','copied')",
+          "rows": [
+            [
+              4
+            ]
+          ]
+        },
+        {
+          "name": "unchanged-columns-index_generations",
+          "sql": "SELECT count(*) FROM pragma_table_info('index_generations')",
+          "rows": [
+            [
+              14
+            ]
+          ]
+        },
+        {
+          "name": "unchanged-columns-source_chunks",
+          "sql": "SELECT count(*) FROM pragma_table_info('source_chunks')",
+          "rows": [
+            [
+              12
+            ]
+          ]
+        },
+        {
+          "name": "unchanged-columns-chunk_embeddings",
+          "sql": "SELECT count(*) FROM pragma_table_info('chunk_embeddings')",
+          "rows": [
+            [
+              3
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "upgrade-from-v18",
+      "database": "storage/v18.sqlite",
+      "queries": [
+        {
+          "name": "v20-marker",
+          "sql": "SELECT identifier FROM grdb_migrations WHERE identifier IN ('v19_folder_rag','v20_embedding_dedup') ORDER BY identifier",
+          "rows": [
+            [
+              "v19_folder_rag"
+            ],
+            [
+              "v20_embedding_dedup"
+            ]
+          ]
+        },
+        {
+          "name": "ledger-empty",
+          "sql": "SELECT count(*) FROM generation_text_hashes",
+          "rows": [
+            [
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

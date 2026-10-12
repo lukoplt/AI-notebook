@@ -1,0 +1,1370 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "legacy-corrupt-archive"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "invalidRelationship",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "invalidRelationship",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "legacy-invalid-relationship"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "missingMainPart",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "missingMainPart",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "legacy-missing-main-part"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "invalidCell",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "invalidCell",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "legacy-invalid-cell"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "unexpectedError",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "unexpectedError",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "legacy-unexpected-error"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "legacy-no-job-row"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "extractorRevision": 1
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "explicit-older-revision"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "extractorRevision": "2"
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "non-integer-revision-counts-as-one"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "verifyAll": true
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "other-options-kept-legacy"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          },
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 302,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "extractorRevision": 2
+            },
+            "state": "failed",
+            "target": "source:202",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "stamped-job-of-other-source"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": null
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "cancelled",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "cancelled-terminal-legacy"
+    },
+    {
+      "expected": {
+        "newJob": {
+          "attempts": 0,
+          "error": null,
+          "kind": "extract",
+          "nextRetryAt": null,
+          "options": {
+            "extractorRevision": 2
+          },
+          "state": "queued",
+          "target": "source:101",
+          "targetRevision": 11
+        },
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": 11
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "old text",
+            "contentHash": "h1",
+            "id": 11,
+            "revision": 1,
+            "sourceId": 101
+          }
+        ],
+        "source": {
+          "availability": "present",
+          "contentHash": "h1",
+          "currentRevision": 11,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": 11,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "refresh-failure-keeps-published"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          },
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 302,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "extractorRevision": 2
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "already-retried-current-revision"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "extractorRevision": 3
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "future-revision"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 2,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": 5060,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "automatic-retry-pending"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 302,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "queued-job-exists"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 302,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "paused",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "paused-job-exists"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "textLimit",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "textLimit",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "textLimit",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "limit-error-not-retryable"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "notDownloaded",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "notDownloaded",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "notDownloaded",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "not-downloaded-not-retryable"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "cancelled",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "cancelled",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "cancelled",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "cancelled-error-not-retryable"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "leaseExpired",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "leaseExpired",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "leaseExpired",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "lease-expired-not-retryable"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "missing",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "missing-source"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "unavailable",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "unavailable-root"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": false,
+          "error": "corruptArchive",
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "error"
+        }
+      },
+      "name": "ineligible-source"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": null,
+          "status": "ready"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": null,
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "ready"
+        }
+      },
+      "name": "ready-source"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": null,
+          "status": "pending"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": null,
+          "folderId": 1,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": "a.docx",
+          "status": "pending"
+        }
+      },
+      "name": "pending-source"
+    },
+    {
+      "expected": {
+        "newJob": null,
+        "notified": [],
+        "requeued": 0,
+        "source": {
+          "error": "corruptArchive",
+          "status": "error"
+        }
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [],
+        "source": {
+          "availability": "present",
+          "contentHash": null,
+          "currentRevision": null,
+          "eligible": true,
+          "error": "corruptArchive",
+          "folderId": null,
+          "id": 101,
+          "notebookId": 1,
+          "publishedRevisionId": null,
+          "relPath": null,
+          "status": "error"
+        }
+      },
+      "name": "loose-source"
+    }
+  ],
+  "contract": "ingestion-reextract",
+  "extractorRevision": 2,
+  "optionsKey": "extractorRevision",
+  "retryableCodes": [
+    "corruptArchive",
+    "invalidCell",
+    "invalidRelationship",
+    "missingMainPart",
+    "unexpectedError"
+  ],
+  "seed": {
+    "folder": {
+      "components": [
+        "docs"
+      ],
+      "id": 1,
+      "notebookId": 1,
+      "rootFileId": "r",
+      "rootPath": "/docs",
+      "volumeId": "v"
+    },
+    "notebookId": 1
+  },
+  "version": 1
+}

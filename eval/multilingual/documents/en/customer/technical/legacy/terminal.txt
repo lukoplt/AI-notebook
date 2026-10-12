@@ -1,0 +1,14 @@
+Alder serial terminal setup
+Date: 3 October 2026
+Owner: Ellis Reed, facilities lead
+Reference: TERM-EN-10
+
+The older bench controller exposes its maintenance screen through a serial adapter. The adapter is used only while an instructor or technician is present, and it is returned to the labelled drawer after the session. A connection to this screen does not grant permission to change the teaching scenes. Begin with the controller powered normally and the user panel left at its ordinary idle display.
+
+Set the terminal speed to 57600 baud. The saved profile also uses eight data bits, no parity and one stop bit. Choose the profile by its full reference rather than by the most recently used connection, because the neighbouring demonstration unit has a different speed. A blank screen is not sufficient evidence that the controller has failed.
+
+To reset the serial adapter, disconnect its USB lead, wait five seconds, then reconnect it. Leave the controller's power cable attached throughout that sequence. After reconnecting, reopen the terminal session and press Return once. Repeatedly removing power from the controller would interrupt its scene log and would not reproduce the adapter reset described here.
+
+The spare adapter cable has a green sleeve and is kept in drawer three. The plain black cable beside it belongs to a measurement fixture and should remain with that fixture. Staff should record which cable was used if the connection drops during an inspection. The facilities lead will compare those records before ordering replacements.
+
+When the maintenance session is complete, close the terminal window before removing the adapter. Check that the ordinary user panel still shows its idle scene. Return the cable without wrapping it tightly around the adapter body, and leave the drawer label visible for the next shift.

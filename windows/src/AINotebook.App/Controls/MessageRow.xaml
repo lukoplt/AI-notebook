@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One chat message (spec §2.2): user text right-aligned in a surface-2 block (radius lg,
+  padding 10×14, ≤ 80 % of the column); assistant answers without a bubble as Markdown with
+  inline [N] citation pills; a row of icon actions under each message (always visible on the
+  latest answer, otherwise on hover/focus — still keyboard reachable).
+-->
+<UserControl
+    x:Class="AINotebook.App.Controls.MessageRow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    PointerEntered="OnPointerEntered" PointerExited="OnPointerExited"
+    GotFocus="OnGotFocus" LostFocus="OnLostFocus">
+    <StackPanel x:Name="Root" Spacing="{StaticResource Space4}" Padding="0,8">
+        <!-- User message -->
+        <Border x:Name="UserBlock" HorizontalAlignment="Right" Visibility="Collapsed"
+                Background="{ThemeResource Surface2Brush}" CornerRadius="{StaticResource RadiusLg}">
+            <TextBlock x:Name="UserText" Style="{StaticResource TextBody}" Foreground="{ThemeResource Text1Brush}"
+                       TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+        </Border>
+        <!-- Assistant answer: rendered Markdown blocks -->
+        <StackPanel x:Name="AnswerHost" Spacing="{StaticResource Space8}" Visibility="Collapsed" />
+        <!-- A stopped answer keeps its partial text; a quiet caption says so (no error row). -->
+        <StackPanel x:Name="StoppedLabel" Orientation="Horizontal" Spacing="{StaticResource Space4}" Visibility="Collapsed">
+            <FontIcon Glyph="{StaticResource IconStop}" Style="{StaticResource RowIcon}" Foreground="{ThemeResource Text3Brush}" />
+            <TextBlock x:Name="StoppedText" Style="{StaticResource SecondaryCaption}" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <StackPanel x:Name="Actions" Orientation="Horizontal" Spacing="{StaticResource Space4}" Opacity="0">
+            <Button x:Name="CopyButton" Style="{StaticResource IconButtonStyle}" Click="OnCopy">
+                <FontIcon Glyph="{StaticResource IconCopy}" Style="{StaticResource RowIcon}" />
+            </Button>
+            <Button x:Name="RegenerateButton" Style="{StaticResource IconButtonStyle}" Click="OnRegenerate" Visibility="Collapsed">
+                <FontIcon Glyph="{StaticResource IconRegenerate}" Style="{StaticResource RowIcon}" />
+            </Button>
+            <Button x:Name="SaveAsNoteButton" Style="{StaticResource IconButtonStyle}" Click="OnSaveAsNote" Visibility="Collapsed">
+                <FontIcon Glyph="{StaticResource IconSaveAsNote}" Style="{StaticResource RowIcon}" />
+            </Button>
+            <Button x:Name="SentContextButton" Style="{StaticResource IconButtonStyle}" Click="OnSentContext" Visibility="Collapsed">
+                <FontIcon Glyph="{StaticResource IconSentContext}" Style="{StaticResource RowIcon}" />
+            </Button>
+            <Button x:Name="EditButton" Style="{StaticResource IconButtonStyle}" Click="OnEdit" Visibility="Collapsed">
+                <FontIcon Glyph="{StaticResource IconEdit}" Style="{StaticResource RowIcon}" />
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

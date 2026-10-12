@@ -1,5 +1,3 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using AINotebook.Core.Models;
 using Dapper;
 
@@ -7,14 +5,6 @@ namespace AINotebook.Core.Storage;
 
 public sealed partial class NotebookStore
 {
-    // Swift JSONEncoder default keys are camelCase. snippet/marker are already
-    // camelCase; chunkId/sourceId map to "chunkId"/"sourceId".
-    private sealed record CitationJson(
-        [property: JsonPropertyName("marker")] int Marker,
-        [property: JsonPropertyName("chunkId")] long ChunkId,
-        [property: JsonPropertyName("sourceId")] long SourceId,
-        [property: JsonPropertyName("snippet")] string Snippet);
-
     public ChatSession CreateChatSession(long notebookId, string title)
     {
         lock (_gate)
@@ -44,6 +34,25 @@ public sealed partial class NotebookStore
                 .ToList();
     }
 
+    /// <summary>
+    /// Renames a chat (Swift <c>renameChatSession</c>). The title is trimmed; a blank title is
+    /// rejected and the stored one kept. No schema change: <c>chat_sessions.title</c> already exists.
+    /// </summary>
+    public ChatSession RenameChatSession(long id, string title)
+    {
+        lock (_gate)
+        {
+            var trimmed = title.Trim();
+            if (trimmed.Length == 0) throw new StoreException.InvalidChatTitle(title);
+            var rows = Connection.Execute("UPDATE chat_sessions SET title=$title WHERE id=$id", new { title = trimmed, id });
+            if (rows == 0) throw new StoreException.ChatSessionNotFound(id);
+            var row = Connection.QuerySingle(
+                "SELECT id, notebook_id, title, created_at FROM chat_sessions WHERE id=$id", new { id });
+            return new ChatSession((long)row.id, (long)row.notebook_id, (string)row.title,
+                SqliteDate.FromDb((string)row.created_at));
+        }
+    }
+
     public void DeleteChatSession(long id)
     {
         lock (_gate)
@@ -54,10 +63,7 @@ public sealed partial class NotebookStore
     {
         lock (_gate)
         {
-            string? json = message.Citations.Count == 0
-                ? null
-                : JsonSerializer.Serialize(
-                    message.Citations.Select(c => new CitationJson(c.Marker, c.ChunkId, c.SourceId, c.Snippet)).ToList());
+            var json = CitationsCodec.Encode(message.Citations);
             Connection.Execute(
                 """
                 INSERT INTO messages(session_id, role, content, citations_json, created_at, model)
@@ -79,13 +85,7 @@ public sealed partial class NotebookStore
                 new { sid = sessionId })
                 .Select(r =>
                 {
-                    IReadOnlyList<Citation> cits = Array.Empty<Citation>();
-                    if (r.citations_json is string raw && raw.Length > 0)
-                    {
-                        var decoded = JsonSerializer.Deserialize<List<CitationJson>>(raw);
-                        if (decoded is not null)
-                            cits = decoded.Select(c => new Citation(c.Marker, c.ChunkId, c.SourceId, c.Snippet)).ToList();
-                    }
+                    var cits = CitationsCodec.Decode((string?)r.citations_json);
                     return new ChatMessage(
                         (long)r.id, (long)r.session_id, ChatRoleExtensions.FromDb((string)r.role),
                         (string)r.content, cits, SqliteDate.FromDb((string)r.created_at),

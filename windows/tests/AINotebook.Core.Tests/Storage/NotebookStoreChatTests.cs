@@ -86,4 +86,63 @@ public class NotebookStoreChatTests
             Assert.Empty(store.Messages(sid));
         }
     }
+    // UI redesign C1: rename (Swift NotebookStoreChatTests parity).
+
+    [Fact]
+    public void RenameTrimsAndPersistsTitle()
+    {
+        var (store, nb) = Fresh();
+        using (store)
+        {
+            var session = store.CreateChatSession(nb, "Old");
+            var renamed = store.RenameChatSession(session.Id!.Value, "  New title \n");
+            Assert.Equal("New title", renamed.Title);
+            Assert.Equal(session.Id, renamed.Id);
+            Assert.Equal(session.NotebookId, renamed.NotebookId);
+            Assert.Equal(new[] { "New title" }, store.ChatSessions(nb).Select(s => s.Title));
+        }
+    }
+
+    [Fact]
+    public void RenameRejectsBlankTitleAndKeepsOldOne()
+    {
+        var (store, nb) = Fresh();
+        using (store)
+        {
+            var session = store.CreateChatSession(nb, "Keep");
+            var ex = Assert.Throws<AINotebook.Core.StoreException.InvalidChatTitle>(
+                () => store.RenameChatSession(session.Id!.Value, " \n\t "));
+            Assert.Equal(" \n\t ", ex.Title);
+            Assert.Equal(new[] { "Keep" }, store.ChatSessions(nb).Select(s => s.Title));
+        }
+    }
+
+    [Fact]
+    public void RenameUnknownSessionThrowsNotFound()
+    {
+        var (store, _) = Fresh();
+        using (store)
+        {
+            var ex = Assert.Throws<AINotebook.Core.StoreException.ChatSessionNotFound>(() => store.RenameChatSession(4242, "x"));
+            Assert.Equal(4242, ex.Id);
+        }
+    }
+
+    [Fact]
+    public void RenameTouchesOnlyThatSessionAndKeepsMessages()
+    {
+        var (store, nb) = Fresh();
+        using (store)
+        {
+            var first = store.CreateChatSession(nb, "first");
+            var second = store.CreateChatSession(nb, "second");
+            var fid = first.Id!.Value;
+            store.AppendMessage(new ChatMessage(null, fid, ChatRole.User, "q", Array.Empty<Citation>(), DateTime.UtcNow));
+            store.RenameChatSession(fid, "renamed");
+            Assert.Equal(new[] { "q" }, store.Messages(fid).Select(m => m.Content));
+            var titles = store.ChatSessions(nb).ToDictionary(s => s.Id!.Value, s => s.Title);
+            Assert.Equal("renamed", titles[fid]);
+            Assert.Equal("second", titles[second.Id!.Value]);
+        }
+    }
 }

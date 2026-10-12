@@ -22,16 +22,13 @@ public sealed partial class EditorWebView : UserControl
     private string _initialMarkdown = "";
 
     public Action<string>? OnSaveRequested { get; set; }   // -> NotesViewModel.Save(id, body)
-    public Action? OnShowHistory { get; set; }
     public Action<string>? OnChange { get; set; }          // pushes md into NotesViewModel.DraftBody
 
-    public string Title
-    {
-        get => (string)GetValue(TitleProperty);
-        set => SetValue(TitleProperty, value);
-    }
-    public static readonly DependencyProperty TitleProperty =
-        DependencyProperty.Register(nameof(Title), typeof(string), typeof(EditorWebView), new PropertyMetadata(""));
+    /// <summary>Save status for the document top bar: glyph (Segoe Fluent Icons) and localized text.</summary>
+    public event Action<string, string>? StatusChanged;
+
+    /// <summary>The latest body the editor reported (title-only edits save it unchanged).</summary>
+    public string CurrentMarkdown { get; private set; } = "";
 
     public long NoteId { get; private set; }
     public string NoteUuid { get; private set; } = "";
@@ -57,10 +54,8 @@ public sealed partial class EditorWebView : UserControl
         ILocalizedStrings t)
     {
         NoteId = noteId; NoteUuid = noteUuid; _initialMarkdown = initialMarkdown;
+        CurrentMarkdown = initialMarkdown;
         _attachments = attachments; _coordinator = coordinator; _t = t;
-
-        SaveButton.Content = "Save";
-        HistoryButton.Content = _t.Get("historyButton");
 
         _autoSave = new AutoSaveController(_dispatcher, body =>
         {
@@ -133,10 +128,12 @@ public sealed partial class EditorWebView : UserControl
                     $"window.aino && window.aino.setContent({JsonSerializer.Serialize(_initialMarkdown)})");
                 break;
             case EditorMessage.Change c:
+                CurrentMarkdown = c.Markdown;
                 OnChange?.Invoke(c.Markdown);
                 _autoSave?.NoteDidChange(c.Markdown);
                 break;
             case EditorMessage.Save s:
+                CurrentMarkdown = s.Markdown;
                 OnChange?.Invoke(s.Markdown);
                 _autoSave?.NoteDidChange(s.Markdown);
                 break;
@@ -223,7 +220,7 @@ public sealed partial class EditorWebView : UserControl
     private void ApplyStatus()
     {
         if (_autoSave is null) return;
-        (StatusIcon.Glyph, StatusText.Text) = _autoSave.Status switch
+        var (glyph, text) = _autoSave.Status switch
         {
             SaveState.Saved   => ("\uE73E", _t.Get("editorStatusSaved")),
             SaveState.Saving  => ("\uE895", _t.Get("editorStatusSaving")),
@@ -231,12 +228,13 @@ public sealed partial class EditorWebView : UserControl
             SaveState.Error   => ("\uE783", $"{_t.Get("editorStatusError")} — {_autoSave.ErrorText}"),
             _ => ("\uE73E", _t.Get("editorStatusSaved"))
         };
+        StatusChanged?.Invoke(glyph, text);
         // Drive the unsaved gate consumed by NotesViewModel (mirrors coordinator wiring).
         if (_coordinator is not null) _coordinator.HasUnsavedChanges = _autoSave.HasUnsavedChanges;
     }
 
-    private void OnSaveClick(object sender, RoutedEventArgs e) => _autoSave?.ManualSave();
-    private void OnHistoryClick(object sender, RoutedEventArgs e) => OnShowHistory?.Invoke();
+    /// <summary>Title-only edits: queue the current body so the next save writes the new title.</summary>
+    public void MarkTitleChanged() => _autoSave?.NoteDidChange(CurrentMarkdown);
 
     // Mirrors coordinator.flushPendingSave wiring: NotesViewModel calls this to flush before switching.
     public void FlushPendingSave() => _autoSave?.ManualSave();

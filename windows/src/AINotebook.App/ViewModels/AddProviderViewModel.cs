@@ -11,6 +11,19 @@ public sealed partial class AddProviderViewModel : ObservableObject
     private readonly ProviderRouter _router;
     private readonly NotebookStore _store;
     private readonly ISecretStore _secrets;
+    private readonly ISettingsService? _settings;
+    private readonly ProviderConfig? _existing;
+    private long _probeRevision;
+
+    public IReadOnlyList<ProviderPreset> Presets { get; }
+    public string PresetHelp => Presets.FirstOrDefault(p => p.Id == SelectedPresetId)?.HelpKey ?? "providerPresetCustomHelp";
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(PresetHelp))]
+    public partial string SelectedPresetId { get; set; } = "custom";
+
+    [ObservableProperty]
+    public partial ProviderProbeResult? ProbeResult { get; set; }
 
     // null = add mode; non-null = edit mode
     public string? EditingId { get; }
@@ -33,9 +46,10 @@ public sealed partial class AddProviderViewModel : ObservableObject
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanSave))]
-    public partial string BaseUrl { get; set; } = "";
+    public partial string BaseUrl { get; set; } = ProviderType.Ollama.DefaultBaseUrl();
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanSave))]
     public partial string ApiKey { get; set; } = "";
 
     [ObservableProperty]
@@ -57,13 +71,24 @@ public sealed partial class AddProviderViewModel : ObservableObject
         [ProviderType.Ollama, ProviderType.Anthropic, ProviderType.OpenAI,
          ProviderType.OpenAICompatible, ProviderType.OpenWebUI];
 
+    // Settings must confirm a different embedding selection before its current
+    // provider can become chat-only, matching the macOS edit-provider picker.
+    public ProviderType[] SelectableTypes => AllTypes
+        .Where(type => !IsSelectedEmbedder || type.SupportsEmbeddings()).ToArray();
+    private bool IsSelectedEmbedder => EditingId is not null && EditingId == _settings?.SelectedEmbeddingProviderId;
+
     public AddProviderViewModel(
         ProviderRouter router, NotebookStore store, ISecretStore secrets,
-        ProviderConfig? existing = null)
+        ProviderConfig? existing = null, Func<string, string>? localize = null,
+        ISettingsService? settings = null)
     {
         _router = router;
         _store = store;
         _secrets = secrets;
+        _settings = settings;
+        _existing = existing;
+        Presets = ProviderPresets.All.Select(p => p.Id == "custom" && localize is not null
+            ? p with { Name = localize("providerPresetCustom") } : p).ToArray();
 
         if (existing is not null)
         {
@@ -85,17 +110,43 @@ public sealed partial class AddProviderViewModel : ObservableObject
         {
             BaseUrl = value.DefaultBaseUrl();
         }
+        if (value == ProviderType.OpenAICompatible && SelectedPresetId != "custom" &&
+            Presets.FirstOrDefault(p => p.Id == SelectedPresetId) is { } preset)
+            BaseUrl = preset.BaseUrl;
+        InvalidateProbe();
+    }
+
+    partial void OnSelectedPresetIdChanged(string value)
+    {
+        var preset = Presets.FirstOrDefault(p => p.Id == value);
+        if (preset is not null && value != "custom") BaseUrl = preset.BaseUrl;
+        InvalidateProbe();
+    }
+
+    partial void OnBaseUrlChanged(string value) => InvalidateProbe();
+    partial void OnApiKeyChanged(string value) => InvalidateProbe();
+
+    private void InvalidateProbe()
+    {
+        _probeRevision++;
+        ProbeResult = null;
         TestStatus = null;
         TestSucceeded = false;
     }
 
-    public bool CanSave =>
-        !string.IsNullOrWhiteSpace(Name) &&
-        !string.IsNullOrWhiteSpace(BaseUrl) &&
-        // Cloud providers require a key for new entries (edit can keep existing).
-        // OpenWebUI is exempt: instances may run with auth disabled.
-        (SelectedType == ProviderType.Ollama || SelectedType == ProviderType.OpenWebUI
-            || EditingId != null || !string.IsNullOrWhiteSpace(ApiKey));
+    public bool CanSave
+    {
+        get
+        {
+            if (IsSelectedEmbedder && !SelectedType.SupportsEmbeddings()) return false;
+            if (string.IsNullOrWhiteSpace(Name)) return false;
+            try { ProviderApiRoot.Normalize(BaseUrl); }
+            catch (ProviderConfigurationException) { return false; }
+            return SelectedType is not (ProviderType.OpenAI or ProviderType.Anthropic)
+                || !string.IsNullOrWhiteSpace(ApiKey)
+                || (EditingId is not null && !string.IsNullOrWhiteSpace(_secrets.Load(EditingId)));
+        }
+    }
 
     /// <param name="acknowledgePrivacy">
     /// True when the caller just walked the user through (and got acceptance
@@ -106,19 +157,26 @@ public sealed partial class AddProviderViewModel : ObservableObject
     /// </param>
     public async Task<ProviderConfig?> SaveConfirmedAsync(bool acknowledgePrivacy)
     {
+        if (!CanSave) return null;
         var id = EditingId ?? Guid.NewGuid().ToString();
+        var type = SelectedType;
+        var key = ApiKey;
         var cfg = new ProviderConfig(
-            id, SelectedType, Name.Trim(), BaseUrl.Trim(),
-            true, SelectedType == ProviderType.Ollama,
-            DateTime.UtcNow);
+            id, type, Name.Trim(), ProviderApiRoot.Normalize(BaseUrl),
+            _existing?.Enabled ?? true, type == ProviderType.Ollama || acknowledgePrivacy ||
+                (_existing is { PrivacyAcknowledged: true } original && original.Type == type),
+            _existing?.CreatedAt ?? DateTime.UtcNow);
 
-        await Task.Run(() => _store.SaveProvider(cfg));
+        await Task.Run(() =>
+        {
+            _store.SaveProvider(cfg);
+            // Provider edits deliberately preserve stored consent. Record a
+            // newly accepted gate explicitly, including keyless providers.
+            if (acknowledgePrivacy) _store.AcknowledgePrivacy(id);
+        });
 
-        if (SelectedType != ProviderType.Ollama && !string.IsNullOrWhiteSpace(ApiKey))
-            _secrets.Save(id, ApiKey);
-
-        if (acknowledgePrivacy)
-            await Task.Run(() => _store.AcknowledgePrivacy(id));
+        if (type != ProviderType.Ollama && !string.IsNullOrWhiteSpace(key))
+            _secrets.Save(id, key);
 
         return cfg;
     }
@@ -126,29 +184,30 @@ public sealed partial class AddProviderViewModel : ObservableObject
     [RelayCommand]
     public async Task TestAsync()
     {
+        if (IsTesting) return;
+        var revision = ++_probeRevision;
+        var type = SelectedType;
+        var root = BaseUrl;
+        var key = !string.IsNullOrWhiteSpace(ApiKey) ? ApiKey
+            : (EditingId != null ? _secrets.Load(EditingId) : null);
         IsTesting = true;
+        ProbeResult = null;
         TestStatus = null;
         TestSucceeded = false;
         try
         {
-            var key = !string.IsNullOrWhiteSpace(ApiKey) ? ApiKey
-                : (EditingId != null ? _secrets.Load(EditingId) ?? "" : "");
-            var error = await _router.TestConnectionAsync(SelectedType, BaseUrl.Trim(), key);
-            if (error is null)
-            {
-                TestSucceeded = true;
-                TestStatus = null; // view shows success string when TestSucceeded
-            }
-            else
-            {
-                TestSucceeded = false;
-                TestStatus = error;
-            }
+            var result = await _router.ProbeAsync(type, root, key);
+            if (revision != _probeRevision) return;
+            ProbeResult = result;
+            TestSucceeded = result.Status == ProviderProbeStatus.Verified;
+            TestStatus = result.Detail;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
+            if (revision != _probeRevision) return;
+            ProbeResult = new(ProviderProbeStatus.Failed, [], "transport", "Unable to retrieve the model listing.");
             TestSucceeded = false;
-            TestStatus = ex.Message;
+            TestStatus = ProbeResult.Detail;
         }
         finally { IsTesting = false; }
     }

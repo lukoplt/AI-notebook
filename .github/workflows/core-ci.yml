@@ -42,3 +42,7 @@ jobs:
             exit 1
           fi
           echo "OK: URLSession only present in OllamaClient.swift, WebExtractor.swift and Providers/."
+
+      - name: UI string parity (macOS AppText ↔ Windows resw en-US/cs-CZ)
+        # Intentional differences are allowlisted with a reason in tools/ui/strings-parity-allowlist.txt.
+        run: python3 tools/ui/check_strings_parity.py

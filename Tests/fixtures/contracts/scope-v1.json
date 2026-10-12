@@ -1,0 +1,17 @@
+{
+  "contract": "scope",
+  "version": 1,
+  "cases": [
+    { "name": "all", "json": {"kind": "all"}, "isEmptySelection": false },
+    { "name": "empty-selection", "json": {"kind": "selection", "sourceIds": [], "folderIds": []}, "isEmptySelection": true },
+    { "name": "sources-only", "json": {"kind": "selection", "sourceIds": [3, 1], "folderIds": []}, "isEmptySelection": false, "canonical": {"kind": "selection", "sourceIds": [1, 3], "folderIds": []} },
+    { "name": "folders-only", "json": {"kind": "selection", "sourceIds": [], "folderIds": [9]}, "isEmptySelection": false },
+    { "name": "duplicates-collapse", "json": {"kind": "selection", "sourceIds": [2, 2], "folderIds": [5, 5]}, "isEmptySelection": false, "canonical": {"kind": "selection", "sourceIds": [2], "folderIds": [5]} },
+    { "name": "unknown-kind", "json": {"kind": "everything"}, "error": true }
+  ],
+  "unionCases": [
+    { "name": "union-with-all", "inputs": [{"kind": "selection", "sourceIds": [1], "folderIds": []}, {"kind": "all"}], "expected": {"kind": "all"} },
+    { "name": "union-of-selections", "inputs": [{"kind": "selection", "sourceIds": [1], "folderIds": [7]}, {"kind": "selection", "sourceIds": [2], "folderIds": [7]}], "expected": {"kind": "selection", "sourceIds": [1, 2], "folderIds": [7]} },
+    { "name": "union-empty-list", "inputs": [], "expected": {"kind": "selection", "sourceIds": [], "folderIds": []} }
+  ]
+}

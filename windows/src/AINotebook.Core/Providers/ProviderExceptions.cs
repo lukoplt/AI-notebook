@@ -2,6 +2,15 @@ namespace AINotebook.Core.Providers;
 
 public class ProviderException(string message, Exception? inner = null) : Exception(message, inner);
 public sealed class ProviderAuthException(string message) : ProviderException(message);
+public sealed class ProviderHttpException(int statusCode) : ProviderException($"HTTP {statusCode}.")
+{
+    public int StatusCode { get; } = statusCode;
+}
+public sealed class ProviderContextTooLongException() : ProviderException("Context too long.");
+public sealed class ProviderConfigurationException(string code) : Exception(code)
+{
+    public string Code { get; } = code;
+}
 /// <summary>
 /// A 429 from the provider. <see cref="RetryAfter"/> carries the server's
 /// Retry-After hint when it sent one, so <c>ChatEngine</c> can wait the

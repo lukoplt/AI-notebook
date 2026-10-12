@@ -39,13 +39,26 @@ public sealed partial class NotebookStore
     /// PrivacyAcknowledged = false for cloud types, so including it in the
     /// UPDATE SET would clobber a previously-granted consent on every edit).
     /// <c>created_at</c> is likewise excluded — it must not change on update.
+    /// Changing the provider type or API root clears automatic model metadata
+    /// atomically with the edit; explicit user limits remain in place.
     /// Mirrors Sources/AINotebookCore/NotebookStore+Providers.swift saveProvider.
     /// </summary>
     public ProviderConfig SaveProvider(ProviderConfig p)
     {
         lock (_gate)
         {
+            using var transaction = Connection.BeginTransaction();
+            ProviderConfig? previous;
+            using (var read = Connection.CreateCommand())
+            {
+                read.Transaction = transaction;
+                read.CommandText = "SELECT id, type, name, base_url, enabled, privacy_acknowledged, created_at FROM providers WHERE id=$id";
+                read.Parameters.AddWithValue("$id", p.Id);
+                using var reader = read.ExecuteReader();
+                previous = reader.Read() ? ReadProvider(reader) : null;
+            }
             using var cmd = Connection.CreateCommand();
+            cmd.Transaction = transaction;
             cmd.CommandText = """
                 INSERT INTO providers(id, type, name, base_url, enabled, privacy_acknowledged, created_at)
                 VALUES($id, $type, $name, $url, $enabled, $priv, $at)
@@ -63,6 +76,15 @@ public sealed partial class NotebookStore
             cmd.Parameters.AddWithValue("$priv", p.PrivacyAcknowledged ? 1 : 0);
             cmd.Parameters.AddWithValue("$at", SqliteDate.ToDb(p.CreatedAt));
             cmd.ExecuteNonQuery();
+            if (previous is not null && !ProviderLimitPolicy.HasSameEndpoint(previous, p))
+            {
+                using var clear = Connection.CreateCommand();
+                clear.Transaction = transaction;
+                clear.CommandText = "DELETE FROM provider_model_limits WHERE provider_id=$id AND source='auto'";
+                clear.Parameters.AddWithValue("$id", p.Id);
+                clear.ExecuteNonQuery();
+            }
+            transaction.Commit();
             return p;
         }
     }

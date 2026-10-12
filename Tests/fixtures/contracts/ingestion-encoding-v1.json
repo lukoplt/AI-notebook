@@ -1,0 +1,211 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "encoding": "utf-8-bom",
+        "text": "A\n"
+      },
+      "input": {
+        "bytes": [
+          239,
+          187,
+          191,
+          65,
+          10
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "utf8-bom",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "encoding": "utf-16le",
+        "text": "A😀"
+      },
+      "input": {
+        "bytes": [
+          255,
+          254,
+          65,
+          0,
+          61,
+          216,
+          0,
+          222
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "utf16le",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "encoding": "utf-16be",
+        "text": "A😀"
+      },
+      "input": {
+        "bytes": [
+          254,
+          255,
+          0,
+          65,
+          216,
+          61,
+          222,
+          0
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "utf16be",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "encoding": "utf-8",
+        "text": "  Čau\r\n"
+      },
+      "input": {
+        "bytes": [
+          32,
+          32,
+          196,
+          140,
+          97,
+          117,
+          13,
+          10
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "plain-utf8",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "encoding": "windows-1250",
+        "text": "Příliš"
+      },
+      "input": {
+        "bytes": [
+          80,
+          248,
+          237,
+          108,
+          105,
+          154
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "cp1250",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "encoding": "windows-1250",
+        "text": "Ă("
+      },
+      "input": {
+        "bytes": [
+          195,
+          40
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "bad-utf8-cp1250",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "encoding": "utf-8",
+        "text": ""
+      },
+      "input": {
+        "bytes": [],
+        "fallback": "cp1250"
+      },
+      "name": "empty",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "error": "unsupportedEncoding"
+      },
+      "input": {
+        "bytes": [
+          80,
+          248,
+          237,
+          108,
+          105,
+          154
+        ],
+        "fallback": "none"
+      },
+      "name": "cp1250-disabled",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "error": "unsupportedEncoding"
+      },
+      "input": {
+        "bytes": [
+          239,
+          187,
+          191,
+          255
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "bad-bom-utf8",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "error": "unsupportedEncoding"
+      },
+      "input": {
+        "bytes": [
+          255,
+          254,
+          65
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "odd-utf16",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "error": "unsupportedEncoding"
+      },
+      "input": {
+        "bytes": [
+          254,
+          255,
+          216,
+          0
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "unpaired-utf16",
+      "operation": "decode"
+    },
+    {
+      "expected": {
+        "error": "unsupportedEncoding"
+      },
+      "input": {
+        "bytes": [
+          129
+        ],
+        "fallback": "cp1250"
+      },
+      "name": "undefined-cp1250",
+      "operation": "decode"
+    }
+  ],
+  "contract": "ingestion-encoding",
+  "version": 1
+}

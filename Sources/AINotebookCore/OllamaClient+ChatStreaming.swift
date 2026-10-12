@@ -5,8 +5,18 @@ extension OllamaClient: ChatStreaming {
         model: String,
         messages: [ChatTurn]
     ) -> AsyncThrowingStream<String, Error> {
+        stream(model: model, messages: messages, options: .defaults)
+    }
+
+    public func stream(model: String, messages: [ChatTurn], options: ChatRequestOptions)
+        -> AsyncThrowingStream<String, Error> {
+        do {
+            try options.validate()
+        } catch {
+            return AsyncThrowingStream { $0.finish(throwing: error) }
+        }
         // Map ChatRole → OllamaChatMessage.Role
-        let wire = messages.map { turn in
+        let wire = ProviderWire.canonicalMessages(messages).map { turn in
             OllamaChatMessage(
                 role: Self.roleMap(turn.role),
                 content: turn.content
@@ -15,7 +25,8 @@ extension OllamaClient: ChatStreaming {
         // OllamaClient.chat yields OllamaChatChunk; we re-yield each non-empty
         // message.content delta as a String. `done` flag terminates the inner
         // stream in OllamaClient already — the outer stream finishes naturally.
-        let chunkStream = chat(model: model, messages: wire)
+        let chunkStream = chat(model: model, messages: wire,
+                               options: .init(numCtx: options.runtimeContext, numPredict: options.maxOutputTokens))
         return AsyncThrowingStream { continuation in
             let task = Task {
                 do {

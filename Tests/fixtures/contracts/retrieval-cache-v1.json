@@ -1,0 +1,518 @@
+{
+  "budgetBytes": 160,
+  "cases": [
+    {
+      "actions": [
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 80,
+            "residentKeys": [
+              "A"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "A",
+          "lease": "a",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 80,
+            "residentKeys": [
+              "A"
+            ]
+          },
+          "lease": "a",
+          "op": "release"
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "B"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "B",
+          "lease": "b",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "B"
+            ]
+          },
+          "lease": "b",
+          "op": "release"
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "B"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "A",
+          "lease": "a2",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "B"
+            ]
+          },
+          "lease": "a2",
+          "op": "release"
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 3,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "C"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "C",
+          "lease": "c",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 3,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "C"
+            ]
+          },
+          "lease": "c",
+          "op": "release"
+        }
+      ],
+      "name": "lru"
+    },
+    {
+      "actions": [
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 80,
+            "residentKeys": [
+              "A"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "A",
+          "lease": "a",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "B"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "B",
+          "lease": "b",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "B"
+            ]
+          },
+          "key": "A",
+          "op": "invalidate"
+        },
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "B"
+            ]
+          },
+          "expectedMode": "stream",
+          "key": "C",
+          "lease": "c-stream",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 80,
+            "residentKeys": [
+              "B"
+            ]
+          },
+          "lease": "a",
+          "op": "release"
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 3,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "B",
+              "C"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "C",
+          "lease": "c",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 3,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "B",
+              "C"
+            ]
+          },
+          "lease": "b",
+          "op": "release"
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 3,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "B",
+              "C"
+            ]
+          },
+          "lease": "c",
+          "op": "release"
+        }
+      ],
+      "name": "leased-eviction"
+    },
+    {
+      "actions": [
+        {
+          "expected": {
+            "entryCount": 0,
+            "loadCount": 0,
+            "reservedBytes": 0,
+            "residentBytes": 0,
+            "residentKeys": []
+          },
+          "expectedMode": "stream",
+          "key": "A",
+          "lease": "a",
+          "op": "acquire",
+          "rows": 5
+        }
+      ],
+      "name": "oversize"
+    },
+    {
+      "actions": [
+        {
+          "barrier": "old-epoch",
+          "expected": {
+            "entryCount": 0,
+            "loadCount": 1,
+            "reservedBytes": 80,
+            "residentBytes": 0,
+            "residentKeys": []
+          },
+          "expectedMode": "stream",
+          "key": "A",
+          "lease": "a",
+          "op": "startAcquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 0,
+            "loadCount": 1,
+            "reservedBytes": 80,
+            "residentBytes": 0,
+            "residentKeys": []
+          },
+          "key": "A",
+          "op": "invalidate"
+        },
+        {
+          "barrier": "old-epoch",
+          "expected": {
+            "entryCount": 0,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 0,
+            "residentKeys": []
+          },
+          "expectedMode": "stream",
+          "op": "completeFill"
+        }
+      ],
+      "name": "epoch-race"
+    },
+    {
+      "actions": [
+        {
+          "barrier": "shared",
+          "expected": {
+            "entryCount": 0,
+            "loadCount": 1,
+            "reservedBytes": 80,
+            "residentBytes": 0,
+            "residentKeys": []
+          },
+          "expectedMode": "cached",
+          "key": "A",
+          "lease": "a",
+          "op": "startAcquire",
+          "rows": 2
+        },
+        {
+          "barrier": "shared",
+          "expected": {
+            "entryCount": 0,
+            "loadCount": 1,
+            "reservedBytes": 80,
+            "residentBytes": 0,
+            "residentKeys": []
+          },
+          "expectedMode": "cached",
+          "key": "A",
+          "lease": "a2",
+          "op": "startAcquire",
+          "rows": 2
+        },
+        {
+          "barrier": "shared",
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 80,
+            "residentKeys": [
+              "A"
+            ]
+          },
+          "expectedMode": "cached",
+          "op": "completeFill"
+        },
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 80,
+            "residentKeys": [
+              "A"
+            ]
+          },
+          "lease": "a",
+          "op": "release"
+        },
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 80,
+            "residentKeys": [
+              "A"
+            ]
+          },
+          "lease": "a2",
+          "op": "release"
+        }
+      ],
+      "name": "single-flight"
+    },
+    {
+      "actions": [
+        {
+          "barrier": "failed",
+          "expected": {
+            "entryCount": 0,
+            "loadCount": 1,
+            "reservedBytes": 80,
+            "residentBytes": 0,
+            "residentKeys": []
+          },
+          "expectedError": "loadFailed",
+          "key": "A",
+          "lease": "a",
+          "op": "startAcquire",
+          "rows": 2
+        },
+        {
+          "barrier": "failed",
+          "expected": {
+            "entryCount": 0,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 0,
+            "residentKeys": []
+          },
+          "expectedError": "loadFailed",
+          "op": "failFill"
+        }
+      ],
+      "name": "load-failure"
+    },
+    {
+      "actions": [
+        {
+          "expected": {
+            "entryCount": 1,
+            "loadCount": 1,
+            "reservedBytes": 0,
+            "residentBytes": 80,
+            "residentKeys": [
+              "A"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "A",
+          "lease": "a",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "B"
+            ]
+          },
+          "expectedMode": "cached",
+          "key": "B",
+          "lease": "b",
+          "op": "acquire",
+          "rows": 2
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "B"
+            ]
+          },
+          "lease": "a",
+          "op": "release"
+        },
+        {
+          "expected": {
+            "entryCount": 2,
+            "loadCount": 2,
+            "reservedBytes": 0,
+            "residentBytes": 160,
+            "residentKeys": [
+              "A",
+              "B"
+            ]
+          },
+          "lease": "b",
+          "op": "release"
+        }
+      ],
+      "name": "databases-isolated"
+    }
+  ],
+  "chargedBytesPerMatrix": 80,
+  "contract": "retrieval-cache",
+  "dims": 2,
+  "keys": {
+    "A": {
+      "databaseId": "db-A",
+      "epoch": 0,
+      "generationId": 90,
+      "notebookId": 1
+    },
+    "B": {
+      "databaseId": "db-B",
+      "epoch": 0,
+      "generationId": 90,
+      "notebookId": 1
+    },
+    "C": {
+      "databaseId": "db-C",
+      "epoch": 0,
+      "generationId": 90,
+      "notebookId": 1
+    }
+  },
+  "metadataBytesPerRow": 32,
+  "rowsPerMatrix": 2,
+  "version": 1
+}

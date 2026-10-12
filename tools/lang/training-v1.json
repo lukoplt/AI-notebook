@@ -1,0 +1,747 @@
+{
+  "sourceId": "tatoeba",
+  "modelId": "tatoeba-cs-de-en-sk-v1",
+  "targets": [
+    "cs",
+    "de",
+    "en",
+    "sk"
+  ],
+  "languageMappings": [
+    {
+      "sourceLanguage": "ces",
+      "detectorLanguage": "cs"
+    },
+    {
+      "sourceLanguage": "deu",
+      "detectorLanguage": "de"
+    },
+    {
+      "sourceLanguage": "eng",
+      "detectorLanguage": "en"
+    },
+    {
+      "sourceLanguage": "slk",
+      "detectorLanguage": "sk"
+    },
+    {
+      "sourceLanguage": "fra",
+      "detectorLanguage": "fr"
+    },
+    {
+      "sourceLanguage": "hrv",
+      "detectorLanguage": "hr"
+    },
+    {
+      "sourceLanguage": "hun",
+      "detectorLanguage": "hu"
+    },
+    {
+      "sourceLanguage": "nld",
+      "detectorLanguage": "nl"
+    },
+    {
+      "sourceLanguage": "pol",
+      "detectorLanguage": "pl"
+    },
+    {
+      "sourceLanguage": "slv",
+      "detectorLanguage": "sl"
+    }
+  ],
+  "negativeLanguages": [
+    "fr",
+    "hr",
+    "hu",
+    "nl",
+    "pl",
+    "sl"
+  ],
+  "seed": 1729,
+  "splitBp": {
+    "train": 8000,
+    "validation": 1000,
+    "test": 1000
+  },
+  "maxComponentMembers": 10000,
+  "maxSnapshotSkewBp": 100,
+  "caps": [
+    {
+      "split": "train",
+      "language": "cs",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "de",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "en",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "fr",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "hr",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "hu",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "nl",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "pl",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "sk",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "train",
+      "language": "sl",
+      "maxOriginalRecords": 200000
+    },
+    {
+      "split": "validation",
+      "language": "cs",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "de",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "en",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "fr",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "hr",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "hu",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "nl",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "pl",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "sk",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "validation",
+      "language": "sl",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "cs",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "de",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "en",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "fr",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "hr",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "hu",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "nl",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "pl",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "sk",
+      "maxOriginalRecords": 40000
+    },
+    {
+      "split": "test",
+      "language": "sl",
+      "maxOriginalRecords": 40000
+    }
+  ],
+  "augmentation": [
+    {
+      "algorithm": "scalar-prefix-v1",
+      "splits": [
+        "train",
+        "validation",
+        "test"
+      ],
+      "lengths": [
+        24,
+        64,
+        160,
+        400
+      ]
+    },
+    {
+      "algorithm": "strip-marks-v1",
+      "splits": [
+        "train",
+        "validation",
+        "test"
+      ],
+      "lengths": []
+    },
+    {
+      "algorithm": "concat-v1",
+      "splits": [
+        "validation",
+        "test"
+      ],
+      "lengths": [
+        64,
+        160,
+        512,
+        1024
+      ],
+      "maxOutputs": [
+        {
+          "split": "validation",
+          "language": "cs",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "de",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "en",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "fr",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "hr",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "hu",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "nl",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "pl",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "sk",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "validation",
+          "language": "sl",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "cs",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "de",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "en",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "fr",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "hr",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "hu",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "nl",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "pl",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "sk",
+          "maxOutputsPerLength": 1000
+        },
+        {
+          "split": "test",
+          "language": "sl",
+          "maxOutputsPerLength": 1000
+        }
+      ]
+    }
+  ],
+  "parameters": {
+    "maxFeaturesPerProfile": [
+      256,
+      1024,
+      4096
+    ],
+    "orderWeights": [
+      1,
+      2,
+      3
+    ],
+    "scoreScale": 1024,
+    "lengthBucketStarts": [
+      12,
+      32,
+      80,
+      200
+    ],
+    "minLetters": 12,
+    "minWords": 3,
+    "mixedDominanceBp": 7000,
+    "inputCapScalars": 5000000,
+    "textCapScalars": 8192,
+    "windowCount": 8,
+    "windowScalars": 512
+  },
+  "licenseIds": [
+    "CC0-1.0",
+    "CC-BY-2.0-FR"
+  ],
+  "minimumSupport": {
+    "groupsPerTarget": 200,
+    "groupsPerNegativeLanguage": 200,
+    "acceptedTotal": 1000,
+    "acceptedTrueCs": 100,
+    "acceptedTrueSk": 100
+  },
+  "calibration": {
+    "algorithm": "grid-max-accepted-v1",
+    "candidates": [
+      {
+        "bucketStart": 12,
+        "minWinningScores": [
+          -120000,
+          -118000,
+          -116000,
+          -114000,
+          -112000,
+          -110000,
+          -108000,
+          -106000,
+          -104000,
+          -102000,
+          -100000,
+          -98000,
+          -96000,
+          -94000,
+          -92000,
+          -90000,
+          -88000,
+          -86000,
+          -84000,
+          -82000,
+          -80000,
+          -78000,
+          -76000,
+          -74000,
+          -72000,
+          -70000,
+          -68000,
+          -66000,
+          -64000,
+          -62000,
+          -60000,
+          -58000,
+          -56000,
+          -54000,
+          -52000,
+          -50000,
+          -48000,
+          -46000,
+          -44000,
+          -42000,
+          -40000,
+          -38000,
+          -36000,
+          -34000,
+          -32000,
+          -30000,
+          -28000,
+          -26000,
+          -24000,
+          -22000,
+          -20000,
+          -18000,
+          -16000,
+          -14000,
+          -12000,
+          -10000,
+          -8000,
+          -6000,
+          -4000,
+          -2000,
+          0
+        ],
+        "minMargins": [
+          1,
+          128,
+          256,
+          512,
+          1024,
+          2048,
+          4096,
+          8192
+        ],
+        "minKnownCoverageBp": [
+          0,
+          2500,
+          5000,
+          7500,
+          9000,
+          9500,
+          10000
+        ]
+      },
+      {
+        "bucketStart": 32,
+        "minWinningScores": [
+          -120000,
+          -118000,
+          -116000,
+          -114000,
+          -112000,
+          -110000,
+          -108000,
+          -106000,
+          -104000,
+          -102000,
+          -100000,
+          -98000,
+          -96000,
+          -94000,
+          -92000,
+          -90000,
+          -88000,
+          -86000,
+          -84000,
+          -82000,
+          -80000,
+          -78000,
+          -76000,
+          -74000,
+          -72000,
+          -70000,
+          -68000,
+          -66000,
+          -64000,
+          -62000,
+          -60000,
+          -58000,
+          -56000,
+          -54000,
+          -52000,
+          -50000,
+          -48000,
+          -46000,
+          -44000,
+          -42000,
+          -40000,
+          -38000,
+          -36000,
+          -34000,
+          -32000,
+          -30000,
+          -28000,
+          -26000,
+          -24000,
+          -22000,
+          -20000,
+          -18000,
+          -16000,
+          -14000,
+          -12000,
+          -10000,
+          -8000,
+          -6000,
+          -4000,
+          -2000,
+          0
+        ],
+        "minMargins": [
+          1,
+          128,
+          256,
+          512,
+          1024,
+          2048,
+          4096,
+          8192
+        ],
+        "minKnownCoverageBp": [
+          0,
+          2500,
+          5000,
+          7500,
+          9000,
+          9500,
+          10000
+        ]
+      },
+      {
+        "bucketStart": 80,
+        "minWinningScores": [
+          -120000,
+          -118000,
+          -116000,
+          -114000,
+          -112000,
+          -110000,
+          -108000,
+          -106000,
+          -104000,
+          -102000,
+          -100000,
+          -98000,
+          -96000,
+          -94000,
+          -92000,
+          -90000,
+          -88000,
+          -86000,
+          -84000,
+          -82000,
+          -80000,
+          -78000,
+          -76000,
+          -74000,
+          -72000,
+          -70000,
+          -68000,
+          -66000,
+          -64000,
+          -62000,
+          -60000,
+          -58000,
+          -56000,
+          -54000,
+          -52000,
+          -50000,
+          -48000,
+          -46000,
+          -44000,
+          -42000,
+          -40000,
+          -38000,
+          -36000,
+          -34000,
+          -32000,
+          -30000,
+          -28000,
+          -26000,
+          -24000,
+          -22000,
+          -20000,
+          -18000,
+          -16000,
+          -14000,
+          -12000,
+          -10000,
+          -8000,
+          -6000,
+          -4000,
+          -2000,
+          0
+        ],
+        "minMargins": [
+          1,
+          128,
+          256,
+          512,
+          1024,
+          2048,
+          4096,
+          8192
+        ],
+        "minKnownCoverageBp": [
+          0,
+          2500,
+          5000,
+          7500,
+          9000,
+          9500,
+          10000
+        ]
+      },
+      {
+        "bucketStart": 200,
+        "minWinningScores": [
+          -120000,
+          -118000,
+          -116000,
+          -114000,
+          -112000,
+          -110000,
+          -108000,
+          -106000,
+          -104000,
+          -102000,
+          -100000,
+          -98000,
+          -96000,
+          -94000,
+          -92000,
+          -90000,
+          -88000,
+          -86000,
+          -84000,
+          -82000,
+          -80000,
+          -78000,
+          -76000,
+          -74000,
+          -72000,
+          -70000,
+          -68000,
+          -66000,
+          -64000,
+          -62000,
+          -60000,
+          -58000,
+          -56000,
+          -54000,
+          -52000,
+          -50000,
+          -48000,
+          -46000,
+          -44000,
+          -42000,
+          -40000,
+          -38000,
+          -36000,
+          -34000,
+          -32000,
+          -30000,
+          -28000,
+          -26000,
+          -24000,
+          -22000,
+          -20000,
+          -18000,
+          -16000,
+          -14000,
+          -12000,
+          -10000,
+          -8000,
+          -6000,
+          -4000,
+          -2000,
+          0
+        ],
+        "minMargins": [
+          1,
+          128,
+          256,
+          512,
+          1024,
+          2048,
+          4096,
+          8192
+        ],
+        "minKnownCoverageBp": [
+          0,
+          2500,
+          5000,
+          7500,
+          9000,
+          9500,
+          10000
+        ]
+      }
+    ],
+    "tieBreak": [
+      "minWinningScoreDescending",
+      "minMarginDescending",
+      "minKnownCoverageBpDescending"
+    ]
+  }
+}

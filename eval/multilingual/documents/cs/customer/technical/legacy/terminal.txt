@@ -1,0 +1,15 @@
+Obsluha staršího servisního terminálu observatoøe Javor
+
+Datum: 9. øíjna 2026
+Odpovìdná osoba: Vìra Kaštanová, technièka smìny
+Evidenèní oznaèení: TERM-CS-10
+
+Terminál slouí k místnímu ètení diagnostiky starší øídicí jednotky. Jeho textové soubory pouívají kódování windows-1250, které je nutné zachovat pøi pøedávání mezi servisními poèítaèi. Bìnı editor mùe po nesprávném otevøení zobrazit náhradní znaky místo èeské diakritiky. Takovı soubor se nemá hned ukládat: nejprve je tøeba znovu otevøít pùvodní kopii s odpovídajícím nastavením.
+
+Pøenosovou rychlost nastavte na 19200 baudù. Pøipojení zahajujte a po ovìøení oznaèení zásuvky a neporušenosti pøevodníku. Stejnì vypadající zásuvka na vedlejším panelu patøí mìøicímu pøístroji a nemá bıt pøi servisním zásahu pouívána. Vhodnı kabel poznáte podle zelené stahovací pásky u konektoru; samotná barva plastového pláštì nestaèí, protoe ve skladu leí nìkolik podobnıch kusù.
+
+Zkušební øádek pro kontrolu zobrazení zní: Pøíliš luouèkı kùò. Technik jej nejprve porovná na obrazovce a potom v uloeném záznamu. Pokud se nìkteré písmeno zmìní, pøeruší záznam a opraví nastavení kódování. Správná pøenosová rychlost neøeší chybné zobrazení textu. Obì vlastnosti se ovìøují samostatnì, protoe èitelná èísla mohou zakrıvat poškození písmen.
+
+Pøi práci se pouívá pouze reim ètení. Pøíkazy mìnící nastavení jednotky vyadují povìøeného technika a pøedem pøipravenı pracovní list. Pøed odpojením kabelu obsluha ukonèí sbìr záznamù a ovìøí, e se poslední soubor skuteènì uloil. Název souboru obsahuje oznaèení jednotky a poøadí zásahu; pracovní poznámky se ukládají vedle nìj, aby nezmìnily pùvodní diagnostická data.
+
+Pøevodník po pouití patøí do polstrovaného pouzdra. Náhradní baterie do svítilny jsou v horní zásuvce servisního stolku a nesmìjí zùstat uvnitø pouzdra s konektory. Technik pøi pøedání smìny uvede, zda bylo spojení stabilní a zda se objevily neèitelné znaky. Pokud se potíe opakují, další kontrola porovná druhı kabel a jinı servisní poèítaè za stejnıch podmínek.

@@ -4,11 +4,13 @@ import XCTest
 @MainActor
 final class RetrieverTests: XCTestCase {
 
-    final class MockEmbeddingClient: EmbeddingProducing, @unchecked Sendable {
+    actor MockEmbeddingClient: EmbeddingProducing {
+        private(set) var calls = 0
         let queryVector: [Float]
         init(queryVector: [Float]) { self.queryVector = queryVector }
         func embed(model: String, inputs: [String]) async throws -> [[Float]] {
-            inputs.map { _ in queryVector }
+            calls += 1
+            return inputs.map { _ in queryVector }
         }
     }
 
@@ -68,23 +70,22 @@ final class RetrieverTests: XCTestCase {
     func testRRFRanksFusedAboveSingleSourceMatch() async throws {
         let store = try NotebookStore(path: .inMemory)
         let nb = try store.createNotebook(name: "NB")
-        let s = try store.createSource(
-            notebookId: nb.id!, type: .text, title: "x", uri: nil, rawPath: nil
-        )
-        try store.replaceChunks(
-            sourceId: s.id!,
-            chunks: [
-                // Chunk A: matches both vector AND text
-                ChunkDraft(text: "fox runs fast",      tokenCount: 3),
-                // Chunk B: matches text only
-                ChunkDraft(text: "fox sleeps softly",  tokenCount: 3),
-                // Chunk C: matches vector only
-                ChunkDraft(text: "unrelated greeting", tokenCount: 2)
-            ]
-        )
-        let chunks = try store.chunks(sourceId: s.id!)
-        try store.storeEmbedding(chunkId: chunks[0].id!, model: "m", vector: EmbeddingVector(values: [1, 0]))
-        try store.storeEmbedding(chunkId: chunks[2].id!, model: "m", vector: EmbeddingVector(values: [0.9, 0.1]))
+        // Complete revisions A/C have vectors; B is an explicitly lexical-only source.
+        var chunks: [SourceChunk] = []
+        for text in ["fox runs fast", "fox sleeps softly", "unrelated greeting"] {
+            let source = try store.createSource(notebookId: nb.id!, type: .text, title: text, uri: nil, rawPath: nil)
+            try store.replaceChunks(sourceId: source.id!, chunks: [ChunkDraft(text: text, tokenCount: 3)])
+            chunks.append(try XCTUnwrap(store.chunks(sourceId: source.id!).first))
+        }
+        let identity = GenerationIdentity(providerId: "legacy", endpointRevision: "legacy", model: "m",
+            modelDigest: nil, dims: 2, normalization: "legacy", queryFormatVersion: "legacy", docFormatVersion: "legacy", chunkerVersion: "legacy")
+        let generation = try store.createGeneration(notebookId: nb.id!, identity: identity, now: 0)
+        try store.storeGenerationEmbedding(generationId: generation.id, chunkId: chunks[0].id!, vector: EmbeddingVector(values: [1, 0]))
+        try store.storeGenerationEmbedding(generationId: generation.id, chunkId: chunks[2].id!, vector: EmbeddingVector(values: [0.9, 0.1]))
+        try store.setManifest(generationId: generation.id, entries: chunks.enumerated().map { index, chunk in
+            ManifestEntry(sourceId: chunk.sourceId, revisionId: chunk.revisionId!, state: index == 1 ? "excluded" : "done", reason: index == 1 ? "test-lexical-only" : nil)
+        })
+        try store.activateGeneration(id: generation.id, now: 1)
 
         let client = MockEmbeddingClient(queryVector: [1, 0])
         let retriever = Retriever(store: store, client: client, model: "m")
@@ -92,6 +93,9 @@ final class RetrieverTests: XCTestCase {
             notebookId: nb.id!, query: "fox", topK: 3
         )
         XCTAssertEqual(hits.first?.chunkId, chunks[0].id!, "fused hit ranks above single-source hits")
+        XCTAssertTrue(hits.contains { $0.chunkId == chunks[2].id! }, "vector-only C must survive fusion")
+        let calls = await client.calls
+        XCTAssertEqual(calls, 1)
     }
 
     func testSourceIdsFilterRestrictsToSelectedSources() async throws {

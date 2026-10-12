@@ -23,7 +23,7 @@ extension NotebookStore {
 
     /// The recorded content hash for a source, or nil if never synced.
     public func sourceContentHash(id: Int64) throws -> String? {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try String.fetchOne(db, sql: "SELECT content_hash FROM sources WHERE id=?", arguments: [id])
         }
     }

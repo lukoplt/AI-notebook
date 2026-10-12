@@ -1,0 +1,3115 @@
+{
+  "contract": "lang-score",
+  "version": 1,
+  "model": {
+    "contract": "lang-detector",
+    "version": 1,
+    "kind": "synthetic",
+    "modelId": "synthetic-aaaa-bbbb-v1",
+    "targets": ["xa", "xb"],
+    "normalizationTablesVersion": "ucd-15.1.0-default-full-v1",
+    "alpha": 1,
+    "parameters": {
+      "maxFeaturesPerProfile": [3, 3, 3],
+      "orderWeights": [1, 2, 3],
+      "scoreScale": 1024,
+      "lengthBucketStarts": [12, 32, 80, 200],
+      "minLetters": 12,
+      "minWords": 3,
+      "mixedDominanceBp": 7000,
+      "inputCapScalars": 256,
+      "textCapScalars": 256,
+      "windowCount": 3,
+      "windowScalars": 14
+    },
+    "vocabulary": [
+      {"order": 1, "features": [[-2], [-1], [97], [98], [99]]},
+      {
+        "order": 2,
+        "features": [[-1, 97], [-1, 98], [-1, 99], [97, -2], [97, 97], [98, -2], [98, 98], [99, -2], [99, 99]]
+      },
+      {
+        "order": 3,
+        "features": [
+          [-1, 97, 97],
+          [-1, 98, 98],
+          [-1, 99, 99],
+          [97, 97, -2],
+          [97, 97, 97],
+          [98, 98, -2],
+          [98, 98, 98],
+          [99, 99, -2],
+          [99, 99, 99]
+        ]
+      }
+    ],
+    "profiles": [
+      {
+        "id": "background",
+        "priorWeight": -1125,
+        "orders": [
+          {"order": 1, "weights": [-1835, -1835, -2424, -2424, -976], "unknownWeight": -2424},
+          {
+            "order": 2,
+            "weights": [-3424, -3424, -2191, -3424, -2557, -3424, -2557, -2191, -1137],
+            "unknownWeight": -2094
+          },
+          {
+            "order": 3,
+            "weights": [-3225, -3225, -1993, -3225, -2702, -3225, -2702, -1993, -1335],
+            "unknownWeight": -2101
+          }
+        ]
+      },
+      {
+        "id": "xa",
+        "priorWeight": -1125,
+        "orders": [
+          {"order": 1, "weights": [-1835, -1835, -682, -2731, -2731], "unknownWeight": -4379},
+          {
+            "order": 2,
+            "weights": [-1917, -3565, -3565, -1917, -862, -3565, -2855, -3565, -2855],
+            "unknownWeight": -4275
+          },
+          {
+            "order": 3,
+            "weights": [-1727, -3375, -3375, -1727, -1070, -3375, -2960, -3375, -2960],
+            "unknownWeight": -4085
+          }
+        ]
+      },
+      {
+        "id": "xb",
+        "priorWeight": -1125,
+        "orders": [
+          {"order": 1, "weights": [-1835, -1835, -2731, -682, -2731], "unknownWeight": -4379},
+          {
+            "order": 2,
+            "weights": [-3565, -1917, -3565, -3565, -2855, -1917, -862, -3565, -2855],
+            "unknownWeight": -4275
+          },
+          {
+            "order": 3,
+            "weights": [-3375, -1727, -3375, -3375, -2960, -1727, -1070, -3375, -2960],
+            "unknownWeight": -4085
+          }
+        ]
+      }
+    ],
+    "thresholds": [
+      {
+        "start": 12,
+        "enabled": 1,
+        "minWinningScore": -15000,
+        "minMargin": 4000,
+        "minKnownCoverageBp": 9000
+      },
+      {
+        "start": 32,
+        "enabled": 1,
+        "minWinningScore": -8000,
+        "minMargin": 4000,
+        "minKnownCoverageBp": 9000
+      },
+      {
+        "start": 80,
+        "enabled": 0,
+        "minWinningScore": -15000,
+        "minMargin": 4000,
+        "minKnownCoverageBp": 9000
+      },
+      {
+        "start": 200,
+        "enabled": 1,
+        "minWinningScore": -15000,
+        "minMargin": 4000,
+        "minKnownCoverageBp": 9000
+      }
+    ],
+    "attribution": {
+      "sourceIds": [],
+      "licenseIds": [],
+      "attributionPath": "",
+      "attributionSha256": "",
+      "noticePath": "",
+      "noticeSha256": ""
+    }
+  },
+  "training": {
+    "background": [
+      {"word": "aaaa", "count": 2},
+      {"word": "bbbb", "count": 2},
+      {"word": "cccc", "count": 9},
+      {"word": "dddd", "count": 2}
+    ],
+    "xa": [{"word": "aaaa", "count": 9}, {"word": "bbbb", "count": 1}, {"word": "cccc", "count": 1}],
+    "xb": [{"word": "aaaa", "count": 1}, {"word": "bbbb", "count": 9}, {"word": "cccc", "count": 1}]
+  },
+  "cases": [
+    {
+      "name": "accept-xa",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa",
+      "expected": {
+        "words": ["aaaa", "aaaa", "aaaa"],
+        "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 3}, {"symbols": [-1], "count": 3}, {"symbols": [97], "count": 12}],
+          [
+            {"symbols": [-1, 97], "count": 3},
+            {"symbols": [97, -2], "count": 3},
+            {"symbols": [97, 97], "count": 9}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 3},
+            {"symbols": [97, 97, -2], "count": 3},
+            {"symbols": [97, 97, 97], "count": 6}
+          ]
+        ],
+        "featureCounts": [18, 15, 12],
+        "knownCounts": [18, 15, 12],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-40098, -43557, -35562],
+            "orderScores": [-2228, -2904, -2964],
+            "combinedScore": -18053
+          },
+          "xa": {
+            "weightedSums": [-19194, -19260, -16782],
+            "orderScores": [-1067, -1284, -1399],
+            "combinedScore": -8957
+          },
+          "xb": {
+            "weightedSums": [-43782, -47085, -38010],
+            "orderScores": [-2433, -3139, -3168],
+            "combinedScore": -19340
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9096,
+        "coverageBp": 10000,
+        "label": "xa",
+        "reason": "accepted"
+      }
+    },
+    {
+      "name": "accept-xb",
+      "mode": "text",
+      "input": "bbbb bbbb bbbb",
+      "expected": {
+        "words": ["bbbb", "bbbb", "bbbb"],
+        "wordScalars": [[98, 98, 98, 98], [98, 98, 98, 98], [98, 98, 98, 98]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 3}, {"symbols": [-1], "count": 3}, {"symbols": [98], "count": 12}],
+          [
+            {"symbols": [-1, 98], "count": 3},
+            {"symbols": [98, -2], "count": 3},
+            {"symbols": [98, 98], "count": 9}
+          ],
+          [
+            {"symbols": [-1, 98, 98], "count": 3},
+            {"symbols": [98, 98, -2], "count": 3},
+            {"symbols": [98, 98, 98], "count": 6}
+          ]
+        ],
+        "featureCounts": [18, 15, 12],
+        "knownCounts": [18, 15, 12],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-40098, -43557, -35562],
+            "orderScores": [-2228, -2904, -2964],
+            "combinedScore": -18053
+          },
+          "xa": {
+            "weightedSums": [-43782, -47085, -38010],
+            "orderScores": [-2433, -3139, -3168],
+            "combinedScore": -19340
+          },
+          "xb": {
+            "weightedSums": [-19194, -19260, -16782],
+            "orderScores": [-1067, -1284, -1399],
+            "combinedScore": -8957
+          }
+        },
+        "winner": "xb",
+        "runnerUp": "background",
+        "margin": 9096,
+        "coverageBp": 10000,
+        "label": "xb",
+        "reason": "accepted"
+      }
+    },
+    {
+      "name": "background-known",
+      "mode": "text",
+      "input": "cccc cccc cccc",
+      "expected": {
+        "words": ["cccc", "cccc", "cccc"],
+        "wordScalars": [[99, 99, 99, 99], [99, 99, 99, 99], [99, 99, 99, 99]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 3}, {"symbols": [-1], "count": 3}, {"symbols": [99], "count": 12}],
+          [
+            {"symbols": [-1, 99], "count": 3},
+            {"symbols": [99, -2], "count": 3},
+            {"symbols": [99, 99], "count": 9}
+          ],
+          [
+            {"symbols": [-1, 99, 99], "count": 3},
+            {"symbols": [99, 99, -2], "count": 3},
+            {"symbols": [99, 99, 99], "count": 6}
+          ]
+        ],
+        "featureCounts": [18, 15, 12],
+        "knownCounts": [18, 15, 12],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-22722, -23379, -19968],
+            "orderScores": [-1263, -1559, -1664],
+            "combinedScore": -10498
+          },
+          "xa": {
+            "weightedSums": [-43782, -47085, -38010],
+            "orderScores": [-2433, -3139, -3168],
+            "combinedScore": -19340
+          },
+          "xb": {
+            "weightedSums": [-43782, -47085, -38010],
+            "orderScores": [-2433, -3139, -3168],
+            "combinedScore": -19340
+          }
+        },
+        "winner": "background",
+        "runnerUp": "xa",
+        "margin": 8842,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "background"
+      }
+    },
+    {
+      "name": "background-unknown",
+      "mode": "text",
+      "input": "dddd dddd dddd",
+      "expected": {
+        "words": ["dddd", "dddd", "dddd"],
+        "wordScalars": [[100, 100, 100, 100], [100, 100, 100, 100], [100, 100, 100, 100]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 3}, {"symbols": [-1], "count": 3}, {"symbols": [100], "count": 12}],
+          [
+            {"symbols": [-1, 100], "count": 3},
+            {"symbols": [100, -2], "count": 3},
+            {"symbols": [100, 100], "count": 9}
+          ],
+          [
+            {"symbols": [-1, 100, 100], "count": 3},
+            {"symbols": [100, 100, -2], "count": 3},
+            {"symbols": [100, 100, 100], "count": 6}
+          ]
+        ],
+        "featureCounts": [18, 15, 12],
+        "knownCounts": [6, 0, 0],
+        "unknownCounts": [12, 15, 12],
+        "profiles": {
+          "background": {
+            "weightedSums": [-40098, -31410, -25212],
+            "orderScores": [-2228, -2094, -2101],
+            "combinedScore": -13844
+          },
+          "xa": {
+            "weightedSums": [-63558, -64125, -49020],
+            "orderScores": [-3531, -4275, -4085],
+            "combinedScore": -25461
+          },
+          "xb": {
+            "weightedSums": [-63558, -64125, -49020],
+            "orderScores": [-3531, -4275, -4085],
+            "combinedScore": -25461
+          }
+        },
+        "winner": "background",
+        "runnerUp": "xa",
+        "margin": 11617,
+        "coverageBp": 1333,
+        "label": "und",
+        "reason": "background"
+      }
+    },
+    {
+      "name": "empty",
+      "mode": "text",
+      "input": "",
+      "expected": {
+        "words": [],
+        "wordScalars": [],
+        "letterCount": 0,
+        "wordCount": 0,
+        "bucketStart": null,
+        "features": [[], [], []],
+        "featureCounts": [0, 0, 0],
+        "knownCounts": [0, 0, 0],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {"weightedSums": [0, 0, 0], "orderScores": [0, 0, 0], "combinedScore": -1125},
+          "xa": {"weightedSums": [0, 0, 0], "orderScores": [0, 0, 0], "combinedScore": -1125},
+          "xb": {"weightedSums": [0, 0, 0], "orderScores": [0, 0, 0], "combinedScore": -1125}
+        },
+        "winner": "background",
+        "runnerUp": "xa",
+        "margin": 0,
+        "coverageBp": 0,
+        "label": "und",
+        "reason": "minLetters"
+      }
+    },
+    {
+      "name": "min-letters-three-words",
+      "mode": "text",
+      "input": "aaa aaa aaa",
+      "expected": {
+        "words": ["aaa", "aaa", "aaa"],
+        "wordScalars": [[97, 97, 97], [97, 97, 97], [97, 97, 97]],
+        "letterCount": 9,
+        "wordCount": 3,
+        "bucketStart": null,
+        "features": [
+          [{"symbols": [-2], "count": 3}, {"symbols": [-1], "count": 3}, {"symbols": [97], "count": 9}],
+          [
+            {"symbols": [-1, 97], "count": 3},
+            {"symbols": [97, -2], "count": 3},
+            {"symbols": [97, 97], "count": 6}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 3},
+            {"symbols": [97, 97, -2], "count": 3},
+            {"symbols": [97, 97, 97], "count": 3}
+          ]
+        ],
+        "featureCounts": [15, 12, 9],
+        "knownCounts": [15, 12, 9],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-32826, -35886, -27456],
+            "orderScores": [-2189, -2991, -3051],
+            "combinedScore": -18449
+          },
+          "xa": {
+            "weightedSums": [-17148, -16674, -13572],
+            "orderScores": [-1144, -1390, -1508],
+            "combinedScore": -9573
+          },
+          "xb": {
+            "weightedSums": [-35589, -38520, -29130],
+            "orderScores": [-2373, -3210, -3237],
+            "combinedScore": -19629
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 8876,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "minLetters"
+      }
+    },
+    {
+      "name": "min-words-twelve-letters",
+      "mode": "text",
+      "input": "aaaaaaaaaaaa",
+      "expected": {
+        "words": ["aaaaaaaaaaaa"],
+        "wordScalars": [[97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97]],
+        "letterCount": 12,
+        "wordCount": 1,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 1}, {"symbols": [-1], "count": 1}, {"symbols": [97], "count": 12}],
+          [
+            {"symbols": [-1, 97], "count": 1},
+            {"symbols": [97, -2], "count": 1},
+            {"symbols": [97, 97], "count": 11}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 1},
+            {"symbols": [97, 97, -2], "count": 1},
+            {"symbols": [97, 97, 97], "count": 10}
+          ]
+        ],
+        "featureCounts": [14, 13, 12],
+        "knownCounts": [14, 13, 12],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-32758, -34975, -33470],
+            "orderScores": [-2340, -2691, -2790],
+            "combinedScore": -17217
+          },
+          "xa": {
+            "weightedSums": [-11854, -13316, -14154],
+            "orderScores": [-847, -1025, -1180],
+            "combinedScore": -7562
+          },
+          "xb": {
+            "weightedSums": [-36442, -38535, -36350],
+            "orderScores": [-2603, -2965, -3030],
+            "combinedScore": -18748
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9655,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "minWords"
+      }
+    },
+    {
+      "name": "margin-only",
+      "mode": "text",
+      "input": "aaaa aaaa bbbb",
+      "expected": {
+        "words": ["aaaa", "aaaa", "bbbb"],
+        "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [98, 98, 98, 98]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [
+            {"symbols": [-2], "count": 3},
+            {"symbols": [-1], "count": 3},
+            {"symbols": [97], "count": 8},
+            {"symbols": [98], "count": 4}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 2},
+            {"symbols": [-1, 98], "count": 1},
+            {"symbols": [97, -2], "count": 2},
+            {"symbols": [97, 97], "count": 6},
+            {"symbols": [98, -2], "count": 1},
+            {"symbols": [98, 98], "count": 3}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 2},
+            {"symbols": [-1, 98, 98], "count": 1},
+            {"symbols": [97, 97, -2], "count": 2},
+            {"symbols": [97, 97, 97], "count": 4},
+            {"symbols": [98, 98, -2], "count": 1},
+            {"symbols": [98, 98, 98], "count": 2}
+          ]
+        ],
+        "featureCounts": [18, 15, 12],
+        "knownCounts": [18, 15, 12],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-40098, -43557, -35562],
+            "orderScores": [-2228, -2904, -2964],
+            "combinedScore": -18053
+          },
+          "xa": {
+            "weightedSums": [-27390, -28535, -23858],
+            "orderScores": [-1522, -1903, -1989],
+            "combinedScore": -12420
+          },
+          "xb": {
+            "weightedSums": [-35586, -37810, -30934],
+            "orderScores": [-1977, -2521, -2578],
+            "combinedScore": -15878
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "xb",
+        "margin": 3458,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "minMargin"
+      }
+    },
+    {
+      "name": "coverage-only",
+      "mode": "text",
+      "input": "aaaa aaaa aaad",
+      "expected": {
+        "words": ["aaaa", "aaaa", "aaad"],
+        "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 100]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [
+            {"symbols": [-2], "count": 3},
+            {"symbols": [-1], "count": 3},
+            {"symbols": [97], "count": 11},
+            {"symbols": [100], "count": 1}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 3},
+            {"symbols": [97, -2], "count": 2},
+            {"symbols": [97, 97], "count": 8},
+            {"symbols": [97, 100], "count": 1},
+            {"symbols": [100, -2], "count": 1}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 3},
+            {"symbols": [97, 97, -2], "count": 2},
+            {"symbols": [97, 97, 97], "count": 5},
+            {"symbols": [97, 97, 100], "count": 1},
+            {"symbols": [97, 100, -2], "count": 1}
+          ]
+        ],
+        "featureCounts": [18, 15, 12],
+        "knownCounts": [17, 13, 10],
+        "unknownCounts": [1, 2, 2],
+        "profiles": {
+          "background": {
+            "weightedSums": [-40098, -41764, -33837],
+            "orderScores": [-2228, -2785, -2820],
+            "combinedScore": -17383
+          },
+          "xa": {
+            "weightedSums": [-22891, -25031, -22155],
+            "orderScores": [-1272, -1669, -1847],
+            "combinedScore": -11276
+          },
+          "xb": {
+            "weightedSums": [-45430, -49215, -39845],
+            "orderScores": [-2524, -3281, -3321],
+            "combinedScore": -20174
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 6107,
+        "coverageBp": 8888,
+        "label": "und",
+        "reason": "minKnownCoverageBp"
+      }
+    },
+    {
+      "name": "target-tie",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa bbbb bbbb bbbb",
+      "expected": {
+        "words": ["aaaa", "aaaa", "aaaa", "bbbb", "bbbb", "bbbb"],
+        "wordScalars": [
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [98, 98, 98, 98],
+          [98, 98, 98, 98],
+          [98, 98, 98, 98]
+        ],
+        "letterCount": 24,
+        "wordCount": 6,
+        "bucketStart": 12,
+        "features": [
+          [
+            {"symbols": [-2], "count": 6},
+            {"symbols": [-1], "count": 6},
+            {"symbols": [97], "count": 12},
+            {"symbols": [98], "count": 12}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 3},
+            {"symbols": [-1, 98], "count": 3},
+            {"symbols": [97, -2], "count": 3},
+            {"symbols": [97, 97], "count": 9},
+            {"symbols": [98, -2], "count": 3},
+            {"symbols": [98, 98], "count": 9}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 3},
+            {"symbols": [-1, 98, 98], "count": 3},
+            {"symbols": [97, 97, -2], "count": 3},
+            {"symbols": [97, 97, 97], "count": 6},
+            {"symbols": [98, 98, -2], "count": 3},
+            {"symbols": [98, 98, 98], "count": 6}
+          ]
+        ],
+        "featureCounts": [36, 30, 24],
+        "knownCounts": [36, 30, 24],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-80196, -87114, -71124],
+            "orderScores": [-2228, -2904, -2964],
+            "combinedScore": -18053
+          },
+          "xa": {
+            "weightedSums": [-62976, -66345, -54792],
+            "orderScores": [-1750, -2212, -2283],
+            "combinedScore": -14148
+          },
+          "xb": {
+            "weightedSums": [-62976, -66345, -54792],
+            "orderScores": [-1750, -2212, -2283],
+            "combinedScore": -14148
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "xb",
+        "margin": 0,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "minMargin"
+      }
+    },
+    {
+      "name": "boundary-only",
+      "mode": "text",
+      "input": "12 — 😀",
+      "expected": {
+        "words": [],
+        "wordScalars": [],
+        "letterCount": 0,
+        "wordCount": 0,
+        "bucketStart": null,
+        "features": [[], [], []],
+        "featureCounts": [0, 0, 0],
+        "knownCounts": [0, 0, 0],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {"weightedSums": [0, 0, 0], "orderScores": [0, 0, 0], "combinedScore": -1125},
+          "xa": {"weightedSums": [0, 0, 0], "orderScores": [0, 0, 0], "combinedScore": -1125},
+          "xb": {"weightedSums": [0, 0, 0], "orderScores": [0, 0, 0], "combinedScore": -1125}
+        },
+        "winner": "background",
+        "runnerUp": "xa",
+        "margin": 0,
+        "coverageBp": 0,
+        "label": "und",
+        "reason": "minLetters"
+      }
+    },
+    {
+      "name": "one-letter-words",
+      "mode": "text",
+      "input": "a a a a a a a a a a a a",
+      "expected": {
+        "words": ["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a"],
+        "wordScalars": [[97], [97], [97], [97], [97], [97], [97], [97], [97], [97], [97], [97]],
+        "letterCount": 12,
+        "wordCount": 12,
+        "bucketStart": 12,
+        "features": [
+          [
+            {"symbols": [-2], "count": 12},
+            {"symbols": [-1], "count": 12},
+            {"symbols": [97], "count": 12}
+          ],
+          [{"symbols": [-1, 97], "count": 12}, {"symbols": [97, -2], "count": 12}],
+          [{"symbols": [-1, 97, -2], "count": 12}]
+        ],
+        "featureCounts": [36, 24, 12],
+        "knownCounts": [36, 24, 0],
+        "unknownCounts": [0, 0, 12],
+        "profiles": {
+          "background": {
+            "weightedSums": [-73128, -82176, -25212],
+            "orderScores": [-2032, -3424, -2101],
+            "combinedScore": -16308
+          },
+          "xa": {
+            "weightedSums": [-52224, -46008, -49020],
+            "orderScores": [-1451, -1917, -4085],
+            "combinedScore": -18665
+          },
+          "xb": {
+            "weightedSums": [-76812, -85560, -49020],
+            "orderScores": [-2134, -3565, -4085],
+            "combinedScore": -22644
+          }
+        },
+        "winner": "background",
+        "runnerUp": "xa",
+        "margin": 2357,
+        "coverageBp": 8333,
+        "label": "und",
+        "reason": "background"
+      }
+    },
+    {
+      "name": "no-cross-word-ngrams",
+      "mode": "text",
+      "input": "aa aa aa aa aa aa",
+      "expected": {
+        "words": ["aa", "aa", "aa", "aa", "aa", "aa"],
+        "wordScalars": [[97, 97], [97, 97], [97, 97], [97, 97], [97, 97], [97, 97]],
+        "letterCount": 12,
+        "wordCount": 6,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 6}, {"symbols": [-1], "count": 6}, {"symbols": [97], "count": 12}],
+          [
+            {"symbols": [-1, 97], "count": 6},
+            {"symbols": [97, -2], "count": 6},
+            {"symbols": [97, 97], "count": 6}
+          ],
+          [{"symbols": [-1, 97, 97], "count": 6}, {"symbols": [97, 97, -2], "count": 6}]
+        ],
+        "featureCounts": [24, 18, 12],
+        "knownCounts": [24, 18, 12],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-51108, -56430, -38700],
+            "orderScores": [-2130, -3135, -3225],
+            "combinedScore": -19200
+          },
+          "xa": {
+            "weightedSums": [-30204, -28176, -20724],
+            "orderScores": [-1259, -1566, -1727],
+            "combinedScore": -10697
+          },
+          "xb": {
+            "weightedSums": [-54792, -59910, -40500],
+            "orderScores": [-2283, -3329, -3375],
+            "combinedScore": -20191
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 8503,
+        "coverageBp": 10000,
+        "label": "xa",
+        "reason": "accepted"
+      }
+    },
+    {
+      "name": "fold-and-boundaries",
+      "mode": "text",
+      "input": "AAAA,AAAA-AAAA",
+      "expected": {
+        "words": ["aaaa", "aaaa", "aaaa"],
+        "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 3}, {"symbols": [-1], "count": 3}, {"symbols": [97], "count": 12}],
+          [
+            {"symbols": [-1, 97], "count": 3},
+            {"symbols": [97, -2], "count": 3},
+            {"symbols": [97, 97], "count": 9}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 3},
+            {"symbols": [97, 97, -2], "count": 3},
+            {"symbols": [97, 97, 97], "count": 6}
+          ]
+        ],
+        "featureCounts": [18, 15, 12],
+        "knownCounts": [18, 15, 12],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-40098, -43557, -35562],
+            "orderScores": [-2228, -2904, -2964],
+            "combinedScore": -18053
+          },
+          "xa": {
+            "weightedSums": [-19194, -19260, -16782],
+            "orderScores": [-1067, -1284, -1399],
+            "combinedScore": -8957
+          },
+          "xb": {
+            "weightedSums": [-43782, -47085, -38010],
+            "orderScores": [-2433, -3139, -3168],
+            "combinedScore": -19340
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9096,
+        "coverageBp": 10000,
+        "label": "xa",
+        "reason": "accepted"
+      }
+    },
+    {
+      "name": "unknown-attached-mark",
+      "mode": "text",
+      "input": "aaaa aaaa aaa̸a",
+      "expected": {
+        "words": ["aaaa", "aaaa", "aaa̸a"],
+        "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 824, 97]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [
+            {"symbols": [-2], "count": 3},
+            {"symbols": [-1], "count": 3},
+            {"symbols": [97], "count": 12},
+            {"symbols": [824], "count": 1}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 3},
+            {"symbols": [97, -2], "count": 3},
+            {"symbols": [97, 97], "count": 8},
+            {"symbols": [97, 824], "count": 1},
+            {"symbols": [824, 97], "count": 1}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 3},
+            {"symbols": [97, 97, -2], "count": 2},
+            {"symbols": [97, 97, 97], "count": 5},
+            {"symbols": [97, 97, 824], "count": 1},
+            {"symbols": [97, 824, 97], "count": 1},
+            {"symbols": [824, 97, -2], "count": 1}
+          ]
+        ],
+        "featureCounts": [19, 16, 13],
+        "knownCounts": [18, 14, 10],
+        "unknownCounts": [1, 2, 3],
+        "profiles": {
+          "background": {
+            "weightedSums": [-42522, -45188, -35938],
+            "orderScores": [-2238, -2825, -2765],
+            "combinedScore": -17308
+          },
+          "xa": {
+            "weightedSums": [-23573, -26948, -26240],
+            "orderScores": [-1241, -1685, -2019],
+            "combinedScore": -11793
+          },
+          "xb": {
+            "weightedSums": [-48161, -52780, -43930],
+            "orderScores": [-2535, -3299, -3380],
+            "combinedScore": -20398
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 5515,
+        "coverageBp": 8750,
+        "label": "und",
+        "reason": "minKnownCoverageBp"
+      }
+    },
+    {
+      "name": "bucket-last-31",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaa",
+      "expected": {
+        "words": ["aaaa", "aaaa", "aaaa", "aaaa", "aaaa", "aaaa", "aaaa", "aaa"],
+        "wordScalars": [
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97]
+        ],
+        "letterCount": 31,
+        "wordCount": 8,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 8}, {"symbols": [-1], "count": 8}, {"symbols": [97], "count": 31}],
+          [
+            {"symbols": [-1, 97], "count": 8},
+            {"symbols": [97, -2], "count": 8},
+            {"symbols": [97, 97], "count": 23}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 8},
+            {"symbols": [97, 97, -2], "count": 8},
+            {"symbols": [97, 97, 97], "count": 15}
+          ]
+        ],
+        "featureCounts": [47, 39, 31],
+        "knownCounts": [47, 39, 31],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-104504, -113595, -92130],
+            "orderScores": [-2224, -2913, -2972],
+            "combinedScore": -18091
+          },
+          "xa": {
+            "weightedSums": [-50502, -50498, -43682],
+            "orderScores": [-1075, -1295, -1410],
+            "combinedScore": -9020
+          },
+          "xb": {
+            "weightedSums": [-114021, -122705, -98400],
+            "orderScores": [-2426, -3147, -3175],
+            "combinedScore": -19370
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9071,
+        "coverageBp": 10000,
+        "label": "xa",
+        "reason": "accepted"
+      }
+    },
+    {
+      "name": "min-score-only-at-32",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa",
+      "expected": {
+        "words": ["aaaa", "aaaa", "aaaa", "aaaa", "aaaa", "aaaa", "aaaa", "aaaa"],
+        "wordScalars": [
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97]
+        ],
+        "letterCount": 32,
+        "wordCount": 8,
+        "bucketStart": 32,
+        "features": [
+          [{"symbols": [-2], "count": 8}, {"symbols": [-1], "count": 8}, {"symbols": [97], "count": 32}],
+          [
+            {"symbols": [-1, 97], "count": 8},
+            {"symbols": [97, -2], "count": 8},
+            {"symbols": [97, 97], "count": 24}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 8},
+            {"symbols": [97, 97, -2], "count": 8},
+            {"symbols": [97, 97, 97], "count": 16}
+          ]
+        ],
+        "featureCounts": [48, 40, 32],
+        "knownCounts": [48, 40, 32],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-106928, -116152, -94832],
+            "orderScores": [-2228, -2904, -2964],
+            "combinedScore": -18053
+          },
+          "xa": {
+            "weightedSums": [-51184, -51360, -44752],
+            "orderScores": [-1067, -1284, -1399],
+            "combinedScore": -8957
+          },
+          "xb": {
+            "weightedSums": [-116752, -125560, -101360],
+            "orderScores": [-2433, -3139, -3168],
+            "combinedScore": -19340
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9096,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "minWinningScore"
+      }
+    },
+    {
+      "name": "bucket-last-79",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaa",
+      "expected": {
+        "words": [
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaa"
+        ],
+        "wordScalars": [
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97]
+        ],
+        "letterCount": 79,
+        "wordCount": 20,
+        "bucketStart": 32,
+        "features": [
+          [
+            {"symbols": [-2], "count": 20},
+            {"symbols": [-1], "count": 20},
+            {"symbols": [97], "count": 79}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 20},
+            {"symbols": [97, -2], "count": 20},
+            {"symbols": [97, 97], "count": 59}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 20},
+            {"symbols": [97, 97, -2], "count": 20},
+            {"symbols": [97, 97, 97], "count": 39}
+          ]
+        ],
+        "featureCounts": [119, 99, 79],
+        "knownCounts": [119, 99, 79],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-264896, -287823, -234378],
+            "orderScores": [-2227, -2908, -2967],
+            "combinedScore": -18069
+          },
+          "xa": {
+            "weightedSums": [-127278, -127538, -110810],
+            "orderScores": [-1070, -1289, -1403],
+            "combinedScore": -8982
+          },
+          "xb": {
+            "weightedSums": [-289149, -311045, -250440],
+            "orderScores": [-2430, -3142, -3171],
+            "combinedScore": -19352
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9087,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "minWinningScore"
+      }
+    },
+    {
+      "name": "disabled-at-80",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa",
+      "expected": {
+        "words": [
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa"
+        ],
+        "wordScalars": [
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97]
+        ],
+        "letterCount": 80,
+        "wordCount": 20,
+        "bucketStart": 80,
+        "features": [
+          [
+            {"symbols": [-2], "count": 20},
+            {"symbols": [-1], "count": 20},
+            {"symbols": [97], "count": 80}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 20},
+            {"symbols": [97, -2], "count": 20},
+            {"symbols": [97, 97], "count": 60}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 20},
+            {"symbols": [97, 97, -2], "count": 20},
+            {"symbols": [97, 97, 97], "count": 40}
+          ]
+        ],
+        "featureCounts": [120, 100, 80],
+        "knownCounts": [120, 100, 80],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-267320, -290380, -237080],
+            "orderScores": [-2228, -2904, -2964],
+            "combinedScore": -18053
+          },
+          "xa": {
+            "weightedSums": [-127960, -128400, -111880],
+            "orderScores": [-1067, -1284, -1399],
+            "combinedScore": -8957
+          },
+          "xb": {
+            "weightedSums": [-291880, -313900, -253400],
+            "orderScores": [-2433, -3139, -3168],
+            "combinedScore": -19340
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9096,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "bucketDisabled"
+      }
+    },
+    {
+      "name": "disabled-last-199",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaa",
+      "expected": {
+        "words": [
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaa"
+        ],
+        "wordScalars": [
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97]
+        ],
+        "letterCount": 199,
+        "wordCount": 50,
+        "bucketStart": 80,
+        "features": [
+          [
+            {"symbols": [-2], "count": 50},
+            {"symbols": [-1], "count": 50},
+            {"symbols": [97], "count": 199}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 50},
+            {"symbols": [97, -2], "count": 50},
+            {"symbols": [97, 97], "count": 149}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 50},
+            {"symbols": [97, 97, -2], "count": 50},
+            {"symbols": [97, 97, 97], "count": 99}
+          ]
+        ],
+        "featureCounts": [299, 249, 199],
+        "knownCounts": [299, 249, 199],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-665876, -723393, -589998],
+            "orderScores": [-2228, -2906, -2965],
+            "combinedScore": -18060
+          },
+          "xa": {
+            "weightedSums": [-319218, -320138, -278630],
+            "orderScores": [-1068, -1286, -1401],
+            "combinedScore": -8968
+          },
+          "xb": {
+            "weightedSums": [-726969, -781895, -630540],
+            "orderScores": [-2432, -3141, -3169],
+            "combinedScore": -19346
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9092,
+        "coverageBp": 10000,
+        "label": "und",
+        "reason": "bucketDisabled"
+      }
+    },
+    {
+      "name": "enabled-at-200",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa",
+      "expected": {
+        "words": [
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa"
+        ],
+        "wordScalars": [
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97]
+        ],
+        "letterCount": 200,
+        "wordCount": 50,
+        "bucketStart": 200,
+        "features": [
+          [
+            {"symbols": [-2], "count": 50},
+            {"symbols": [-1], "count": 50},
+            {"symbols": [97], "count": 200}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 50},
+            {"symbols": [97, -2], "count": 50},
+            {"symbols": [97, 97], "count": 150}
+          ],
+          [
+            {"symbols": [-1, 97, 97], "count": 50},
+            {"symbols": [97, 97, -2], "count": 50},
+            {"symbols": [97, 97, 97], "count": 100}
+          ]
+        ],
+        "featureCounts": [300, 250, 200],
+        "knownCounts": [300, 250, 200],
+        "unknownCounts": [0, 0, 0],
+        "profiles": {
+          "background": {
+            "weightedSums": [-668300, -725950, -592700],
+            "orderScores": [-2228, -2904, -2964],
+            "combinedScore": -18053
+          },
+          "xa": {
+            "weightedSums": [-319900, -321000, -279700],
+            "orderScores": [-1067, -1284, -1399],
+            "combinedScore": -8957
+          },
+          "xb": {
+            "weightedSums": [-729700, -784750, -633500],
+            "orderScores": [-2433, -3139, -3168],
+            "combinedScore": -19340
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9096,
+        "coverageBp": 10000,
+        "label": "xa",
+        "reason": "accepted"
+      }
+    },
+    {
+      "name": "cap-at-256-scalars",
+      "mode": "text",
+      "input": "aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa",
+      "expected": {
+        "words": [
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "aaaa",
+          "a"
+        ],
+        "wordScalars": [
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97, 97, 97, 97],
+          [97]
+        ],
+        "letterCount": 205,
+        "wordCount": 52,
+        "bucketStart": 200,
+        "features": [
+          [
+            {"symbols": [-2], "count": 52},
+            {"symbols": [-1], "count": 52},
+            {"symbols": [97], "count": 205}
+          ],
+          [
+            {"symbols": [-1, 97], "count": 52},
+            {"symbols": [97, -2], "count": 52},
+            {"symbols": [97, 97], "count": 153}
+          ],
+          [
+            {"symbols": [-1, 97, -2], "count": 1},
+            {"symbols": [-1, 97, 97], "count": 51},
+            {"symbols": [97, 97, -2], "count": 51},
+            {"symbols": [97, 97, 97], "count": 102}
+          ]
+        ],
+        "featureCounts": [309, 257, 205],
+        "knownCounts": [309, 257, 204],
+        "unknownCounts": [0, 0, 1],
+        "profiles": {
+          "background": {
+            "weightedSums": [-687760, -747317, -606655],
+            "orderScores": [-2226, -2908, -2960],
+            "combinedScore": -18047
+          },
+          "xa": {
+            "weightedSums": [-330650, -331254, -289379],
+            "orderScores": [-1071, -1289, -1412],
+            "combinedScore": -9010
+          },
+          "xb": {
+            "weightedSums": [-750695, -807575, -650255],
+            "orderScores": [-2430, -3143, -3172],
+            "combinedScore": -19357
+          }
+        },
+        "winner": "xa",
+        "runnerUp": "background",
+        "margin": 9037,
+        "coverageBp": 9987,
+        "label": "xa",
+        "reason": "accepted"
+      }
+    },
+    {
+      "name": "sharp-s-expansion",
+      "mode": "text",
+      "input": "ßß ßß ßß",
+      "expected": {
+        "words": ["ssss", "ssss", "ssss"],
+        "wordScalars": [[115, 115, 115, 115], [115, 115, 115, 115], [115, 115, 115, 115]],
+        "letterCount": 12,
+        "wordCount": 3,
+        "bucketStart": 12,
+        "features": [
+          [{"symbols": [-2], "count": 3}, {"symbols": [-1], "count": 3}, {"symbols": [115], "count": 12}],
+          [
+            {"symbols": [-1, 115], "count": 3},
+            {"symbols": [115, -2], "count": 3},
+            {"symbols": [115, 115], "count": 9}
+          ],
+          [
+            {"symbols": [-1, 115, 115], "count": 3},
+            {"symbols": [115, 115, -2], "count": 3},
+            {"symbols": [115, 115, 115], "count": 6}
+          ]
+        ],
+        "featureCounts": [18, 15, 12],
+        "knownCounts": [6, 0, 0],
+        "unknownCounts": [12, 15, 12],
+        "profiles": {
+          "background": {
+            "weightedSums": [-40098, -31410, -25212],
+            "orderScores": [-2228, -2094, -2101],
+            "combinedScore": -13844
+          },
+          "xa": {
+            "weightedSums": [-63558, -64125, -49020],
+            "orderScores": [-3531, -4275, -4085],
+            "combinedScore": -25461
+          },
+          "xb": {
+            "weightedSums": [-63558, -64125, -49020],
+            "orderScores": [-3531, -4275, -4085],
+            "combinedScore": -25461
+          }
+        },
+        "winner": "background",
+        "runnerUp": "xa",
+        "margin": 11617,
+        "coverageBp": 1333,
+        "label": "und",
+        "reason": "background"
+      }
+    },
+    {
+      "name": "document-empty",
+      "mode": "document",
+      "input": "",
+      "expected": {
+        "normalizedScalarCount": 0,
+        "windowCount": 0,
+        "windowScalars": 0,
+        "windows": [],
+        "sampledLetters": 0,
+        "acceptedLetters": {"xa": 0, "xb": 0},
+        "unknownLetters": 0,
+        "sharesBp": {"xa": 0, "xb": 0},
+        "unknownShareBp": 0,
+        "langCoverageBp": 0,
+        "label": "und",
+        "reason": "insufficientEvidence"
+      }
+    },
+    {
+      "name": "document-single-window",
+      "mode": "document",
+      "input": "aaaa aaaa aaaa",
+      "expected": {
+        "normalizedScalarCount": 14,
+        "windowCount": 1,
+        "windowScalars": 14,
+        "windows": [
+          {
+            "start": 0,
+            "end": 14,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          }
+        ],
+        "sampledLetters": 12,
+        "acceptedLetters": {"xa": 12, "xb": 0},
+        "unknownLetters": 0,
+        "sharesBp": {"xa": 10000, "xb": 0},
+        "unknownShareBp": 0,
+        "langCoverageBp": 10000,
+        "label": "xa",
+        "reason": "dominant"
+      }
+    },
+    {
+      "name": "document-two-targets-mixed",
+      "mode": "document",
+      "input": "aaaa aaaa aaaabbbb bbbb bbbbaaaa aaaa aaaa",
+      "expected": {
+        "normalizedScalarCount": 42,
+        "windowCount": 3,
+        "windowScalars": 14,
+        "windows": [
+          {
+            "start": 0,
+            "end": 14,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 14,
+            "end": 28,
+            "expected": {
+              "words": ["bbbb", "bbbb", "bbbb"],
+              "wordScalars": [[98, 98, 98, 98], [98, 98, 98, 98], [98, 98, 98, 98]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [98], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 98], "count": 3},
+                  {"symbols": [98, -2], "count": 3},
+                  {"symbols": [98, 98], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 98, 98], "count": 3},
+                  {"symbols": [98, 98, -2], "count": 3},
+                  {"symbols": [98, 98, 98], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                },
+                "xb": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                }
+              },
+              "winner": "xb",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xb",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 28,
+            "end": 42,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          }
+        ],
+        "sampledLetters": 36,
+        "acceptedLetters": {"xa": 24, "xb": 12},
+        "unknownLetters": 0,
+        "sharesBp": {"xa": 6666, "xb": 3333},
+        "unknownShareBp": 0,
+        "langCoverageBp": 10000,
+        "label": "mixed",
+        "reason": "mixed"
+      }
+    },
+    {
+      "name": "document-mixed-with-unknown",
+      "mode": "document",
+      "input": "aaaa aaaa aaaabbbb bbbb bbbbdddd dddd dddd",
+      "expected": {
+        "normalizedScalarCount": 42,
+        "windowCount": 3,
+        "windowScalars": 14,
+        "windows": [
+          {
+            "start": 0,
+            "end": 14,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 14,
+            "end": 28,
+            "expected": {
+              "words": ["bbbb", "bbbb", "bbbb"],
+              "wordScalars": [[98, 98, 98, 98], [98, 98, 98, 98], [98, 98, 98, 98]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [98], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 98], "count": 3},
+                  {"symbols": [98, -2], "count": 3},
+                  {"symbols": [98, 98], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 98, 98], "count": 3},
+                  {"symbols": [98, 98, -2], "count": 3},
+                  {"symbols": [98, 98, 98], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                },
+                "xb": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                }
+              },
+              "winner": "xb",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xb",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 28,
+            "end": 42,
+            "expected": {
+              "words": ["dddd", "dddd", "dddd"],
+              "wordScalars": [[100, 100, 100, 100], [100, 100, 100, 100], [100, 100, 100, 100]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [100], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 100], "count": 3},
+                  {"symbols": [100, -2], "count": 3},
+                  {"symbols": [100, 100], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 100, 100], "count": 3},
+                  {"symbols": [100, 100, -2], "count": 3},
+                  {"symbols": [100, 100, 100], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [6, 0, 0],
+              "unknownCounts": [12, 15, 12],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -31410, -25212],
+                  "orderScores": [-2228, -2094, -2101],
+                  "combinedScore": -13844
+                },
+                "xa": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                },
+                "xb": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 11617,
+              "coverageBp": 1333,
+              "label": "und",
+              "reason": "background"
+            }
+          }
+        ],
+        "sampledLetters": 36,
+        "acceptedLetters": {"xa": 12, "xb": 12},
+        "unknownLetters": 12,
+        "sharesBp": {"xa": 3333, "xb": 3333},
+        "unknownShareBp": 3333,
+        "langCoverageBp": 6666,
+        "label": "mixed",
+        "reason": "mixed"
+      }
+    },
+    {
+      "name": "document-one-language-diluted",
+      "mode": "document",
+      "input": "aaaa aaaa aaaadddd dddd dddddddd dddd dddd",
+      "expected": {
+        "normalizedScalarCount": 42,
+        "windowCount": 3,
+        "windowScalars": 14,
+        "windows": [
+          {
+            "start": 0,
+            "end": 14,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 14,
+            "end": 28,
+            "expected": {
+              "words": ["dddd", "dddd", "dddd"],
+              "wordScalars": [[100, 100, 100, 100], [100, 100, 100, 100], [100, 100, 100, 100]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [100], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 100], "count": 3},
+                  {"symbols": [100, -2], "count": 3},
+                  {"symbols": [100, 100], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 100, 100], "count": 3},
+                  {"symbols": [100, 100, -2], "count": 3},
+                  {"symbols": [100, 100, 100], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [6, 0, 0],
+              "unknownCounts": [12, 15, 12],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -31410, -25212],
+                  "orderScores": [-2228, -2094, -2101],
+                  "combinedScore": -13844
+                },
+                "xa": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                },
+                "xb": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 11617,
+              "coverageBp": 1333,
+              "label": "und",
+              "reason": "background"
+            }
+          },
+          {
+            "start": 28,
+            "end": 42,
+            "expected": {
+              "words": ["dddd", "dddd", "dddd"],
+              "wordScalars": [[100, 100, 100, 100], [100, 100, 100, 100], [100, 100, 100, 100]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [100], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 100], "count": 3},
+                  {"symbols": [100, -2], "count": 3},
+                  {"symbols": [100, 100], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 100, 100], "count": 3},
+                  {"symbols": [100, 100, -2], "count": 3},
+                  {"symbols": [100, 100, 100], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [6, 0, 0],
+              "unknownCounts": [12, 15, 12],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -31410, -25212],
+                  "orderScores": [-2228, -2094, -2101],
+                  "combinedScore": -13844
+                },
+                "xa": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                },
+                "xb": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 11617,
+              "coverageBp": 1333,
+              "label": "und",
+              "reason": "background"
+            }
+          }
+        ],
+        "sampledLetters": 36,
+        "acceptedLetters": {"xa": 12, "xb": 0},
+        "unknownLetters": 24,
+        "sharesBp": {"xa": 3333, "xb": 0},
+        "unknownShareBp": 6666,
+        "langCoverageBp": 3333,
+        "label": "und",
+        "reason": "insufficientEvidence"
+      }
+    },
+    {
+      "name": "document-only-unknown",
+      "mode": "document",
+      "input": "dddd dddd dddddddd dddd dddddddd dddd dddd",
+      "expected": {
+        "normalizedScalarCount": 42,
+        "windowCount": 3,
+        "windowScalars": 14,
+        "windows": [
+          {
+            "start": 0,
+            "end": 14,
+            "expected": {
+              "words": ["dddd", "dddd", "dddd"],
+              "wordScalars": [[100, 100, 100, 100], [100, 100, 100, 100], [100, 100, 100, 100]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [100], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 100], "count": 3},
+                  {"symbols": [100, -2], "count": 3},
+                  {"symbols": [100, 100], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 100, 100], "count": 3},
+                  {"symbols": [100, 100, -2], "count": 3},
+                  {"symbols": [100, 100, 100], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [6, 0, 0],
+              "unknownCounts": [12, 15, 12],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -31410, -25212],
+                  "orderScores": [-2228, -2094, -2101],
+                  "combinedScore": -13844
+                },
+                "xa": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                },
+                "xb": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 11617,
+              "coverageBp": 1333,
+              "label": "und",
+              "reason": "background"
+            }
+          },
+          {
+            "start": 14,
+            "end": 28,
+            "expected": {
+              "words": ["dddd", "dddd", "dddd"],
+              "wordScalars": [[100, 100, 100, 100], [100, 100, 100, 100], [100, 100, 100, 100]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [100], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 100], "count": 3},
+                  {"symbols": [100, -2], "count": 3},
+                  {"symbols": [100, 100], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 100, 100], "count": 3},
+                  {"symbols": [100, 100, -2], "count": 3},
+                  {"symbols": [100, 100, 100], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [6, 0, 0],
+              "unknownCounts": [12, 15, 12],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -31410, -25212],
+                  "orderScores": [-2228, -2094, -2101],
+                  "combinedScore": -13844
+                },
+                "xa": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                },
+                "xb": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 11617,
+              "coverageBp": 1333,
+              "label": "und",
+              "reason": "background"
+            }
+          },
+          {
+            "start": 28,
+            "end": 42,
+            "expected": {
+              "words": ["dddd", "dddd", "dddd"],
+              "wordScalars": [[100, 100, 100, 100], [100, 100, 100, 100], [100, 100, 100, 100]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [100], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 100], "count": 3},
+                  {"symbols": [100, -2], "count": 3},
+                  {"symbols": [100, 100], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 100, 100], "count": 3},
+                  {"symbols": [100, 100, -2], "count": 3},
+                  {"symbols": [100, 100, 100], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [6, 0, 0],
+              "unknownCounts": [12, 15, 12],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -31410, -25212],
+                  "orderScores": [-2228, -2094, -2101],
+                  "combinedScore": -13844
+                },
+                "xa": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                },
+                "xb": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 11617,
+              "coverageBp": 1333,
+              "label": "und",
+              "reason": "background"
+            }
+          }
+        ],
+        "sampledLetters": 36,
+        "acceptedLetters": {"xa": 0, "xb": 0},
+        "unknownLetters": 36,
+        "sharesBp": {"xa": 0, "xb": 0},
+        "unknownShareBp": 10000,
+        "langCoverageBp": 0,
+        "label": "und",
+        "reason": "insufficientEvidence"
+      }
+    },
+    {
+      "name": "document-dominant-with-unknown",
+      "mode": "document",
+      "input": "aaaa aaaa aaaaaaaa aaaa aaaad d d d d     ",
+      "expected": {
+        "normalizedScalarCount": 42,
+        "windowCount": 3,
+        "windowScalars": 14,
+        "windows": [
+          {
+            "start": 0,
+            "end": 14,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 14,
+            "end": 28,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 28,
+            "end": 42,
+            "expected": {
+              "words": ["d", "d", "d", "d", "d"],
+              "wordScalars": [[100], [100], [100], [100], [100]],
+              "letterCount": 5,
+              "wordCount": 5,
+              "bucketStart": null,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 5},
+                  {"symbols": [-1], "count": 5},
+                  {"symbols": [100], "count": 5}
+                ],
+                [{"symbols": [-1, 100], "count": 5}, {"symbols": [100, -2], "count": 5}],
+                [{"symbols": [-1, 100, -2], "count": 5}]
+              ],
+              "featureCounts": [15, 10, 5],
+              "knownCounts": [10, 0, 0],
+              "unknownCounts": [5, 10, 5],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-30470, -20940, -10505],
+                  "orderScores": [-2032, -2094, -2101],
+                  "combinedScore": -13648
+                },
+                "xa": {
+                  "weightedSums": [-40245, -42750, -20425],
+                  "orderScores": [-2683, -4275, -4085],
+                  "combinedScore": -24613
+                },
+                "xb": {
+                  "weightedSums": [-40245, -42750, -20425],
+                  "orderScores": [-2683, -4275, -4085],
+                  "combinedScore": -24613
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 10965,
+              "coverageBp": 3333,
+              "label": "und",
+              "reason": "minLetters"
+            }
+          }
+        ],
+        "sampledLetters": 29,
+        "acceptedLetters": {"xa": 24, "xb": 0},
+        "unknownLetters": 5,
+        "sharesBp": {"xa": 8275, "xb": 0},
+        "unknownShareBp": 1724,
+        "langCoverageBp": 8275,
+        "label": "xa",
+        "reason": "dominant"
+      }
+    },
+    {
+      "name": "document-spaced-sampling",
+      "mode": "document",
+      "input": "aaaa aaaa aaaa!bbbb bbbb bbbb!!dddd dddd dddd",
+      "expected": {
+        "normalizedScalarCount": 45,
+        "windowCount": 3,
+        "windowScalars": 14,
+        "windows": [
+          {
+            "start": 0,
+            "end": 14,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 15,
+            "end": 29,
+            "expected": {
+              "words": ["bbbb", "bbbb", "bbbb"],
+              "wordScalars": [[98, 98, 98, 98], [98, 98, 98, 98], [98, 98, 98, 98]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [98], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 98], "count": 3},
+                  {"symbols": [98, -2], "count": 3},
+                  {"symbols": [98, 98], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 98, 98], "count": 3},
+                  {"symbols": [98, 98, -2], "count": 3},
+                  {"symbols": [98, 98, 98], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                },
+                "xb": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                }
+              },
+              "winner": "xb",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xb",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 31,
+            "end": 45,
+            "expected": {
+              "words": ["dddd", "dddd", "dddd"],
+              "wordScalars": [[100, 100, 100, 100], [100, 100, 100, 100], [100, 100, 100, 100]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [100], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 100], "count": 3},
+                  {"symbols": [100, -2], "count": 3},
+                  {"symbols": [100, 100], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 100, 100], "count": 3},
+                  {"symbols": [100, 100, -2], "count": 3},
+                  {"symbols": [100, 100, 100], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [6, 0, 0],
+              "unknownCounts": [12, 15, 12],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -31410, -25212],
+                  "orderScores": [-2228, -2094, -2101],
+                  "combinedScore": -13844
+                },
+                "xa": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                },
+                "xb": {
+                  "weightedSums": [-63558, -64125, -49020],
+                  "orderScores": [-3531, -4275, -4085],
+                  "combinedScore": -25461
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 11617,
+              "coverageBp": 1333,
+              "label": "und",
+              "reason": "background"
+            }
+          }
+        ],
+        "sampledLetters": 36,
+        "acceptedLetters": {"xa": 12, "xb": 12},
+        "unknownLetters": 12,
+        "sharesBp": {"xa": 3333, "xb": 3333},
+        "unknownShareBp": 3333,
+        "langCoverageBp": 6666,
+        "label": "mixed",
+        "reason": "mixed"
+      }
+    },
+    {
+      "name": "document-normalized-offsets",
+      "mode": "document",
+      "input": "AAAA AAAA AAAAbbbb bbbb bbbbßßßß ßßßß ßßßß",
+      "expected": {
+        "normalizedScalarCount": 54,
+        "windowCount": 3,
+        "windowScalars": 14,
+        "windows": [
+          {
+            "start": 0,
+            "end": 14,
+            "expected": {
+              "words": ["aaaa", "aaaa", "aaaa"],
+              "wordScalars": [[97, 97, 97, 97], [97, 97, 97, 97], [97, 97, 97, 97]],
+              "letterCount": 12,
+              "wordCount": 3,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 3},
+                  {"symbols": [-1], "count": 3},
+                  {"symbols": [97], "count": 12}
+                ],
+                [
+                  {"symbols": [-1, 97], "count": 3},
+                  {"symbols": [97, -2], "count": 3},
+                  {"symbols": [97, 97], "count": 9}
+                ],
+                [
+                  {"symbols": [-1, 97, 97], "count": 3},
+                  {"symbols": [97, 97, -2], "count": 3},
+                  {"symbols": [97, 97, 97], "count": 6}
+                ]
+              ],
+              "featureCounts": [18, 15, 12],
+              "knownCounts": [18, 15, 12],
+              "unknownCounts": [0, 0, 0],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-40098, -43557, -35562],
+                  "orderScores": [-2228, -2904, -2964],
+                  "combinedScore": -18053
+                },
+                "xa": {
+                  "weightedSums": [-19194, -19260, -16782],
+                  "orderScores": [-1067, -1284, -1399],
+                  "combinedScore": -8957
+                },
+                "xb": {
+                  "weightedSums": [-43782, -47085, -38010],
+                  "orderScores": [-2433, -3139, -3168],
+                  "combinedScore": -19340
+                }
+              },
+              "winner": "xa",
+              "runnerUp": "background",
+              "margin": 9096,
+              "coverageBp": 10000,
+              "label": "xa",
+              "reason": "accepted"
+            }
+          },
+          {
+            "start": 20,
+            "end": 34,
+            "expected": {
+              "words": ["bbb", "bbbbssssss"],
+              "wordScalars": [[98, 98, 98], [98, 98, 98, 98, 115, 115, 115, 115, 115, 115]],
+              "letterCount": 13,
+              "wordCount": 2,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 2},
+                  {"symbols": [-1], "count": 2},
+                  {"symbols": [98], "count": 7},
+                  {"symbols": [115], "count": 6}
+                ],
+                [
+                  {"symbols": [-1, 98], "count": 2},
+                  {"symbols": [98, -2], "count": 1},
+                  {"symbols": [98, 98], "count": 5},
+                  {"symbols": [98, 115], "count": 1},
+                  {"symbols": [115, -2], "count": 1},
+                  {"symbols": [115, 115], "count": 5}
+                ],
+                [
+                  {"symbols": [-1, 98, 98], "count": 2},
+                  {"symbols": [98, 98, -2], "count": 1},
+                  {"symbols": [98, 98, 98], "count": 3},
+                  {"symbols": [98, 98, 115], "count": 1},
+                  {"symbols": [98, 115, 115], "count": 1},
+                  {"symbols": [115, 115, -2], "count": 1},
+                  {"symbols": [115, 115, 115], "count": 4}
+                ]
+              ],
+              "featureCounts": [17, 15, 13],
+              "knownCounts": [11, 8, 6],
+              "unknownCounts": [6, 7, 7],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-38852, -37715, -32488],
+                  "orderScores": [-2286, -2515, -2500],
+                  "combinedScore": -15941
+                },
+                "xa": {
+                  "weightedSums": [-52731, -54895, -47600],
+                  "orderScores": [-3102, -3660, -3662],
+                  "combinedScore": -22533
+                },
+                "xb": {
+                  "weightedSums": [-38388, -39986, -36986],
+                  "orderScores": [-2259, -2666, -2846],
+                  "combinedScore": -17254
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xb",
+              "margin": 1313,
+              "coverageBp": 5555,
+              "label": "und",
+              "reason": "minWords"
+            }
+          },
+          {
+            "start": 40,
+            "end": 54,
+            "expected": {
+              "words": ["sssss", "ssssssss"],
+              "wordScalars": [[115, 115, 115, 115, 115], [115, 115, 115, 115, 115, 115, 115, 115]],
+              "letterCount": 13,
+              "wordCount": 2,
+              "bucketStart": 12,
+              "features": [
+                [
+                  {"symbols": [-2], "count": 2},
+                  {"symbols": [-1], "count": 2},
+                  {"symbols": [115], "count": 13}
+                ],
+                [
+                  {"symbols": [-1, 115], "count": 2},
+                  {"symbols": [115, -2], "count": 2},
+                  {"symbols": [115, 115], "count": 11}
+                ],
+                [
+                  {"symbols": [-1, 115, 115], "count": 2},
+                  {"symbols": [115, 115, -2], "count": 2},
+                  {"symbols": [115, 115, 115], "count": 9}
+                ]
+              ],
+              "featureCounts": [17, 15, 13],
+              "knownCounts": [4, 0, 0],
+              "unknownCounts": [13, 15, 13],
+              "profiles": {
+                "background": {
+                  "weightedSums": [-38852, -31410, -27313],
+                  "orderScores": [-2286, -2094, -2101],
+                  "combinedScore": -13902
+                },
+                "xa": {
+                  "weightedSums": [-64267, -64125, -53105],
+                  "orderScores": [-3781, -4275, -4085],
+                  "combinedScore": -25711
+                },
+                "xb": {
+                  "weightedSums": [-64267, -64125, -53105],
+                  "orderScores": [-3781, -4275, -4085],
+                  "combinedScore": -25711
+                }
+              },
+              "winner": "background",
+              "runnerUp": "xa",
+              "margin": 11809,
+              "coverageBp": 888,
+              "label": "und",
+              "reason": "minWords"
+            }
+          }
+        ],
+        "sampledLetters": 38,
+        "acceptedLetters": {"xa": 12, "xb": 0},
+        "unknownLetters": 26,
+        "sharesBp": {"xa": 3157, "xb": 0},
+        "unknownShareBp": 6842,
+        "langCoverageBp": 3157,
+        "label": "und",
+        "reason": "insufficientEvidence"
+      }
+    }
+  ]
+}

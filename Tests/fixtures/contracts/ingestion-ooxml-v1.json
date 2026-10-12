@@ -1,0 +1,612 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "text": "Alpha\tBeta\nBefore \nBox\nAfter\nCell"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "document2-absolute-main-part",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Alpha\tBeta\nBefore \nBox\nAfter\nCell"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"word/document2.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "main-part-relative-target",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Alpha\tBeta\nBefore \nBox\nAfter\nCell"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"./word/../word/document2.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "main-part-dot-segments",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Alpha\tBeta\nBefore \nBox\nAfter\nCell"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"/word/document%32.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "main-part-percent-encoded",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Alpha\tBeta\nBefore \nBox\nAfter\nCell"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"/WORD/Document2.XML\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "main-part-ascii-case-insensitive",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "missingMainPart"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"/../document2.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "main-part-escaping-target",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "missingMainPart"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "word/document2.xml",
+            "operation": "remove-entry"
+          }
+        ]
+      },
+      "name": "main-part-removed",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "missingMainPart"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "remove-entry"
+          }
+        ]
+      },
+      "name": "root-relationships-missing-no-conventional",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidRelationship"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"/word/document2.xml\"/><Relationship Id=\"rId2\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"/word/document2.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "main-part-ambiguous",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "A\nB😀\n"
+      },
+      "input": {
+        "asset": "ingestion/paragraphs.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "remove-entry"
+          }
+        ]
+      },
+      "name": "root-relationships-missing-conventional",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "A\nB😀\n"
+      },
+      "input": {
+        "asset": "ingestion/paragraphs.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships"
+          }
+        ]
+      },
+      "name": "root-relationships-malformed-conventional",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "A\nB😀\n"
+      },
+      "input": {
+        "asset": "ingestion/paragraphs.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"https://example.invalid/document.xml\" TargetMode=\"External\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "main-part-external-conventional",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Strict"
+      },
+      "input": {
+        "asset": "ingestion/document2.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://purl.oclc.org/ooxml/officeDocument/relationships/officeDocument\" Target=\"/word/document2.xml\"/></Relationships>"
+          },
+          {
+            "entry": "word/document2.xml",
+            "operation": "replace-entry",
+            "text": "<w:document xmlns:w=\"http://purl.oclc.org/ooxml/wordprocessingml/main\"><w:body><w:p><w:r><w:t>Strict</w:t></w:r></w:p></w:body></w:document>"
+          }
+        ]
+      },
+      "name": "strict-namespaces",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Slide 1\nA\n\n## Slide 2\nB"
+      },
+      "input": {
+        "asset": "ingestion/slides.pptx",
+        "kind": "pptx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "ppt/_rels/presentation.xml.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId2\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide\" Target=\"/ppt/slides/slide2.xml\"/><Relationship Id=\"rId10\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide\" Target=\"/ppt/slides/slide10.xml\"/><Relationship Id=\"rIdLink\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink\" Target=\"https://example.invalid/?a=1#b\" TargetMode=\"External\"/><Relationship Id=\"rIdBad\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme\" Target=\"../../escape.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "slides-absolute-and-external-targets",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Slide 1\nA\n\n## Slide 2\nB"
+      },
+      "input": {
+        "asset": "ingestion/slides.pptx",
+        "kind": "pptx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "_rels/.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"/ppt/presentation.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "slides-root-absolute-target",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Slide 1\nA\n1\nC\n\n## Slide 2\nB"
+      },
+      "input": {
+        "asset": "ingestion/slides.pptx",
+        "kind": "pptx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "ppt/slides/slide10.xml",
+            "operation": "replace-entry",
+            "text": "<p:sld xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><p:cSld><p:spTree><p:sp><p:txBody><a:bodyPr/><a:p><a:pPr><a:tabLst><a:tab pos=\"0\" algn=\"l\"/></a:tabLst></a:pPr><a:r><a:t>A</a:t></a:r><a:br/><a:fld id=\"{00000000-0000-0000-0000-000000000001}\" type=\"slidenum\"><a:t>1</a:t></a:fld></a:p><a:p><a:r><a:t>C</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld></p:sld>"
+          }
+        ]
+      },
+      "name": "slide-fields-breaks-and-tab-stops",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nA1: Příliš\tC1: A😀B\nA2: 42\tB2: TRUE\tC2: #DIV/0!\nA3: 2 [cached formula]\tC3: 45292 [date serial]\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/_rels/workbook.xml.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rIdA\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"/xl/worksheets/sheet1.xml\"/><Relationship Id=\"rIdB\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"/xl/worksheets/sheet2.xml\"/><Relationship Id=\"rIdS\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings\" Target=\"/xl/sharedStrings.xml\"/><Relationship Id=\"rIdStyles\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"/xl/styles.xml\"/><Relationship Id=\"rIdLink\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink\" Target=\"file:///C:/x.xlsx#Sheet1!A1\" TargetMode=\"External\"/><Relationship Id=\"rIdBad\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme\" Target=\"../../escape.xml\"/><Relationship Id=\"rIdDup\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme\" Target=\"theme/theme1.xml\"/><Relationship Id=\"rIdDup\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme\" Target=\"theme/theme2.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "workbook-absolute-and-external-targets",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nA1: Příliš\tC1: A😀B\nA2: 42\tB2: TRUE\tC2: #DIV/0!\nA3: 2 [cached formula]\tC3: 45292 [date serial]\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/_rels/workbook.xml.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rIdA\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet1.xml\"/><Relationship Id=\"rIdB\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet2.xml\"/><Relationship Id=\"rIdStyles\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"styles.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "workbook-shared-strings-conventional",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nA1: Příliš\tC1: A😀B\nA2: 42\tB2: TRUE\tC2: #DIV/0!\nA3: 2 [cached formula]\tC3: 45292 [date serial]\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/workbook.xml",
+            "operation": "replace-entry",
+            "text": "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><sheets><sheet name=\"Zeta\" sheetId=\"2\" r:id=\"rIdB\"/><sheet name=\"Chart\" sheetId=\"3\" r:id=\"rIdC\"/><sheet name=\"Alpha\" sheetId=\"1\" r:id=\"rIdA\"/></sheets></workbook>"
+          },
+          {
+            "entry": "xl/_rels/workbook.xml.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rIdA\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet1.xml\"/><Relationship Id=\"rIdB\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet2.xml\"/><Relationship Id=\"rIdC\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/chartsheet\" Target=\"chartsheets/sheet1.xml\"/><Relationship Id=\"rIdS\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings\" Target=\"sharedStrings.xml\"/><Relationship Id=\"rIdStyles\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"styles.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "workbook-chartsheet-skipped",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidRelationship"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/_rels/workbook.xml.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rIdA\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet1.xml\"/><Relationship Id=\"rIdB\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet2.xml\"/><Relationship Id=\"rIdB\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet1.xml\"/><Relationship Id=\"rIdS\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings\" Target=\"sharedStrings.xml\"/><Relationship Id=\"rIdStyles\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"styles.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "workbook-duplicate-used-relationship-id",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "key": "sourceErrorMissingPart"
+      },
+      "input": {
+        "code": "missingMainPart"
+      },
+      "name": "error-text-missingMainPart",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "sourceErrorMissingPart"
+      },
+      "input": {
+        "code": "invalidRelationship"
+      },
+      "name": "error-text-invalidRelationship",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "sourceErrorDamaged"
+      },
+      "input": {
+        "code": "corruptArchive"
+      },
+      "name": "error-text-corruptArchive",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "sourceErrorNotDownloaded"
+      },
+      "input": {
+        "code": "notDownloaded"
+      },
+      "name": "error-text-notDownloaded",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderLimitError"
+      },
+      "input": {
+        "code": "fileLimit"
+      },
+      "name": "error-text-fileLimit",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderLimitError"
+      },
+      "input": {
+        "code": "officeLimit"
+      },
+      "name": "error-text-officeLimit",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderLimitError"
+      },
+      "input": {
+        "code": "textLimit"
+      },
+      "name": "error-text-textLimit",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderLimitError"
+      },
+      "input": {
+        "code": "pageLimit"
+      },
+      "name": "error-text-pageLimit",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderLimitError"
+      },
+      "input": {
+        "code": "chunkLimit"
+      },
+      "name": "error-text-chunkLimit",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderLimitError"
+      },
+      "input": {
+        "code": "cellLimit"
+      },
+      "name": "error-text-cellLimit",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderEncodingError"
+      },
+      "input": {
+        "code": "unsupportedEncoding"
+      },
+      "name": "error-text-unsupportedEncoding",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderDocumentError"
+      },
+      "input": {
+        "code": "invalidCell"
+      },
+      "name": "error-text-invalidCell",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderDocumentError"
+      },
+      "input": {
+        "code": "unsupportedSyntax"
+      },
+      "name": "error-text-unsupportedSyntax",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderReadError"
+      },
+      "input": {
+        "code": "outsideRoot"
+      },
+      "name": "error-text-outsideRoot",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderReadError"
+      },
+      "input": {
+        "code": "interiorLink"
+      },
+      "name": "error-text-interiorLink",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": "folderReadError"
+      },
+      "input": {
+        "code": "rootUnavailable"
+      },
+      "name": "error-text-rootUnavailable",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": null
+      },
+      "input": {
+        "code": "unexpectedError"
+      },
+      "name": "error-text-unexpectedError",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "key": null
+      },
+      "input": {
+        "code": "changedDuringExtraction"
+      },
+      "name": "error-text-changedDuringExtraction",
+      "operation": "error-text"
+    },
+    {
+      "expected": {
+        "cs": "Dokument je neúplný: chybí povinná část.",
+        "en": "The document is incomplete: a required part is missing."
+      },
+      "input": {
+        "key": "sourceErrorMissingPart"
+      },
+      "name": "sourceErrorMissingPart",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Soubor je poškozený nebo nejde o platný dokument.",
+        "en": "The file is damaged or is not a valid document."
+      },
+      "input": {
+        "key": "sourceErrorDamaged"
+      },
+      "name": "sourceErrorDamaged",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Soubor je jen v cloudovém úložišti a nepodařilo se ho stáhnout.",
+        "en": "The file is only in cloud storage and could not be downloaded."
+      },
+      "input": {
+        "key": "sourceErrorNotDownloaded"
+      },
+      "name": "sourceErrorNotDownloaded",
+      "operation": "localization"
+    }
+  ],
+  "contract": "ingestion-ooxml",
+  "version": 1
+}

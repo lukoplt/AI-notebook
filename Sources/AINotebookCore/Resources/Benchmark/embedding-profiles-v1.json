@@ -1,0 +1,90 @@
+{
+  "contract": "embedding-profiles",
+  "profiles": [
+    {
+      "ceilingSource": "model-card",
+      "dims": 256,
+      "documentPrefix": "search_document: ",
+      "id": "nomic-v2-256",
+      "matryoshka": true,
+      "maxInputTokens": 512,
+      "model": "nomic-embed-text-v2-moe",
+      "nativeDims": 768,
+      "queryPrefix": "search_query: ",
+      "tokenizerId": "nomic-ai/nomic-embed-text-v2-moe"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 768,
+      "documentPrefix": "search_document: ",
+      "id": "nomic-v2-768",
+      "matryoshka": true,
+      "maxInputTokens": 512,
+      "model": "nomic-embed-text-v2-moe",
+      "nativeDims": 768,
+      "queryPrefix": "search_query: ",
+      "tokenizerId": "nomic-ai/nomic-embed-text-v2-moe"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 256,
+      "documentPrefix": "",
+      "id": "qwen3-06b-256",
+      "matryoshka": true,
+      "maxInputTokens": 32768,
+      "model": "qwen3-embedding:0.6b",
+      "nativeDims": 1024,
+      "queryPrefix": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:",
+      "tokenizerId": "Qwen/Qwen3-Embedding-0.6B"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 512,
+      "documentPrefix": "",
+      "id": "qwen3-06b-512",
+      "matryoshka": true,
+      "maxInputTokens": 32768,
+      "model": "qwen3-embedding:0.6b",
+      "nativeDims": 1024,
+      "queryPrefix": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:",
+      "tokenizerId": "Qwen/Qwen3-Embedding-0.6B"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 1024,
+      "documentPrefix": "",
+      "id": "qwen3-06b-1024",
+      "matryoshka": true,
+      "maxInputTokens": 32768,
+      "model": "qwen3-embedding:0.6b",
+      "nativeDims": 1024,
+      "queryPrefix": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:",
+      "tokenizerId": "Qwen/Qwen3-Embedding-0.6B"
+    },
+    {
+      "ceilingSource": "model-card",
+      "dims": 1024,
+      "documentPrefix": "",
+      "id": "bge-m3-1024",
+      "matryoshka": false,
+      "maxInputTokens": 8192,
+      "model": "bge-m3",
+      "nativeDims": 1024,
+      "queryPrefix": "",
+      "tokenizerId": "BAAI/bge-m3"
+    },
+    {
+      "ceilingSource": "ollama-512",
+      "dims": 768,
+      "documentPrefix": "",
+      "id": "paraphrase-768",
+      "matryoshka": false,
+      "maxInputTokens": 512,
+      "model": "paraphrase-multilingual",
+      "nativeDims": 768,
+      "queryPrefix": "",
+      "tokenizerId": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+    }
+  ],
+  "version": 1
+}

@@ -1,0 +1,183 @@
+{
+  "contract": "provider-errors",
+  "version": 1,
+  "cases": [
+    {
+      "name": "ollama-context",
+      "type": "ollama",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "context_length_exceeded",
+          "message": "too long"
+        }
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "ollama-payload",
+      "type": "ollama",
+      "statusCode": 413,
+      "body": {
+        "error": "request too large"
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "ollama-other-bad-request",
+      "type": "ollama",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "invalid_model",
+          "message": "unknown model"
+        }
+      },
+      "expectedError": "http"
+    },
+    {
+      "name": "anthropic-context",
+      "type": "anthropic",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "context_length_exceeded",
+          "message": "too long"
+        }
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "anthropic-payload",
+      "type": "anthropic",
+      "statusCode": 413,
+      "body": {
+        "error": "request too large"
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "anthropic-other-bad-request",
+      "type": "anthropic",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "invalid_model",
+          "message": "unknown model"
+        }
+      },
+      "expectedError": "http"
+    },
+    {
+      "name": "openai-context",
+      "type": "openai",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "context_length_exceeded",
+          "message": "too long"
+        }
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "openai-payload",
+      "type": "openai",
+      "statusCode": 413,
+      "body": {
+        "error": "request too large"
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "openai-other-bad-request",
+      "type": "openai",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "invalid_model",
+          "message": "unknown model"
+        }
+      },
+      "expectedError": "http"
+    },
+    {
+      "name": "openai_compatible-context",
+      "type": "openai_compatible",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "context_length_exceeded",
+          "message": "too long"
+        }
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "openai_compatible-payload",
+      "type": "openai_compatible",
+      "statusCode": 413,
+      "body": {
+        "error": "request too large"
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "openai_compatible-other-bad-request",
+      "type": "openai_compatible",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "invalid_model",
+          "message": "unknown model"
+        }
+      },
+      "expectedError": "http"
+    },
+    {
+      "name": "openwebui-context",
+      "type": "openwebui",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "context_length_exceeded",
+          "message": "too long"
+        }
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "openwebui-payload",
+      "type": "openwebui",
+      "statusCode": 413,
+      "body": {
+        "error": "request too large"
+      },
+      "expectedError": "contextTooLong"
+    },
+    {
+      "name": "openwebui-other-bad-request",
+      "type": "openwebui",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "code": "invalid_model",
+          "message": "unknown model"
+        }
+      },
+      "expectedError": "http"
+    },
+    {
+      "name": "anthropic-prompt-too-long",
+      "type": "anthropic",
+      "statusCode": 400,
+      "body": {
+        "error": {
+          "type": "invalid_request_error",
+          "message": "prompt is too long: 9000 tokens"
+        }
+      },
+      "expectedError": "contextTooLong"
+    }
+  ]
+}

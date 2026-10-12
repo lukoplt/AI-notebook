@@ -1,0 +1,20 @@
+Servisný terminál staršieho rozvádzača v archíve Lipa
+Dátum: 9. októbra 2026
+Zodpovedná osoba: Ľubomíra Dúbravská, technička
+Označenie: TERM-SK-10
+
+Terminál sa používa pri kontrole riadiacej jednotky, ktorá nemá vlastný displej. Obsluha ho pripája len počas servisnej návštevy. Pred zapojením porovná štítok na kábli s označením zásuvky a skontroluje, či nie je konektor uvoľnený. Starý sivý kábel patrí k vyradenému meradlu a na toto pripojenie sa nepoužíva.
+
+Sériová linka terminálu pracuje rýchlosťou 38400 baudov.
+
+Pri prvom pripojení technička otvorí uložený profil a overí jeho nastavenie. Názov profilu nesmie považovať za dôkaz, že hodnoty zostali nezmenené. Ak sa zobrazujú nezrozumiteľné znaky, najprv porovná parametre spojenia a až potom skúsi znovu pripojiť kábel. Náhodné stláčanie klávesov môže odoslať nechcený príkaz.
+
+Kontrola zobrazenia slovenčiny
+
+Do poznámkového poľa sa zapíše krátky opis pracoviska: Ľavý držiak má správnu dĺžku, na dvore rastie vŕba a vôňa náteru pripomína čerstvé drevo; rukoväť treba očistiť mäkkou handrou. Táto veta slúži na kontrolu znakov pri ukladaní poznámok. Jej obsah nie je povel pre riadiacu jednotku. Po opätovnom otvorení záznamu sa porovnajú dĺžne, mäkčene aj zvyšné písmená.
+
+Pracovný postup
+
+Obsluha si najskôr prečíta stavový výpis a uloží jeho kópiu. Vytlačený výpis má tri časti: označenie jednotky, stav vstupov a posledné upozornenie. Papier sa zakladá do oranžovej obálky pri rozvádzači. Ak tlačiareň nefunguje, postačí uložený súbor s dátumom a menom pracovníka; poškodená tlačiareň sama osebe nebráni kontrole jednotky.
+
+Po skončení práce technička ukončí spojenie, odpojí kábel a vráti ochranný kryt zásuvky. Terminál sa uskladňuje na druhej polici servisného vozíka. Pred odovzdaním vozíka ďalšej zmene skontroluje aj napájací adaptér, pretože zámena s podobným adaptérom už raz spôsobila prerušovanie práce. O nezvyčajnom správaní zostane stručná poznámka v prevádzkovej knihe.

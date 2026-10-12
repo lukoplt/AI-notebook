@@ -17,11 +17,16 @@ public struct OpenWebUIChatAdapter: ChatStreaming {
     }
 
     public func stream(model: String, messages: [ChatTurn]) -> AsyncThrowingStream<String, Error> {
+        stream(model: model, messages: messages, options: .defaults)
+    }
+
+    public func stream(model: String, messages: [ChatTurn], options: ChatRequestOptions)
+        -> AsyncThrowingStream<String, Error> {
         let request: URLRequest
         do {
             request = try ProviderWire.openAIStyleChatRequest(
-                base: baseURL, path: "/api/chat/completions",
-                apiKey: apiKey, model: model, messages: messages
+                base: baseURL, type: .openwebui,
+                apiKey: apiKey, model: model, messages: messages, options: options
             )
         } catch {
             return AsyncThrowingStream { $0.finish(throwing: error) }
@@ -33,7 +38,7 @@ public struct OpenWebUIChatAdapter: ChatStreaming {
         baseURL: String, apiKey: String?, session: URLSession = .shared
     ) async throws -> [ProviderModelInfo] {
         try await ProviderWire.listOpenAIStyleModels(
-            base: baseURL, path: "/api/models", apiKey: apiKey, session: session
+            base: baseURL, type: .openwebui, apiKey: apiKey, session: session
         )
     }
 }

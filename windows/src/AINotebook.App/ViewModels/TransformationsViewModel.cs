@@ -84,7 +84,7 @@ public partial class TransformationsViewModel : ObservableObject
             SelectedSource = Sources.FirstOrDefault(x => x.Id == prevSrc) ?? Sources.FirstOrDefault();
             if (SelectedTransformation?.Scope == TransformationScope.Notebook) Scope = BatchScope.Notebook;
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ChatFailureText.Format(ex, _t.Get); }
         await Task.CompletedTask;
     }
 
@@ -128,7 +128,7 @@ public partial class TransformationsViewModel : ObservableObject
                     break;
             }
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ChatFailureText.Format(ex, _t.Get); }
         finally { Running = false; }
     }
 

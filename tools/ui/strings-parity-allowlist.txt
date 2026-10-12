@@ -1,0 +1,149 @@
+# Intentional macOS ↔ Windows string differences for tools/ui/check_strings_parity.py.
+# One entry per line:  <kind> <key> -- <justification>   (alias: alias <macKey> = <windowsKey> -- ...)
+#   alias         same control, key named differently on the two platforms (texts are still compared)
+#   mac-only      macOS AppText.Key with no Windows control
+#   windows-only  Windows resw key with no macOS control
+#   value         same key (or alias), English/Czech text intentionally differs
+# Stale entries fail the check: remove an entry once the difference is gone.
+
+# ---- Same control, different key name (from the original Windows port)
+alias backupDatabase = backupButton -- notebook menu › Back up database
+alias restoreDatabase = backupRestoreButton -- notebook menu › Restore from backup
+alias restoreConfirm = backupRestoreConfirm -- restore confirmation
+alias bulkDelete = bulkDeleteSelectedButton -- Sources bulk mode
+alias bulkSelect = bulkSelectButton -- Sources bulk mode
+alias bulkSummarize = bulkSummarizeSelectedButton -- Sources bulk mode
+alias chatEdit = chatEditButton -- message hover action Edit
+alias chatRegenerate = chatRegenerateButton -- message hover action Regenerate
+alias documentExportPDF = exportNotePdf -- note document › Export › PDF
+alias globalSearchNotesSection = globalSearchSectionNotes -- search palette section
+alias globalSearchSourcesSection = globalSearchSectionSources -- search palette section
+alias notebookInstructions = notebookInstructionsLabel -- notebook instructions sheet/dialog title
+alias notebookInstructionsHint = notebookInstructionsPlaceholder -- notebook instructions hint
+alias personaNone = personaChipNone -- persona menu "no persona" entry
+alias privacyGateAccept = privacyGateAcknowledge -- cloud provider consent button
+alias privacyGateMessage = privacyGateBody -- cloud provider consent text
+alias recrawlSourceButton = urlRefreshButton -- URL source Refresh
+alias sourcePreviewChunksHeader = sourcePreviewChunksLabel -- source preview heading
+alias sourcePreviewNoChunks = sourcePreviewNoContent -- source preview empty state
+alias tagAddPlaceholder = tagNamePlaceholder -- tag editor field
+alias tagFilterAll = allTagsOption -- tag filter "all"
+alias tagFilterMenu = filterByTagLabel -- tag filter menu
+alias tagsLabel = tagsSectionTitle -- tags heading
+alias providerDeleteButton = providerDeleteTitle -- provider delete action
+
+# ---- Text differs on purpose: the platform is named (Mac vs PC, Keychain vs Windows store)
+value welcomeBody -- names the user's machine: "your Mac" / "your PC"
+value onboardingDetectBody -- names the user's machine: "your Mac" / "your PC"
+value privacyGateMessage -- macOS text names "this Mac"; Windows consent dialog has its own wording
+value providerDeleteConfirm -- macOS names the Keychain; Windows stores keys in its own credential store
+
+# ---- Text differs on purpose: macOS menu items that open a dialog end with "…" (HIG); Windows flyouts do not
+value backupDatabase -- "…" on macOS (opens a save panel); Windows flyout item without it
+value restoreDatabase -- "…" on macOS (opens a file panel); Windows flyout item without it
+value documentExportPDF -- "…" on macOS (opens a save panel); Windows flyout item without it
+value exportNoteMarkdown -- "…" + object noun on macOS menu; Windows export flyout says "Export as Markdown"
+value exportNotebookZip -- "…" + object noun on macOS menu; Windows notebook flyout says "Export as ZIP"
+value addProviderButton -- "…" on macOS (opens a sheet); Windows button in title case without it
+
+# ---- Wording drift from the original Windows port (pre-redesign Settings / sheets).
+# Same meaning, different phrasing; harmonizing is a product decision tracked as a follow-up.
+value addProviderTitle -- "Add provider" vs "Add AI Provider" (Settings › Providers dialog)
+value editProviderTitle -- "Edit provider" vs "Edit AI Provider" (Settings › Providers dialog)
+value providersSectionTitle -- "AI providers" vs "AI Providers" / "AI provideři" vs "AI Poskytovatelé"
+value providerApiKeyLabel -- capitalization only ("API key" vs "API Key")
+value providerUrlLabel -- Czech "Base URL" (macOS) vs "Základní URL" (Windows)
+value chatProviderPickerLabel -- Czech "Chat provider" (macOS) vs "Poskytovatel chatu" (Windows)
+value embeddingProviderPickerLabel -- Czech "Provider pro vektorizaci" vs "Poskytovatel embeddingů"
+value privacyGateTitle -- consent sheet (question) vs consent dialog (heading); different flows per platform
+value privacyGateAccept -- macOS enables the provider from the sheet; Windows dialog only acknowledges
+value providerDeleteButton -- macOS button label vs Windows confirmation-dialog title
+value restoreConfirm -- restore confirmation phrased differently per platform
+value globalSearchTitle -- "Search everything" vs "Search"
+value globalSearchEmpty -- "No matches" vs "No results"
+value globalSearchPlaceholder -- Czech "Hledat v poznámkách a zdrojích…" vs "Hledat poznámky a zdroje…"
+value chatRegenerate -- Czech "Přegenerovat" (macOS) vs "Znovu vygenerovat" (Windows)
+value notebookInstructions -- "Chat instructions" vs "Custom AI instructions"
+value notebookInstructionsHint -- macOS hint text vs Windows placeholder (also mentions transformations)
+value personaNone -- macOS menu entry "None" vs Windows chip label "No persona"
+value sourcePreviewChunksHeader -- "Chunks" vs "Extracted content"
+value sourcePreviewNoChunks -- "No chunks yet" vs "No content available"
+value tagAddPlaceholder -- "Add tag…" vs "Tag name"
+value tagFilterAll -- "All tags" vs "All"
+value tagFilterMenu -- Czech "podle" vs "dle"
+
+# ---- macOS-only: controls that exist only in the macOS UI
+mac-only doneButton -- macOS sheets/alerts close with "Done"; Windows ContentDialogs use Close/Cancel
+mac-only bulkDone -- macOS ends Sources/Notes bulk mode with "Done"; Windows toggles the select button
+mac-only exportDone -- macOS export/backup status alert; Windows uses exportSuccess
+mac-only addSourceChooseFile -- macOS add-source sheet file button; Windows opens the picker from the + flyout
+mac-only sourceMetaType -- macOS source preview sheet metadata grid (no Windows counterpart)
+mac-only sourceMetaStatus -- macOS source preview sheet metadata grid (no Windows counterpart)
+mac-only sourceMetaUri -- macOS source preview sheet metadata grid (no Windows counterpart)
+mac-only sourceMetaIngested -- macOS source preview sheet metadata grid (no Windows counterpart)
+mac-only sourcePreviewOpenOriginal -- macOS source preview sheet button (Windows opens originals from Citations)
+mac-only chatCitationsInline -- macOS "Sources" caption before citation chips not marked inline in the answer
+mac-only chatFollowupsLabel -- macOS accessibility label of the follow-up chips (Windows: follow-up gap, see C1 report)
+mac-only aiToolsEmptyTitle -- macOS Run tool sheet explainer (Windows RunToolDialog has none)
+mac-only aiToolsEmptyBody -- macOS Run tool sheet explainer (Windows RunToolDialog has none)
+mac-only transformationEditButton -- macOS Run tool sheet link to Settings › Tools
+mac-only toolHistoryDeleted -- macOS tool history sheet row labels (Windows history list differs)
+mac-only toolHistoryUnknown -- macOS tool history sheet row labels (Windows history list differs)
+mac-only toolHistoryNotebookScope -- macOS tool history sheet row labels (Windows history list differs)
+mac-only embeddingSectionTitle -- macOS Settings › Indexing subsection heading
+mac-only providerBadgeChat -- macOS Settings › Providers capability badge
+mac-only providerBadgeEmbedding -- macOS Settings › Providers capability badge
+mac-only providerKeySavedLabel -- macOS Keychain "key saved" hint in the provider sheet
+mac-only errorInvalidApiKey -- macOS provider error text (Windows maps errors in ChatFailureText to provider* keys)
+mac-only errorRateLimited -- macOS provider error text (Windows maps errors in ChatFailureText to provider* keys)
+mac-only errorModelRefusal -- macOS provider error text (Windows maps errors in ChatFailureText to provider* keys)
+
+# ---- Windows-only: controls that exist only in the Windows UI
+windows-only deleteChat -- Windows chat flyout/top bar label and confirm-dialog title (macOS uses chatDeleteSessionButton)
+windows-only confirmDeleteChat -- Windows asks before deleting a chat; macOS deletes directly
+windows-only notebookInstructionsMenu -- Windows notebook flyout "Instructions…" (macOS composes notebookInstructions + "…")
+windows-only citationPanelTitle -- Windows right-panel tab label "Citations"
+windows-only exportSuccess -- Windows backup/export confirmation dialog
+windows-only bulkDeleteConfirmFormat -- Windows bulk-delete confirmation dialog
+windows-only addTagButton -- Windows tag editor button (macOS adds tags from the field)
+windows-only addSourceSetButton -- Windows scope flyout "Add set" button
+windows-only sourceSetsSectionTitle -- Windows scope flyout section heading
+windows-only deleteSourceSetTitle -- Windows delete-set confirmation dialog
+windows-only personaInstructionsPlaceholder -- Windows new-persona flyout field
+windows-only addSourceTextPlaceholder -- Windows add-source dialog text field
+windows-only chatInputPlaceholder -- Windows note-chat panel input
+windows-only notesChatPanelTitle -- Windows note-chat panel heading
+windows-only sourcePreviewButton -- Windows Sources panel item action
+windows-only providerApiKeyPlaceholder -- Windows provider dialog key field
+windows-only manageModelsDeleteTitle -- Windows model-delete confirmation dialog
+windows-only manageModelsDeleteConfirm -- Windows model-delete confirmation dialog
+windows-only indexingIdle -- Windows indexing status badge
+
+# ---- Windows-only and unreferenced by the Windows App (left from removed pages): remove in a cleanup
+windows-only attachmentBrokenLink -- unreferenced in windows/src; cleanup candidate
+windows-only attachmentSaveFailed -- unreferenced in windows/src; cleanup candidate
+windows-only chatNoCitationsForMessage -- unreferenced in windows/src; cleanup candidate
+windows-only chatScopeAllSources -- unreferenced in windows/src; cleanup candidate
+windows-only chatScopeButton -- unreferenced in windows/src; cleanup candidate
+windows-only citationPanelEmpty -- unreferenced in windows/src; cleanup candidate
+windows-only contextualEnrichmentHint -- unreferenced in windows/src; cleanup candidate
+windows-only contextualEnrichmentLabel -- unreferenced in windows/src; cleanup candidate
+windows-only deleteSourceConfirm -- unreferenced in windows/src; cleanup candidate
+windows-only deleteTagTitle -- unreferenced in windows/src; cleanup candidate
+windows-only exportNotebookButton -- unreferenced in windows/src; cleanup candidate
+windows-only folderWatchActiveLabel -- unreferenced in windows/src; cleanup candidate
+windows-only folderWatchButton -- unreferenced in windows/src; cleanup candidate
+windows-only indexingError -- unreferenced in windows/src; cleanup candidate
+windows-only indexingInProgress -- unreferenced in windows/src; cleanup candidate
+windows-only indexingPaused -- unreferenced in windows/src; cleanup candidate
+windows-only indexingProgressFormat -- unreferenced in windows/src; cleanup candidate
+windows-only noteBodyPlaceholder -- unreferenced in windows/src; cleanup candidate
+windows-only ollamaUnreachable -- unreferenced in windows/src; cleanup candidate
+windows-only onboardingDetectChecking -- unreferenced in windows/src; cleanup candidate
+windows-only providerTestSuccess -- unreferenced in windows/src; cleanup candidate
+windows-only sourceSummaryLabel -- unreferenced in windows/src; cleanup candidate
+windows-only transformationEditorDelete -- unreferenced in windows/src; cleanup candidate
+windows-only transformationsSectionTitle -- unreferenced in windows/src; cleanup candidate
+windows-only urlRefreshingStatus -- unreferenced in windows/src; cleanup candidate
+windows-only webSearchEmpty -- unreferenced in windows/src; cleanup candidate
+windows-only webSearchResultsTitle -- unreferenced in windows/src; cleanup candidate

@@ -1,0 +1,1922 @@
+{
+  "cases": [
+    {
+      "embeddings": [],
+      "expected": {
+        "embedCalls": 0,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": null,
+        "generationState": null,
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [],
+        "vectorRevisions": [],
+        "vectorStatus": "noActiveGeneration"
+      },
+      "generations": [],
+      "manifest": [],
+      "name": "no-generation",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 70,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        },
+        {
+          "chunkId": 211,
+          "generationId": 70,
+          "vector": [
+            4,
+            3,
+            0
+          ]
+        },
+        {
+          "chunkId": 212,
+          "generationId": 70,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 301,
+          "generationId": 70,
+          "vector": [
+            12,
+            5,
+            0
+          ]
+        },
+        {
+          "chunkId": 511,
+          "generationId": 70,
+          "vector": [
+            5,
+            12,
+            0
+          ]
+        },
+        {
+          "chunkId": 611,
+          "generationId": 70,
+          "vector": [
+            24,
+            7,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 1,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 32786
+          },
+          {
+            "chunkId": 211,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 112,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 212,
+            "rrfMicro": 15625
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": 70,
+        "generationState": "building",
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [
+          111,
+          211,
+          112,
+          212
+        ],
+        "vectorRevisions": [
+          {
+            "revisionId": 11,
+            "sourceId": 1
+          },
+          {
+            "revisionId": 21,
+            "sourceId": 2
+          }
+        ],
+        "vectorStatus": "used"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 70,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 21,
+          "sourceId": 2,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 30,
+          "sourceId": 3,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 41,
+          "sourceId": 4,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 51,
+          "sourceId": 5,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 61,
+          "sourceId": 6,
+          "state": "done"
+        }
+      ],
+      "name": "building-partial",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 60,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 60,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 70,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        },
+        {
+          "chunkId": 211,
+          "generationId": 70,
+          "vector": [
+            4,
+            3,
+            0
+          ]
+        },
+        {
+          "chunkId": 212,
+          "generationId": 70,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 301,
+          "generationId": 70,
+          "vector": [
+            12,
+            5,
+            0
+          ]
+        },
+        {
+          "chunkId": 511,
+          "generationId": 70,
+          "vector": [
+            5,
+            12,
+            0
+          ]
+        },
+        {
+          "chunkId": 611,
+          "generationId": 70,
+          "vector": [
+            24,
+            7,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 1,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 32522
+          },
+          {
+            "chunkId": 112,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": 60,
+        "generationState": "active",
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [
+          112,
+          111
+        ],
+        "vectorRevisions": [
+          {
+            "revisionId": 11,
+            "sourceId": 1
+          }
+        ],
+        "vectorStatus": "used"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 60,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "active"
+        },
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 70,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 60,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 21,
+          "sourceId": 2,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 30,
+          "sourceId": 3,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 41,
+          "sourceId": 4,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 51,
+          "sourceId": 5,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 61,
+          "sourceId": 6,
+          "state": "done"
+        }
+      ],
+      "name": "active-and-building",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 60,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 60,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 70,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        },
+        {
+          "chunkId": 211,
+          "generationId": 70,
+          "vector": [
+            4,
+            3,
+            0
+          ]
+        },
+        {
+          "chunkId": 212,
+          "generationId": 70,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 301,
+          "generationId": 70,
+          "vector": [
+            12,
+            5,
+            0
+          ]
+        },
+        {
+          "chunkId": 511,
+          "generationId": 70,
+          "vector": [
+            5,
+            12,
+            0
+          ]
+        },
+        {
+          "chunkId": 611,
+          "generationId": 70,
+          "vector": [
+            24,
+            7,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 0,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": null,
+        "generationState": null,
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [],
+        "vectorRevisions": [],
+        "vectorStatus": "noActiveGeneration"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 60,
+          "model": "other",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "active"
+        },
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 70,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 60,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 21,
+          "sourceId": 2,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 30,
+          "sourceId": 3,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 41,
+          "sourceId": 4,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 51,
+          "sourceId": 5,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 61,
+          "sourceId": 6,
+          "state": "done"
+        }
+      ],
+      "name": "active-other-model-and-building",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 301,
+          "generationId": 70,
+          "vector": [
+            12,
+            5,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 0,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": null,
+        "generationState": null,
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [],
+        "vectorRevisions": [],
+        "vectorStatus": "noActiveGeneration"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 70,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 30,
+          "sourceId": 3,
+          "state": "done"
+        }
+      ],
+      "name": "stale-revision-only",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 70,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        },
+        {
+          "chunkId": 211,
+          "generationId": 70,
+          "vector": [
+            4,
+            3,
+            0
+          ]
+        },
+        {
+          "chunkId": 212,
+          "generationId": 70,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 301,
+          "generationId": 70,
+          "vector": [
+            12,
+            5,
+            0
+          ]
+        },
+        {
+          "chunkId": 511,
+          "generationId": 70,
+          "vector": [
+            5,
+            12,
+            0
+          ]
+        },
+        {
+          "chunkId": 611,
+          "generationId": 70,
+          "vector": [
+            24,
+            7,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 0,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": null,
+        "generationState": null,
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [],
+        "vectorRevisions": [],
+        "vectorStatus": "noActiveGeneration"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 70,
+          "model": "other",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 21,
+          "sourceId": 2,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 30,
+          "sourceId": 3,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 41,
+          "sourceId": 4,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 51,
+          "sourceId": 5,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 61,
+          "sourceId": 6,
+          "state": "done"
+        }
+      ],
+      "name": "mismatched-selection",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 70,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        },
+        {
+          "chunkId": 211,
+          "generationId": 70,
+          "vector": [
+            4,
+            3,
+            0
+          ]
+        },
+        {
+          "chunkId": 212,
+          "generationId": 70,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 301,
+          "generationId": 70,
+          "vector": [
+            12,
+            5,
+            0
+          ]
+        },
+        {
+          "chunkId": 511,
+          "generationId": 70,
+          "vector": [
+            5,
+            12,
+            0
+          ]
+        },
+        {
+          "chunkId": 611,
+          "generationId": 70,
+          "vector": [
+            24,
+            7,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 0,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": 70,
+        "generationState": "building",
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [],
+        "vectorRevisions": [
+          {
+            "revisionId": 11,
+            "sourceId": 1
+          },
+          {
+            "revisionId": 21,
+            "sourceId": 2
+          }
+        ],
+        "vectorStatus": "endpointRevisionMismatch"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e0",
+          "id": 70,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 21,
+          "sourceId": 2,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 30,
+          "sourceId": 3,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 41,
+          "sourceId": 4,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 51,
+          "sourceId": 5,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 61,
+          "sourceId": 6,
+          "state": "done"
+        }
+      ],
+      "name": "mismatched-endpoint",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 70,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        },
+        {
+          "chunkId": 211,
+          "generationId": 70,
+          "vector": [
+            4,
+            3,
+            0
+          ]
+        },
+        {
+          "chunkId": 212,
+          "generationId": 70,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 301,
+          "generationId": 70,
+          "vector": [
+            12,
+            5,
+            0
+          ]
+        },
+        {
+          "chunkId": 511,
+          "generationId": 70,
+          "vector": [
+            5,
+            12,
+            0
+          ]
+        },
+        {
+          "chunkId": 611,
+          "generationId": 70,
+          "vector": [
+            24,
+            7,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 1,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": 70,
+        "generationState": "building",
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [],
+        "vectorRevisions": [
+          {
+            "revisionId": 11,
+            "sourceId": 1
+          },
+          {
+            "revisionId": 21,
+            "sourceId": 2
+          }
+        ],
+        "vectorStatus": "invalidQueryVector"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 70,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 21,
+          "sourceId": 2,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 30,
+          "sourceId": 3,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 41,
+          "sourceId": 4,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 51,
+          "sourceId": 5,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 61,
+          "sourceId": 6,
+          "state": "done"
+        }
+      ],
+      "name": "mismatched-dims",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 70,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        },
+        {
+          "chunkId": 211,
+          "generationId": 70,
+          "vector": [
+            4,
+            3,
+            0
+          ]
+        },
+        {
+          "chunkId": 212,
+          "generationId": 70,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 301,
+          "generationId": 70,
+          "vector": [
+            12,
+            5,
+            0
+          ]
+        },
+        {
+          "chunkId": 511,
+          "generationId": 70,
+          "vector": [
+            5,
+            12,
+            0
+          ]
+        },
+        {
+          "chunkId": 611,
+          "generationId": 70,
+          "vector": [
+            24,
+            7,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 1,
+        "embeddingError": true,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": 70,
+        "generationState": "building",
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [],
+        "vectorRevisions": [
+          {
+            "revisionId": 11,
+            "sourceId": 1
+          },
+          {
+            "revisionId": 21,
+            "sourceId": 2
+          }
+        ],
+        "vectorStatus": "embeddingFailed"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 70,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 21,
+          "sourceId": 2,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 30,
+          "sourceId": 3,
+          "state": "done"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 41,
+          "sourceId": 4,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 51,
+          "sourceId": 5,
+          "state": "pending"
+        },
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 61,
+          "sourceId": 6,
+          "state": "done"
+        }
+      ],
+      "name": "provider-unavailable",
+      "provider": {
+        "kind": "failure"
+      },
+      "sessionEndpointRevision": "e1"
+    },
+    {
+      "embeddings": [
+        {
+          "chunkId": 111,
+          "generationId": 70,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 70,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        },
+        {
+          "chunkId": 211,
+          "generationId": 71,
+          "vector": [
+            4,
+            3,
+            0
+          ]
+        },
+        {
+          "chunkId": 212,
+          "generationId": 71,
+          "vector": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 111,
+          "generationId": 72,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 112,
+          "generationId": 72,
+          "vector": [
+            3,
+            4,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "embedCalls": 1,
+        "embeddingError": false,
+        "fused": [
+          {
+            "chunkId": 111,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 211,
+            "rrfMicro": 16393
+          },
+          {
+            "chunkId": 212,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 311,
+            "rrfMicro": 16129
+          },
+          {
+            "chunkId": 411,
+            "rrfMicro": 15873
+          },
+          {
+            "chunkId": 512,
+            "rrfMicro": 15625
+          }
+        ],
+        "generationId": 71,
+        "generationState": "building",
+        "lexicalChunkIds": [
+          111,
+          311,
+          411,
+          512
+        ],
+        "vectorChunkIds": [
+          211,
+          212
+        ],
+        "vectorRevisions": [
+          {
+            "revisionId": 21,
+            "sourceId": 2
+          }
+        ],
+        "vectorStatus": "used"
+      },
+      "generations": [
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 70,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        },
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 71,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "building"
+        },
+        {
+          "chunkerVersion": "1",
+          "createdAt": "2026-01-01 00:00:00.000",
+          "dims": 3,
+          "docFormatVersion": "1",
+          "endpointRevision": "e1",
+          "id": 72,
+          "model": "m",
+          "modelDigest": null,
+          "normalization": "l2",
+          "notebookId": 1,
+          "providerId": "p",
+          "queryFormatVersion": "1",
+          "state": "failed"
+        }
+      ],
+      "manifest": [
+        {
+          "generationId": 70,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        },
+        {
+          "generationId": 71,
+          "reason": null,
+          "revisionId": 21,
+          "sourceId": 2,
+          "state": "done"
+        },
+        {
+          "generationId": 72,
+          "reason": null,
+          "revisionId": 11,
+          "sourceId": 1,
+          "state": "done"
+        }
+      ],
+      "name": "newest-building",
+      "provider": {
+        "kind": "vector",
+        "vector": [
+          1,
+          0,
+          0
+        ]
+      },
+      "sessionEndpointRevision": "e1"
+    }
+  ],
+  "contract": "retrieval-partial",
+  "fetchK": 8,
+  "notebookId": 1,
+  "query": "kiwi",
+  "rrfK": 60,
+  "seed": {
+    "chunks": [
+      {
+        "id": 111,
+        "ord": 0,
+        "revisionId": 11,
+        "sourceId": 1,
+        "text": "kiwi chunk c111",
+        "tokenCount": 3
+      },
+      {
+        "id": 112,
+        "ord": 1,
+        "revisionId": 11,
+        "sourceId": 1,
+        "text": "plum chunk c112",
+        "tokenCount": 3
+      },
+      {
+        "id": 211,
+        "ord": 0,
+        "revisionId": 21,
+        "sourceId": 2,
+        "text": "plum chunk c211",
+        "tokenCount": 3
+      },
+      {
+        "id": 212,
+        "ord": 1,
+        "revisionId": 21,
+        "sourceId": 2,
+        "text": "plum chunk c212",
+        "tokenCount": 3
+      },
+      {
+        "id": 301,
+        "ord": 0,
+        "revisionId": 30,
+        "sourceId": 3,
+        "text": "kiwi chunk c301",
+        "tokenCount": 3
+      },
+      {
+        "id": 311,
+        "ord": 0,
+        "revisionId": 31,
+        "sourceId": 3,
+        "text": "kiwi chunk c311",
+        "tokenCount": 3
+      },
+      {
+        "id": 411,
+        "ord": 0,
+        "revisionId": 41,
+        "sourceId": 4,
+        "text": "kiwi chunk c411",
+        "tokenCount": 3
+      },
+      {
+        "id": 511,
+        "ord": 0,
+        "revisionId": 51,
+        "sourceId": 5,
+        "text": "plum chunk c511",
+        "tokenCount": 3
+      },
+      {
+        "id": 512,
+        "ord": 1,
+        "revisionId": 51,
+        "sourceId": 5,
+        "text": "kiwi chunk c512",
+        "tokenCount": 3
+      },
+      {
+        "id": 611,
+        "ord": 0,
+        "revisionId": 61,
+        "sourceId": 6,
+        "text": "kiwi chunk c611",
+        "tokenCount": 3
+      }
+    ],
+    "notebooks": [
+      {
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 1,
+        "name": "n1",
+        "updatedAt": "2026-01-01 00:00:00.000"
+      }
+    ],
+    "revisions": [
+      {
+        "canonicalText": "kiwi chunk c111\nplum chunk c112",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-11",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 11,
+        "revision": 1,
+        "sourceId": 1,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "plum chunk c211\nplum chunk c212",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-21",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 21,
+        "revision": 1,
+        "sourceId": 2,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "kiwi chunk c301",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-30",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 30,
+        "revision": 1,
+        "sourceId": 3,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "kiwi chunk c311",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-31",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 31,
+        "revision": 2,
+        "sourceId": 3,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "kiwi chunk c411",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-41",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 41,
+        "revision": 1,
+        "sourceId": 4,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "plum chunk c511\nkiwi chunk c512",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-51",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 51,
+        "revision": 1,
+        "sourceId": 5,
+        "textFormatVersion": 1
+      },
+      {
+        "canonicalText": "kiwi chunk c611",
+        "chunkerVersion": 1,
+        "contentHash": "fixture-61",
+        "createdAt": "2026-01-01 00:00:00.000",
+        "id": 61,
+        "revision": 1,
+        "sourceId": 6,
+        "textFormatVersion": 1
+      }
+    ],
+    "sources": [
+      {
+        "availability": "present",
+        "currentRevision": 11,
+        "eligible": 1,
+        "id": 1,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 11,
+        "status": "ready",
+        "title": "1.txt",
+        "type": "text"
+      },
+      {
+        "availability": "present",
+        "currentRevision": 21,
+        "eligible": 1,
+        "id": 2,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 21,
+        "status": "ready",
+        "title": "2.txt",
+        "type": "text"
+      },
+      {
+        "availability": "present",
+        "currentRevision": 31,
+        "eligible": 1,
+        "id": 3,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 31,
+        "status": "ready",
+        "title": "3.txt",
+        "type": "text"
+      },
+      {
+        "availability": "present",
+        "currentRevision": 41,
+        "eligible": 1,
+        "id": 4,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 41,
+        "status": "ready",
+        "title": "4.txt",
+        "type": "text"
+      },
+      {
+        "availability": "present",
+        "currentRevision": 51,
+        "eligible": 1,
+        "id": 5,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 51,
+        "status": "ready",
+        "title": "5.txt",
+        "type": "text"
+      },
+      {
+        "availability": "missing",
+        "currentRevision": 61,
+        "eligible": 1,
+        "id": 6,
+        "ingestedAt": "2026-01-01 00:00:00.000",
+        "notebookId": 1,
+        "publishedRevisionId": 61,
+        "status": "ready",
+        "title": "6.txt",
+        "type": "text"
+      }
+    ]
+  },
+  "selection": {
+    "endpointRevision": "e1",
+    "model": "m",
+    "providerId": "p"
+  },
+  "version": 1
+}

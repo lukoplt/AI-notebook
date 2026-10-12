@@ -1,0 +1,214 @@
+{
+  "contract": "lang-inheritance",
+  "version": 1,
+  "cases": [
+    {
+      "name": "unavailable-with-document",
+      "operation": "resolve",
+      "input": {
+        "label": null,
+        "reason": null,
+        "documentLabel": "cs"
+      },
+      "expected": {
+        "lang": null,
+        "langInherited": false
+      }
+    },
+    {
+      "name": "unavailable-without-document",
+      "operation": "resolve",
+      "input": {
+        "label": null,
+        "reason": null,
+        "documentLabel": null
+      },
+      "expected": {
+        "lang": null,
+        "langInherited": false
+      }
+    },
+    {
+      "name": "short-letters",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minLetters",
+        "documentLabel": "cs"
+      },
+      "expected": {
+        "lang": "cs",
+        "langInherited": true
+      }
+    },
+    {
+      "name": "short-words",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minWords",
+        "documentLabel": "de"
+      },
+      "expected": {
+        "lang": "de",
+        "langInherited": true
+      }
+    },
+    {
+      "name": "no-inheritance-minMargin",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minMargin",
+        "documentLabel": "cs"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "no-inheritance-background",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "background",
+        "documentLabel": "cs"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "no-inheritance-bucketDisabled",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "bucketDisabled",
+        "documentLabel": "cs"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "no-inheritance-minWinningScore",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minWinningScore",
+        "documentLabel": "cs"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "no-inheritance-minKnownCoverageBp",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minKnownCoverageBp",
+        "documentLabel": "cs"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "short-minLetters-document-mixed",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minLetters",
+        "documentLabel": "mixed"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "short-minLetters-document-und",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minLetters",
+        "documentLabel": "und"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "short-minLetters-document-null",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minLetters",
+        "documentLabel": null
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "short-minWords-document-mixed",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minWords",
+        "documentLabel": "mixed"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "short-minWords-document-und",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minWords",
+        "documentLabel": "und"
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "short-minWords-document-null",
+      "operation": "resolve",
+      "input": {
+        "label": "und",
+        "reason": "minWords",
+        "documentLabel": null
+      },
+      "expected": {
+        "lang": "und",
+        "langInherited": false
+      }
+    },
+    {
+      "name": "accepted-chunk-keeps-language",
+      "operation": "resolve",
+      "input": {
+        "label": "sk",
+        "reason": "accepted",
+        "documentLabel": "cs"
+      },
+      "expected": {
+        "lang": "sk",
+        "langInherited": false
+      }
+    }
+  ]
+}

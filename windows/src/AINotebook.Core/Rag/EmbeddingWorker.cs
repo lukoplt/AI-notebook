@@ -4,7 +4,7 @@ namespace AINotebook.Core.Rag;
 /// in flight, additional kicks set a "run again when this finishes" flag.
 public sealed class EmbeddingWorker
 {
-    private readonly Embedder _embedder;
+    private readonly Func<CancellationToken, Task<int>> _drain;
     private readonly object _gate = new();
     private Task? _inFlight;
     private bool _pendingKick;
@@ -12,7 +12,17 @@ public sealed class EmbeddingWorker
     public Exception? LastError { get; private set; }
     public int TotalEmbedded { get; private set; }
 
-    public EmbeddingWorker(Embedder embedder) => _embedder = embedder;
+    /// Legacy compatibility worker over an isolated Embedder (tests only; not registered in production).
+    public EmbeddingWorker(Embedder embedder)
+    {
+        ArgumentNullException.ThrowIfNull(embedder);
+        _drain = ct => embedder.EmbedAllPendingAsync(ct);
+    }
+
+    /// Production worker: a kick wakes durable generation work (e.g. FolderIngestionRuntime.RequestEmbeddingWorkAsync);
+    /// it never also runs the legacy Embedder.
+    public EmbeddingWorker(Func<CancellationToken, Task<int>> drain) =>
+        _drain = drain ?? throw new ArgumentNullException(nameof(drain));
 
     public void Kick()
     {
@@ -32,7 +42,7 @@ public sealed class EmbeddingWorker
             lock (_gate) _pendingKick = false;
             try
             {
-                var n = await _embedder.EmbedAllPendingAsync();
+                var n = await _drain(CancellationToken.None);
                 lock (_gate)
                 {
                     TotalEmbedded += n;

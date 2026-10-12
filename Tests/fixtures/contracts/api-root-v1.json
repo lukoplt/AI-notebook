@@ -1,0 +1,566 @@
+{
+  "contract": "api-root",
+  "version": 1,
+  "cases": [
+    {
+      "name": "openai-chat-00",
+      "type": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "name": "openai-models-01",
+      "type": "openai",
+      "baseURL": "https://api.openai.com/v1/",
+      "endpoint": "models",
+      "legacy": false,
+      "expectedURL": "https://api.openai.com/v1/models"
+    },
+    {
+      "name": "openai-embeddings-02",
+      "type": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "endpoint": "embeddings",
+      "legacy": false,
+      "expectedURL": "https://api.openai.com/v1/embeddings"
+    },
+    {
+      "name": "openai-chat-03",
+      "type": "openai",
+      "baseURL": "https://api.openai.com",
+      "endpoint": "chat",
+      "legacy": true,
+      "expectedURL": "https://api.openai.com/v1/chat/completions"
+    },
+    {
+      "name": "openai-embeddings-04",
+      "type": "openai",
+      "baseURL": "https://api.openai.com/",
+      "endpoint": "embeddings",
+      "legacy": true,
+      "expectedURL": "https://api.openai.com/v1/embeddings"
+    },
+    {
+      "name": "openai_compatible-chat-05",
+      "type": "openai_compatible",
+      "baseURL": "http://localhost:1234/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://localhost:1234/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-06",
+      "type": "openai_compatible",
+      "baseURL": "http://localhost:1234/v1",
+      "endpoint": "chat",
+      "legacy": true,
+      "expectedURL": "http://localhost:1234/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-models-07",
+      "type": "openai_compatible",
+      "baseURL": "http://localhost:1234",
+      "endpoint": "models",
+      "legacy": true,
+      "expectedURL": "http://localhost:1234/v1/models"
+    },
+    {
+      "name": "openai_compatible-chat-08",
+      "type": "openai_compatible",
+      "baseURL": "https://openrouter.ai/api/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "https://openrouter.ai/api/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-embeddings-09",
+      "type": "openai_compatible",
+      "baseURL": "https://gw.example.com/proxy/openai/v1",
+      "endpoint": "embeddings",
+      "legacy": false,
+      "expectedURL": "https://gw.example.com/proxy/openai/v1/embeddings"
+    },
+    {
+      "name": "openai_compatible-chat-10",
+      "type": "openai_compatible",
+      "baseURL": "https://gw.example.com/proxy/openai",
+      "endpoint": "chat",
+      "legacy": true,
+      "expectedURL": "https://gw.example.com/proxy/openai/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-models-11",
+      "type": "openai_compatible",
+      "baseURL": "https://api.groq.com/openai/v1",
+      "endpoint": "models",
+      "legacy": false,
+      "expectedURL": "https://api.groq.com/openai/v1/models"
+    },
+    {
+      "name": "openai_compatible-chat-12",
+      "type": "openai_compatible",
+      "baseURL": "  http://10.0.0.5:8000/v1  ",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://10.0.0.5:8000/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-13",
+      "type": "openai_compatible",
+      "baseURL": "http://localhost:1234/v1?key=x",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-14",
+      "type": "openai_compatible",
+      "baseURL": "http://localhost:1234/v1#frag",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-15",
+      "type": "openai_compatible",
+      "baseURL": "localhost:1234/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-16",
+      "type": "openai_compatible",
+      "baseURL": "ftp://localhost/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-17",
+      "type": "openai_compatible",
+      "baseURL": "",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "anthropic-chat-18",
+      "type": "anthropic",
+      "baseURL": "https://api.anthropic.com",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "https://api.anthropic.com/v1/messages"
+    },
+    {
+      "name": "anthropic-models-19",
+      "type": "anthropic",
+      "baseURL": "https://api.anthropic.com/",
+      "endpoint": "models",
+      "legacy": true,
+      "expectedURL": "https://api.anthropic.com/v1/models"
+    },
+    {
+      "name": "anthropic-embeddings-20",
+      "type": "anthropic",
+      "baseURL": "https://api.anthropic.com",
+      "endpoint": "embeddings",
+      "legacy": false,
+      "expectedError": "unsupportedEndpoint"
+    },
+    {
+      "name": "openwebui-chat-21",
+      "type": "openwebui",
+      "baseURL": "http://nas.local:3000",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://nas.local:3000/api/chat/completions"
+    },
+    {
+      "name": "openwebui-models-22",
+      "type": "openwebui",
+      "baseURL": "http://nas.local:3000/",
+      "endpoint": "models",
+      "legacy": false,
+      "expectedURL": "http://nas.local:3000/api/models"
+    },
+    {
+      "name": "openwebui-embeddings-23",
+      "type": "openwebui",
+      "baseURL": "http://nas.local:3000",
+      "endpoint": "embeddings",
+      "legacy": false,
+      "expectedError": "unsupportedEndpoint"
+    },
+    {
+      "name": "ollama-chat-24",
+      "type": "ollama",
+      "baseURL": "http://127.0.0.1:11434",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://127.0.0.1:11434/api/chat"
+    },
+    {
+      "name": "ollama-models-25",
+      "type": "ollama",
+      "baseURL": "http://gpu-box:11434/",
+      "endpoint": "models",
+      "legacy": false,
+      "expectedURL": "http://gpu-box:11434/api/tags"
+    },
+    {
+      "name": "ollama-embeddings-26",
+      "type": "ollama",
+      "baseURL": "http://gpu-box:11434",
+      "endpoint": "embeddings",
+      "legacy": true,
+      "expectedURL": "http://gpu-box:11434/api/embed"
+    },
+    {
+      "name": "openai_compatible-chat-27",
+      "type": "openai_compatible",
+      "baseURL": "http://:1234",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-28",
+      "type": "openai_compatible",
+      "baseURL": "http://user@",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-29",
+      "type": "openai_compatible",
+      "baseURL": "http://[oops",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-30",
+      "type": "openai_compatible",
+      "baseURL": "http://host:0",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-31",
+      "type": "openai_compatible",
+      "baseURL": "http://host:65536",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-32",
+      "type": "openai_compatible",
+      "baseURL": "http://host:abc",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-33",
+      "type": "openai_compatible",
+      "baseURL": "http://host:",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-34",
+      "type": "openai_compatible",
+      "baseURL": "http://host:１２",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-35",
+      "type": "openai_compatible",
+      "baseURL": "http://user:pass@host/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-36",
+      "type": "openai_compatible",
+      "baseURL": "http://host name/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-37",
+      "type": "openai_compatible",
+      "baseURL": "http://host\tname/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-38",
+      "type": "openai_compatible",
+      "baseURL": "http://host\nname/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-39",
+      "type": "openai_compatible",
+      "baseURL": "http://host/v1 path",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-40",
+      "type": "openai_compatible",
+      "baseURL": "http://host/v1\u0000",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-41",
+      "type": "openai_compatible",
+      "baseURL": "\thttp://host/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-42",
+      "type": "openai_compatible",
+      "baseURL": "http://host/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-43",
+      "type": "openai_compatible",
+      "baseURL": "http://bad_host/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-44",
+      "type": "openai_compatible",
+      "baseURL": "http://-bad.example/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-45",
+      "type": "openai_compatible",
+      "baseURL": "http://bad-.example/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-46",
+      "type": "openai_compatible",
+      "baseURL": "http://a..example/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-47",
+      "type": "openai_compatible",
+      "baseURL": "http://host../v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-48",
+      "type": "openai_compatible",
+      "baseURL": "http://999.1.2.3/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-49",
+      "type": "openai_compatible",
+      "baseURL": "http://[::1]junk/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-50",
+      "type": "openai_compatible",
+      "baseURL": "http://[fe80::1%25en0]/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-51",
+      "type": "openai_compatible",
+      "baseURL": "http://[v1.a]/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-52",
+      "type": "openai_compatible",
+      "baseURL": "http://höst.example/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-53",
+      "type": "openai_compatible",
+      "baseURL": "http://host%20name/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-54",
+      "type": "openai_compatible",
+      "baseURL": "http://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.example/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-55",
+      "type": "openai_compatible",
+      "baseURL": "http://[::1]:1234/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://[::1]:1234/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-56",
+      "type": "openai_compatible",
+      "baseURL": "https://[2001:db8::1]/proxy/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "https://[2001:db8::1]/proxy/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-57",
+      "type": "openai_compatible",
+      "baseURL": "http://localhost:1/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://localhost:1/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-58",
+      "type": "openai_compatible",
+      "baseURL": "http://localhost:65535/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://localhost:65535/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-59",
+      "type": "openai_compatible",
+      "baseURL": "https://xn--hst-sna.example./v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "https://xn--hst-sna.example./v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-60",
+      "type": "openai_compatible",
+      "baseURL": "http://1234/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-61",
+      "type": "openai_compatible",
+      "baseURL": "http://01.2.3.4/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-62",
+      "type": "openai_compatible",
+      "baseURL": "http://127.1/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-63",
+      "type": "openai_compatible",
+      "baseURL": "http://256.2.3.4/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-64",
+      "type": "openai_compatible",
+      "baseURL": "http://127.0.0.1./v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://127.0.0.1./v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-65",
+      "type": "openai_compatible",
+      "baseURL": "http://0x7f/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-66",
+      "type": "openai_compatible",
+      "baseURL": "http://example.123/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-67",
+      "type": "openai_compatible",
+      "baseURL": "http://host.0x1/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    },
+    {
+      "name": "openai_compatible-chat-68",
+      "type": "openai_compatible",
+      "baseURL": "http://123abc/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedURL": "http://123abc/v1/chat/completions"
+    },
+    {
+      "name": "openai_compatible-chat-69",
+      "type": "openai_compatible",
+      "baseURL": "http://0x/v1",
+      "endpoint": "chat",
+      "legacy": false,
+      "expectedError": "invalidBaseURL"
+    }
+  ]
+}

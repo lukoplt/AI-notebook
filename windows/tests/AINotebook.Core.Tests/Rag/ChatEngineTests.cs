@@ -45,12 +45,20 @@ public class ChatEngineTests
         Assert.Equal(ChatRole.User, persisted[0].Role);
         Assert.Equal(ChatRole.Assistant, persisted[1].Role);
 
-        // first turn system, last turn user with the userText
+        // The provider receives exactly the prepared pack: system rules first, then the
+        // complete final user turn (scope, evidence, question) with one question section.
         var turns = chat.CapturedMessages[0];
         Assert.Single(chat.CapturedMessages);
+        var prepared = ContextPreviewSnapshotJson.Decode(engine.Previews.Sent(sessionId, final.Id!.Value)!).Request;
+        Assert.Equal(ContextPackRendering.LogicalTurns(prepared), turns);
         Assert.Equal(ChatRole.System, turns[0].Role);
         Assert.Equal(ChatRole.User, turns[^1].Role);
-        Assert.Equal("what color is the sky?", turns[^1].Content);
+        var finalUser = prepared.Messages[^1];
+        Assert.Equal("question", Assert.Single(finalUser.Sections, s => s.Kind == "question").Kind);
+        Assert.Equal("question", finalUser.Sections[^1].Kind);
+        Assert.Equal("[QUESTION]\nwhat color is the sky?\n[/QUESTION]", finalUser.Sections[^1].Text);
+        Assert.Contains("[1] S · und\nthe sky is blue", turns[^1].Content);
+        Assert.DoesNotContain("the sky is blue", turns[0].Content);
     }
 
     // ChatEngineRetryTests.testRetriesOnceOnTimeoutThenSucceeds
@@ -84,9 +92,10 @@ public class ChatEngineTests
         Assert.Equal(3, chat.Attempts); // retryAttempts + 1 total tries
     }
 
-    // ChatEngineCurrentNoteContextTests.testCurrentNoteContextAppearsInSystemPrompt
+    // ChatEngineCurrentNoteContextTests.testCurrentNoteContextAppearsInSystemPrompt — WP8 supersedes it:
+    // the open note is lower-trust user context, labelled outside the selected folder.
     [Fact]
-    public async Task CurrentNoteContextAppearsInSystemPrompt()
+    public async Task CurrentNoteContextAppearsOnlyInTheLabelledUserNoteSection()
     {
         var (store, nbId, sessionId, _) = Setup();
         var emb = new MockEmbeddingClient(_ => new[] { 1f, 0f });
@@ -95,14 +104,16 @@ public class ChatEngineTests
         var engine = new ChatEngine(store, retriever, chat, "m");
 
         await engine.SendAsync(sessionId, nbId, "q", currentNoteContent: "flour 500g", onToken: _ => { });
-        var systemTurn = chat.CapturedMessages[0][0];
-        Assert.Contains("CURRENTLY OPEN NOTE", systemTurn.Content);
-        Assert.Contains("flour 500g", systemTurn.Content);
+        var turns = chat.CapturedMessages[0];
+        Assert.DoesNotContain("flour 500g", turns[0].Content);
+        Assert.Single(turns, t => t.Content.Contains("flour 500g"));
+        Assert.Contains("[NOTE — NOT CONTENT OF THE SELECTED FOLDER]\nflour 500g\n[/NOTE — NOT CONTENT OF THE SELECTED FOLDER]",
+            turns[^1].Content);
     }
 
     // ChatEngineCurrentNoteContextTests.testNilCurrentNoteContextLeavesPromptUnchanged
     [Fact]
-    public async Task NullCurrentNoteContextLeavesPromptUnchanged()
+    public async Task NullCurrentNoteContextAddsNoNoteSection()
     {
         var (store, nbId, sessionId, _) = Setup();
         var emb = new MockEmbeddingClient(_ => new[] { 1f, 0f });
@@ -111,6 +122,7 @@ public class ChatEngineTests
         var engine = new ChatEngine(store, retriever, chat, "m");
 
         await engine.SendAsync(sessionId, nbId, "q", onToken: _ => { });
+        Assert.All(chat.CapturedMessages[0], t => Assert.DoesNotContain("[NOTE", t.Content));
         Assert.DoesNotContain("CURRENTLY OPEN NOTE", chat.CapturedMessages[0][0].Content);
     }
 

@@ -18,7 +18,7 @@ public enum ProviderType: String, CaseIterable, Sendable {
         switch self {
         case .ollama: "http://127.0.0.1:11434"
         case .anthropic: "https://api.anthropic.com"
-        case .openai: "https://api.openai.com"
+        case .openai: "https://api.openai.com/v1"
         case .openaiCompatible, .openwebui: ""
         }
     }

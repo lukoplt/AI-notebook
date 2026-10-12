@@ -28,7 +28,7 @@
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" />
                             <TextBlock Text="{x:Bind SizeText}" FontSize="12"
-                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                       Foreground="{ThemeResource Text2Brush}" />
                         </StackPanel>
                         <Button Grid.Column="1" Background="Transparent" BorderThickness="0"
                                 Click="OnDeleteRow" Tag="{x:Bind Name}">
@@ -51,7 +51,7 @@
 
         <ProgressBar x:Name="PullBar" Grid.Row="3" IsIndeterminate="True" Visibility="Collapsed" />
         <TextBlock x:Name="PullProgressText" Grid.Row="3" Margin="0,16,0,0" FontSize="12"
-                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                   Foreground="{ThemeResource Text2Brush}" />
 
         <InfoBar x:Name="ErrorBar" Grid.Row="4" Severity="Error" IsClosable="True" IsOpen="False" />
 

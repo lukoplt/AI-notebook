@@ -34,6 +34,9 @@ public partial class NotesViewModel : ObservableObject
     [ObservableProperty] public partial string DraftBody { get; set; } = "";
     [ObservableProperty] public partial string? ErrorMessage { get; set; }
     [ObservableProperty] public partial string SearchQuery { get; set; } = "";
+    /// <summary>UI redesign: Notes panel tag filter (parity with Sources); null = all notes.</summary>
+    [ObservableProperty] public partial long? TagFilterId { get; set; }
+    partial void OnTagFilterIdChanged(long? value) => ApplySearchFilter();
 
     // W-6 (FR-B6): multi-select + bulk delete for notes — parity with
     // SourcesViewModel's bulk mode and with macOS NotesView.bulkMode.
@@ -81,7 +84,7 @@ public partial class NotesViewModel : ObservableObject
             SelectedNote = Notes.FirstOrDefault(n => n.Id == current) ?? Notes.FirstOrDefault();
             SyncDraftFromSelection();
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ex.Message; }
         await Task.CompletedTask;
     }
 
@@ -127,13 +130,20 @@ public partial class NotesViewModel : ObservableObject
 
     partial void OnSearchQueryChanged(string value) => ApplySearchFilter();
 
+    /// <summary>Notes carrying <paramref name="tagId"/> (all when null).</summary>
+    public static IEnumerable<Note> FilterByTag(IEnumerable<Note> notes, Func<long, IReadOnlyCollection<long>> tagIdsOf, long? tagId) =>
+        tagId is long id ? notes.Where(n => n.Id is long noteId && tagIdsOf(noteId).Contains(id)) : notes;
+
     private void ApplySearchFilter()
     {
         FilteredNotes.Clear();
         var q = SearchQuery?.Trim() ?? "";
+        IEnumerable<Note> tagged;
+        try { tagged = FilterByTag(Notes, id => _store.NoteTagIds(id), TagFilterId).ToList(); }
+        catch (Exception) { tagged = Notes.ToList(); }
         if (string.IsNullOrEmpty(q))
         {
-            foreach (var n in Notes) FilteredNotes.Add(n);
+            foreach (var n in tagged) FilteredNotes.Add(n);
         }
         else
         {
@@ -141,12 +151,12 @@ public partial class NotesViewModel : ObservableObject
             {
                 var hits = _store.SearchNotes(_notebookId, q);
                 var hitIds = hits.Select(h => h.NoteId).ToHashSet();
-                foreach (var n in Notes.Where(n => hitIds.Contains(n.Id!.Value))) FilteredNotes.Add(n);
+                foreach (var n in tagged.Where(n => hitIds.Contains(n.Id!.Value))) FilteredNotes.Add(n);
             }
             catch
             {
                 // FTS not available — fall back to in-memory LIKE
-                foreach (var n in Notes.Where(n =>
+                foreach (var n in tagged.Where(n =>
                     n.Title.Contains(q, StringComparison.OrdinalIgnoreCase) ||
                     n.BodyMd.Contains(q, StringComparison.OrdinalIgnoreCase)))
                     FilteredNotes.Add(n);
@@ -172,7 +182,7 @@ public partial class NotesViewModel : ObservableObject
             await ReloadAsync();
             AttemptSelect(n.Id);
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ex.Message; }
     }
 
     // Called by the editor host's autosave sink (OnSaveRequested) AND manual save.
@@ -183,7 +193,7 @@ public partial class NotesViewModel : ObservableObject
             _store.UpdateNote(id, DraftTitle, body);  // OnNoteSaved fires indexing in Core/DI
             _dispatcher.TryEnqueue(async () => await ReloadAsync());
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ex.Message; }
     }
 
     // Selection interception mirrors NotesView.attemptSelect.
@@ -216,6 +226,9 @@ public partial class NotesViewModel : ObservableObject
         _pendingSelectionId = null;
         ApplySelection(target);
     }
+
+    /// <summary>Document mode: open a note directly (the shell already ran the unsaved-changes guard).</summary>
+    public void Open(long noteId) => ApplySelection(noteId);
 
     private void ApplySelection(long? id)
     {
@@ -280,6 +293,6 @@ public partial class NotesViewModel : ObservableObject
             SetBulkSelection(Array.Empty<long>());
             await ReloadAsync();
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ex.Message; }
     }
 }

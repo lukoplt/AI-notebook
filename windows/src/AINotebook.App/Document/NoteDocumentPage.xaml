@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Note document (spec §2.4): the open note replaces the main area. Top bar: back, editable title,
+  save status, History (Ctrl+Shift+H), Export (Markdown / PDF), Save (Ctrl+S) and the panel toggle;
+  the TipTap editor sits in the centred column (max 760). The note chat is the right panel's
+  "Note chat" segment.
+-->
+<Page
+    x:Class="AINotebook.App.Document.NoteDocumentPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:editor="using:AINotebook.App.Editor"
+    xmlns:models="using:AINotebook.Core.Models"
+    Background="Transparent">
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Modifiers="Control" Key="S" Invoked="OnSaveAccelerator" />
+        <KeyboardAccelerator Modifiers="Control,Shift" Key="H" Invoked="OnHistoryAccelerator" />
+    </Page.KeyboardAccelerators>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Height="{StaticResource SizeTopBar}" Padding="8,0,8,0" ColumnSpacing="{StaticResource Space4}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BackButton" Style="{StaticResource IconButtonStyle}" Click="OnBack">
+                <FontIcon Glyph="{StaticResource IconBack}" Style="{StaticResource TopBarIcon}" />
+            </Button>
+            <TextBox x:Name="TitleBox" Grid.Column="1" VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSizeHeadline}" FontWeight="SemiBold"
+                     Text="{x:Bind ViewModel.DraftTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     TextChanged="OnTitleChanged">
+                <TextBox.Resources>
+                    <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="{ThemeResource Surface2}" />
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{ThemeResource Surface2}" />
+                    <SolidColorBrush x:Key="TextControlBorderBrush" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlForeground" Color="{ThemeResource Text1}" />
+                    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{ThemeResource Text1}" />
+                    <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{ThemeResource Text1}" />
+                    <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+                </TextBox.Resources>
+            </TextBox>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="{StaticResource Space4}" VerticalAlignment="Center" Margin="8,0">
+                <FontIcon x:Name="StatusIcon" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}"
+                          Foreground="{ThemeResource Text3Brush}" />
+                <TextBlock x:Name="StatusText" Style="{StaticResource SecondaryCaption}" />
+            </StackPanel>
+            <Button x:Name="HistoryButton" Grid.Column="3" Style="{StaticResource IconButtonStyle}" Click="OnHistory">
+                <FontIcon Glyph="{StaticResource IconHistory}" Style="{StaticResource TopBarIcon}" />
+            </Button>
+            <Button x:Name="ExportButton" Grid.Column="4" Style="{StaticResource IconButtonStyle}">
+                <FontIcon Glyph="{StaticResource IconExport}" Style="{StaticResource TopBarIcon}" />
+                <Button.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedRight">
+                        <MenuFlyoutItem x:Name="ExportMarkdownItem" Click="OnExportMarkdown" />
+                        <MenuFlyoutItem x:Name="ExportPdfItem" Click="OnExportPdf" />
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+            <Button x:Name="SaveButton" Grid.Column="5" Style="{StaticResource IconButtonStyle}" Click="OnSave">
+                <FontIcon Glyph="{StaticResource IconSaveAsNote}" Style="{StaticResource TopBarIcon}" />
+            </Button>
+            <Button x:Name="TogglePanelButton" Grid.Column="6" Style="{StaticResource IconButtonStyle}" Click="OnTogglePanel">
+                <FontIcon Glyph="{StaticResource IconTogglePanel}" Style="{StaticResource TopBarIcon}" />
+            </Button>
+        </Grid>
+
+        <!-- B8: tags of this note -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="{StaticResource Space4}" Padding="48,0,16,8">
+            <ItemsControl ItemsSource="{x:Bind ViewModel.CurrentNoteTags, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:Tag">
+                        <Button Style="{StaticResource ChipButtonStyle}" Click="OnRemoveTag" Tag="{x:Bind}">
+                            <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}">
+                                <TextBlock Text="{x:Bind Name}" />
+                                <FontIcon Glyph="{StaticResource IconClose}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource Space8}" />
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button x:Name="AddTagButton" Style="{StaticResource QuietButtonStyle}" Click="OnAddTag">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}">
+                    <FontIcon Glyph="{StaticResource IconTag}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}" />
+                    <TextBlock x:Name="AddTagText" Style="{StaticResource TextCaption}" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <Border Grid.Row="2" MaxWidth="{StaticResource SizeConversationMax}" Padding="16,0,16,16">
+            <editor:EditorWebView x:Name="Editor" />
+        </Border>
+    </Grid>
+</Page>

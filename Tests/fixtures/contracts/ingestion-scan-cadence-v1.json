@@ -1,0 +1,727 @@
+{
+  "cases": [
+    {
+      "expected": true,
+      "input": {
+        "lastFullScanAt": 1800000000,
+        "lastRequestedAt": 1800000000,
+        "now": 1800000060,
+        "startup": true,
+        "watchHealthy": true
+      },
+      "name": "startup-healthy-recent",
+      "operation": "verify-due"
+    },
+    {
+      "expected": true,
+      "input": {
+        "lastFullScanAt": null,
+        "lastRequestedAt": null,
+        "now": 1800000000,
+        "startup": true,
+        "watchHealthy": false
+      },
+      "name": "startup-unhealthy",
+      "operation": "verify-due"
+    },
+    {
+      "expected": true,
+      "input": {
+        "lastFullScanAt": 1800000000,
+        "lastRequestedAt": 1800000000,
+        "now": 1800001800,
+        "startup": false,
+        "watchHealthy": false
+      },
+      "name": "unhealthy-every-pass",
+      "operation": "verify-due"
+    },
+    {
+      "expected": true,
+      "input": {
+        "lastFullScanAt": null,
+        "lastRequestedAt": null,
+        "now": 1800000000,
+        "startup": false,
+        "watchHealthy": false
+      },
+      "name": "unhealthy-never-scanned",
+      "operation": "verify-due"
+    },
+    {
+      "expected": true,
+      "input": {
+        "lastFullScanAt": null,
+        "lastRequestedAt": null,
+        "now": 1800000000,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-never-scanned",
+      "operation": "verify-due"
+    },
+    {
+      "expected": false,
+      "input": {
+        "lastFullScanAt": 1800000000,
+        "lastRequestedAt": null,
+        "now": 1800001800,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-recent-full-scan",
+      "operation": "verify-due"
+    },
+    {
+      "expected": false,
+      "input": {
+        "lastFullScanAt": 1800000000,
+        "lastRequestedAt": null,
+        "now": 1800021599,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-just-before-interval",
+      "operation": "verify-due"
+    },
+    {
+      "expected": true,
+      "input": {
+        "lastFullScanAt": 1800000000,
+        "lastRequestedAt": null,
+        "now": 1800021600,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-at-interval",
+      "operation": "verify-due"
+    },
+    {
+      "expected": false,
+      "input": {
+        "lastFullScanAt": null,
+        "lastRequestedAt": 1800000000,
+        "now": 1800003600,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-recent-request-partial-scan",
+      "operation": "verify-due"
+    },
+    {
+      "expected": false,
+      "input": {
+        "lastFullScanAt": 1799913600,
+        "lastRequestedAt": 1800000000,
+        "now": 1800003600,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-old-full-recent-request",
+      "operation": "verify-due"
+    },
+    {
+      "expected": false,
+      "input": {
+        "lastFullScanAt": 1800000000,
+        "lastRequestedAt": 1799913600,
+        "now": 1800003600,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-recent-full-old-request",
+      "operation": "verify-due"
+    },
+    {
+      "expected": true,
+      "input": {
+        "lastFullScanAt": 1799913600,
+        "lastRequestedAt": 1799956800,
+        "now": 1800000000,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-both-old",
+      "operation": "verify-due"
+    },
+    {
+      "expected": false,
+      "input": {
+        "lastFullScanAt": 1800000000,
+        "lastRequestedAt": null,
+        "now": 1799999900,
+        "startup": false,
+        "watchHealthy": true
+      },
+      "name": "healthy-clock-behind",
+      "operation": "verify-due"
+    },
+    {
+      "expected": false,
+      "input": {
+        "now": 1800000000,
+        "previous": 1800000000
+      },
+      "name": "wake-steady-ticks",
+      "operation": "wake-gap"
+    },
+    {
+      "expected": false,
+      "input": {
+        "now": 1800000005,
+        "previous": 1800000000
+      },
+      "name": "wake-slow-tick",
+      "operation": "wake-gap"
+    },
+    {
+      "expected": false,
+      "input": {
+        "now": 1800000059,
+        "previous": 1800000000
+      },
+      "name": "wake-just-below-gap",
+      "operation": "wake-gap"
+    },
+    {
+      "expected": true,
+      "input": {
+        "now": 1800000060,
+        "previous": 1800000000
+      },
+      "name": "wake-at-gap",
+      "operation": "wake-gap"
+    },
+    {
+      "expected": true,
+      "input": {
+        "now": 1800028800,
+        "previous": 1800000000
+      },
+      "name": "wake-overnight",
+      "operation": "wake-gap"
+    },
+    {
+      "expected": false,
+      "input": {
+        "now": 1799996400,
+        "previous": 1800000000
+      },
+      "name": "wake-clock-set-back",
+      "operation": "wake-gap"
+    },
+    {
+      "expected": {
+        "folder": {
+          "lastScanError": null,
+          "scanState": "partial"
+        },
+        "inventory": [
+          "a.md",
+          "sub/b.md",
+          "sub/c.md"
+        ],
+        "queuedExtracts": [
+          "a.md",
+          "sub/b.md",
+          "sub/c.md"
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "a.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "gone.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/b.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/c.md",
+            "status": "pending"
+          },
+          {
+            "availability": "missing",
+            "eligible": true,
+            "relPath": "sub/gone.md",
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "error": "permissionDenied",
+        "failing": "b.md",
+        "known": [
+          "gone.md",
+          "sub/gone.md"
+        ]
+      },
+      "name": "unreadable-new-permission-denied",
+      "operation": "unreadable-file"
+    },
+    {
+      "expected": {
+        "folder": {
+          "lastScanError": null,
+          "scanState": "partial"
+        },
+        "inventory": [
+          "a.md",
+          "sub/b.md",
+          "sub/c.md"
+        ],
+        "queuedExtracts": [
+          "a.md",
+          "sub/b.md",
+          "sub/c.md"
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "a.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "b.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "gone.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/b.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/c.md",
+            "status": "pending"
+          },
+          {
+            "availability": "missing",
+            "eligible": true,
+            "relPath": "sub/gone.md",
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "error": "permissionDenied",
+        "failing": "b.md",
+        "known": [
+          "b.md",
+          "gone.md",
+          "sub/gone.md"
+        ]
+      },
+      "name": "unreadable-known-permission-denied",
+      "operation": "unreadable-file"
+    },
+    {
+      "expected": {
+        "folder": {
+          "lastScanError": null,
+          "scanState": "partial"
+        },
+        "inventory": [
+          "a.md",
+          "b.md",
+          "sub/c.md"
+        ],
+        "queuedExtracts": [
+          "a.md",
+          "b.md",
+          "sub/c.md"
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "a.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "b.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "gone.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/c.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/gone.md",
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "error": "permissionDenied",
+        "failing": "sub/b.md",
+        "known": [
+          "gone.md",
+          "sub/gone.md"
+        ]
+      },
+      "name": "unreadable-new-in-subdirectory",
+      "operation": "unreadable-file"
+    },
+    {
+      "expected": {
+        "folder": {
+          "lastScanError": null,
+          "scanState": "partial"
+        },
+        "inventory": [
+          "a.md",
+          "b.md",
+          "sub/c.md"
+        ],
+        "queuedExtracts": [
+          "a.md",
+          "b.md",
+          "sub/c.md"
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "a.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "b.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "gone.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/b.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/c.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/gone.md",
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "error": "permissionDenied",
+        "failing": "sub/b.md",
+        "known": [
+          "gone.md",
+          "sub/b.md",
+          "sub/gone.md"
+        ]
+      },
+      "name": "unreadable-known-in-subdirectory",
+      "operation": "unreadable-file"
+    },
+    {
+      "expected": {
+        "folder": {
+          "lastScanError": null,
+          "scanState": "partial"
+        },
+        "inventory": [
+          "a.md",
+          "sub/b.md",
+          "sub/c.md"
+        ],
+        "queuedExtracts": [
+          "a.md",
+          "sub/b.md",
+          "sub/c.md"
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "a.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "gone.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/b.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/c.md",
+            "status": "pending"
+          },
+          {
+            "availability": "missing",
+            "eligible": true,
+            "relPath": "sub/gone.md",
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "error": "vanished",
+        "failing": "b.md",
+        "known": [
+          "gone.md",
+          "sub/gone.md"
+        ]
+      },
+      "name": "unreadable-new-vanished",
+      "operation": "unreadable-file"
+    },
+    {
+      "expected": {
+        "folder": {
+          "lastScanError": null,
+          "scanState": "partial"
+        },
+        "inventory": [
+          "a.md",
+          "b.md",
+          "sub/c.md"
+        ],
+        "queuedExtracts": [
+          "a.md",
+          "b.md",
+          "sub/c.md"
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "a.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "b.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "gone.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/b.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/c.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/gone.md",
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "error": "vanished",
+        "failing": "sub/b.md",
+        "known": [
+          "gone.md",
+          "sub/b.md",
+          "sub/gone.md"
+        ]
+      },
+      "name": "unreadable-known-vanished",
+      "operation": "unreadable-file"
+    },
+    {
+      "expected": {
+        "folder": {
+          "lastScanError": null,
+          "scanState": "partial"
+        },
+        "inventory": [
+          "a.md",
+          "sub/b.md",
+          "sub/c.md"
+        ],
+        "queuedExtracts": [
+          "a.md",
+          "sub/b.md",
+          "sub/c.md"
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "a.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "b.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "gone.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/b.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/c.md",
+            "status": "pending"
+          },
+          {
+            "availability": "missing",
+            "eligible": true,
+            "relPath": "sub/gone.md",
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "error": "changedDuringRead",
+        "failing": "b.md",
+        "known": [
+          "b.md",
+          "gone.md",
+          "sub/gone.md"
+        ]
+      },
+      "name": "unreadable-known-changed-during-read",
+      "operation": "unreadable-file"
+    },
+    {
+      "expected": {
+        "folder": {
+          "lastScanError": null,
+          "scanState": "partial"
+        },
+        "inventory": [
+          "a.md",
+          "b.md",
+          "sub/c.md"
+        ],
+        "queuedExtracts": [
+          "a.md",
+          "b.md",
+          "sub/c.md"
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "a.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "b.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "gone.md",
+            "status": "ready"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/c.md",
+            "status": "pending"
+          },
+          {
+            "availability": "present",
+            "eligible": true,
+            "relPath": "sub/gone.md",
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "error": "becameLink",
+        "failing": "sub/b.md",
+        "known": [
+          "gone.md",
+          "sub/gone.md"
+        ]
+      },
+      "name": "unreadable-new-became-link",
+      "operation": "unreadable-file"
+    }
+  ],
+  "contract": "ingestion-scan-cadence",
+  "periodicReconcileMinutes": 30,
+  "version": 1,
+  "wakeGapSeconds": 60,
+  "watchedVerifyHours": 6
+}

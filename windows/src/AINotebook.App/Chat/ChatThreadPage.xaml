@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Chat thread + composer (spec §2.2). Conversation column max 760 (SizeConversationMax), composer
+  card (radius lg, 1 px border, shadow-free), chips for scope / persona / model, "+" menu,
+  context preview (eye) and a round monochrome send button. Replaces Views/ChatPage.
+-->
+<Page
+    x:Class="AINotebook.App.Chat.ChatThreadPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="using:AINotebook.App.Controls"
+    xmlns:vm="using:AINotebook.App.ViewModels"
+    xmlns:models="using:AINotebook.Core.Models"
+    Background="Transparent">
+
+
+    <Grid x:Name="ContentGrid" Padding="24,0,24,16">
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="ConversationRow" Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Conversation -->
+        <ScrollViewer x:Name="MessagesScroller" Grid.Row="0" Padding="0,8,0,8"
+                      Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}">
+            <StackPanel MaxWidth="{StaticResource SizeConversationMax}" HorizontalAlignment="Stretch">
+                <ItemsControl x:Name="MessageList" ItemsSource="{x:Bind ViewModel.Messages, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MessageViewModel">
+                            <ctrl:MessageRow ViewModel="{x:Bind}"
+                                             CitationTapped="OnCitationTapped"
+                                             ActionRequested="OnMessageAction" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- The question being sent, until the turn commits -->
+                <Border x:Name="PendingUserBlock" HorizontalAlignment="Right" Margin="0,8"
+                        Background="{ThemeResource Surface2Brush}" CornerRadius="{StaticResource RadiusLg}"
+                        Visibility="{x:Bind ViewModel.PendingQuestion, Mode=OneWay, Converter={StaticResource StringToVisibility}}">
+                    <TextBlock Style="{StaticResource TextBody}" Foreground="{ThemeResource Text1Brush}"
+                               TextWrapping="Wrap" IsTextSelectionEnabled="True"
+                               Text="{x:Bind ViewModel.PendingQuestion, Mode=OneWay}" />
+                </Border>
+                <!-- Streaming answer: same Markdown rendering, no bubble -->
+                <StackPanel x:Name="StreamingHost" Spacing="{StaticResource Space8}" Padding="0,8"
+                            Visibility="{x:Bind ViewModel.StreamingDraft, Mode=OneWay, Converter={StaticResource StringToVisibility}}" />
+                <ProgressRing x:Name="ThinkingRing" Width="{StaticResource Space16}" Height="{StaticResource Space16}"
+                              HorizontalAlignment="Left" Margin="0,8" IsActive="False" Visibility="Collapsed" />
+                <!-- Error: a muted row with a warning icon and Try again (no exception text) -->
+                <Grid x:Name="ErrorRow" ColumnSpacing="{StaticResource Space8}" Margin="0,8"
+                      Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource StringToVisibility}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="{StaticResource IconWarning}" Style="{StaticResource RowIcon}"
+                              Foreground="{ThemeResource WarningBrush}" VerticalAlignment="Top" Margin="0,2,0,0" />
+                    <TextBlock x:Name="ErrorText" Grid.Column="1" Style="{StaticResource TextBody}"
+                               Foreground="{ThemeResource Text2Brush}" TextWrapping="Wrap"
+                               Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" />
+                    <Button x:Name="RetryButton" Grid.Column="2" Style="{StaticResource QuietButtonStyle}"
+                            Command="{x:Bind ViewModel.RetryCommand}"
+                            Visibility="{x:Bind ViewModel.CanRetry, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}">
+                            <FontIcon Glyph="{StaticResource IconRegenerate}" Style="{StaticResource RowIcon}" />
+                            <TextBlock x:Name="RetryText" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <!-- "Saved as a note · Open note" after Save as note -->
+                <StackPanel x:Name="SavedNoteRow" Orientation="Horizontal" Spacing="{StaticResource Space8}" Visibility="Collapsed">
+                    <FontIcon Glyph="{StaticResource IconSuccess}" Style="{StaticResource RowIcon}" Foreground="{ThemeResource SuccessBrush}" />
+                    <TextBlock x:Name="SavedNoteText" Style="{StaticResource TextCaption}" Foreground="{ThemeResource Text2Brush}" VerticalAlignment="Center" />
+                    <HyperlinkButton x:Name="OpenSavedNoteButton" Padding="0" Click="OnOpenSavedNote" Foreground="{ThemeResource FocusBrush}" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- New chat: heading + notebook picker (the composer and quiet actions follow below) -->
+        <StackPanel x:Name="NewChatHero" Grid.Row="0" Spacing="{StaticResource Space12}" Margin="0,0,0,24"
+                    HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                    Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay}">
+            <TextBlock x:Name="NewChatHeading" Style="{StaticResource TextTitle}" Foreground="{ThemeResource Text1Brush}"
+                       HorizontalAlignment="Center" />
+            <Button x:Name="NotebookPickerButton" Style="{StaticResource ChipButtonStyle}" HorizontalAlignment="Center"
+                    Click="OnNotebookPicker">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}">
+                    <FontIcon Glyph="{StaticResource IconNotebook}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}" />
+                    <TextBlock x:Name="NotebookPickerText" />
+                    <FontIcon Glyph="{StaticResource IconChevronDown}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!-- Follow-up suggestions as chips above the composer -->
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" HorizontalScrollMode="Auto"
+                      VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled"
+                      MaxWidth="{StaticResource SizeConversationMax}" Margin="0,0,0,8"
+                      Visibility="{x:Bind ViewModel.HasFollowups, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+            <ItemsControl x:Name="FollowupList" ItemsSource="{x:Bind ViewModel.Followups, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Button Style="{StaticResource ChipButtonStyle}" Click="OnFollowupTapped" Tag="{x:Bind}">
+                            <TextBlock Text="{x:Bind}" TextTrimming="CharacterEllipsis" />
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Edit the last user message (replaces the composer while editing) -->
+        <Border x:Name="EditCard" Grid.Row="2" MaxWidth="{StaticResource SizeConversationMax}"
+                Background="{ThemeResource Surface1Brush}" BorderBrush="{ThemeResource BorderBrush}"
+                BorderThickness="1" CornerRadius="{StaticResource RadiusLg}" Padding="12,8"
+                Visibility="{x:Bind ViewModel.IsEditMode, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+            <Grid RowSpacing="{StaticResource Space8}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="EditingLabel" Style="{StaticResource SecondaryCaption}" />
+                <TextBox x:Name="EditInputBox" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap"
+                         Text="{x:Bind ViewModel.EditInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="{StaticResource Space8}" HorizontalAlignment="Right">
+                    <Button x:Name="CancelEditButton" Style="{StaticResource QuietButtonStyle}" Command="{x:Bind ViewModel.CancelEditCommand}" />
+                    <Button x:Name="CommitEditButton" Style="{StaticResource PrimaryButtonStyle}" Command="{x:Bind ViewModel.CommitEditCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Composer card -->
+        <Border x:Name="ComposerCard" Grid.Row="3" MaxWidth="{StaticResource SizeConversationMax}"
+                Background="{ThemeResource Surface1Brush}" BorderBrush="{ThemeResource BorderBrush}"
+                BorderThickness="1" CornerRadius="{StaticResource RadiusLg}" Padding="8,8,8,8"
+                Visibility="{x:Bind ViewModel.IsEditMode, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}">
+            <Grid RowSpacing="{StaticResource Space4}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="InputBox"
+                         FontSize="{StaticResource FontSizeBody}"
+                         Text="{x:Bind ViewModel.Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         AcceptsReturn="True" TextWrapping="Wrap"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         PreviewKeyDown="OnInputPreviewKeyDown"
+                         GotFocus="OnInputFocusChanged" LostFocus="OnInputFocusChanged"
+                         IsEnabled="{x:Bind ViewModel.Sending, Mode=OneWay, Converter={StaticResource InvertBool}}">
+                    <TextBox.Resources>
+                        <!-- Lightweight styling: the composer TextBox is chrome-less inside its card. -->
+                        <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBorderBrush" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="Transparent" />
+                        <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{ThemeResource Text3}" />
+                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="{ThemeResource Text3}" />
+                        <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="{ThemeResource Text3}" />
+                        <SolidColorBrush x:Key="TextControlForeground" Color="{ThemeResource Text1}" />
+                        <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{ThemeResource Text1}" />
+                        <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{ThemeResource Text1}" />
+                        <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+                    </TextBox.Resources>
+                </TextBox>
+                <Grid Grid.Row="1" ColumnSpacing="{StaticResource Space4}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- "+" menu: sources, per-message modes, tools, new note -->
+                    <Button x:Name="AddMenuButton" Grid.Column="0" Style="{StaticResource IconButtonStyle}">
+                        <FontIcon Glyph="{StaticResource IconAdd}" Style="{StaticResource RowIcon}" />
+                        <Button.Flyout>
+                            <MenuFlyout x:Name="AddMenu" Placement="TopEdgeAlignedLeft" Opening="OnAddMenuOpening">
+                                <MenuFlyoutItem x:Name="AddFileItem" Click="OnAddFile">
+                                    <MenuFlyoutItem.Icon><FontIcon Glyph="{StaticResource IconAddFile}" /></MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Name="AddFolderItem" Click="OnAddFolder">
+                                    <MenuFlyoutItem.Icon><FontIcon Glyph="{StaticResource IconAddFolder}" /></MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Name="AddUrlItem" Click="OnAddUrl">
+                                    <MenuFlyoutItem.Icon><FontIcon Glyph="{StaticResource IconAddUrl}" /></MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutSeparator />
+                                <ToggleMenuFlyoutItem x:Name="WebSearchItem"
+                                                      IsChecked="{x:Bind ViewModel.UseWebSearch, Mode=TwoWay}"
+                                                      Visibility="{x:Bind ViewModel.ShowWebSearchOption, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                                    <ToggleMenuFlyoutItem.Icon><FontIcon Glyph="{StaticResource IconWebSearch}" /></ToggleMenuFlyoutItem.Icon>
+                                </ToggleMenuFlyoutItem>
+                                <!-- WP8: per-message Overview mode (excerpts from all scoped files, no query embedding) -->
+                                <ToggleMenuFlyoutItem x:Name="OverviewItem"
+                                                      IsChecked="{x:Bind ViewModel.OverviewForNextMessage, Mode=TwoWay}">
+                                    <ToggleMenuFlyoutItem.Icon><FontIcon Glyph="{StaticResource IconOverview}" /></ToggleMenuFlyoutItem.Icon>
+                                </ToggleMenuFlyoutItem>
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutSubItem x:Name="RunToolSubItem">
+                                    <MenuFlyoutSubItem.Icon><FontIcon Glyph="{StaticResource IconRunTool}" /></MenuFlyoutSubItem.Icon>
+                                </MenuFlyoutSubItem>
+                                <MenuFlyoutItem x:Name="NewNoteItem" Click="OnNewNote">
+                                    <MenuFlyoutItem.Icon><FontIcon Glyph="{StaticResource IconNote}" /></MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem x:Name="NewPersonaItem" Click="OnNewPersona">
+                                    <MenuFlyoutItem.Icon><FontIcon Glyph="{StaticResource IconPersona}" /></MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <!-- Scope chip: whole notebook / selection (n) — WP6 explicit modes, four groups -->
+                    <Button x:Name="ScopeButton" Grid.Column="1" Style="{StaticResource ChipButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}">
+                            <FontIcon Glyph="{StaticResource IconScope}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}" />
+                            <TextBlock Text="{x:Bind ViewModel.ScopeButtonText, Mode=OneWay}" />
+                        </StackPanel>
+                        <Button.Flyout>
+                            <Flyout Placement="TopEdgeAlignedLeft">
+                                <StackPanel Spacing="6" MinWidth="240">
+                                    <TextBlock x:Name="ScopeTitle" Style="{StaticResource PanelHeader}"/>
+                                    <!-- WP6: explicit whole-notebook vs selected-items mode -->
+                                    <RadioButton x:Name="WholeNotebookRadio" GroupName="ChatScopeMode"
+                                                 IsChecked="{x:Bind ViewModel.Scope.WholeNotebook, Mode=TwoWay}"/>
+                                    <RadioButton x:Name="SelectedItemsRadio" GroupName="ChatScopeMode"
+                                                 IsChecked="{x:Bind ViewModel.Scope.SelectedItems, Mode=TwoWay}"/>
+                                    <TextBlock x:Name="EmptyScopeText" TextWrapping="Wrap" Style="{StaticResource TextCaption}"
+                                               Foreground="{ThemeResource Text2Brush}"
+                                               Visibility="{x:Bind ViewModel.Scope.IsEmptySelection, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
+                                    <ScrollViewer MaxHeight="360" VerticalScrollBarVisibility="Auto">
+                                        <StackPanel Spacing="4">
+                                            <TextBlock x:Name="ScopeFoldersLabel" Style="{StaticResource SecondaryCaption}"/>
+                                            <ItemsControl x:Name="FolderScopeList" ItemsSource="{x:Bind ViewModel.Scope.Folders, Mode=OneWay}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate x:DataType="vm:ScopeSourceItem">
+                                                        <CheckBox Content="{x:Bind Title}"
+                                                                  IsChecked="{x:Bind IsSelected, Mode=TwoWay}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <TextBlock x:Name="ScopeSetsLabel" Style="{StaticResource SecondaryCaption}"/>
+                                            <ItemsControl x:Name="SetScopeList" ItemsSource="{x:Bind ViewModel.Scope.Sets, Mode=OneWay}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate x:DataType="vm:ScopeSourceItem">
+                                                        <CheckBox Content="{x:Bind Title}"
+                                                                  IsChecked="{x:Bind IsSelected, Mode=TwoWay}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <TextBlock x:Name="ScopeSourcesLabel" Style="{StaticResource SecondaryCaption}"/>
+                                            <ItemsControl x:Name="SourceScopeList" ItemsSource="{x:Bind ViewModel.Scope.Sources, Mode=OneWay}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate x:DataType="vm:ScopeSourceItem">
+                                                        <CheckBox Content="{x:Bind Title}"
+                                                                  IsChecked="{x:Bind IsSelected, Mode=TwoWay}"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                    <!-- C2: source sets — apply a saved set as scope preset -->
+                                    <Border Margin="0,4,0,0" BorderBrush="{ThemeResource BorderBrush}"
+                                            BorderThickness="0,1,0,0" Padding="0,6,0,0">
+                                        <StackPanel Spacing="4">
+                                            <TextBlock x:Name="SourceSetsLabel" Style="{StaticResource SecondaryCaption}"
+                                                       Visibility="{x:Bind ViewModel.SourceSets.Count, Mode=OneWay, Converter={StaticResource CountToVisibility}}"/>
+                                            <ItemsControl ItemsSource="{x:Bind ViewModel.SourceSets, Mode=OneWay}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate x:DataType="models:SourceSet">
+                                                        <Grid Margin="0,2" ColumnSpacing="4">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Button Grid.Column="0" Content="{x:Bind Name}" Tag="{x:Bind}"
+                                                                    Style="{StaticResource SidebarButtonStyle}"
+                                                                    Click="OnApplySourceSet"/>
+                                                            <Button Grid.Column="1" Tag="{x:Bind}" Style="{StaticResource IconButtonStyle}"
+                                                                    Click="OnDeleteSourceSet" Loaded="OnDeleteSetLoaded">
+                                                                <FontIcon Glyph="{StaticResource IconDelete}" Style="{StaticResource RowIcon}"/>
+                                                            </Button>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <Button x:Name="AddSourceSetButton" Style="{StaticResource QuietButtonStyle}" Click="OnCreateSourceSet"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <!-- Persona chip (hidden while the notebook has no persona; "+ › New persona…" creates one) -->
+                    <Button x:Name="PersonaButton" Grid.Column="2" Style="{StaticResource ChipButtonStyle}"
+                            Visibility="{x:Bind ViewModel.HasPersonas, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}">
+                            <FontIcon Glyph="{StaticResource IconPersona}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}" />
+                            <TextBlock Text="{x:Bind ViewModel.PersonaChipText, Mode=OneWay}" />
+                        </StackPanel>
+                        <Button.Flyout>
+                            <Flyout x:Name="PersonaFlyout" Placement="TopEdgeAlignedLeft">
+                                <StackPanel Spacing="6" MinWidth="240">
+                                    <Button x:Name="PersonaNoneButton" Style="{StaticResource SidebarButtonStyle}"
+                                            Command="{x:Bind ViewModel.ClearPersonaCommand}"/>
+                                    <ItemsControl ItemsSource="{x:Bind ViewModel.Personas, Mode=OneWay}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Persona">
+                                                <Button Content="{x:Bind Name}" Tag="{x:Bind}" Style="{StaticResource SidebarButtonStyle}"
+                                                        Click="OnApplyPersona"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <Border Margin="0,4,0,0" BorderBrush="{ThemeResource BorderBrush}"
+                                            BorderThickness="0,1,0,0" Padding="0,6,0,0">
+                                        <StackPanel x:Name="PersonaCreatePanel" Spacing="4">
+                                            <TextBlock x:Name="PersonaNewLabel" Style="{StaticResource SecondaryCaption}"/>
+                                            <TextBox x:Name="PersonaNameBox"
+                                                     Text="{x:Bind ViewModel.NewPersonaName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBox x:Name="PersonaInstructionsBox"
+                                                     AcceptsReturn="True" TextWrapping="Wrap" Height="80"
+                                                     Text="{x:Bind ViewModel.NewPersonaInstructions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button x:Name="PersonaSaveButton" Style="{StaticResource PrimaryButtonStyle}"
+                                                    Command="{x:Bind ViewModel.CreatePersonaCommand}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <!-- Model chip: "Provider · model" → regenerate with… / model settings -->
+                    <Button x:Name="ModelButton" Grid.Column="3" Style="{StaticResource ChipButtonStyle}" Click="OnModelChip">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}">
+                            <FontIcon Glyph="{StaticResource IconModel}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}" />
+                            <TextBlock Text="{x:Bind ViewModel.ModelChipText, Mode=OneWay}" MaxWidth="{StaticResource SizeSidebarMin}" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Context preview (eye): prepares the draft and opens the Context panel -->
+                    <Button x:Name="PreviewContextButton" Grid.Column="5" Style="{StaticResource IconButtonStyle}"
+                            Command="{x:Bind ViewModel.PrepareContextCommand}">
+                        <FontIcon Glyph="{StaticResource IconPreviewContext}" Style="{StaticResource RowIcon}" />
+                    </Button>
+                    <!-- Send: Enter sends, Shift+Enter is a new line, Ctrl+Enter also sends -->
+                    <Button x:Name="SendButton" Grid.Column="6" Style="{StaticResource SendButtonStyle}"
+                            Command="{x:Bind ViewModel.SendCommand}"
+                            Visibility="{x:Bind ViewModel.Sending, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}">
+                        <FontIcon Glyph="{StaticResource IconSend}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource SizeIconRow}" />
+                    </Button>
+                    <!-- Stop replaces Send while an answer is prepared or streams; the partial answer stays -->
+                    <Button x:Name="StopButton" Grid.Column="6" Style="{StaticResource SendButtonStyle}"
+                            Command="{x:Bind ViewModel.StopCommand}"
+                            Visibility="{x:Bind ViewModel.Sending, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+                        <FontIcon Glyph="{StaticResource IconStop}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource SizeIconRow}" />
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- New chat: three quiet actions under the composer -->
+        <StackPanel x:Name="QuietActions" Grid.Row="4" Orientation="Horizontal" Spacing="{StaticResource Space8}"
+                    HorizontalAlignment="Center" Margin="0,12,0,0"
+                    Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay}">
+            <Button x:Name="QuietAddFolder" Style="{StaticResource QuietButtonStyle}" Click="OnAddFolder">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                    <FontIcon Glyph="{StaticResource IconAddFolder}" Style="{StaticResource RowIcon}" />
+                    <TextBlock x:Name="QuietAddFolderText" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="QuietAddFile" Style="{StaticResource QuietButtonStyle}" Click="OnAddFile">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                    <FontIcon Glyph="{StaticResource IconAddFile}" Style="{StaticResource RowIcon}" />
+                    <TextBlock x:Name="QuietAddFileText" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="QuietNewNote" Style="{StaticResource QuietButtonStyle}" Click="OnNewNote">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                    <FontIcon Glyph="{StaticResource IconNote}" Style="{StaticResource RowIcon}" />
+                    <TextBlock x:Name="QuietNewNoteText" Style="{StaticResource TextCaption}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>

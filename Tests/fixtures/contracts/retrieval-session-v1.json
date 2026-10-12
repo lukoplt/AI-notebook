@@ -1,0 +1,289 @@
+{
+  "cases": [
+    {
+      "expectedEndpointRevision": "48dba6e5a7de19aac0f3b1304e9482503bbe3bd3c71fe695e48f4197fa95bb12",
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "inputs": [
+        "Q"
+      ],
+      "model": "m",
+      "name": "root",
+      "normalizedRoot": "http://localhost:11434",
+      "queryFormatVersion": "1",
+      "requests": 1,
+      "root": "http://localhost:11434",
+      "type": "ollama"
+    },
+    {
+      "expectedEndpointRevision": "31b17965531996a3e7a643c57391021a6954eef006edd23b3ea27e2f74118c8a",
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "inputs": [
+        "Q"
+      ],
+      "model": "m",
+      "name": "proxy",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "queryFormatVersion": "1",
+      "requests": 1,
+      "root": "https://unit.example/proxy/v1",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedEndpointRevision": "31b17965531996a3e7a643c57391021a6954eef006edd23b3ea27e2f74118c8a",
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "expectedNewEndpointRevision": "31b17965531996a3e7a643c57391021a6954eef006edd23b3ea27e2f74118c8a",
+      "expectedRequest": {
+        "authorization": "Bearer key-A",
+        "inputs": [
+          "Q"
+        ],
+        "model": "m:tag",
+        "url": "https://unit.example/proxy/v1/embeddings"
+      },
+      "inputs": [
+        "Q"
+      ],
+      "model": "m:tag",
+      "name": "key-rotation",
+      "newKey": "key-B",
+      "newModel": "new:model",
+      "newRoot": "https://unit.example/proxy/v1",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "oldKey": "key-A",
+      "oldRoot": "https://unit.example/proxy/v1",
+      "providerId": "provider-a",
+      "queryFormatVersion": "1",
+      "rawModel": "m:tag",
+      "requests": 1,
+      "root": "https://unit.example/proxy/v1",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": "endpointRevisionMismatch",
+      "generationEndpointRevision": "31b17965531996a3e7a643c57391021a6954eef006edd23b3ea27e2f74118c8a",
+      "inputs": [
+        "Q"
+      ],
+      "model": "m",
+      "name": "root-change",
+      "newEndpointRevision": "c374ad00fc462dcf725135658e81cc117fa89e1ad1ff1e32d705ba242d0fb95d",
+      "newRoot": "https://other.example/v1",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "oldRoot": "https://unit.example/proxy/v1",
+      "queryFormatVersion": "1",
+      "requests": 0,
+      "root": "https://unit.example/proxy/v1",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": "unsupportedEndpoint",
+      "inputs": [
+        "Q"
+      ],
+      "model": "m",
+      "name": "chat-only-anthropic",
+      "normalizedRoot": "https://unit.example",
+      "queryFormatVersion": "1",
+      "requests": 0,
+      "root": "https://unit.example",
+      "type": "anthropic"
+    },
+    {
+      "expectedError": "unsupportedEndpoint",
+      "inputs": [
+        "Q"
+      ],
+      "model": "m",
+      "name": "chat-only-openwebui",
+      "normalizedRoot": "https://unit.example",
+      "queryFormatVersion": "1",
+      "requests": 0,
+      "root": "https://unit.example",
+      "type": "openwebui"
+    },
+    {
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "expectedStatus": "legacyEndpointUnverified",
+      "inputs": [
+        "Q"
+      ],
+      "model": "qwen3:0.6b",
+      "modelKey": "provider-a:qwen3:0.6b",
+      "name": "legacy",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "providerId": "provider-a",
+      "queryFormatVersion": "legacy",
+      "rawModel": "qwen3:0.6b",
+      "requests": 1,
+      "root": "https://unit.example/proxy/v1",
+      "storedKey": "provider-a:qwen3:0.6b",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "expectedStatus": "legacyEndpointUnverified",
+      "inputs": [
+        "Q"
+      ],
+      "model": "m",
+      "name": "legacy-bare",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "providerId": "provider-a",
+      "queryFormatVersion": "legacy",
+      "rawModel": "m",
+      "requests": 1,
+      "root": "https://unit.example/proxy/v1",
+      "selectedModel": "new-model",
+      "selectedProviderId": "provider-a",
+      "storedKey": "m",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": "legacyProviderUnresolved",
+      "inputs": [
+        "Q"
+      ],
+      "model": "6f1c2a4e-8b3d-4c7a-9e5f-0a1b2c3d4e5f:qwen3:0.6b",
+      "name": "legacy-unresolved",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "queryFormatVersion": "legacy",
+      "requests": 0,
+      "root": "https://unit.example/proxy/v1",
+      "storedKey": "6f1c2a4e-8b3d-4c7a-9e5f-0a1b2c3d4e5f:qwen3:0.6b",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": "unsupportedQueryFormat",
+      "inputs": [
+        "Q"
+      ],
+      "model": "m",
+      "name": "unknown-format",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "queryFormatVersion": "99",
+      "requests": 0,
+      "root": "https://unit.example/proxy/v1",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "expectedStatus": "legacyEndpointUnverified",
+      "inputs": [
+        "Q"
+      ],
+      "model": "nomic-embed-text:latest",
+      "name": "legacy-bare-tag",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "providerId": "provider-a",
+      "queryFormatVersion": "legacy",
+      "rawModel": "nomic-embed-text:latest",
+      "requests": 1,
+      "root": "https://unit.example/proxy/v1",
+      "selectedModel": "new-model",
+      "selectedProviderId": "provider-a",
+      "storedKey": "nomic-embed-text:latest",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "expectedStatus": "legacyEndpointUnverified",
+      "inputs": [
+        "Q"
+      ],
+      "model": "mxbai-embed-large:335m",
+      "name": "legacy-bare-size-tag",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "providerId": "provider-a",
+      "queryFormatVersion": "legacy",
+      "rawModel": "mxbai-embed-large:335m",
+      "requests": 1,
+      "root": "https://unit.example/proxy/v1",
+      "selectedModel": "new-model",
+      "selectedProviderId": "provider-a",
+      "storedKey": "mxbai-embed-large:335m",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "expectedStatus": "legacyEndpointUnverified",
+      "inputs": [
+        "Q"
+      ],
+      "model": "deleted:qwen3:0.6b",
+      "name": "legacy-unknown-prefix",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "providerId": "provider-a",
+      "queryFormatVersion": "legacy",
+      "rawModel": "deleted:qwen3:0.6b",
+      "requests": 1,
+      "root": "https://unit.example/proxy/v1",
+      "selectedModel": "new-model",
+      "selectedProviderId": "provider-a",
+      "storedKey": "deleted:qwen3:0.6b",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": null,
+      "expectedInputs": [
+        "Q"
+      ],
+      "expectedStatus": "legacyEndpointUnverified",
+      "inputs": [
+        "Q"
+      ],
+      "model": ":m",
+      "name": "legacy-empty-prefix",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "providerId": "provider-a",
+      "queryFormatVersion": "legacy",
+      "rawModel": ":m",
+      "requests": 1,
+      "root": "https://unit.example/proxy/v1",
+      "selectedModel": "new-model",
+      "selectedProviderId": "provider-a",
+      "storedKey": ":m",
+      "type": "openai_compatible"
+    },
+    {
+      "expectedError": "legacyProviderUnresolved",
+      "inputs": [
+        "Q"
+      ],
+      "model": "ollama:nomic-embed-text",
+      "name": "legacy-unresolved-type",
+      "normalizedRoot": "https://unit.example/proxy/v1",
+      "queryFormatVersion": "legacy",
+      "requests": 0,
+      "root": "https://unit.example/proxy/v1",
+      "storedKey": "ollama:nomic-embed-text",
+      "type": "openai_compatible"
+    }
+  ],
+  "contract": "retrieval-session",
+  "endpointRevisionEncoding": "sha256-lowerhex(type-utf8 + LF + normalized-root-utf8)",
+  "version": 1
+}

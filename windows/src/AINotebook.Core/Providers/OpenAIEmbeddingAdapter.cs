@@ -1,4 +1,3 @@
-using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -7,7 +6,7 @@ using AINotebook.Core.Ollama;
 namespace AINotebook.Core.Providers;
 
 /// <summary>
-/// OpenAI-compatible embeddings adapter: POST /v1/embeddings.
+/// OpenAI-compatible embeddings adapter: POST {base}/embeddings.
 /// Works for OpenAI, LM Studio, OpenRouter, vLLM, and any other
 /// server that implements the OpenAI embeddings endpoint.
 /// </summary>
@@ -20,7 +19,7 @@ public sealed class OpenAIEmbeddingAdapter : IEmbeddingProducing
     public OpenAIEmbeddingAdapter(HttpClient http, string baseUrl, string? apiKey = null)
     {
         _http = http;
-        _baseUrl = baseUrl.TrimEnd('/');
+        _baseUrl = baseUrl;
         _apiKey = apiKey;
     }
 
@@ -30,7 +29,8 @@ public sealed class OpenAIEmbeddingAdapter : IEmbeddingProducing
         var body = new { model, input = inputs };
         var json = JsonSerializer.Serialize(body);
 
-        using var req = new HttpRequestMessage(HttpMethod.Post, $"{_baseUrl}/v1/embeddings")
+        using var req = new HttpRequestMessage(HttpMethod.Post,
+            ProviderApiRoot.Build(ProviderType.OpenAI, _baseUrl, ProviderEndpoint.Embeddings))
         {
             Content = new StringContent(json, Encoding.UTF8, "application/json")
         };
@@ -39,10 +39,7 @@ public sealed class OpenAIEmbeddingAdapter : IEmbeddingProducing
 
         using var resp = await _http.SendAsync(req, ct);
 
-        if (resp.StatusCode == HttpStatusCode.Unauthorized)
-            throw new ProviderAuthException("Invalid API key (401).");
-        if (!resp.IsSuccessStatusCode)
-            throw new ProviderException($"Embedding request failed: HTTP {(int)resp.StatusCode}.");
+        OpenAIStyleWire.ThrowForStatus(resp);
 
         var respJson = await resp.Content.ReadAsStringAsync(ct);
         var root = JsonSerializer.Deserialize<JsonElement>(respJson);

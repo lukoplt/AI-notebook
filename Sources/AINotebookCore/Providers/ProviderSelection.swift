@@ -8,6 +8,8 @@ public enum ProviderSettingsKeys {
     public static let embeddingProviderId = "selectedEmbeddingProviderId"
     public static let chatModel = "selectedChatModel"
     public static let embeddingModel = "selectedEmbeddingModel"
+    public static let providerConfigurationV19Converted = "providerConfigurationV19Converted"
+    public static let embeddingSelectionConversionNoticePending = "embeddingSelectionConversionNoticePending"
 }
 
 /// Live (provider, model) selection, readable from any isolation context.

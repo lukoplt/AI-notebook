@@ -1,0 +1,54 @@
+{
+  "contract": "constants",
+  "version": 1,
+  "scan": {
+    "maxFileBytes": 52428800,
+    "maxOfficeDecompressedBytes": 209715200,
+    "maxExtractedChars": 5000000,
+    "maxPdfPages": 2000,
+    "maxChunksPerFile": 5000,
+    "extractionConcurrency": 2,
+    "periodicReconcileMinutes": 30,
+    "watchDebounceMs": 500,
+    "watchMaxCoalesceMs": 5000
+  },
+  "detector": {
+    "maxUnigrams": 256,
+    "maxBigrams": 1024,
+    "maxTrigrams": 4096,
+    "orderWeights": [1, 2, 3],
+    "scoreScale": 1024,
+    "lengthBucketStarts": [12, 32, 80, 200],
+    "minLetters": 12,
+    "minWords": 3,
+    "mixedDominanceBp": 7000
+  },
+  "retrieval": {
+    "rrfK": 60,
+    "fetchK": 32,
+    "topK": 16,
+    "maxFtsTokens": 32
+  },
+  "cache": {
+    "globalBudgetBytes": 536870912
+  },
+  "pack": {
+    "evidenceShareBp": 6000,
+    "mapMaxShareBp": 1500,
+    "noteWebMaxShareBp": 1500,
+    "tokenEstimateHeadroomBp": 1500,
+    "diversityPenaltyBp": 9000,
+    "maxPassages": 40,
+    "neighborRadius": 1,
+    "previewTurnsInMemory": 5,
+    "previewMaxBytes": 33554432
+  },
+  "providers": {
+    "defaultRuntimeContext": 8192,
+    "defaultMaxOutputTokens": 1024
+  },
+  "perf": {
+    "warmRetrievalP95Ms": 300,
+    "perfCorpusChunks": [100000, 200000]
+  }
+}

@@ -1,0 +1,3923 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "empty",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 0,
+        "sourcesTotal": 0
+      },
+      "name": "empty-notebook",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "empty",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "noProvider",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 0,
+        "sourcesTotal": 0
+      },
+      "name": "empty-ignores-missing-provider",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "ready",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "ready",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "ready",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "done"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "ready-nothing-to-embed",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "lexicalOnly",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "lexical-only",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "lexicalOnly",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": "embeddingSelectionChanged",
+          "nextRetryAt": null,
+          "state": "cancelled"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "lexical-only-after-selection-change",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "lexicalOnly",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "paused"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "lexical-only-paused-job",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": 12,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "scanning",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 12,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scanning-folder-state",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "scanning",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": null,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "idle"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 1,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scanning-queued-job",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": 12,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "scanning",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 5,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          },
+          {
+            "filesSeen": 7,
+            "folderId": 2,
+            "lastScanError": null,
+            "scanState": "scanning"
+          },
+          {
+            "filesSeen": null,
+            "folderId": 3,
+            "lastScanError": null,
+            "scanState": "scanning"
+          },
+          {
+            "filesSeen": 99,
+            "folderId": 4,
+            "lastScanError": null,
+            "scanState": "idle"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scanning-sums-files",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "scanning",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": null,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scanning-unknown-count",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 3,
+        "errorCode": null,
+        "filesSeen": 3,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 3
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 2,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 3,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scanning-beats-extracting",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 7,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 1,
+        "total": 10
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 2,
+        "extractRunning": 1,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 1,
+        "sourcesReady": 6,
+        "sourcesTotal": 10
+      },
+      "name": "extracting",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 2,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 1,
+        "total": 2
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 1,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 1,
+        "sourcesReady": 2,
+        "sourcesTotal": 2
+      },
+      "name": "extracting-clamps-done",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 5500,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": "warning",
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 6000
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 500,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "warning",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 5500,
+        "sourcesTotal": 6000
+      },
+      "name": "extracting-memory-warning",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 5300,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": "critical",
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 6000
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 700,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "critical",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 5300,
+        "sourcesTotal": 6000
+      },
+      "name": "extracting-memory-critical",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 2,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": "critical",
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 4
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 1,
+        "folders": [],
+        "memoryPressure": "critical",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 2,
+        "sourcesTotal": 4
+      },
+      "name": "extracting-memory-critical-running",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 3,
+        "errorCode": null,
+        "filesSeen": 3,
+        "isActive": true,
+        "memoryPressure": "critical",
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 3
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 2,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 3,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "critical",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scanning-ignores-memory-pressure",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 1,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 2
+      },
+      "input": {
+        "embedChunksDone": 1,
+        "embedChunksTotal": 2,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "critical",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-ignores-memory-pressure",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "ready",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "warning",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "ready-ignores-memory-pressure",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "runtimeFailed",
+        "done": null,
+        "errorCode": "unexpectedError",
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 3,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "critical",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": "unexpectedError",
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "runtime-failed-ignores-memory-pressure",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 1,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 4
+      },
+      "input": {
+        "embedChunksDone": 1,
+        "embedChunksTotal": 9,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 1,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 1,
+        "sourcesTotal": 4
+      },
+      "name": "extracting-beats-embedding",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 40,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 100
+      },
+      "input": {
+        "embedChunksDone": 40,
+        "embedChunksTotal": 100,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-generation",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": true,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 5,
+        "embedChunksTotal": 10,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-bootstrap",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 0,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 8
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 8,
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-queued-due",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 2,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 8
+      },
+      "input": {
+        "embedChunksDone": 2,
+        "embedChunksTotal": 8,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": 900,
+          "state": "queued"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-queued-deadline-passed",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 0,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 8
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 8,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": 1000,
+          "state": "queued"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-queued-deadline-now",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-unknown-total",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 10,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 10
+      },
+      "input": {
+        "embedChunksDone": 12,
+        "embedChunksTotal": 10,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-clamps-done",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 1,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 2
+      },
+      "input": {
+        "embedChunksDone": 1,
+        "embedChunksTotal": 2,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "providerDisabled",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "embedding-beats-blocked",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "retrying",
+        "preparing": false,
+        "retry": {
+          "attempt": 2,
+          "code": "providerUnreachable",
+          "retryAt": 1120,
+          "retryInSeconds": 120
+        },
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 2,
+          "bootstrap": false,
+          "errorCode": "providerUnreachable",
+          "nextRetryAt": 1120,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "retrying-failed",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "retrying",
+        "preparing": false,
+        "retry": {
+          "attempt": 1,
+          "code": "leaseExpired",
+          "retryAt": 1060,
+          "retryInSeconds": 60
+        },
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": "leaseExpired",
+          "nextRetryAt": 1060,
+          "state": "queued"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "retrying-lease-expired",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "retrying",
+        "preparing": false,
+        "retry": {
+          "attempt": 4,
+          "code": "providerTimeout",
+          "retryAt": 990,
+          "retryInSeconds": 0
+        },
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 4,
+          "bootstrap": false,
+          "errorCode": "providerTimeout",
+          "nextRetryAt": 990,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "retrying-overdue",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "retrying",
+        "preparing": false,
+        "retry": {
+          "attempt": 3,
+          "code": "providerHttp503",
+          "retryAt": 1000,
+          "retryInSeconds": 0
+        },
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 3,
+          "bootstrap": false,
+          "errorCode": "providerHttp503",
+          "nextRetryAt": 1000,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "retrying-deadline-now",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "retrying",
+        "preparing": false,
+        "retry": {
+          "attempt": 1,
+          "code": "unknown",
+          "retryAt": 1060,
+          "retryInSeconds": 60
+        },
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": 1060,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "retrying-without-code",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "retrying",
+        "preparing": false,
+        "retry": {
+          "attempt": 1,
+          "code": "providerUnreachable",
+          "retryAt": 1060,
+          "retryInSeconds": 60
+        },
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": "providerUnreachable",
+          "nextRetryAt": 1060,
+          "state": "failed"
+        },
+        "embeddingAvailability": "providerDisabled",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "retrying-beats-blocked",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "noEmbeddingModel",
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "noProvider",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "blocked-no-provider",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "noEmbeddingModel",
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "noModel",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "blocked-no-model",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "noEmbeddingModel",
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "providerHasNoEmbeddings",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "blocked-provider-has-no-embeddings",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "providerDisabled",
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "providerDisabled",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "blocked-provider-disabled",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "consentRequired",
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "consentRequired",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "blocked-consent",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "credentialUnavailable",
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "credentialUnavailable",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "blocked-credential",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "noEmbeddingModel",
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "noModel",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "blocked-even-when-index-current",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "indexFailed",
+        "done": null,
+        "errorCode": "providerHttp500",
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 5,
+          "bootstrap": false,
+          "errorCode": "providerHttp500",
+          "nextRetryAt": null,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "index-failed",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "indexFailed",
+        "done": null,
+        "errorCode": "invalidVector",
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 5,
+          "bootstrap": false,
+          "errorCode": "invalidVector",
+          "nextRetryAt": 1200,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "index-failed-exhausted-with-deadline",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "indexFailed",
+        "done": null,
+        "errorCode": "unknown",
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 2,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "index-failed-without-code",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "ready",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 5,
+          "bootstrap": false,
+          "errorCode": "providerHttp500",
+          "nextRetryAt": null,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "index-failed-but-current",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "consentRequired",
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 5,
+          "bootstrap": false,
+          "errorCode": "providerAuth",
+          "nextRetryAt": null,
+          "state": "failed"
+        },
+        "embeddingAvailability": "consentRequired",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "availability-beats-index-failed",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "runtimeFailed",
+        "done": null,
+        "errorCode": "unexpectedError",
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 3,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 2,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": "unexpectedError",
+        "scanJobsPending": 1,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "runtime-failed",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": "runtimeFailed",
+        "done": null,
+        "errorCode": "notFound",
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "blocked",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": "notFound",
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 0,
+        "sourcesTotal": 0
+      },
+      "name": "runtime-failed-empty",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": false,
+        "memoryPressure": null,
+        "phase": "ready",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": false,
+        "scanWarnings": [
+          {
+            "error": null,
+            "folderId": 1,
+            "state": "partial"
+          },
+          {
+            "error": "permissionDenied",
+            "folderId": 2,
+            "state": "error"
+          },
+          {
+            "error": "rootUnavailable",
+            "folderId": 3,
+            "state": "unavailable"
+          }
+        ],
+        "sourceErrors": 2,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": null,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "partial"
+          },
+          {
+            "filesSeen": null,
+            "folderId": 2,
+            "lastScanError": "permissionDenied",
+            "scanState": "error"
+          },
+          {
+            "filesSeen": null,
+            "folderId": 3,
+            "lastScanError": "rootUnavailable",
+            "scanState": "unavailable"
+          },
+          {
+            "filesSeen": null,
+            "folderId": 4,
+            "lastScanError": null,
+            "scanState": "idle"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 2,
+        "sourcesReady": 3,
+        "sourcesTotal": 5
+      },
+      "name": "scan-warnings",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": 4,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "scanning",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [
+          {
+            "error": "unexpectedError",
+            "folderId": 2,
+            "state": "error"
+          }
+        ],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 4,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          },
+          {
+            "filesSeen": null,
+            "folderId": 2,
+            "lastScanError": "unexpectedError",
+            "scanState": "error"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scan-warnings-while-scanning",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 210000,
+        "errorCode": null,
+        "filesSeen": 2100,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 530000
+      },
+      "input": {
+        "embedChunksDone": 210000,
+        "embedChunksTotal": 530000,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 2100,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scan-with-embedding",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 5,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 9
+      },
+      "input": {
+        "embedChunksDone": 5,
+        "embedChunksTotal": 9,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": null,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "idle"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 1,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scan-queued-with-embedding",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": 3,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": true,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 3,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scan-with-embedding-bootstrap",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": 20,
+        "errorCode": null,
+        "filesSeen": 40,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "extracting",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": 50
+      },
+      "input": {
+        "embedChunksDone": 1,
+        "embedChunksTotal": 9,
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 3,
+        "extractRunning": 1,
+        "folders": [
+          {
+            "filesSeen": 40,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": false,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 20,
+        "sourcesTotal": 50
+      },
+      "name": "scan-with-extracting",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": 8,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "scanning",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 2,
+          "bootstrap": false,
+          "errorCode": "providerUnreachable",
+          "nextRetryAt": 1120,
+          "state": "failed"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 8,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scan-hides-retry",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": 8,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "scanning",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [
+          {
+            "error": null,
+            "folderId": 2,
+            "state": "partial"
+          }
+        ],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": null,
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": 8,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          },
+          {
+            "filesSeen": null,
+            "folderId": 2,
+            "lastScanError": null,
+            "scanState": "partial"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scan-without-work",
+      "operation": "derive"
+    },
+    {
+      "expected": {
+        "blockedReason": null,
+        "done": null,
+        "errorCode": null,
+        "filesSeen": null,
+        "isActive": true,
+        "memoryPressure": null,
+        "phase": "embedding",
+        "preparing": false,
+        "retry": null,
+        "scanInProgress": true,
+        "scanWarnings": [],
+        "sourceErrors": 0,
+        "total": null
+      },
+      "input": {
+        "embedChunksDone": 0,
+        "embedChunksTotal": 0,
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "embeddingAvailability": "ready",
+        "extractQueued": 0,
+        "extractRunning": 0,
+        "folders": [
+          {
+            "filesSeen": null,
+            "folderId": 1,
+            "lastScanError": null,
+            "scanState": "scanning"
+          }
+        ],
+        "memoryPressure": "normal",
+        "needsEmbedding": true,
+        "now": 1000,
+        "runtimeError": null,
+        "scanJobsPending": 0,
+        "sourcesError": 0,
+        "sourcesReady": 3,
+        "sourcesTotal": 3
+      },
+      "name": "scan-with-embedding-unknown-count",
+      "operation": "derive"
+    },
+    {
+      "expected": "ready",
+      "input": {
+        "cloud": false,
+        "configured": true,
+        "enabled": true,
+        "keyLoadFails": false,
+        "model": "nomic-embed-text",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-local-ready",
+      "operation": "availability"
+    },
+    {
+      "expected": "ready",
+      "input": {
+        "cloud": true,
+        "configured": true,
+        "enabled": true,
+        "keyLoadFails": false,
+        "model": "text-embedding-3-small",
+        "privacyAcknowledged": true,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-cloud-ready",
+      "operation": "availability"
+    },
+    {
+      "expected": "noProvider",
+      "input": {
+        "cloud": false,
+        "configured": false,
+        "enabled": true,
+        "keyLoadFails": false,
+        "model": "nomic-embed-text",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-not-configured",
+      "operation": "availability"
+    },
+    {
+      "expected": "providerHasNoEmbeddings",
+      "input": {
+        "cloud": true,
+        "configured": true,
+        "enabled": true,
+        "keyLoadFails": false,
+        "model": "nomic-embed-text",
+        "privacyAcknowledged": true,
+        "supportsEmbeddings": false
+      },
+      "name": "availability-no-embeddings",
+      "operation": "availability"
+    },
+    {
+      "expected": "providerHasNoEmbeddings",
+      "input": {
+        "cloud": true,
+        "configured": true,
+        "enabled": false,
+        "keyLoadFails": false,
+        "model": "nomic-embed-text",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": false
+      },
+      "name": "availability-no-embeddings-before-disabled",
+      "operation": "availability"
+    },
+    {
+      "expected": "providerDisabled",
+      "input": {
+        "cloud": false,
+        "configured": true,
+        "enabled": false,
+        "keyLoadFails": false,
+        "model": "nomic-embed-text",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-disabled",
+      "operation": "availability"
+    },
+    {
+      "expected": "providerDisabled",
+      "input": {
+        "cloud": false,
+        "configured": true,
+        "enabled": false,
+        "keyLoadFails": false,
+        "model": "",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-disabled-before-model",
+      "operation": "availability"
+    },
+    {
+      "expected": "noModel",
+      "input": {
+        "cloud": false,
+        "configured": true,
+        "enabled": true,
+        "keyLoadFails": false,
+        "model": "  ",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-blank-model",
+      "operation": "availability"
+    },
+    {
+      "expected": "noModel",
+      "input": {
+        "cloud": false,
+        "configured": true,
+        "enabled": true,
+        "keyLoadFails": false,
+        "model": "",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-empty-model",
+      "operation": "availability"
+    },
+    {
+      "expected": "consentRequired",
+      "input": {
+        "cloud": true,
+        "configured": true,
+        "enabled": true,
+        "keyLoadFails": false,
+        "model": "nomic-embed-text",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-consent",
+      "operation": "availability"
+    },
+    {
+      "expected": "consentRequired",
+      "input": {
+        "cloud": true,
+        "configured": true,
+        "enabled": true,
+        "keyLoadFails": true,
+        "model": "nomic-embed-text",
+        "privacyAcknowledged": false,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-consent-before-key",
+      "operation": "availability"
+    },
+    {
+      "expected": "credentialUnavailable",
+      "input": {
+        "cloud": true,
+        "configured": true,
+        "enabled": true,
+        "keyLoadFails": true,
+        "model": "nomic-embed-text",
+        "privacyAcknowledged": true,
+        "supportsEmbeddings": true
+      },
+      "name": "availability-credential",
+      "operation": "availability"
+    },
+    {
+      "expected": {
+        "embedJob": null,
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [],
+        "jobs": []
+      },
+      "name": "embed-job-no-jobs",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "progressGenerationId": 1
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 165,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "running",
+            "target": "generation:1"
+          }
+        ]
+      },
+      "name": "embed-job-generation-running",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-bootstrap-queued-without-generation",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "progressGenerationId": 1
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 165,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "running",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-running-generation-job-and-queued-bootstrap",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": 1
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 165,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-queued-bootstrap-joins-building-generation",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": 3
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          },
+          {
+            "id": 3,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          },
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-queued-bootstrap-joins-newest-building-generation",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "mxbai-embed-large",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 165,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "done",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-queued-bootstrap-other-model-prepares",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "1",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "1"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-queued-bootstrap-other-format-prepares",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 1024,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-queued-bootstrap-other-dims-prepares",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-queued-bootstrap-active-only-prepares",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": false,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-queued-reindex-bootstrap-prepares",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": null,
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-undecodable-bootstrap-prepares",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 1,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "running"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "other",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 3,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "running",
+            "target": "notebook:1"
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 5,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "other",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "generation:2"
+          }
+        ]
+      },
+      "name": "embed-job-running-bootstrap-beats-queued-generation-job",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 2,
+          "bootstrap": false,
+          "errorCode": "providerUnreachable",
+          "nextRetryAt": 1120,
+          "state": "failed"
+        },
+        "progressGenerationId": 1
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 2,
+            "error": "providerUnreachable",
+            "id": 10,
+            "nextRetryAt": 1120,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "failed",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 12,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "done",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-waiting-generation-job-beats-newer-finished-bootstrap",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "paused"
+        },
+        "progressGenerationId": 1
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 10,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "paused",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 12,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "cancelled",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-paused-job-is-unfinished",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": false,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "queued"
+        },
+        "progressGenerationId": 2
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          },
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "other",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 10,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 14,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "other",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "generation:2"
+          }
+        ]
+      },
+      "name": "embed-job-newest-unfinished-wins",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 5,
+          "bootstrap": false,
+          "errorCode": "invalidVector",
+          "nextRetryAt": 1200,
+          "state": "failed"
+        },
+        "progressGenerationId": 1
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "failed"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "providerHttp500",
+            "id": 10,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "failed",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 5,
+            "error": "invalidVector",
+            "id": 12,
+            "nextRetryAt": 1200,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "failed",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 9,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "done",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-terminal-failure-is-finished",
+      "operation": "embedJob"
+    },
+    {
+      "expected": {
+        "embedJob": {
+          "attempts": 0,
+          "bootstrap": true,
+          "errorCode": null,
+          "nextRetryAt": null,
+          "state": "done"
+        },
+        "progressGenerationId": null
+      },
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          }
+        ],
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 5,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "done",
+            "target": "generation:1"
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 9,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "done",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "embed-job-newest-finished-without-unfinished",
+      "operation": "embedJob"
+    }
+  ],
+  "contract": "indexing-status",
+  "phases": [
+    "scanning",
+    "extracting",
+    "embedding",
+    "retrying",
+    "blocked",
+    "ready",
+    "lexicalOnly",
+    "empty"
+  ],
+  "version": 1
+}

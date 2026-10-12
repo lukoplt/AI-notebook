@@ -1,0 +1,1277 @@
+{
+  "cases": [
+    {
+      "expected": [
+        {
+          "date": 20260901,
+          "matched": 3,
+          "sourceId": 5,
+          "weight": 10
+        },
+        {
+          "date": 20260618,
+          "matched": 3,
+          "sourceId": 2,
+          "weight": 10
+        },
+        {
+          "date": 20260617,
+          "matched": 3,
+          "sourceId": 1,
+          "weight": 10
+        },
+        {
+          "date": 20260309,
+          "matched": 3,
+          "sourceId": 4,
+          "weight": 10
+        },
+        {
+          "date": 0,
+          "matched": 3,
+          "sourceId": 11,
+          "weight": 10
+        }
+      ],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "inventory-client-year",
+      "query": "jaké nabídky jsme poslali v 2026 pro ACME?"
+    },
+    {
+      "expected": [
+        {
+          "date": 20260901,
+          "matched": 3,
+          "sourceId": 5,
+          "weight": 10
+        },
+        {
+          "date": 20260618,
+          "matched": 3,
+          "sourceId": 2,
+          "weight": 10
+        },
+        {
+          "date": 20260617,
+          "matched": 3,
+          "sourceId": 1,
+          "weight": 10
+        },
+        {
+          "date": 20260309,
+          "matched": 3,
+          "sourceId": 4,
+          "weight": 10
+        },
+        {
+          "date": 0,
+          "matched": 3,
+          "sourceId": 11,
+          "weight": 10
+        }
+      ],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "inventory-year-phrase",
+      "query": "Které nabídky pro ACME jsme poslali v roce 2026?"
+    },
+    {
+      "expected": [
+        {
+          "date": 20260901,
+          "matched": 1,
+          "sourceId": 5,
+          "weight": 4
+        },
+        {
+          "date": 20260702,
+          "matched": 1,
+          "sourceId": 3,
+          "weight": 4
+        },
+        {
+          "date": 20260618,
+          "matched": 1,
+          "sourceId": 2,
+          "weight": 4
+        },
+        {
+          "date": 20260617,
+          "matched": 1,
+          "sourceId": 1,
+          "weight": 4
+        },
+        {
+          "date": 20260309,
+          "matched": 1,
+          "sourceId": 4,
+          "weight": 4
+        },
+        {
+          "date": 20250312,
+          "matched": 1,
+          "sourceId": 6,
+          "weight": 4
+        },
+        {
+          "date": 0,
+          "matched": 1,
+          "sourceId": 11,
+          "weight": 4
+        }
+      ],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "client-only-acronym",
+      "query": "ACME"
+    },
+    {
+      "expected": [
+        {
+          "date": 20260201,
+          "matched": 2,
+          "sourceId": 7,
+          "weight": 14
+        }
+      ],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "acronym-exact-other-client",
+      "query": "nabídky ACMER"
+    },
+    {
+      "expected": [
+        {
+          "date": 20240505,
+          "matched": 2,
+          "sourceId": 9,
+          "weight": 19
+        }
+      ],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "inflected-folder",
+      "query": "smlouvy Beta"
+    },
+    {
+      "expected": [
+        {
+          "date": 20260331,
+          "matched": 2,
+          "sourceId": 10,
+          "weight": 12
+        }
+      ],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "year-from-name-date",
+      "query": "faktury 2026"
+    },
+    {
+      "expected": [],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "below-threshold",
+      "query": "jaká je výpovědní lhůta smlouvy o dílo"
+    },
+    {
+      "expected": [],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "no-content-tokens",
+      "query": "?!"
+    },
+    {
+      "expected": [
+        {
+          "date": 20260702,
+          "matched": 2,
+          "sourceId": 3,
+          "weight": 12
+        }
+      ],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "mtime-year-only",
+      "query": "objednávka 2026"
+    },
+    {
+      "expected": [
+        {
+          "date": 0,
+          "matched": 2,
+          "sourceId": 11,
+          "weight": 14
+        }
+      ],
+      "files": [
+        {
+          "mtime": 1781697600,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/20260617_Migrace_portal.xlsx",
+          "sourceId": 1,
+          "title": "20260617_Migrace_portal.xlsx"
+        },
+        {
+          "mtime": 1781784000,
+          "relPath": "ACME/2026/P-0001 Portal/Nabidky/Nabidka_ACME_portal.pdf",
+          "sourceId": 2,
+          "title": "Nabidka_ACME_portal.pdf"
+        },
+        {
+          "mtime": 1782993600,
+          "relPath": "ACME/2026/P-0001 Portal/Objednávky/objednavka_podepsana.pdf",
+          "sourceId": 3,
+          "title": "objednavka_podepsana.pdf"
+        },
+        {
+          "mtime": 1773057600,
+          "relPath": "ACME/2026/P-0002 Helpdesk/Nabidky/RE_ potvrzeni.msg",
+          "sourceId": 4,
+          "title": "RE_ potvrzeni.msg"
+        },
+        {
+          "mtime": 1788264000,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/ACME_Realizace_v4.docx",
+          "sourceId": 5,
+          "title": "ACME_Realizace_v4.docx"
+        },
+        {
+          "mtime": 1741780800,
+          "relPath": "ACME/2025/P-0003 Evidence majetku/Nabidky/20250312_Nabidka_v1.pdf",
+          "sourceId": 6,
+          "title": "20250312_Nabidka_v1.pdf"
+        },
+        {
+          "mtime": 1769947200,
+          "relPath": "ACMER/2026/P-0004 Cloud/Nabidky/20260201_Cloud.pdf",
+          "sourceId": 7,
+          "title": "20260201_Cloud.pdf"
+        },
+        {
+          "mtime": 1767614400,
+          "relPath": "Beta/2026/P-0005 Intranet/Vyberove_rizeni/Zadani_intranet.pdf",
+          "sourceId": 8,
+          "title": "Zadani_intranet.pdf"
+        },
+        {
+          "mtime": 1714910400,
+          "relPath": "Beta/2024/P-0006 Servis/Smlouvy/Rámcová smlouva Beta.docx",
+          "sourceId": 9,
+          "title": "Rámcová smlouva Beta.docx"
+        },
+        {
+          "mtime": 1774958400,
+          "relPath": "Gamma/2026/P-0007 Provoz/Faktury/faktura_2026_03.pdf",
+          "sourceId": 10,
+          "title": "faktura_2026_03.pdf"
+        },
+        {
+          "mtime": null,
+          "relPath": null,
+          "sourceId": 11,
+          "title": "poznámky k nabídkám ACME 2026.txt"
+        }
+      ],
+      "name": "loose-title",
+      "query": "poznámky nabídky"
+    }
+  ],
+  "contract": "retrieval-paths",
+  "mapCases": [
+    {
+      "ceiling": 10000,
+      "directSourceIds": [],
+      "expected": {
+        "included": [
+          "file:1",
+          "file:2",
+          "file:3",
+          "file:4",
+          "file:5",
+          "group:7:.",
+          "group:7:ACME",
+          "group:7:ACME/2026",
+          "group:7:ACME/2026/P-0001",
+          "group:7:ACME/2026/P-0001/Nabidky",
+          "group:7:ACME/2026/P-0001/Objednavky",
+          "group:7:ACMER",
+          "group:7:ACMER/2026",
+          "group:7:ACMER/2026/P-0004",
+          "group:7:ACMER/2026/P-0004/Nabidky",
+          "group:loose:.",
+          "group:matching"
+        ],
+        "omitted": [],
+        "text": "[MAP]\nMatching files (path, name or date; best first): 3\n  ACME/2026/P-0001/Nabidky/Nabidka.pdf — pdf, cs [match 2026-06-18]\n  ACME/2026/P-0001/Nabidky/20260617_Migrace.xlsx — xlsx, cs [match 2026-06-17]\n  poznamky.txt — txt, cs [match]\nFolder loose /.: 1 published files\nFolder 7 /.: 4 published files\nFolder 7 /ACME: 3 published files\nFolder 7 /ACME/2026: 3 published files\nFolder 7 /ACME/2026/P-0001: 3 published files\nFolder 7 /ACME/2026/P-0001/Nabidky: 2 published files\nFolder 7 /ACME/2026/P-0001/Objednavky: 1 published files\n  ACME/2026/P-0001/Objednavky/objednavka.pdf — pdf, cs [file]\nFolder 7 /ACMER: 1 published files\nFolder 7 /ACMER/2026: 1 published files\nFolder 7 /ACMER/2026/P-0004: 1 published files\nFolder 7 /ACMER/2026/P-0004/Nabidky: 1 published files\n  ACMER/2026/P-0004/Nabidky/Cloud.pdf — pdf, cs [metadata]\n[/MAP]"
+      },
+      "folderMap": [
+        {
+          "descriptor": "xlsx, cs",
+          "displayName": "20260617_Migrace.xlsx",
+          "folderId": 7,
+          "matchDate": 20260617,
+          "metadataMatch": false,
+          "pathRank": 2,
+          "publishedRevisionId": 10,
+          "relPath": "ACME/2026/P-0001/Nabidky/20260617_Migrace.xlsx",
+          "sourceId": 1
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Nabidka.pdf",
+          "folderId": 7,
+          "matchDate": 20260618,
+          "metadataMatch": false,
+          "pathRank": 1,
+          "publishedRevisionId": 20,
+          "relPath": "ACME/2026/P-0001/Nabidky/Nabidka.pdf",
+          "sourceId": 2
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "objednavka.pdf",
+          "folderId": 7,
+          "metadataMatch": false,
+          "publishedRevisionId": 30,
+          "relPath": "ACME/2026/P-0001/Objednavky/objednavka.pdf",
+          "sourceId": 3
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Cloud.pdf",
+          "folderId": 7,
+          "metadataMatch": true,
+          "publishedRevisionId": 40,
+          "relPath": "ACMER/2026/P-0004/Nabidky/Cloud.pdf",
+          "sourceId": 4
+        },
+        {
+          "descriptor": "txt, cs",
+          "displayName": "poznamky.txt",
+          "folderId": null,
+          "metadataMatch": false,
+          "pathRank": 3,
+          "publishedRevisionId": 50,
+          "relPath": "poznamky.txt",
+          "sourceId": 5
+        }
+      ],
+      "name": "matching-first"
+    },
+    {
+      "ceiling": 10000,
+      "directSourceIds": [
+        3
+      ],
+      "expected": {
+        "included": [
+          "file:1",
+          "file:2",
+          "file:3",
+          "file:4",
+          "file:5",
+          "group:7:.",
+          "group:7:ACME",
+          "group:7:ACME/2026",
+          "group:7:ACME/2026/P-0001",
+          "group:7:ACME/2026/P-0001/Nabidky",
+          "group:7:ACME/2026/P-0001/Objednavky",
+          "group:7:ACMER",
+          "group:7:ACMER/2026",
+          "group:7:ACMER/2026/P-0004",
+          "group:7:ACMER/2026/P-0004/Nabidky",
+          "group:loose:.",
+          "group:matching"
+        ],
+        "omitted": [],
+        "text": "[MAP]\nMatching files (path, name or date; best first): 3\n  ACME/2026/P-0001/Nabidky/Nabidka.pdf — pdf, cs [match 2026-06-18]\n  ACME/2026/P-0001/Nabidky/20260617_Migrace.xlsx — xlsx, cs [match 2026-06-17]\n  poznamky.txt — txt, cs [match]\nFolder loose /.: 1 published files\nFolder 7 /.: 4 published files\nFolder 7 /ACME: 3 published files\nFolder 7 /ACME/2026: 3 published files\nFolder 7 /ACME/2026/P-0001: 3 published files\nFolder 7 /ACME/2026/P-0001/Nabidky: 2 published files\nFolder 7 /ACME/2026/P-0001/Objednavky: 1 published files\n  ACME/2026/P-0001/Objednavky/objednavka.pdf — pdf, cs [retrieval]\nFolder 7 /ACMER: 1 published files\nFolder 7 /ACMER/2026: 1 published files\nFolder 7 /ACMER/2026/P-0004: 1 published files\nFolder 7 /ACMER/2026/P-0004/Nabidky: 1 published files\n  ACMER/2026/P-0004/Nabidky/Cloud.pdf — pdf, cs [metadata]\n[/MAP]"
+      },
+      "folderMap": [
+        {
+          "descriptor": "xlsx, cs",
+          "displayName": "20260617_Migrace.xlsx",
+          "folderId": 7,
+          "matchDate": 20260617,
+          "metadataMatch": false,
+          "pathRank": 2,
+          "publishedRevisionId": 10,
+          "relPath": "ACME/2026/P-0001/Nabidky/20260617_Migrace.xlsx",
+          "sourceId": 1
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Nabidka.pdf",
+          "folderId": 7,
+          "matchDate": 20260618,
+          "metadataMatch": false,
+          "pathRank": 1,
+          "publishedRevisionId": 20,
+          "relPath": "ACME/2026/P-0001/Nabidky/Nabidka.pdf",
+          "sourceId": 2
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "objednavka.pdf",
+          "folderId": 7,
+          "metadataMatch": false,
+          "publishedRevisionId": 30,
+          "relPath": "ACME/2026/P-0001/Objednavky/objednavka.pdf",
+          "sourceId": 3
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Cloud.pdf",
+          "folderId": 7,
+          "metadataMatch": true,
+          "publishedRevisionId": 40,
+          "relPath": "ACMER/2026/P-0004/Nabidky/Cloud.pdf",
+          "sourceId": 4
+        },
+        {
+          "descriptor": "txt, cs",
+          "displayName": "poznamky.txt",
+          "folderId": null,
+          "metadataMatch": false,
+          "pathRank": 3,
+          "publishedRevisionId": 50,
+          "relPath": "poznamky.txt",
+          "sourceId": 5
+        }
+      ],
+      "name": "matching-with-retrieved"
+    },
+    {
+      "ceiling": 60,
+      "directSourceIds": [],
+      "expected": {
+        "included": [
+          "file:2",
+          "group:matching"
+        ],
+        "omitted": [
+          "file:1",
+          "file:3",
+          "file:4",
+          "file:5",
+          "group:7:.",
+          "group:7:ACME",
+          "group:7:ACME/2026",
+          "group:7:ACME/2026/P-0001",
+          "group:7:ACME/2026/P-0001/Nabidky",
+          "group:7:ACME/2026/P-0001/Objednavky",
+          "group:7:ACMER",
+          "group:7:ACMER/2026",
+          "group:7:ACMER/2026/P-0004",
+          "group:7:ACMER/2026/P-0004/Nabidky",
+          "group:loose:."
+        ],
+        "text": "[MAP]\nMatching files (path, name or date; best first): 3\n  ACME/2026/P-0001/Nabidky/Nabidka.pdf — pdf, cs [match 2026-06-18]\n[/MAP]"
+      },
+      "folderMap": [
+        {
+          "descriptor": "xlsx, cs",
+          "displayName": "20260617_Migrace.xlsx",
+          "folderId": 7,
+          "matchDate": 20260617,
+          "metadataMatch": false,
+          "pathRank": 2,
+          "publishedRevisionId": 10,
+          "relPath": "ACME/2026/P-0001/Nabidky/20260617_Migrace.xlsx",
+          "sourceId": 1
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Nabidka.pdf",
+          "folderId": 7,
+          "matchDate": 20260618,
+          "metadataMatch": false,
+          "pathRank": 1,
+          "publishedRevisionId": 20,
+          "relPath": "ACME/2026/P-0001/Nabidky/Nabidka.pdf",
+          "sourceId": 2
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "objednavka.pdf",
+          "folderId": 7,
+          "metadataMatch": false,
+          "publishedRevisionId": 30,
+          "relPath": "ACME/2026/P-0001/Objednavky/objednavka.pdf",
+          "sourceId": 3
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Cloud.pdf",
+          "folderId": 7,
+          "metadataMatch": true,
+          "publishedRevisionId": 40,
+          "relPath": "ACMER/2026/P-0004/Nabidky/Cloud.pdf",
+          "sourceId": 4
+        },
+        {
+          "descriptor": "txt, cs",
+          "displayName": "poznamky.txt",
+          "folderId": null,
+          "metadataMatch": false,
+          "pathRank": 3,
+          "publishedRevisionId": 50,
+          "relPath": "poznamky.txt",
+          "sourceId": 5
+        }
+      ],
+      "name": "matching-tight"
+    },
+    {
+      "ceiling": 20,
+      "directSourceIds": [],
+      "expected": {
+        "included": [
+          "group:7:."
+        ],
+        "omitted": [
+          "file:1",
+          "file:2",
+          "file:3",
+          "file:4",
+          "file:5",
+          "group:7:ACME",
+          "group:7:ACME/2026",
+          "group:7:ACME/2026/P-0001",
+          "group:7:ACME/2026/P-0001/Nabidky",
+          "group:7:ACME/2026/P-0001/Objednavky",
+          "group:7:ACMER",
+          "group:7:ACMER/2026",
+          "group:7:ACMER/2026/P-0004",
+          "group:7:ACMER/2026/P-0004/Nabidky",
+          "group:loose:.",
+          "group:matching"
+        ],
+        "text": "[MAP]\nFolder 7 /.: 4 published files\n[/MAP]"
+      },
+      "folderMap": [
+        {
+          "descriptor": "xlsx, cs",
+          "displayName": "20260617_Migrace.xlsx",
+          "folderId": 7,
+          "matchDate": 20260617,
+          "metadataMatch": false,
+          "pathRank": 2,
+          "publishedRevisionId": 10,
+          "relPath": "ACME/2026/P-0001/Nabidky/20260617_Migrace.xlsx",
+          "sourceId": 1
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Nabidka.pdf",
+          "folderId": 7,
+          "matchDate": 20260618,
+          "metadataMatch": false,
+          "pathRank": 1,
+          "publishedRevisionId": 20,
+          "relPath": "ACME/2026/P-0001/Nabidky/Nabidka.pdf",
+          "sourceId": 2
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "objednavka.pdf",
+          "folderId": 7,
+          "metadataMatch": false,
+          "publishedRevisionId": 30,
+          "relPath": "ACME/2026/P-0001/Objednavky/objednavka.pdf",
+          "sourceId": 3
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Cloud.pdf",
+          "folderId": 7,
+          "metadataMatch": true,
+          "publishedRevisionId": 40,
+          "relPath": "ACMER/2026/P-0004/Nabidky/Cloud.pdf",
+          "sourceId": 4
+        },
+        {
+          "descriptor": "txt, cs",
+          "displayName": "poznamky.txt",
+          "folderId": null,
+          "metadataMatch": false,
+          "pathRank": 3,
+          "publishedRevisionId": 50,
+          "relPath": "poznamky.txt",
+          "sourceId": 5
+        }
+      ],
+      "name": "matching-header-only-misfit"
+    },
+    {
+      "ceiling": 10000,
+      "directSourceIds": [],
+      "expected": {
+        "included": [
+          "file:1",
+          "file:2",
+          "file:3",
+          "file:4",
+          "file:5",
+          "group:7:.",
+          "group:7:ACME",
+          "group:7:ACME/2026",
+          "group:7:ACME/2026/P-0001",
+          "group:7:ACME/2026/P-0001/Nabidky",
+          "group:7:ACME/2026/P-0001/Objednavky",
+          "group:7:ACMER",
+          "group:7:ACMER/2026",
+          "group:7:ACMER/2026/P-0004",
+          "group:7:ACMER/2026/P-0004/Nabidky",
+          "group:loose:."
+        ],
+        "omitted": [],
+        "text": "[MAP]\nFolder loose /.: 1 published files\n  poznamky.txt — txt, cs [file]\nFolder 7 /.: 4 published files\nFolder 7 /ACME: 3 published files\nFolder 7 /ACME/2026: 3 published files\nFolder 7 /ACME/2026/P-0001: 3 published files\nFolder 7 /ACME/2026/P-0001/Nabidky: 2 published files\n  ACME/2026/P-0001/Nabidky/20260617_Migrace.xlsx — xlsx, cs [file]\n  ACME/2026/P-0001/Nabidky/Nabidka.pdf — pdf, cs [file]\nFolder 7 /ACME/2026/P-0001/Objednavky: 1 published files\n  ACME/2026/P-0001/Objednavky/objednavka.pdf — pdf, cs [file]\nFolder 7 /ACMER: 1 published files\nFolder 7 /ACMER/2026: 1 published files\nFolder 7 /ACMER/2026/P-0004: 1 published files\nFolder 7 /ACMER/2026/P-0004/Nabidky: 1 published files\n  ACMER/2026/P-0004/Nabidky/Cloud.pdf — pdf, cs [metadata]\n[/MAP]"
+      },
+      "folderMap": [
+        {
+          "descriptor": "xlsx, cs",
+          "displayName": "20260617_Migrace.xlsx",
+          "folderId": 7,
+          "metadataMatch": false,
+          "publishedRevisionId": 10,
+          "relPath": "ACME/2026/P-0001/Nabidky/20260617_Migrace.xlsx",
+          "sourceId": 1
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Nabidka.pdf",
+          "folderId": 7,
+          "metadataMatch": false,
+          "publishedRevisionId": 20,
+          "relPath": "ACME/2026/P-0001/Nabidky/Nabidka.pdf",
+          "sourceId": 2
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "objednavka.pdf",
+          "folderId": 7,
+          "metadataMatch": false,
+          "publishedRevisionId": 30,
+          "relPath": "ACME/2026/P-0001/Objednavky/objednavka.pdf",
+          "sourceId": 3
+        },
+        {
+          "descriptor": "pdf, cs",
+          "displayName": "Cloud.pdf",
+          "folderId": 7,
+          "metadataMatch": true,
+          "publishedRevisionId": 40,
+          "relPath": "ACMER/2026/P-0004/Nabidky/Cloud.pdf",
+          "sourceId": 4
+        },
+        {
+          "descriptor": "txt, cs",
+          "displayName": "poznamky.txt",
+          "folderId": null,
+          "metadataMatch": false,
+          "publishedRevisionId": 50,
+          "relPath": "poznamky.txt",
+          "sourceId": 5
+        }
+      ],
+      "name": "no-path-ranks-unchanged"
+    }
+  ],
+  "maxMatchingFiles": 30,
+  "version": 1
+}

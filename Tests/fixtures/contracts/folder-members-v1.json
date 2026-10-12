@@ -1,0 +1,52 @@
+{
+  "contract": "folder-members",
+  "version": 1,
+  "description": "Paged listing of one persisted folder's member sources for the grouped Sources list. Members are ordered by rel_path in SQLite BINARY (UTF-8 byte) order, then id; total counts every member of that folder only; loose sources are those without a folder (notes excluded). Deleting a member removes database rows only. Hand-authored; expected orders verified with SQLite BINARY collation.",
+  "maxLimit": 500,
+  "uiPageSize": 200,
+  "cases": [
+    {
+      "name": "paged-byte-order",
+      "members": ["b/z.md", "B.md", "a.md", "č.md", "c.md", "a/b.md", "a b.md", "Z.md", "Ábel.md"],
+      "otherFolderMembers": ["a0.md"],
+      "looseTitles": ["Loose B", "Loose A"],
+      "noteTitles": ["Shadow note"],
+      "pages": [
+        { "offset": 0, "limit": 4, "expected": ["B.md", "Z.md", "a b.md", "a.md"], "total": 9, "nextOffset": 4, "hasMore": true },
+        { "offset": 4, "limit": 4, "expected": ["a/b.md", "b/z.md", "c.md", "Ábel.md"], "total": 9, "nextOffset": 8, "hasMore": true },
+        { "offset": 8, "limit": 4, "expected": ["č.md"], "total": 9, "nextOffset": 9, "hasMore": false },
+        { "offset": 9, "limit": 4, "expected": [], "total": 9, "nextOffset": 9, "hasMore": false },
+        { "offset": 20, "limit": 4, "expected": [], "total": 9, "nextOffset": 20, "hasMore": false },
+        { "offset": 0, "limit": 500, "expected": ["B.md", "Z.md", "a b.md", "a.md", "a/b.md", "b/z.md", "c.md", "Ábel.md", "č.md"], "total": 9, "nextOffset": 9, "hasMore": false }
+      ],
+      "expectedLooseTitles": ["Loose A", "Loose B"]
+    },
+    {
+      "name": "empty-folder",
+      "members": [],
+      "otherFolderMembers": [],
+      "looseTitles": [],
+      "noteTitles": [],
+      "pages": [
+        { "offset": 0, "limit": 200, "expected": [], "total": 0, "nextOffset": 0, "hasMore": false }
+      ],
+      "expectedLooseTitles": []
+    },
+    {
+      "name": "invalid-arguments",
+      "members": ["a.md"],
+      "invalid": [
+        { "folder": "self", "offset": -1, "limit": 10, "expectedError": "invalidValue" },
+        { "folder": "self", "offset": 0, "limit": 0, "expectedError": "invalidValue" },
+        { "folder": "self", "offset": 0, "limit": 501, "expectedError": "invalidValue" },
+        { "folder": "missing", "offset": 0, "limit": 10, "expectedError": "notFound" }
+      ]
+    },
+    {
+      "name": "delete-member-keeps-file",
+      "members": ["B.md", "a.md", "a/b.md", "c.md"],
+      "deleteMember": "a.md",
+      "after": { "offset": 0, "limit": 500, "expected": ["B.md", "a/b.md", "c.md"], "total": 3, "nextOffset": 3, "hasMore": false }
+    }
+  ]
+}

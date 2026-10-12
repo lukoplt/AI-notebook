@@ -1,0 +1,213 @@
+{
+  "contract": "provider-store",
+  "version": 1,
+  "cases": [
+    {
+      "name": "user-survives-auto",
+      "providerId": "p",
+      "model": "m:tag",
+      "contextWindow": 32768,
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "source": "user",
+      "autoRuntime": 8192,
+      "expectedRuntime": 4096
+    },
+    {
+      "name": "provider-isolation",
+      "providerIds": [
+        "p",
+        "q"
+      ],
+      "model": "m:tag",
+      "runtimes": [
+        4096,
+        8192
+      ]
+    },
+    {
+      "name": "delete-cascades",
+      "providerId": "p",
+      "model": "m",
+      "expectedRows": 0
+    },
+    {
+      "name": "reset-auto",
+      "providerId": "p",
+      "model": "m",
+      "expectedSource": "auto",
+      "expectedRuntime": 8192
+    },
+    {
+      "name": "legacy-openai",
+      "type": "openai",
+      "before": "https://api.openai.com/",
+      "after": "https://api.openai.com/v1"
+    },
+    {
+      "name": "legacy-versioned",
+      "type": "openai_compatible",
+      "before": "https://gw.example/v1/",
+      "after": "https://gw.example/v1"
+    },
+    {
+      "name": "legacy-prefix",
+      "type": "openai_compatible",
+      "before": "https://gw.example/proxy",
+      "after": "https://gw.example/proxy/v1"
+    },
+    {
+      "name": "new-versionless",
+      "type": "openai_compatible",
+      "before": "https://gw.example/proxy",
+      "after": "https://gw.example/proxy"
+    },
+    {
+      "name": "limits-root-change",
+      "operation": "providerUpdate",
+      "providerId": "p",
+      "otherProviderId": "q",
+      "model": "m:tag",
+      "before": {
+        "type": "ollama",
+        "baseURL": "https://old.example/proxy/v1"
+      },
+      "after": {
+        "type": "ollama",
+        "baseURL": "https://new.example/proxy/v1"
+      },
+      "contextWindow": 32768,
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expectedAutoRetained": false,
+      "refreshedWindow": 2048,
+      "expectedRefreshedRuntime": 2048
+    },
+    {
+      "name": "limits-endpoint-version-change",
+      "operation": "providerUpdate",
+      "providerId": "p",
+      "otherProviderId": "q",
+      "model": "m:tag",
+      "before": {
+        "type": "ollama",
+        "baseURL": "https://old.example/proxy/v1"
+      },
+      "after": {
+        "type": "ollama",
+        "baseURL": "https://old.example/proxy/v2"
+      },
+      "contextWindow": 32768,
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expectedAutoRetained": false,
+      "refreshedWindow": 2048,
+      "expectedRefreshedRuntime": 2048
+    },
+    {
+      "name": "limits-type-change",
+      "operation": "providerUpdate",
+      "providerId": "p",
+      "otherProviderId": "q",
+      "model": "m:tag",
+      "before": {
+        "type": "ollama",
+        "baseURL": "https://old.example/proxy/v1"
+      },
+      "after": {
+        "type": "openai_compatible",
+        "baseURL": "https://old.example/proxy/v1"
+      },
+      "contextWindow": 32768,
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expectedAutoRetained": false,
+      "refreshedWindow": 2048,
+      "expectedRefreshedRuntime": 2048
+    },
+    {
+      "name": "limits-equivalent-root",
+      "operation": "providerUpdate",
+      "providerId": "p",
+      "otherProviderId": "q",
+      "model": "m:tag",
+      "before": {
+        "type": "ollama",
+        "baseURL": "https://old.example/proxy/v1"
+      },
+      "after": {
+        "type": "ollama",
+        "baseURL": " https://old.example/proxy/v1/// "
+      },
+      "contextWindow": 32768,
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expectedAutoRetained": true,
+      "refreshedWindow": 2048,
+      "expectedRefreshedRuntime": 2048
+    },
+    {
+      "name": "limits-display-only-change",
+      "operation": "providerUpdate",
+      "providerId": "p",
+      "otherProviderId": "q",
+      "model": "m:tag",
+      "before": {
+        "type": "ollama",
+        "baseURL": "https://old.example/proxy/v1"
+      },
+      "after": {
+        "type": "ollama",
+        "baseURL": "https://old.example/proxy/v1"
+      },
+      "contextWindow": 32768,
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expectedAutoRetained": true,
+      "refreshedWindow": 2048,
+      "expectedRefreshedRuntime": 2048
+    },
+    {
+      "name": "limits-inflight-root-change-empty",
+      "operation": "inflightEndpointChange",
+      "providerId": "p",
+      "model": "m:tag",
+      "oldRoot": "https://old.example/proxy/v1",
+      "newRoot": "https://new.example/proxy/v2",
+      "oldWindow": 32768,
+      "newWindow": 2048,
+      "newCache": "empty",
+      "expectedCapturedWindow": 32768,
+      "expectedCachedWindow": null,
+      "expectedNewRuntime": 2048
+    },
+    {
+      "name": "limits-inflight-root-change-auto",
+      "operation": "inflightEndpointChange",
+      "providerId": "p",
+      "model": "m:tag",
+      "oldRoot": "https://old.example/proxy/v1",
+      "newRoot": "https://new.example/proxy/v2",
+      "oldWindow": 32768,
+      "newWindow": 2048,
+      "newCache": "auto",
+      "expectedCapturedWindow": 32768,
+      "expectedCachedWindow": 2048,
+      "expectedNewRuntime": 2048
+    },
+    {
+      "name": "limits-inflight-root-change-user",
+      "operation": "inflightEndpointChange",
+      "providerId": "p",
+      "model": "m:tag",
+      "oldRoot": "https://old.example/proxy/v1",
+      "newRoot": "https://new.example/proxy/v2",
+      "oldWindow": 32768,
+      "newWindow": 2048,
+      "newCache": "user",
+      "expectedCapturedWindow": 2048,
+      "expectedCachedWindow": 2048,
+      "expectedNewRuntime": 2048
+    }
+  ]
+}

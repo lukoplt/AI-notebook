@@ -143,9 +143,6 @@
   <data name="startUsingApp" xml:space="preserve">
     <value>Start using the app</value>
   </data>
-  <data name="sourcesSectionTitle" xml:space="preserve">
-    <value>Sources</value>
-  </data>
   <data name="addSourceButton" xml:space="preserve">
     <value>Add source</value>
   </data>
@@ -224,12 +221,6 @@
   <data name="chatSendButton" xml:space="preserve">
     <value>Send</value>
   </data>
-  <data name="chatEmptyState" xml:space="preserve">
-    <value>Start by asking a question.</value>
-  </data>
-  <data name="chatErrorPrefix" xml:space="preserve">
-    <value>Chat error: </value>
-  </data>
   <data name="chatCitationsSectionTitle" xml:space="preserve">
     <value>Citations</value>
   </data>
@@ -239,9 +230,6 @@
   <data name="chatRegenerateButton" xml:space="preserve">
     <value>Regenerate</value>
   </data>
-  <data name="chatSessionsLabel" xml:space="preserve">
-    <value>Sessions</value>
-  </data>
   <data name="chatNewSessionButton" xml:space="preserve">
     <value>New session</value>
   </data>
@@ -250,9 +238,6 @@
   </data>
   <data name="chatSaveAsNoteButton" xml:space="preserve">
     <value>Save as note</value>
-  </data>
-  <data name="notesSectionTitle" xml:space="preserve">
-    <value>Notes</value>
   </data>
   <data name="notesEmptyState" xml:space="preserve">
     <value>No notes yet. Create one or save from chat.</value>
@@ -290,14 +275,8 @@
   <data name="transformationRunButton" xml:space="preserve">
     <value>Run</value>
   </data>
-  <data name="transformationResultTitle" xml:space="preserve">
-    <value>Result</value>
-  </data>
   <data name="transformationRunningStatus" xml:space="preserve">
     <value>Running…</value>
-  </data>
-  <data name="transformationEditButton" xml:space="preserve">
-    <value>Edit templates</value>
   </data>
   <data name="transformationEditorTitle" xml:space="preserve">
     <value>Custom transformations</value>
@@ -322,9 +301,6 @@
   </data>
   <data name="reembedConfirmYes" xml:space="preserve">
     <value>Re-embed</value>
-  </data>
-  <data name="embeddingSectionTitle" xml:space="preserve">
-    <value>Embedding</value>
   </data>
   <data name="currentModelLabel" xml:space="preserve">
     <value>Current model</value>
@@ -413,12 +389,6 @@
   <data name="aiToolsSectionTitle" xml:space="preserve">
     <value>AI tools</value>
   </data>
-  <data name="aiToolsEmptyTitle" xml:space="preserve">
-    <value>What are AI tools?</value>
-  </data>
-  <data name="aiToolsEmptyBody" xml:space="preserve">
-    <value>Pick a template, pick a source, click Run. The output is saved as a new note in this notebook.</value>
-  </data>
   <data name="aiToolsScopeAllSources" xml:space="preserve">
     <value>All sources</value>
   </data>
@@ -427,9 +397,6 @@
   </data>
   <data name="aiToolsPreviewButton" xml:space="preserve">
     <value>Preview prompt</value>
-  </data>
-  <data name="aiToolsHistoryButton" xml:space="preserve">
-    <value>History</value>
   </data>
   <data name="aiToolsResultSavedFormat" xml:space="preserve">
     <value>Saved as note: {0}</value>
@@ -454,21 +421,6 @@
   </data>
   <data name="aiToolsDescriptionPlaceholder" xml:space="preserve">
     <value>Short description (shown under the template name)</value>
-  </data>
-  <data name="unsavedChangesTitle" xml:space="preserve">
-    <value>Unsaved changes</value>
-  </data>
-  <data name="unsavedChangesMessage" xml:space="preserve">
-    <value>This note has unsaved edits. Save them before switching?</value>
-  </data>
-  <data name="unsavedSaveButton" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="unsavedDiscardButton" xml:space="preserve">
-    <value>Discard</value>
-  </data>
-  <data name="chatFollowupsLabel" xml:space="preserve">
-    <value>Suggested follow-ups</value>
   </data>
   <data name="sourceSummaryLabel" xml:space="preserve">
     <value>Summary</value>
@@ -545,9 +497,6 @@
   <data name="embeddingProviderPickerLabel" xml:space="preserve">
     <value>Embedding provider</value>
   </data>
-  <data name="noteSearchPlaceholder" xml:space="preserve">
-    <value>Search notes…</value>
-  </data>
   <data name="sourcePreviewTitle" xml:space="preserve">
     <value>Source preview</value>
   </data>
@@ -559,9 +508,6 @@
   </data>
   <data name="sourcePreviewButton" xml:space="preserve">
     <value>Preview</value>
-  </data>
-  <data name="exportNoteButton" xml:space="preserve">
-    <value>Export note</value>
   </data>
   <data name="exportNoteMarkdown" xml:space="preserve">
     <value>Export as Markdown</value>
@@ -638,9 +584,6 @@
   <data name="notebookInstructionsPlaceholder" xml:space="preserve">
     <value>Instructions injected into every chat and transformation in this notebook…</value>
   </data>
-  <data name="notebookInstructionsSaved" xml:space="preserve">
-    <value>Instructions saved</value>
-  </data>
   <data name="sourceSetsSectionTitle" xml:space="preserve">
     <value>Source sets</value>
   </data>
@@ -656,9 +599,6 @@
   <data name="chatEditButton" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="chatRegenerateWithButton" xml:space="preserve">
-    <value>Regenerate with…</value>
-  </data>
   <data name="citationPanelTitle" xml:space="preserve">
     <value>Citations</value>
   </data>
@@ -667,9 +607,6 @@
   </data>
   <data name="personaMenu" xml:space="preserve">
     <value>Persona</value>
-  </data>
-  <data name="personaNone" xml:space="preserve">
-    <value>None</value>
   </data>
   <data name="personaNew" xml:space="preserve">
     <value>New persona…</value>
@@ -697,9 +634,6 @@
   </data>
   <data name="urlRefreshingStatus" xml:space="preserve">
     <value>Refreshing…</value>
-  </data>
-  <data name="webSearchToggleLabel" xml:space="preserve">
-    <value>Web search</value>
   </data>
   <data name="webSearchResultsTitle" xml:space="preserve">
     <value>Web results</value>
@@ -733,5 +667,653 @@
   </data>
   <data name="updateStatusFailed" xml:space="preserve">
     <value>Couldn't check for updates.</value>
+  </data>
+  <data name="addFolderButton" xml:space="preserve">
+    <value>Add folder…</value>
+  </data>
+  <data name="folderLastFullScan" xml:space="preserve">
+    <value>Last full scan</value>
+  </data>
+  <data name="folderNeverScanned" xml:space="preserve">
+    <value>Never scanned</value>
+  </data>
+  <data name="folderWatchEnabled" xml:space="preserve">
+    <value>Watch for changes</value>
+  </data>
+  <data name="folderScanNow" xml:space="preserve">
+    <value>Scan now</value>
+  </data>
+  <data name="folderVerifyAll" xml:space="preserve">
+    <value>Verify all</value>
+  </data>
+  <data name="folderRulesTitle" xml:space="preserve">
+    <value>Folder rules</value>
+  </data>
+  <data name="folderIncludeExtensions" xml:space="preserve">
+    <value>Include extensions</value>
+  </data>
+  <data name="folderIgnoreGlobs" xml:space="preserve">
+    <value>Ignore patterns (one per line)</value>
+  </data>
+  <data name="folderMaxFileBytes" xml:space="preserve">
+    <value>Maximum file bytes</value>
+  </data>
+  <data name="folderMaxOfficeBytes" xml:space="preserve">
+    <value>Maximum expanded Office bytes</value>
+  </data>
+  <data name="folderMaxTextScalars" xml:space="preserve">
+    <value>Maximum text characters</value>
+  </data>
+  <data name="folderMaxPdfPages" xml:space="preserve">
+    <value>Maximum PDF pages</value>
+  </data>
+  <data name="folderMaxChunks" xml:space="preserve">
+    <value>Maximum passages per file</value>
+  </data>
+  <data name="folderMaxCells" xml:space="preserve">
+    <value>Maximum spreadsheet cells</value>
+  </data>
+  <data name="folderEncodingFallback" xml:space="preserve">
+    <value>Text encoding fallback</value>
+  </data>
+  <data name="folderEncodingNone" xml:space="preserve">
+    <value>Strict UTF only</value>
+  </data>
+  <data name="folderEncodingCp1250" xml:space="preserve">
+    <value>Windows-1250</value>
+  </data>
+  <data name="folderEncodingUsed" xml:space="preserve">
+    <value>Encoding</value>
+  </data>
+  <data name="folderRulesInvalid" xml:space="preserve">
+    <value>Check patterns, extensions and positive limits.</value>
+  </data>
+  <data name="folderRemoveButton" xml:space="preserve">
+    <value>Remove from notebook</value>
+  </data>
+  <data name="folderRemoveConfirm" xml:space="preserve">
+    <value>Remove this folder from the notebook?</value>
+  </data>
+  <data name="folderRemoveKeepsFiles" xml:space="preserve">
+    <value>Files on disk will be kept.</value>
+  </data>
+  <data name="folderSearchable" xml:space="preserve">
+    <value>Searchable</value>
+  </data>
+  <data name="folderNotSearchable" xml:space="preserve">
+    <value>Not yet searchable</value>
+  </data>
+  <data name="folderCurrent" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="folderRefreshPending" xml:space="preserve">
+    <value>Refresh pending</value>
+  </data>
+  <data name="folderRefreshError" xml:space="preserve">
+    <value>Refresh failed</value>
+  </data>
+  <data name="folderSkipped" xml:space="preserve">
+    <value>Skipped</value>
+  </data>
+  <data name="folderMissing" xml:space="preserve">
+    <value>Missing</value>
+  </data>
+  <data name="folderUnavailable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="folderAtLeast" xml:space="preserve">
+    <value>At least</value>
+  </data>
+  <data name="folderOverlapError" xml:space="preserve">
+    <value>This folder overlaps a folder already in this notebook.</value>
+  </data>
+  <data name="folderReadError" xml:space="preserve">
+    <value>The folder or file could not be read.</value>
+  </data>
+  <data name="folderLimitError" xml:space="preserve">
+    <value>The extraction limit was exceeded.</value>
+  </data>
+  <data name="folderEncodingError" xml:space="preserve">
+    <value>The text encoding is not supported.</value>
+  </data>
+  <data name="folderDocumentError" xml:space="preserve">
+    <value>The document is damaged or unsupported.</value>
+  </data>
+  <data name="sourceErrorMissingPart" xml:space="preserve">
+    <value>The document is incomplete: a required part is missing.</value>
+  </data>
+  <data name="sourceErrorDamaged" xml:space="preserve">
+    <value>The file is damaged or is not a valid document.</value>
+  </data>
+  <data name="sourceErrorNotDownloaded" xml:space="preserve">
+    <value>The file is only in cloud storage and could not be downloaded.</value>
+  </data>
+  <data name="scopeWholeNotebook" xml:space="preserve">
+    <value>Whole notebook</value>
+  </data>
+  <data name="scopeSelection" xml:space="preserve">
+    <value>Selected items</value>
+  </data>
+  <data name="scopeFolders" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="scopeSourceSets" xml:space="preserve">
+    <value>Source sets</value>
+  </data>
+  <data name="scopeSources" xml:space="preserve">
+    <value>Individual sources</value>
+  </data>
+  <data name="scopeEmpty" xml:space="preserve">
+    <value>No sources selected</value>
+  </data>
+  <data name="reindexButton" xml:space="preserve">
+    <value>Re-index</value>
+  </data>
+  <data name="reindexProgress" xml:space="preserve">
+    <value>Re-index progress</value>
+  </data>
+  <data name="reindexDiscovering" xml:space="preserve">
+    <value>Preparing the new index</value>
+  </data>
+  <data name="reindexPausedForChat" xml:space="preserve">
+    <value>Background indexing paused for chat</value>
+  </data>
+  <data name="reindexFailed" xml:space="preserve">
+    <value>Re-indexing failed; existing search remains available.</value>
+  </data>
+  <data name="reindexDualSpaceNote" xml:space="preserve">
+    <value>The existing index stays available while the new index is built. Temporary extra disk space is required.</value>
+  </data>
+  <data name="reindexDiscard" xml:space="preserve">
+    <value>Discard new index</value>
+  </data>
+  <data name="reindexRetry" xml:space="preserve">
+    <value>Retry re-indexing</value>
+  </data>
+  <data name="chatOverviewToggle" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="contextPreviewBeforeSend" xml:space="preserve">
+    <value>Show what will be sent</value>
+  </data>
+  <data name="contextPreviewSent" xml:space="preserve">
+    <value>Show sent context</value>
+  </data>
+  <data name="contextPreviewTitle" xml:space="preserve">
+    <value>Context preview</value>
+  </data>
+  <data name="contextPreviewPreparing" xml:space="preserve">
+    <value>Preparing context…</value>
+  </data>
+  <data name="contextPreviewUnavailable" xml:space="preserve">
+    <value>This context preview is no longer in memory.</value>
+  </data>
+  <data name="contextPreviewEstimatedTokens" xml:space="preserve">
+    <value>Estimated tokens</value>
+  </data>
+  <data name="contextPreviewAssumedLimit" xml:space="preserve">
+    <value>Context size assumed by the app</value>
+  </data>
+  <data name="contextPreviewMessages" xml:space="preserve">
+    <value>Logical messages</value>
+  </data>
+  <data name="contextPreviewWireOrder" xml:space="preserve">
+    <value>Sent message order</value>
+  </data>
+  <data name="contextPreviewOptions" xml:space="preserve">
+    <value>Request options</value>
+  </data>
+  <data name="contextPreviewIncluded" xml:space="preserve">
+    <value>Included content</value>
+  </data>
+  <data name="contextPreviewOmitted" xml:space="preserve">
+    <value>Omitted content</value>
+  </data>
+  <data name="contextPreviewCoverage" xml:space="preserve">
+    <value>Scope and turn coverage</value>
+  </data>
+  <data name="contextPreviewRecalculate" xml:space="preserve">
+    <value>Recalculate preview</value>
+  </data>
+  <data name="contextPreviewClose" xml:space="preserve">
+    <value>Close preview</value>
+  </data>
+  <data name="contextTooSmall" xml:space="preserve">
+    <value>Context is too small. Increase its size or shorten the instructions.</value>
+  </data>
+  <data name="citationOpenOriginal" xml:space="preserve">
+    <value>Open original</value>
+  </data>
+  <data name="citationRevisionChanged" xml:space="preserve">
+    <value>The original has changed since this answer.</value>
+  </data>
+  <data name="citationOriginalUnavailable" xml:space="preserve">
+    <value>The original is unavailable.</value>
+  </data>
+  <data name="citationOriginalOutsideFolder" xml:space="preserve">
+    <value>The original is outside the selected folder.</value>
+  </data>
+  <data name="contextOmittedEvidenceBudget" xml:space="preserve">
+    <value>Evidence budget exhausted</value>
+  </data>
+  <data name="contextOmittedTopK" xml:space="preserve">
+    <value>Passage limit reached</value>
+  </data>
+  <data name="contextOmittedHistoryBudget" xml:space="preserve">
+    <value>Complete conversation turn did not fit</value>
+  </data>
+  <data name="contextOmittedMapBudget" xml:space="preserve">
+    <value>Map budget exhausted</value>
+  </data>
+  <data name="contextOmittedExternalBudget" xml:space="preserve">
+    <value>Additional context did not fit</value>
+  </data>
+  <data name="contextOmittedTruncated" xml:space="preserve">
+    <value>Excerpt shortened at a sentence boundary</value>
+  </data>
+  <data name="contextOmittedDuplicate" xml:space="preserve">
+    <value>Duplicate excerpt</value>
+  </data>
+  <data name="contextOmittedRevisionMismatch" xml:space="preserve">
+    <value>Different document revision</value>
+  </data>
+  <data name="contextOmittedNeighbourBudget" xml:space="preserve">
+    <value>Neighbouring excerpt did not fit</value>
+  </data>
+  <data name="contextOmittedLegacyNoSpan" xml:space="preserve">
+    <value>Legacy excerpt has no position data</value>
+  </data>
+  <data name="contextOmittedEmptySelection" xml:space="preserve">
+    <value>No sources selected</value>
+  </data>
+  <data name="folderShowFiles" xml:space="preserve">
+    <value>Show files</value>
+  </data>
+  <data name="folderHideFiles" xml:space="preserve">
+    <value>Hide files</value>
+  </data>
+  <data name="folderFilesCount" xml:space="preserve">
+    <value>Files: {shown} / {total}</value>
+  </data>
+  <data name="folderLoadMoreFiles" xml:space="preserve">
+    <value>Load more files</value>
+  </data>
+  <data name="folderNoFiles" xml:space="preserve">
+    <value>No files from this folder yet</value>
+  </data>
+  <data name="sourceLanguageLabel" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="sourceLanguageMixed" xml:space="preserve">
+    <value>Mixed</value>
+  </data>
+  <data name="shellNewChat" xml:space="preserve">
+    <value>New chat</value>
+  </data>
+  <data name="shellSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="shellNewNotebook" xml:space="preserve">
+    <value>New notebook</value>
+  </data>
+  <data name="shellShowMore" xml:space="preserve">
+    <value>Show more ({0})</value>
+  </data>
+  <data name="shellShowLess" xml:space="preserve">
+    <value>Show less</value>
+  </data>
+  <data name="shellUpdateAvailable" xml:space="preserve">
+    <value>Update available</value>
+  </data>
+  <data name="notebookInstructionsMenu" xml:space="preserve">
+    <value>Instructions…</value>
+  </data>
+  <data name="deleteChat" xml:space="preserve">
+    <value>Delete chat</value>
+  </data>
+  <data name="confirmDeleteChat" xml:space="preserve">
+    <value>Delete this chat and its messages?</value>
+  </data>
+  <data name="shellTogglePanel" xml:space="preserve">
+    <value>Show or hide panel</value>
+  </data>
+  <data name="shellMore" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="panelContext" xml:space="preserve">
+    <value>Context</value>
+  </data>
+  <data name="panelNoteChat" xml:space="preserve">
+    <value>Note chat</value>
+  </data>
+  <data name="shellEmptyAppTitle" xml:space="preserve">
+    <value>Start by adding a folder or creating a notebook</value>
+  </data>
+  <data name="openFolderAsNotebook" xml:space="preserve">
+    <value>Open folder as notebook…</value>
+  </data>
+  <data name="shellBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="chatEmptyTitle" xml:space="preserve">
+    <value>What are we working on?</value>
+  </data>
+  <data name="composerPlaceholder" xml:space="preserve">
+    <value>Ask anything in this notebook…</value>
+  </data>
+  <data name="composerAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="composerAddFile" xml:space="preserve">
+    <value>Add file…</value>
+  </data>
+  <data name="composerAddUrl" xml:space="preserve">
+    <value>Add URL…</value>
+  </data>
+  <data name="composerWebSearch" xml:space="preserve">
+    <value>Web search</value>
+  </data>
+  <data name="composerOverviewMode" xml:space="preserve">
+    <value>Overview mode</value>
+  </data>
+  <data name="composerRunTool" xml:space="preserve">
+    <value>Run tool</value>
+  </data>
+  <data name="composerPreviewContext" xml:space="preserve">
+    <value>Preview context</value>
+  </data>
+  <data name="composerScope" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="composerModel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="composerRegenerateWith" xml:space="preserve">
+    <value>Regenerate with</value>
+  </data>
+  <data name="composerModelSettings" xml:space="preserve">
+    <value>Model settings…</value>
+  </data>
+  <data name="composerEditing" xml:space="preserve">
+    <value>Editing your last message</value>
+  </data>
+  <data name="messageCopy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="chatRetry" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="chatReplyNoteTitle" xml:space="preserve">
+    <value>Chat reply — {0}</value>
+  </data>
+  <data name="noteSavedNotice" xml:space="preserve">
+    <value>Saved as a note</value>
+  </data>
+  <data name="openNote" xml:space="preserve">
+    <value>Open note</value>
+  </data>
+  <data name="chooseNotebook" xml:space="preserve">
+    <value>Notebook</value>
+  </data>
+  <data name="personaChipNone" xml:space="preserve">
+    <value>No persona</value>
+  </data>
+  <data name="sourcesAddText" xml:space="preserve">
+    <value>Add text…</value>
+  </data>
+  <data name="folderSummaryFiles" xml:space="preserve">
+    <value>Files: {0}</value>
+  </data>
+  <data name="folderSummaryErrors" xml:space="preserve">
+    <value>Errors: {0}</value>
+  </data>
+  <data name="notesSearchPlaceholder" xml:space="preserve">
+    <value>Search notes</value>
+  </data>
+  <data name="toolHistory" xml:space="preserve">
+    <value>Tool history</value>
+  </data>
+  <data name="contextPanelHint" xml:space="preserve">
+    <value>Write a question, then use the eye button to preview what will be sent.</value>
+  </data>
+  <data name="contextPanelDraft" xml:space="preserve">
+    <value>Next message</value>
+  </data>
+  <data name="contextPanelBackToDraft" xml:space="preserve">
+    <value>Show next message</value>
+  </data>
+  <data name="citationsPanelEmpty" xml:space="preserve">
+    <value>Click a citation number in an answer to see its source.</value>
+  </data>
+  <data name="citationPage" xml:space="preserve">
+    <value>p. {0}</value>
+  </data>
+  <data name="settingsGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="settingsModelsLimits" xml:space="preserve">
+    <value>Models &amp; limits</value>
+  </data>
+  <data name="settingsIndexing" xml:space="preserve">
+    <value>Indexing</value>
+  </data>
+  <data name="settingsTools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="settingsAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="webSearchToggle" xml:space="preserve">
+    <value>Enable web search</value>
+  </data>
+  <data name="toolScopeSource" xml:space="preserve">
+    <value>One source</value>
+  </data>
+  <data name="settingsUpdates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="settingsLimits" xml:space="preserve">
+    <value>Context limits</value>
+  </data>
+  <data name="aboutLicense" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="aboutNotice" xml:space="preserve">
+    <value>Third-party notices</value>
+  </data>
+  <data name="aboutSourceCode" xml:space="preserve">
+    <value>Source code</value>
+  </data>
+  <data name="aboutCredits" xml:space="preserve">
+    <value>Made with ♥ by Lukáš Oplt</value>
+  </data>
+  <data name="toolScope" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="toolsPickTemplate" xml:space="preserve">
+    <value>Pick or create a custom template</value>
+  </data>
+  <data name="documentExport" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="renameChat" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="renameChatTitle" xml:space="preserve">
+    <value>Rename chat</value>
+  </data>
+  <data name="chatStopButton" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="chatStopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="indexingScanning" xml:space="preserve">
+    <value>Checking folder… {count} files</value>
+  </data>
+  <data name="indexingExtracting" xml:space="preserve">
+    <value>Processing files {done} / {total}</value>
+  </data>
+  <data name="indexingEmbedding" xml:space="preserve">
+    <value>Indexing {done} / {total} chunks</value>
+  </data>
+  <data name="indexingPreparing" xml:space="preserve">
+    <value>Preparing index…</value>
+  </data>
+  <data name="indexingRetrying" xml:space="preserve">
+    <value>Embedding provider unavailable — retrying in {seconds} s</value>
+  </data>
+  <data name="indexingRetryNow" xml:space="preserve">
+    <value>Retry now</value>
+  </data>
+  <data name="indexingBlockedNoModel" xml:space="preserve">
+    <value>No embedding model is set up; only full-text search works.</value>
+  </data>
+  <data name="indexingBlockedProviderDisabled" xml:space="preserve">
+    <value>The embedding provider is turned off; only full-text search works.</value>
+  </data>
+  <data name="indexingBlockedConsent" xml:space="preserve">
+    <value>The embedding provider needs your consent before indexing.</value>
+  </data>
+  <data name="indexingBlockedCredential" xml:space="preserve">
+    <value>The embedding provider's API key could not be loaded.</value>
+  </data>
+  <data name="indexingFailed" xml:space="preserve">
+    <value>Indexing failed ({code})</value>
+  </data>
+  <data name="indexingRuntimeFailed" xml:space="preserve">
+    <value>Background indexing could not start ({code})</value>
+  </data>
+  <data name="indexingOpenSettings" xml:space="preserve">
+    <value>Open settings</value>
+  </data>
+  <data name="indexingReady" xml:space="preserve">
+    <value>Searchable · {count} files</value>
+  </data>
+  <data name="indexingLexicalOnly" xml:space="preserve">
+    <value>Full-text search only</value>
+  </data>
+  <data name="indexingBuildIndex" xml:space="preserve">
+    <value>Build index</value>
+  </data>
+  <data name="indexingSourceErrors" xml:space="preserve">
+    <value>{count} files couldn't be read</value>
+  </data>
+  <data name="folderChecking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="folderNoChanges" xml:space="preserve">
+    <value>No changes · {count} files up to date</value>
+  </data>
+  <data name="folderChangedFiles" xml:space="preserve">
+    <value>{count} files changed</value>
+  </data>
+  <data name="indexingExtractingSlowed" xml:space="preserve">
+    <value>Processing files {done} / {total} · slowed, the system is low on memory</value>
+  </data>
+  <data name="indexingExtractingPaused" xml:space="preserve">
+    <value>Paused: the system is low on memory · files {done} / {total}</value>
+  </data>
+  <data name="indexingWithScan" xml:space="preserve">
+    <value>{status} · checking folder…</value>
+  </data>
+  <data name="indexingSourceErrorsGaveUp" xml:space="preserve">
+    <value>{count} files couldn't be read (gave up after 3 attempts)</value>
+  </data>
+  <data name="indexingRetryAllFailed" xml:space="preserve">
+    <value>Retry all failed</value>
+  </data>
+  <data name="sourceRetryButton" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="sourceGaveUp" xml:space="preserve">
+    <value>Gave up after 3 attempts</value>
+  </data>
+  <data name="contextPreviewSetContextSize" xml:space="preserve">
+    <value>Set context size</value>
+  </data>
+  <data name="providerPresetLabel" xml:space="preserve">
+    <value>Preset</value>
+  </data>
+  <data name="providerPresetCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="providerPresetLocalHelp" xml:space="preserve">
+    <value>Start the local server, then check its API root. An API key is optional.</value>
+  </data>
+  <data name="providerPresetRemoteHelp" xml:space="preserve">
+    <value>Enter your API key and check the API root.</value>
+  </data>
+  <data name="providerPresetCustomHelp" xml:space="preserve">
+    <value>Enter the exact API root, including any version or proxy path.</value>
+  </data>
+  <data name="providerRefreshModels" xml:space="preserve">
+    <value>Refresh models</value>
+  </data>
+  <data name="providerManualModelId" xml:space="preserve">
+    <value>Model ID</value>
+  </data>
+  <data name="providerApplyModel" xml:space="preserve">
+    <value>Apply model ID</value>
+  </data>
+  <data name="providerListingVerified" xml:space="preserve">
+    <value>Model listing verified. Generation has not been tested.</value>
+  </data>
+  <data name="providerListingUnsupported" xml:space="preserve">
+    <value>Model listing is unavailable; generation has not been verified. Enter a model ID manually.</value>
+  </data>
+  <data name="providerRuntimeContext" xml:space="preserve">
+    <value>Runtime context</value>
+  </data>
+  <data name="providerMaxOutputTokens" xml:space="preserve">
+    <value>Maximum output tokens</value>
+  </data>
+  <data name="providerContextWindow" xml:space="preserve">
+    <value>Model context limit</value>
+  </data>
+  <data name="providerContextUnknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="providerLimitsAssumption" xml:space="preserve">
+    <value>Application assumption</value>
+  </data>
+  <data name="providerLimitsUserOverride" xml:space="preserve">
+    <value>User override</value>
+  </data>
+  <data name="providerLimitsSave" xml:space="preserve">
+    <value>Save limits</value>
+  </data>
+  <data name="providerLimitsReset" xml:space="preserve">
+    <value>Reset to automatic</value>
+  </data>
+  <data name="providerLimitsInvalid" xml:space="preserve">
+    <value>Enter positive whole numbers. Output must be smaller than runtime context, which must not exceed the known model limit.</value>
+  </data>
+  <data name="providerInvalidRoot" xml:space="preserve">
+    <value>Enter an HTTP or HTTPS API root without credentials, a query, or a fragment.</value>
+  </data>
+  <data name="providerContextTooLong" xml:space="preserve">
+    <value>The provider rejected the request length. Reduce runtime context.</value>
+  </data>
+  <data name="providerEmbeddingSelectionConverted" xml:space="preserve">
+    <value>The previous embedding provider supports chat only. Embeddings now use local Ollama (nomic-embed-text).</value>
+  </data>
+  <data name="providerConnectionFailed" xml:space="preserve">
+    <value>The provider could not be reached.</value>
+  </data>
+  <data name="providerResponseInvalid" xml:space="preserve">
+    <value>The provider returned an unexpected response.</value>
+  </data>
+  <data name="providerRequestFailed" xml:space="preserve">
+    <value>The provider request failed.</value>
+  </data>
+  <data name="providerSelectionUnavailable" xml:space="preserve">
+    <value>Select an enabled provider in Settings.</value>
+  </data>
+  <data name="providerEndpointUnsupported" xml:space="preserve">
+    <value>This provider does not support the requested operation.</value>
   </data>
 </root>

@@ -4,7 +4,7 @@ import GRDB
 extension NotebookStore {
 
     @discardableResult
-    public func createNote(
+    @MainActor public func createNote(
         notebookId: Int64,
         title: String,
         bodyMd: String,
@@ -31,7 +31,7 @@ extension NotebookStore {
     }
 
     public func notes(notebookId: Int64) throws -> [Note] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Note
                 .filter(Note.Columns.notebookId.column == notebookId)
                 .order(Note.Columns.updatedAt.column.desc)
@@ -40,12 +40,12 @@ extension NotebookStore {
     }
 
     public func note(id: Int64) throws -> Note? {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Note.fetchOne(db, key: id)
         }
     }
 
-    public func updateNote(id: Int64, title: String, bodyMd: String) throws {
+    @MainActor public func updateNote(id: Int64, title: String, bodyMd: String) throws {
         try? snapshotNoteVersion(noteId: id, reason: .autosave)
 
         try runOnDatabase { db in
@@ -60,7 +60,7 @@ extension NotebookStore {
         }
     }
 
-    public func deleteNote(id: Int64) throws {
+    @MainActor public func deleteNote(id: Int64) throws {
         let uuid: String? = try runOnDatabase { db in
             try String.fetchOne(
                 db,

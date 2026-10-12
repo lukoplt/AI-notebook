@@ -3,8 +3,6 @@ using AINotebook.App.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI;
-using Windows.UI;
 
 namespace AINotebook.App.Onboarding;
 
@@ -46,9 +44,8 @@ public sealed partial class DetectOllamaStep : UserControl
         FoundPanel.Visibility = up ? Visibility.Visible : Visibility.Collapsed;
         WaitingPanel.Visibility = up ? Visibility.Collapsed : Visibility.Visible;
         StatusIcon.Glyph = up ? "\uE73E" : "\uE9A9"; // check vs cloud
-        StatusIcon.Foreground = up
-            ? new SolidColorBrush(Color.FromArgb(255, 16, 124, 16))
-            : (Brush)Application.Current.Resources["TextFillColorSecondaryBrush"];
+        // Token colours only (spec §3): success when Ollama answers, secondary text while waiting.
+        StatusIcon.Foreground = (Brush)Application.Current.Resources[up ? "SuccessBrush" : "Text2Brush"];
     }
 
     private void OnContinue(object sender, RoutedEventArgs e)

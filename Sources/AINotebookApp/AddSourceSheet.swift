@@ -21,10 +21,19 @@ struct AddSourceSheet: View {
 
     private var t: AppText { AppText(language: language) }
 
+    init(notebookId: Int64, language: AppLanguage, ingestion: IngestionService,
+         isPresented: Binding<Bool>, initialTab: Tab = .file) {
+        self.notebookId = notebookId
+        self.language = language
+        self.ingestion = ingestion
+        self._isPresented = isPresented
+        self._tab = State(initialValue: initialTab)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(t.string(.addSourceSheetTitle))
-                .font(.title2).bold()
+                .tokenFont(.title)
 
             Picker("", selection: $tab) {
                 Text(t.string(.addSourceFromFile)).tag(Tab.file)
@@ -43,8 +52,8 @@ struct AddSourceSheet: View {
 
             if let errorMessage {
                 Text(errorMessage)
-                    .foregroundStyle(.red)
-                    .font(.callout)
+                    .tokenForeground(.danger)
+                    .tokenFont(.body)
             }
 
             HStack {
@@ -76,7 +85,7 @@ struct AddSourceSheet: View {
 
     private var fileSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Button("Choose file…") {
+            Button(t.string(.addSourceChooseFile)) {
                 let panel = NSOpenPanel()
                 panel.allowedContentTypes = [
                     .pdf,
@@ -85,12 +94,12 @@ struct AddSourceSheet: View {
                     UTType("org.openxmlformats.wordprocessingml.document") ?? .data,
                     UTType("org.openxmlformats.presentationml.presentation") ?? .data,
                     UTType("org.openxmlformats.spreadsheetml.sheet") ?? .data
-                ]
+                ] + SourceType.extraFileExtensions.compactMap { UTType(filenameExtension: $0) }
                 panel.allowsMultipleSelection = false
                 if panel.runModal() == .OK { fileURL = panel.url }
             }
             if let fileURL {
-                Text(fileURL.lastPathComponent).font(.callout).foregroundStyle(.secondary)
+                Text(fileURL.lastPathComponent).tokenFont(.body).tokenForeground(.text2)
             }
         }
     }

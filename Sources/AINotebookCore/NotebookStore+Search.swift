@@ -39,7 +39,7 @@ extension NotebookStore {
     public func searchNotes(notebookId: Int64, query: String) throws -> [NoteSearchHit] {
         let escaped = Self.escapeFtsQuery(query)
         guard !escaped.isEmpty else { return [] }
-        return try runOnDatabase { db in
+        return try dbQueue.read { db in
             try Row.fetchAll(
                 db,
                 sql: """
@@ -62,7 +62,7 @@ extension NotebookStore {
     public func globalSearch(query: String) throws -> GlobalSearchResult {
         let escaped = Self.escapeFtsQuery(query)
         guard !escaped.isEmpty else { return GlobalSearchResult(notes: [], sources: []) }
-        return try runOnDatabase { db in
+        return try dbQueue.read { db in
             let notes = try Row.fetchAll(
                 db,
                 sql: """

@@ -94,6 +94,19 @@ final class ChatEngineTests: XCTestCase {
         let sent = chat.capturedMessages[0]
         XCTAssertEqual(sent.first?.role, .system)
         XCTAssertEqual(sent.last?.role, .user)
-        XCTAssertEqual(sent.last?.content, "what colour is the sky?")
+        // The provider receives exactly the prepared (and retained) final turn,
+        // with the question once, last, in its own delimited section.
+        let retained = await engine.previews.sent(sessionId: session.id!, assistantId: try XCTUnwrap(final.id))
+        let request = try ContextPreviewSnapshotJSON.decode(XCTUnwrap(retained)).request
+        XCTAssertEqual(sent, ContextPackRendering.logicalTurns(request))
+        let finalSections = try XCTUnwrap(request.messages.last?.sections)
+        XCTAssertEqual(finalSections.filter { $0.kind == "question" }.count, 1)
+        XCTAssertEqual(finalSections.last?.kind, "question")
+        XCTAssertEqual(finalSections.last?.text, "[QUESTION]\nwhat colour is the sky?\n[/QUESTION]")
+        XCTAssertEqual(sent.last?.content, finalSections.map(\.text).joined(separator: "\n\n"))
+        XCTAssertTrue(try XCTUnwrap(sent.last?.content).contains("[1] src · und\nthe sky is blue"))
+        XCTAssertTrue(try XCTUnwrap(sent.last?.content).contains("  src — text [retrieval]"))
+        XCTAssertFalse(try XCTUnwrap(sent.first?.content).contains("the sky is blue"), "evidence is never in system")
+        XCTAssertEqual(final.citations.first?.text, "the sky is blue")
     }
 }

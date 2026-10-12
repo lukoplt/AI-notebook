@@ -6,7 +6,6 @@
     xmlns:vm="using:AINotebook.App.ViewModels"
     xmlns:core="using:AINotebook.Core.Storage"
     x:Name="Dialog"
-    CloseButtonText="Close"
     DefaultButton="None">
     <ContentDialog.Resources>
         <x:Double x:Key="ContentDialogMinWidth">640</x:Double>
@@ -30,7 +29,7 @@
                      PlaceholderText="{x:Bind SearchPlaceholder}"
                      KeyDown="OnQueryKeyDown"/>
             <Button Grid.Column="1" Command="{x:Bind ViewModel.SearchCommand}"
-                    Style="{ThemeResource AccentButtonStyle}"
+                    Style="{StaticResource PrimaryButtonStyle}"
                     x:Name="SearchButton"/>
         </Grid>
 
@@ -51,7 +50,7 @@
                                 <StackPanel Spacing="2">
                                     <TextBlock Text="{x:Bind Title}" FontWeight="SemiBold"/>
                                     <TextBlock Text="{x:Bind Snippet}" TextWrapping="Wrap" FontSize="12"
-                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                               Foreground="{ThemeResource Text2Brush}"/>
                                 </StackPanel>
                             </Button>
                         </DataTemplate>
@@ -66,7 +65,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="core:SourceSearchHit">
                             <Border Padding="10,8" Margin="0,2" CornerRadius="4"
-                                    Background="{ThemeResource SubtleFillColorSecondaryBrush}">
+                                    Background="{ThemeResource Surface2Brush}">
                                 <TextBlock Text="{x:Bind Title}" FontWeight="SemiBold"/>
                             </Border>
                         </DataTemplate>
@@ -75,7 +74,7 @@
 
                 <!-- Empty hint -->
                 <TextBlock x:Name="EmptyHint" TextAlignment="Center"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           Foreground="{ThemeResource Text2Brush}"
                            Visibility="{x:Bind ViewModel.IsEmpty, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
             </StackPanel>
         </ScrollViewer>

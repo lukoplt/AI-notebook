@@ -1,0 +1,501 @@
+{
+  "contract": "provider-probe",
+  "version": 1,
+  "cases": [
+    {
+      "name": "ollama-empty",
+      "type": "ollama",
+      "statusCode": 200,
+      "response": "validEmpty",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-one",
+      "type": "ollama",
+      "statusCode": 200,
+      "response": "validOne",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-not-found",
+      "type": "ollama",
+      "statusCode": 404,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-method",
+      "type": "ollama",
+      "statusCode": 405,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-not-implemented",
+      "type": "ollama",
+      "statusCode": 501,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-unauthorized",
+      "type": "ollama",
+      "statusCode": 401,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-forbidden",
+      "type": "ollama",
+      "statusCode": 403,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-rate-limit",
+      "type": "ollama",
+      "statusCode": 429,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-server",
+      "type": "ollama",
+      "statusCode": 500,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-malformed",
+      "type": "ollama",
+      "statusCode": 200,
+      "response": "malformed",
+      "expectedStatus": "failed",
+      "errorCode": "decoding",
+      "generationVerified": false
+    },
+    {
+      "name": "ollama-connection",
+      "type": "ollama",
+      "statusCode": 0,
+      "response": "transport",
+      "expectedStatus": "failed",
+      "errorCode": "transport",
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-empty",
+      "type": "anthropic",
+      "statusCode": 200,
+      "response": "validEmpty",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-one",
+      "type": "anthropic",
+      "statusCode": 200,
+      "response": "validOne",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-not-found",
+      "type": "anthropic",
+      "statusCode": 404,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-method",
+      "type": "anthropic",
+      "statusCode": 405,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-not-implemented",
+      "type": "anthropic",
+      "statusCode": 501,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-unauthorized",
+      "type": "anthropic",
+      "statusCode": 401,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-forbidden",
+      "type": "anthropic",
+      "statusCode": 403,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-rate-limit",
+      "type": "anthropic",
+      "statusCode": 429,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-server",
+      "type": "anthropic",
+      "statusCode": 500,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-malformed",
+      "type": "anthropic",
+      "statusCode": 200,
+      "response": "malformed",
+      "expectedStatus": "failed",
+      "errorCode": "decoding",
+      "generationVerified": false
+    },
+    {
+      "name": "anthropic-connection",
+      "type": "anthropic",
+      "statusCode": 0,
+      "response": "transport",
+      "expectedStatus": "failed",
+      "errorCode": "transport",
+      "generationVerified": false
+    },
+    {
+      "name": "openai-empty",
+      "type": "openai",
+      "statusCode": 200,
+      "response": "validEmpty",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai-one",
+      "type": "openai",
+      "statusCode": 200,
+      "response": "validOne",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai-not-found",
+      "type": "openai",
+      "statusCode": 404,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai-method",
+      "type": "openai",
+      "statusCode": 405,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai-not-implemented",
+      "type": "openai",
+      "statusCode": 501,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai-unauthorized",
+      "type": "openai",
+      "statusCode": 401,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "openai-forbidden",
+      "type": "openai",
+      "statusCode": 403,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "openai-rate-limit",
+      "type": "openai",
+      "statusCode": 429,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "openai-server",
+      "type": "openai",
+      "statusCode": 500,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "openai-malformed",
+      "type": "openai",
+      "statusCode": 200,
+      "response": "malformed",
+      "expectedStatus": "failed",
+      "errorCode": "decoding",
+      "generationVerified": false
+    },
+    {
+      "name": "openai-connection",
+      "type": "openai",
+      "statusCode": 0,
+      "response": "transport",
+      "expectedStatus": "failed",
+      "errorCode": "transport",
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-empty",
+      "type": "openai_compatible",
+      "statusCode": 200,
+      "response": "validEmpty",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-one",
+      "type": "openai_compatible",
+      "statusCode": 200,
+      "response": "validOne",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-not-found",
+      "type": "openai_compatible",
+      "statusCode": 404,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-method",
+      "type": "openai_compatible",
+      "statusCode": 405,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-not-implemented",
+      "type": "openai_compatible",
+      "statusCode": 501,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-unauthorized",
+      "type": "openai_compatible",
+      "statusCode": 401,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-forbidden",
+      "type": "openai_compatible",
+      "statusCode": 403,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-rate-limit",
+      "type": "openai_compatible",
+      "statusCode": 429,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-server",
+      "type": "openai_compatible",
+      "statusCode": 500,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-malformed",
+      "type": "openai_compatible",
+      "statusCode": 200,
+      "response": "malformed",
+      "expectedStatus": "failed",
+      "errorCode": "decoding",
+      "generationVerified": false
+    },
+    {
+      "name": "openai_compatible-connection",
+      "type": "openai_compatible",
+      "statusCode": 0,
+      "response": "transport",
+      "expectedStatus": "failed",
+      "errorCode": "transport",
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-empty",
+      "type": "openwebui",
+      "statusCode": 200,
+      "response": "validEmpty",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-one",
+      "type": "openwebui",
+      "statusCode": 200,
+      "response": "validOne",
+      "expectedStatus": "verified",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-not-found",
+      "type": "openwebui",
+      "statusCode": 404,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-method",
+      "type": "openwebui",
+      "statusCode": 405,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-not-implemented",
+      "type": "openwebui",
+      "statusCode": 501,
+      "response": "error",
+      "expectedStatus": "listingUnsupported",
+      "errorCode": null,
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-unauthorized",
+      "type": "openwebui",
+      "statusCode": 401,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-forbidden",
+      "type": "openwebui",
+      "statusCode": 403,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "auth",
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-rate-limit",
+      "type": "openwebui",
+      "statusCode": 429,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-server",
+      "type": "openwebui",
+      "statusCode": 500,
+      "response": "error",
+      "expectedStatus": "failed",
+      "errorCode": "http",
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-malformed",
+      "type": "openwebui",
+      "statusCode": 200,
+      "response": "malformed",
+      "expectedStatus": "failed",
+      "errorCode": "decoding",
+      "generationVerified": false
+    },
+    {
+      "name": "openwebui-connection",
+      "type": "openwebui",
+      "statusCode": 0,
+      "response": "transport",
+      "expectedStatus": "failed",
+      "errorCode": "transport",
+      "generationVerified": false
+    }
+  ]
+}

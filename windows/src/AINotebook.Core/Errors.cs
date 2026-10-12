@@ -28,6 +28,18 @@ public abstract class StoreException : Exception
         public string Title { get; }
         public InvalidSourceTitle(string title) : base($"Invalid source title: \"{title}\".") => Title = title;
     }
+
+    public sealed class ChatSessionNotFound : StoreException
+    {
+        public long Id { get; }
+        public ChatSessionNotFound(long id) : base($"Chat {id} not found.") => Id = id;
+    }
+
+    public sealed class InvalidChatTitle : StoreException
+    {
+        public string Title { get; }
+        public InvalidChatTitle(string title) : base($"Invalid chat title: \"{title}\".") => Title = title;
+    }
 }
 
 // Note: ExtractorException, IngestionException, OllamaException, and

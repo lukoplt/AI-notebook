@@ -1,5 +1,73 @@
 # Changelog
 
+## [0.15.0] — 2026-10-09
+
+Chat with whole folders, in Czech, Slovak, English and German, on macOS and
+Windows — and see exactly what goes to the model before it does. Both apps
+also get a new, calmer chat-first look.
+
+### Added
+- New Codex-style layout on macOS and Windows: notebooks and their chats in
+  the sidebar, the conversation in the middle, and a collapsible right panel
+  for Sources, Notes, Context and Citations. Answers render as Markdown with
+  inline citation chips. The composer gathers what used to be toolbar
+  buttons: a + menu (files, folders, URLs, web search, Overview, run a tool,
+  new note) and chips for scope, persona and model. Notes open as full
+  documents with history and Markdown/PDF export (PDF is new on macOS).
+  Settings is a window on macOS (⌘,) and a page on Windows, with sections.
+- Rename a chat from the sidebar, the title bar menu, or by editing the
+  title in place (macOS) / double-clicking it (Windows).
+- Stop: while an answer streams, Send turns into Stop. The text received so
+  far stays in the chat, marked as stopped; a stopped regenerate keeps the
+  previous answer. Stopped before any text arrived, the question goes back
+  into the composer instead of staying unanswered in the chat.
+- Folders as sources: add a folder once and it stays in the notebook. Watch
+  it for changes, rescan on demand ("Scan now", "Verify all"), and it is
+  reconciled after a restart. Folder rules choose file types, ignored paths,
+  extraction limits and a Windows-1250 fallback for legacy Czech text files.
+  The Sources list groups files under their folder, with coverage counts.
+- Local language detection for Czech, Slovak, English and German. Every
+  cited excerpt carries its language; nothing leaves your machine.
+- Chat scope: the whole notebook, or any mix of folders, source sets and
+  individual files. An empty selection really means no documents.
+- Context preview: before sending, see the scope, coverage, a relative-path
+  map of the folder, the full cited excerpts, your instructions and the
+  question — exactly what the model will receive. After sending, the same
+  view shows what was sent.
+- Overview mode: a sampled, excerpt-based view of a folder for "what is in
+  here?" questions (not an exhaustive summary).
+- Providers: presets for LM Studio, vLLM, OpenRouter, Groq, Mistral and
+  Together; a manual model ID when a server cannot list models; per-model
+  context and output-token limits.
+- Re-index: rebuild the index with another embedding model while the current
+  one keeps answering; progress survives a restart and can be retried or
+  discarded.
+
+### Changed
+- Czech UI consistently says "notebook" (no more "blok").
+- Citations now save the full excerpt and the document revision they came
+  from. They stay readable after a restart, and tell you when the original
+  file has changed or is gone.
+- Retrieval looks wider before it cuts: each search branch fetches 32
+  candidates and the answer keeps the best 16 passages that fit the model's
+  context.
+- Excel workbooks are read as sheet names and cell coordinates; cached
+  formula results and date serials are kept as annotated values.
+- Text files are decoded strictly (UTF-8, then the folder's fallback), so
+  broken bytes are reported instead of silently replaced.
+- Embeddings use only embedding-capable providers. If an older install had
+  Anthropic or OpenWebUI selected for embeddings, it switches once to local
+  Ollama (`nomic-embed-text`) and tells you. Changing the chat provider never
+  changes the embedding provider.
+- The database upgrades to schema v19 automatically. Existing indexes keep
+  working and are not converted; re-index when you change embedding model.
+
+### Not in this release
+- The default embedding model stays `nomic-embed-text`. The multilingual
+  embedding benchmark and token-count calibration are built but not yet run
+  on reference hardware; the decision moves to the next release
+  (`docs/roadmap.md` §1.1).
+
 ## [0.14.0] — 2026-08-24
 
 Windows catches up on personas and bulk note actions, macOS gains

@@ -1,0 +1,132 @@
+{
+  "contract": "unicode-tables",
+  "version": 1,
+  "cases": [
+    {
+      "name": "simple-lower-not-full-fold",
+      "operation": "lower",
+      "input": [
+        304,
+        7838,
+        66560
+      ],
+      "expected": [
+        105,
+        223,
+        66600
+      ]
+    },
+    {
+      "name": "full-fold-expands",
+      "operation": "fold",
+      "input": [
+        304,
+        7838
+      ],
+      "expected": [
+        105,
+        775,
+        115,
+        115
+      ]
+    },
+    {
+      "name": "canonical-reordering",
+      "operation": "nfc",
+      "input": [
+        97,
+        789,
+        768
+      ],
+      "expected": [
+        224,
+        789
+      ]
+    },
+    {
+      "name": "hangul",
+      "operation": "nfc",
+      "input": [
+        4352,
+        4449,
+        4520
+      ],
+      "expected": [
+        44033
+      ]
+    },
+    {
+      "name": "composition-exclusion",
+      "operation": "nfc",
+      "input": [
+        836
+      ],
+      "expected": [
+        776,
+        769
+      ]
+    },
+    {
+      "name": "equal-ccc-blocking",
+      "operation": "nfc",
+      "input": [
+        97,
+        773,
+        789,
+        768,
+        1454,
+        98
+      ],
+      "expected": [
+        97,
+        1454,
+        773,
+        768,
+        789,
+        98
+      ]
+    },
+    {
+      "name": "leading-marks",
+      "operation": "nfc",
+      "input": [
+        1464,
+        1465,
+        1457,
+        1425,
+        1475,
+        1456,
+        1452,
+        1439
+      ],
+      "expected": [
+        1457,
+        1464,
+        1465,
+        1425,
+        1475,
+        1456,
+        1452,
+        1439
+      ]
+    },
+    {
+      "name": "categories",
+      "operation": "category",
+      "input": [
+        888,
+        73474,
+        775,
+        1635,
+        57344
+      ],
+      "expected": [
+        "Cn",
+        "Lo",
+        "Mn",
+        "Nd",
+        "Co"
+      ]
+    }
+  ]
+}

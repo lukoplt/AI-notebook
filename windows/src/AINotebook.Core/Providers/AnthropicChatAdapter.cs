@@ -9,7 +9,7 @@ namespace AINotebook.Core.Providers;
 
 /// <summary>
 /// Anthropic Messages API streaming adapter.
-/// System prompt is extracted from the first ChatTurn with Role.System
+/// All system turns are joined in their original order
 /// and placed in the top-level "system" field (Anthropic API requirement).
 /// </summary>
 public sealed class AnthropicChatAdapter : IChatStreaming
@@ -19,50 +19,58 @@ public sealed class AnthropicChatAdapter : IChatStreaming
     private readonly string _apiKey;
 
     private const string AnthropicVersion = "2023-06-01";
-    private const int MaxTokens = 8192;
 
     public AnthropicChatAdapter(HttpClient http, string baseUrl, string apiKey)
     {
         _http = http;
-        _baseUrl = baseUrl.TrimEnd('/');
+        _baseUrl = baseUrl;
         _apiKey = apiKey;
     }
+
+    public IAsyncEnumerable<string> StreamAsync(
+        string model,
+        IReadOnlyList<ChatTurn> messages,
+        CancellationToken ct = default)
+        => StreamAsync(model, messages, ChatRequestOptions.Defaults, ct);
 
     public async IAsyncEnumerable<string> StreamAsync(
         string model,
         IReadOnlyList<ChatTurn> messages,
+        ChatRequestOptions options,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
-        // Extract optional leading system turn.
+        options.Validate();
+        var canonical = OpenAIStyleWire.CanonicalMessages(messages);
         string? system = null;
         int start = 0;
-        if (messages.Count > 0 && messages[0].Role == ChatRole.System)
+        if (canonical.Count > 0 && canonical[0].Role == ChatRole.System)
         {
-            system = messages[0].Content;
+            system = canonical[0].Content;
             start = 1;
         }
 
         var wireMessages = new List<object>();
-        for (var i = start; i < messages.Count; i++)
+        for (var i = start; i < canonical.Count; i++)
         {
             wireMessages.Add(new
             {
-                role = messages[i].Role == ChatRole.Assistant ? "assistant" : "user",
-                content = messages[i].Content
+                role = canonical[i].Role == ChatRole.Assistant ? "assistant" : "user",
+                content = canonical[i].Content
             });
         }
 
         var body = new Dictionary<string, object>
         {
             ["model"] = model,
-            ["max_tokens"] = MaxTokens,
+            ["max_tokens"] = options.MaxOutputTokens,
             ["stream"] = true,
             ["messages"] = wireMessages
         };
         if (system is not null) body["system"] = system;
 
         var json = JsonSerializer.Serialize(body);
-        using var req = new HttpRequestMessage(HttpMethod.Post, $"{_baseUrl}/v1/messages")
+        using var req = new HttpRequestMessage(HttpMethod.Post,
+            ProviderApiRoot.Build(ProviderType.Anthropic, _baseUrl, ProviderEndpoint.Chat))
         {
             Content = new StringContent(json, Encoding.UTF8, "application/json")
         };
@@ -72,13 +80,7 @@ public sealed class AnthropicChatAdapter : IChatStreaming
 
         using var resp = await _http.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct);
 
-        // Shared status mapping (macOS parity — ProviderWire.error(forStatus:)
-        // applies the same 401/429/other mapping to Anthropic too, with no
-        // per-provider message prefix). No test pins the old "Anthropic: "
-        // prefix — only the exception type is asserted — so this is safe to
-        // unify; only the request shape and SSE event loop below stay
-        // Anthropic-specific.
-        OpenAIStyleWire.ThrowForStatus(resp);
+        await OpenAIStyleWire.ThrowForChatStatusAsync(resp, ProviderType.Anthropic, ct);
 
         using var stream = await resp.Content.ReadAsStreamAsync(ct);
         using var reader = new StreamReader(stream);
@@ -120,30 +122,47 @@ public sealed class AnthropicChatAdapter : IChatStreaming
         }
     }
 
-    /// List models via GET /v1/models; returns empty list on failure.
+    /// Lists models via GET /v1/models; transport, HTTP and schema failures propagate.
     public static async Task<IReadOnlyList<ProviderModelInfo>> ListModelsAsync(
         HttpClient http, string baseUrl, string apiKey, CancellationToken ct = default)
     {
-        try
+        var url = ProviderApiRoot.Build(ProviderType.Anthropic, baseUrl, ProviderEndpoint.Models);
+        using var req = new HttpRequestMessage(HttpMethod.Get, url);
+        req.Headers.Add("x-api-key", apiKey);
+        req.Headers.Add("anthropic-version", AnthropicVersion);
+        using var resp = await http.SendAsync(req, ct);
+        OpenAIStyleWire.ThrowForStatus(resp);
+        var json = await resp.Content.ReadAsStringAsync(ct);
+        using var document = JsonDocument.Parse(json);
+        var root = document.RootElement;
+        if (root.ValueKind != JsonValueKind.Object || !root.TryGetProperty("data", out var data) ||
+            data.ValueKind != JsonValueKind.Array)
+            throw new JsonException("Expected a model data array.");
+        var result = new List<ProviderModelInfo>();
+        foreach (var item in data.EnumerateArray())
         {
-            using var req = new HttpRequestMessage(HttpMethod.Get, $"{baseUrl.TrimEnd('/')}/v1/models");
-            req.Headers.Add("x-api-key", apiKey);
-            req.Headers.Add("anthropic-version", AnthropicVersion);
-            using var resp = await http.SendAsync(req, ct);
-            if (!resp.IsSuccessStatusCode) return [];
-            var json = await resp.Content.ReadAsStringAsync(ct);
-            var root = JsonSerializer.Deserialize<JsonElement>(json);
-            if (!root.TryGetProperty("data", out var data)) return [];
-            var result = new List<ProviderModelInfo>();
-            foreach (var item in data.EnumerateArray())
+            if (item.ValueKind != JsonValueKind.Object || !item.TryGetProperty("id", out var id) ||
+                id.ValueKind != JsonValueKind.String)
+                throw new JsonException("Expected a model ID string.");
+            string? name = null;
+            if (item.TryGetProperty("display_name", out var displayName) && displayName.ValueKind != JsonValueKind.Null)
             {
-                var id = item.TryGetProperty("id", out var idp) ? idp.GetString() : null;
-                var name = item.TryGetProperty("display_name", out var np) ? np.GetString() : null;
-                if (id is not null) result.Add(new ProviderModelInfo(id, name));
+                if (displayName.ValueKind != JsonValueKind.String)
+                    throw new JsonException("Expected a model display name string.");
+                name = ModelString(displayName);
             }
-            return result;
+            result.Add(new ProviderModelInfo(ModelString(id), name));
         }
-        catch { return []; }
+        return result;
+    }
+
+    private static string ModelString(JsonElement value)
+    {
+        try { return value.GetString()!; }
+        catch (InvalidOperationException)
+        {
+            throw new JsonException("Invalid model listing string.");
+        }
     }
 
     // Default model IDs shown when API discovery fails.

@@ -1,4 +1,5 @@
 using AINotebook.Core.Models;
+using AINotebook.Core.Providers;
 
 namespace AINotebook.Core.Ollama;
 
@@ -10,6 +11,12 @@ public interface IChatStreaming
         string model,
         IReadOnlyList<ChatTurn> messages,
         CancellationToken ct = default);
+
+    IAsyncEnumerable<string> StreamAsync(
+        string model,
+        IReadOnlyList<ChatTurn> messages,
+        ChatRequestOptions options,
+        CancellationToken ct = default) => StreamAsync(model, messages, ct);
 }
 
 public interface IEmbeddingProducing

@@ -1,0 +1,138 @@
+{
+  "cases": [
+    {
+      "expected": "search_query: Kdy končí smlouva?",
+      "format": "2",
+      "model": "nomic-embed-text",
+      "name": "nomic-query",
+      "purpose": "query",
+      "relPath": null,
+      "text": "Kdy končí smlouva?",
+      "title": ""
+    },
+    {
+      "expected": "search_document: Klient/2026/Nabidky/x.xlsx\nA1: Faktura",
+      "format": "2",
+      "model": "nomic-embed-text:latest",
+      "name": "nomic-tag-document",
+      "purpose": "document",
+      "relPath": "Klient/2026/Nabidky/x.xlsx",
+      "text": "A1: Faktura",
+      "title": "x.xlsx"
+    },
+    {
+      "expected": "search_document: a/b.pdf\ntext",
+      "format": "2",
+      "model": "nomic-embed-text-v2-moe",
+      "name": "nomic-v2-moe-document",
+      "purpose": "document",
+      "relPath": "a/b.pdf",
+      "text": "text",
+      "title": "b.pdf"
+    },
+    {
+      "expected": "search_query: q",
+      "format": "2",
+      "model": "library/Nomic-Embed-Text:v1.5",
+      "name": "namespace-nomic",
+      "purpose": "query",
+      "relPath": null,
+      "text": "q",
+      "title": ""
+    },
+    {
+      "expected": "query: q",
+      "format": "2",
+      "model": "jeffh/intfloat-multilingual-e5-large:f16",
+      "name": "e5-query",
+      "purpose": "query",
+      "relPath": null,
+      "text": "q",
+      "title": ""
+    },
+    {
+      "expected": "passage: Poznámky.md\np",
+      "format": "2",
+      "model": "multilingual-e5-base",
+      "name": "e5-document-loose",
+      "purpose": "document",
+      "relPath": null,
+      "text": "p",
+      "title": "Poznámky.md"
+    },
+    {
+      "expected": "a.txt\np",
+      "format": "2",
+      "model": "multilingual-e5-large-instruct",
+      "name": "e5-instruct-no-prefix",
+      "purpose": "document",
+      "relPath": "a.txt",
+      "text": "p",
+      "title": "a.txt"
+    },
+    {
+      "expected": "Složka/Soubor s mezerami A.docx\np",
+      "format": "2",
+      "model": "bge-m3",
+      "name": "bge-m3-header-only",
+      "purpose": "document",
+      "relPath": "Složka/Soubor s  mezerami\tA.docx",
+      "text": "p",
+      "title": "A.docx"
+    },
+    {
+      "expected": "a b.txt\np",
+      "format": "2",
+      "model": "bge-m3",
+      "name": "nbsp-kept",
+      "purpose": "document",
+      "relPath": "a b.txt",
+      "text": "p",
+      "title": "a b.txt"
+    },
+    {
+      "expected": "q",
+      "format": "2",
+      "model": "bge-m3",
+      "name": "bge-m3-query-unchanged",
+      "purpose": "query",
+      "relPath": null,
+      "text": "q",
+      "title": ""
+    },
+    {
+      "expected": "dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddd\np",
+      "format": "2",
+      "model": "bge-m3",
+      "name": "long-header-cut",
+      "purpose": "document",
+      "relPath": "dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/dddddddddddddddddddddddddddddd/f.txt",
+      "text": "p",
+      "title": "f.txt"
+    },
+    {
+      "expected": "p",
+      "format": "1",
+      "model": "nomic-embed-text",
+      "name": "format-1-unchanged",
+      "purpose": "document",
+      "relPath": "a.txt",
+      "text": "p",
+      "title": "a.txt"
+    },
+    {
+      "expected": "q",
+      "format": "legacy",
+      "model": "nomic-embed-text",
+      "name": "legacy-unchanged",
+      "purpose": "query",
+      "relPath": null,
+      "text": "q",
+      "title": ""
+    }
+  ],
+  "contract": "embedding-raw-format",
+  "current": "2",
+  "headerMaxScalars": 200,
+  "version": 2
+}

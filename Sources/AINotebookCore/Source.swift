@@ -17,6 +17,19 @@ public struct Source: Identifiable, Equatable, Hashable, Codable, Sendable {
     /// Content hash used to skip unchanged live sources on re-sync (FR-E1/E2).
     public var contentHash: String?
 
+    public var folderId: Int64?
+    public var relPath: String?
+    public var mtime: Int64?
+    public var sizeBytes: Int64?
+    public var availability: String
+    public var eligible: Bool
+    public var lang: String?
+    public var langCoverage: String?
+    public var descriptor: String?
+    public var currentRevision: Int64?
+    public var publishedRevisionId: Int64?
+    public var encoding: String?
+
     public init(
         id: Int64? = nil,
         notebookId: Int64,
@@ -28,7 +41,19 @@ public struct Source: Identifiable, Equatable, Hashable, Codable, Sendable {
         error: String? = nil,
         ingestedAt: Date = Date(),
         lastSyncedAt: Date? = nil,
-        contentHash: String? = nil
+        contentHash: String? = nil,
+        folderId: Int64? = nil,
+        relPath: String? = nil,
+        mtime: Int64? = nil,
+        sizeBytes: Int64? = nil,
+        availability: String = "present",
+        eligible: Bool = true,
+        lang: String? = nil,
+        langCoverage: String? = nil,
+        descriptor: String? = nil,
+        currentRevision: Int64? = nil,
+        publishedRevisionId: Int64? = nil,
+        encoding: String? = nil
     ) {
         self.id = id
         self.notebookId = notebookId
@@ -41,6 +66,18 @@ public struct Source: Identifiable, Equatable, Hashable, Codable, Sendable {
         self.ingestedAt = ingestedAt
         self.lastSyncedAt = lastSyncedAt
         self.contentHash = contentHash
+        self.folderId = folderId
+        self.relPath = relPath
+        self.mtime = mtime
+        self.sizeBytes = sizeBytes
+        self.availability = availability
+        self.eligible = eligible
+        self.lang = lang
+        self.langCoverage = langCoverage
+        self.descriptor = descriptor
+        self.currentRevision = currentRevision
+        self.publishedRevisionId = publishedRevisionId
+        self.encoding = encoding
     }
 }
 
@@ -61,6 +98,19 @@ extension Source: FetchableRecord, MutablePersistableRecord {
         case ingestedAt   = "ingested_at"
         case lastSyncedAt = "last_synced_at"
         case contentHash  = "content_hash"
+
+        case folderId = "folder_id"
+        case relPath = "rel_path"
+        case mtime = "mtime"
+        case sizeBytes = "size_bytes"
+        case availability = "availability"
+        case eligible = "eligible"
+        case lang = "lang"
+        case langCoverage = "lang_coverage"
+        case descriptor = "descriptor"
+        case currentRevision = "current_revision"
+        case publishedRevisionId = "published_revision_id"
+        case encoding = "encoding"
 
         var column: Column { Column(self.rawValue) }
     }

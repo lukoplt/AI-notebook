@@ -1,10 +1,9 @@
 import Foundation
 import CryptoKit
 
-/// Epic E1/E2 — keeps live sources in sync. Scans a watched folder and
-/// re-ingests only files whose content hash changed (E1), and re-crawls a
-/// single URL source on demand (E2). The App layer drives `syncFolder` from an
-/// FSEvents/timer watcher; this type holds the testable change-detection logic.
+/// Epic E1/E2 — live sources. Folder sync forwards to the durable
+/// `FolderIngestionRuntime` (E1); `recrawl` refreshes one URL/loose source in
+/// place, keeping its identity and old revision evidence (E2).
 public final class LiveSourceSync: @unchecked Sendable {
     private let store: NotebookStore
     private let ingestion: IngestionService
@@ -14,53 +13,36 @@ public final class LiveSourceSync: @unchecked Sendable {
         self.ingestion = ingestion
     }
 
-    /// MD5 of the file's bytes, lowercase hex. MD5 is fine here — this is a
-    /// change detector, not a security primitive.
+    /// Legacy MD5 utility (kept for compatibility); no durable path calls it.
     public static func contentHash(of url: URL) throws -> String {
         let data = try Data(contentsOf: url)
         return Insecure.MD5.hash(data: data).map { String(format: "%02x", $0) }.joined()
     }
 
-    /// Scans `folder` (non-recursive): ingests new files, re-ingests changed
-    /// ones (by hash), and skips unchanged. Deleted files are left as stale
-    /// (not removed). Returns how many files were (re)ingested.
+    public enum SyncError: Error, Equatable {
+        /// Folder sync now runs only through the durable folder runtime.
+        case folderRuntimeUnavailable
+    }
+
+    /// Deprecated facade: finds or adds the persisted folder, requests a scan
+    /// through the durable runtime, awaits that folder's work and returns the
+    /// number of sources that gained a new published revision. It never scans
+    /// files itself.
+    @available(*, deprecated, message: "Use FolderIngestionRuntime add/scan commands.")
     @discardableResult
     public func syncFolder(notebookId: Int64, folder: URL) async throws -> Int {
-        let fm = FileManager.default
-        let entries = (try? fm.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)) ?? []
-        let existing = try await MainActor.run { try store.sourcesIncludingShadow(notebookId: notebookId) }
-        var changed = 0
-        for file in entries where SourceType.detect(filename: file.lastPathComponent) != nil {
-            let hash = try Self.contentHash(of: file)
-            if let match = existing.first(where: { $0.rawPath == file.path }) {
-                if match.contentHash == hash { continue } // unchanged — skip
-                try await ingestion.reIngest(sourceId: match.id!)
-                try await MainActor.run {
-                    try store.updateSourceSyncInfo(id: match.id!, lastSyncedAt: Date(), contentHash: hash)
-                }
-            } else {
-                let src = try await ingestion.ingestFile(file, into: notebookId)
-                try await MainActor.run {
-                    try store.updateSourceSyncInfo(id: src.id!, lastSyncedAt: Date(), contentHash: hash)
-                }
-            }
-            changed += 1
-        }
-        return changed
+        guard let runtime = ingestion.folderRuntime else { throw SyncError.folderRuntimeUnavailable }
+        return try await runtime.syncFolder(notebookId: notebookId, url: folder)
     }
 
     /// Re-crawls a web (or file) source and records the sync timestamp (E2).
     @discardableResult
     public func recrawl(sourceId: Int64) async throws -> Source {
         let src = try await ingestion.reIngest(sourceId: sourceId)
-        let hash: String
-        if let raw = src.rawPath, let h = try? Self.contentHash(of: URL(fileURLWithPath: raw)) {
-            hash = h
-        } else {
-            hash = src.contentHash ?? ""
-        }
+        // The timestamp records the published SHA-256; no MD5 override.
         try await MainActor.run {
-            try store.updateSourceSyncInfo(id: sourceId, lastSyncedAt: Date(), contentHash: hash)
+            let published = try store.source(id: sourceId)?.contentHash ?? src.contentHash ?? ""
+            try store.updateSourceSyncInfo(id: sourceId, lastSyncedAt: Date(), contentHash: published)
         }
         return try await MainActor.run { try store.source(id: sourceId) } ?? src
     }

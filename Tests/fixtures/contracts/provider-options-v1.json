@@ -1,0 +1,54 @@
+{
+  "contract": "provider-options",
+  "version": 1,
+  "cases": [
+    {
+      "name": "ollama",
+      "type": "ollama",
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expected": {
+        "options": {
+          "num_ctx": 4096,
+          "num_predict": 333
+        }
+      }
+    },
+    {
+      "name": "anthropic",
+      "type": "anthropic",
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expected": {
+        "max_tokens": 333
+      }
+    },
+    {
+      "name": "openai",
+      "type": "openai",
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expected": {
+        "max_tokens": 333
+      }
+    },
+    {
+      "name": "openai_compatible",
+      "type": "openai_compatible",
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expected": {
+        "max_tokens": 333
+      }
+    },
+    {
+      "name": "openwebui",
+      "type": "openwebui",
+      "runtimeContext": 4096,
+      "maxOutputTokens": 333,
+      "expected": {
+        "max_tokens": 333
+      }
+    }
+  ]
+}

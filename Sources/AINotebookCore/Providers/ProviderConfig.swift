@@ -49,10 +49,13 @@ public struct ProviderConfig: Equatable, Sendable, Identifiable {
 public struct ProviderModelInfo: Equatable, Sendable, Identifiable {
     public let id: String
     public let displayName: String?
+    /// provider-listing-limits-v1: the window an OpenWebUI / OpenAI-compatible listing advertises.
+    public let contextWindow: Int?
 
-    public init(id: String, displayName: String? = nil) {
+    public init(id: String, displayName: String? = nil, contextWindow: Int? = nil) {
         self.id = id
         self.displayName = displayName
+        self.contextWindow = contextWindow
     }
 
     public var label: String {

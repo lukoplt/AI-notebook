@@ -1,10 +1,14 @@
 import Foundation
 
-/// Long-running task that runs `Embedder.embedAllPending` whenever it's
-/// kicked. `kick()` is idempotent: while a drain is in flight, additional
+/// Long-running task that runs on every kick: in production it wakes the
+/// durable runtime's generation work; isolated tests may drive the legacy
+/// `Embedder.embedAllPending`. `kick()` is idempotent: while a drain is in flight, additional
 /// kicks set a "drain again when this finishes" flag.
 public actor EmbeddingWorker {
-    private let embedder: Embedder
+    private let embedder: Embedder?
+    /// Production: wakes durable generation work in the folder runtime. When
+    /// set, the legacy embedder never runs, so nothing is embedded twice.
+    private let wake: (@Sendable () async throws -> Void)?
     private var inFlight: Task<Void, Never>?
     private var pendingKick = false
 
@@ -13,6 +17,12 @@ public actor EmbeddingWorker {
 
     public init(embedder: Embedder) {
         self.embedder = embedder
+        self.wake = nil
+    }
+
+    public init(wake: @escaping @Sendable () async throws -> Void) {
+        self.embedder = nil
+        self.wake = wake
     }
 
     public func kick() {
@@ -29,8 +39,12 @@ public actor EmbeddingWorker {
         repeat {
             pendingKick = false
             do {
-                let n = try await embedder.embedAllPending()
-                totalEmbedded += n
+                if let wake {
+                    try await wake()
+                } else if let embedder {
+                    let n = try await embedder.embedAllPending()
+                    totalEmbedded += n
+                }
                 lastError = nil
             } catch {
                 lastError = error

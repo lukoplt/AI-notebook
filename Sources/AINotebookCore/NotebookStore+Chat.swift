@@ -15,11 +15,28 @@ extension NotebookStore {
     }
 
     public func chatSessions(notebookId: Int64) throws -> [ChatSession] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try ChatSession
                 .filter(ChatSession.Columns.notebookId.column == notebookId)
                 .order(ChatSession.Columns.createdAt.column.desc)
                 .fetchAll(db)
+        }
+    }
+
+    /// Renames a chat. The title is trimmed (spaces and newlines); a blank
+    /// title is rejected and the stored one kept. No schema change: the
+    /// `title` column has existed since the first chat migration.
+    @discardableResult
+    public func renameChatSession(id: Int64, title: String) throws -> ChatSession {
+        let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { throw StoreError.invalidChatTitle(title) }
+        return try runOnDatabase { db -> ChatSession in
+            guard var session = try ChatSession.fetchOne(db, key: id) else {
+                throw StoreError.chatSessionNotFound(id: id)
+            }
+            session.title = trimmed
+            try session.update(db)
+            return session
         }
     }
 
@@ -37,7 +54,7 @@ extension NotebookStore {
     }
 
     public func messages(sessionId: Int64) throws -> [ChatMessage] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try ChatMessage
                 .filter(ChatMessage.Columns.sessionId.column == sessionId)
                 .order(ChatMessage.Columns.createdAt.column.asc)

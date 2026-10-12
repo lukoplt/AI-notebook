@@ -6,7 +6,7 @@ extension NotebookStore {
     public static let noteVersionCap: Int = 50
 
     public func noteVersions(noteId: Int64) throws -> [NoteVersion] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try NoteVersion
                 .filter(NoteVersion.Columns.noteId.column == noteId)
                 .order(NoteVersion.Columns.savedAt.column.asc)
@@ -31,7 +31,7 @@ extension NotebookStore {
         return version
     }
 
-    public func restoreNoteVersion(versionId: Int64) throws {
+    @MainActor public func restoreNoteVersion(versionId: Int64) throws {
         var resolvedNoteId: Int64 = 0
         try runOnDatabase { db in
             guard let v = try NoteVersion.fetchOne(db, key: versionId) else { return }

@@ -1,4 +1,5 @@
 using AINotebook.App.Services;
+using AINotebook.App.ViewModels;
 using AINotebook.Core.Ingestion;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Storage;
@@ -7,23 +8,29 @@ using WinRT.Interop;
 
 namespace AINotebook.App.Views;
 
+/// <summary>Which tab the add-source dialog opens on ("+ › Add file / Add URL / Add text").</summary>
+public enum AddSourceKind { File, Url, Text }
+
 public sealed partial class AddSourceDialog : ContentDialog
 {
     private enum Mode { File, Url, Text }
 
     private readonly IngestionService _ingestion;
     private readonly long _notebookId;
+    private readonly LocalizedStrings _strings;
     private Mode _mode = Mode.File;
     private StorageFile? _file;
     private bool _working;
 
     public bool DidIngest { get; private set; }
 
-    public AddSourceDialog(IngestionService ingestion, long notebookId, LocalizedStrings strings)
+    public AddSourceDialog(IngestionService ingestion, long notebookId, LocalizedStrings strings,
+        AddSourceKind initial = AddSourceKind.File)
     {
         this.InitializeComponent();
         _ingestion = ingestion;
         _notebookId = notebookId;
+        _strings = strings;
 
         Title = strings.Get(StringKey.AddSourceSheetTitle);
         PrimaryButtonText = strings.Get(StringKey.AddSourceConfirm);
@@ -37,7 +44,12 @@ public sealed partial class AddSourceDialog : ContentDialog
         RawTitleBox.PlaceholderText = strings.Get(StringKey.AddSourceTitlePlaceholder);
         RawTextBox.PlaceholderText = strings.Get(StringKey.AddSourceTextPlaceholder);
 
-        ModeBar.SelectedItem = FileTab;
+        ModeBar.SelectedItem = initial switch
+        {
+            AddSourceKind.Url => UrlTab,
+            AddSourceKind.Text => TextTab,
+            _ => FileTab,
+        };
         UpdateCanSubmit();
     }
 
@@ -73,7 +85,7 @@ public sealed partial class AddSourceDialog : ContentDialog
             ViewMode = PickerViewMode.List,
             SuggestedStartLocation = PickerLocationId.DocumentsLibrary
         };
-        foreach (var ext in new[] { ".pdf", ".txt", ".md", ".docx", ".pptx", ".xlsx" })
+        foreach (var ext in new[] { ".pdf", ".txt", ".md", ".docx", ".pptx", ".xlsx", ".docm", ".pptm", ".xlsm", ".eml", ".msg" })
             picker.FileTypeFilter.Add(ext);
 
         var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
@@ -120,7 +132,8 @@ public sealed partial class AddSourceDialog : ContentDialog
         }
         catch (Exception ex)
         {
-            ErrorBar.Message = ex.ToString();
+            // Localized category only; raw exception text can carry paths or response bodies.
+            ErrorBar.Message = ChatFailureText.Format(ex, key => _strings.Get(key));
             ErrorBar.IsOpen = true;
         }
         finally

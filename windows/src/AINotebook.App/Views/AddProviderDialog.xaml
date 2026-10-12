@@ -7,6 +7,13 @@
             <ComboBox x:Name="TypeCombo" HorizontalAlignment="Stretch"
                       SelectionChanged="OnTypeChanged" />
 
+            <ComboBox x:Name="PresetComboBox" HorizontalAlignment="Stretch"
+                      ItemsSource="{x:Bind ViewModel.Presets}" DisplayMemberPath="Name"
+                      SelectedValuePath="Id"
+                      SelectedValue="{x:Bind ViewModel.SelectedPresetId, Mode=TwoWay}" />
+            <TextBlock x:Name="PresetHelpText" TextWrapping="Wrap" FontSize="12"
+                       Foreground="{ThemeResource Text2Brush}" />
+
             <TextBox x:Name="NameBox" HorizontalAlignment="Stretch"
                      TextChanged="OnFieldChanged" />
 
@@ -21,14 +28,14 @@
                 <ProgressRing x:Name="TestSpinner" Width="20" Height="20" IsActive="False" />
                 <TextBlock x:Name="TestStatusText" VerticalAlignment="Center"
                            TextWrapping="Wrap" MaxWidth="260"
-                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                           Foreground="{ThemeResource Text2Brush}" />
             </StackPanel>
 
             <InfoBar x:Name="TestSuccessBar" Severity="Success" IsClosable="False" IsOpen="False" />
 
             <Button x:Name="DeleteButton" Visibility="Collapsed"
                     Click="OnDelete"
-                    Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                    Foreground="{ThemeResource DangerBrush}"
                     HorizontalAlignment="Left" />
         </StackPanel>
     </ScrollViewer>

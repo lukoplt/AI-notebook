@@ -25,7 +25,7 @@ extension NotebookStore {
     }
 
     public func transformations() throws -> [Transformation] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Transformation
                 .order(
                     Transformation.Columns.isBuiltin.column.desc,
@@ -82,7 +82,7 @@ extension NotebookStore {
     }
 
     public func transformationRuns() throws -> [TransformationRun] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try TransformationRun
                 .order(TransformationRun.Columns.ranAt.column.desc)
                 .fetchAll(db)

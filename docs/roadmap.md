@@ -1,14 +1,16 @@
 # AI Notebook — detailní zadání vývoje
 
-*Baseline: **v0.13.0** + neuvolněná práce na větvi `feat/w4-eval-c5-windows-parity`, 2026-08-24. Dual-platform: macOS (Swift/SwiftUI, `Sources/`) + Windows (.NET 10 / WinUI 3, `windows/`). Tento dokument je závazné zadání — nahrazuje předchozí rámcový roadmap.*
+*Baseline: **v0.15.0** (připravené lokálně na větvi `feat/folder-chat-multilingual-rag` → `claude/wp9`, 2026-10-09, zatím nevydané). Schéma **v19** na obou platformách. Dual-platform: macOS (Swift/SwiftUI, `Sources/`) + Windows (.NET 10 / WinUI 3, `windows/`). Tento dokument je závazné zadání — nahrazuje předchozí rámcový roadmap.*
 
 ---
 
 ## 0. Kontext a současný stav
 
-Obě platformy sdílejí datový model a RAG pipeline. **Epic M (parita macOS) je hotový a smergovaný** — macOS dohnal Windows na Epicy B–E i C5 persony (release v0.11.0, commit `1a1deef`). Schéma je na obou platformách na **v18** a testový dluh Epiců B–E je splacený (§6). Zbývají **tři** položky (§1) plus jedno otevřené rozhodnutí (§0.3).
+Obě platformy sdílejí datový model a RAG pipeline. **Folder chat s vícejazyčnou evidencí (WP0–WP9, spec `docs/superpowers/specs/2026-10-09-folder-chat-multilingual-rag-design.md`) je hotový na obou platformách** a míří do v0.15.0: perzistentní složky (watch, pravidla, cp1250, XLSX), lokální detekce cs/sk/en/de, verzované revize dokumentů a embedding generace (v19), context pack s náhledem, Overview a citace se snapshotem textu a revize. Schéma je na obou platformách **v19**. Zbývají položky v §1, odložené WP7 měření (§1.1) a otevřené rozhodnutí D1 (§0.3).
 
-**Testy:** macOS **367** zelených (`swift test`), Windows Core **336** zelených (`dotnet test tests/AINotebook.Core.Tests`). Oproti v0.13.0 (357 / 273) přibylo 8 testů FSEvents watcheru, 2 testy eval harnessu a 63 testů Windows Core (§6).
+**UI redesign ve stylu Codexu (větev `feat/ui-redesign`, spec `docs/superpowers/specs/2026-10-10-ui-redesign-codex-style-design.md`) je také hotový na obou platformách a jde do v0.15.0:** sidebar notebooků a chatů, pravý panel (Sources/Notes/Context/Citations), composer s + menu a chipy, přejmenování chatu, Stop během streamování a dokumentový pohled poznámky s Markdown/PDF exportem — tím se uzavřelo i **M-2** (PDF export na macOS). Ruční checklist: §9 v [`docs/release/0.15.0-checklist.md`](release/0.15.0-checklist.md).
+
+**Testy (2026-10-09, větev `claude/wp9`):** macOS **822** zelených (`swift test`), Windows Core **1057** zelených (`dotnet test windows/tests/AINotebook.Core.Tests`). Obě sady obsahují cross-WP integrační testy WP9 (upgrade v18 → v19 → složka → chat → citace → restart; sdílená fixture `Tests/fixtures/contracts/release-integration-v1.json`). Windows App vrstva (včetně nového `--startup-smoke` kroku v CI) **zatím neprošla Windows CI** — viz [`docs/release/0.15.0-checklist.md`](release/0.15.0-checklist.md).
 
 > **Poznámka k ověřitelnosti:** `AINotebook.Core` i `AINotebook.Core.Tests` cílí na `net10.0` (ne `-windows`), takže **Windows Core testy jdou spustit i na macOS**. Jen `AINotebook.App`/`AINotebook.App.Tests` cílí na `net10.0-windows10.0.19041.0` a ověří je až Windows CI. Praktický důsledek: veškerá Core logika (storage, RAG, ingesce, provideři) se dá vyvíjet TDD i mimo Windows; XAML/ViewModel vrstva je blind port ověřený CI.
 
@@ -29,22 +31,24 @@ Obě platformy sdílejí datový model a RAG pipeline. **Epic M (parita macOS) j
 | **Epic B:** export MD (B1), export ZIP (B2), backup/restore (B3), ⌘/Ctrl+K global search (B4), drag & drop (B5), bulk delete + bulk summarize zdrojů (B6), náhled zdroje (B7), tagy (B8), hledání v poznámkách (B9) | ✅ obě |
 | **Epic C:** per-notebook instrukce (C1), source sets (C2), edit + regenerace s volbou modelu (C3) | ✅ obě |
 | **Epic E:** kontinuální sledování složky (E1 — `FolderWatchService` / `FolderWatcher`), re-crawl URL (E2), opt-in web search (E3) | ✅ obě |
+| **Folder chat (WP0–WP9):** perzistentní složky + pravidla + durable ingesce (v19), detekce cs/sk/en/de, typed scope (složky/sady/soubory/prázdný výběr), context pack + náhled + Overview, citace v2 se snapshotem, provider presety / ruční model ID / limity, re-index vedle aktivního indexu | ✅ obě (Windows App čeká na CI) |
 
 ### 0.2 Zbývající rozdíly mezi platformami
 
 | FR | Funkce | Windows | macOS | Kam patří |
 |---|---|---|---|---|
-| B1 | Export poznámky → **PDF** | ✅ (`EditorWebView.ExportPdfAsync` → `CoreWebView2.PrintToPdfAsync`) | ❌ (chybí `WKWebView.createPDF`) | **M-2** |
+| B1 | Export poznámky → **PDF** | ✅ (`EditorWebView.ExportPdfAsync` → `CoreWebView2.PrintToPdfAsync`) | ✅ (`NoteDocumentView.exportPDF` → `WKWebView.createPDF`, UI redesign B6) | **M-2** ✅ hotovo (v0.15.0) |
 
 Zbylé tři rozdíly z předchozí verze tohoto dokumentu jsou vyřešené: Windows dostal
 persona picker (W-3) i bulk delete poznámek (W-6), macOS dostal kontinuální
-sledování složky přes FSEvents (M-1). **Jediná zbývající nerovnost je PDF export na macOS.**
+sledování složky přes FSEvents (M-1) a s UI redesignem (v0.15.0) i PDF export poznámky (M-2).
+**Funkční nerovnost mezi platformami teď žádná nezbývá.**
 
 ### 0.3 Co je nedodělané na obou platformách
 
 | FR | Funkce | Stav | Kam patří |
 |---|---|---|---|
-| D1 | Contextual chunk enrichment | Core hotové na obou (`ContextualEnricher`, sloupec `source_chunks.context`, v14), ale **nikde se nevolá**: macOS nemá settings toggle ani hook v `IngestionService`; Windows má DI registraci v `App.xaml.cs` a stringy, ale `EnrichSourceAsync` nemá call-site. | **D1-wire** |
+| D1 | Contextual chunk enrichment — **stále otevřené** (folder deskriptory ani context pack D1 neuzavírají) | Core hotové na obou (`ContextualEnricher`, sloupec `source_chunks.context`, v14), ale **nikde se nevolá**: macOS nemá settings toggle ani hook v `IngestionService`; Windows má DI registraci v `App.xaml.cs` a stringy, ale `EnrichSourceAsync` nemá call-site. | **D1-wire** |
 | D1 | **Rozpor se specifikací: počet LLM volání** | FR-D1 říká „jeden LLM průchod **na zdroj** (ne na chunk — kontext per dokument, sdílený)". Obě implementace ale volají model **jednou na každý chunk** (`ContextualEnricher.EnrichSourceAsync` iteruje `foreach chunk`). U zdroje s 50 chunky to je 50 volání místo 1. Testy tento počet záměrně **neověřují**, aby současné chování nezabetonovaly (`ContextualEnricherTests`). | **rozhodnutí** |
 | D2 | Mini eval sada (recall@8) | ✅ **hotovo** — fixture korpus `eval/`, runner `swift run ainotebook-eval`, výsledky a rozhodnutí v [`docs/eval/README.md`](eval/README.md). |  |
 | D3 | Cross-encoder reranker | ❌ **NO-GO** na základě D2 — viz W-5 níže. |  |
@@ -53,31 +57,80 @@ sledování složky přes FSEvents (M-1). **Jediná zbývající nerovnost je PD
 
 | | macOS | Windows |
 |---|---|---|
-| Feature migrace | v1–v15, v18 | v1–v15, v18 |
+| Feature migrace | v1–v15, v18, v19 | v1–v15, v18, v19 |
 | Repair migrace | — | v16 (`requalify_embedding_keys`), v17 (`fix_provider_timestamps`) |
 
-v16/v17 jsou **Windows-only opravy dat**, které na macOS nemají protějšek (macOS ekvivalentní vada nevznikla). Číselná řada feature migrací je identická, což §7.1 vyžaduje. **Nové feature migrace musí pokračovat od v19 na obou platformách současně.**
+v16/v17 jsou **Windows-only opravy dat**, které na macOS nemají protějšek (macOS ekvivalentní vada nevznikla). Číselná řada feature migrací je identická, což §7.1 vyžaduje. v19 (`v19_folder_rag`) přidala složky, revize, joby a generace na obou platformách. **Další feature migrace = v20 na obou platformách současně.**
 
 ---
 
 ## 1. Zbývající práce — přehled
 
-Z původních osmi položek zbývají **tři**:
-
 | ID | Práce | Platforma | Priorita |
 |---|---|---|---|
-| **R-1** | Oddělit `fetchK` od `topK` v produkčním `Retriever` a zvednout cut (doporučení z W-4) | obě | **1** |
-| **M-2** | Export poznámky do PDF (`WKWebView.createPDF`) | macOS | 2 |
-| **D1-wire** | Zapojit `ContextualEnricher` do ingesce + settings toggle — **až po rozhodnutí o počtu volání (§0.3)** | obě | 3 |
+| **WP7-HW** | Hardwarové měření embedding profilů a kalibrace tokenů, rozhodnutí o výchozím modelu (§1.1) | obě | **1** |
+| **D1-wire** | Zapojit `ContextualEnricher` do ingesce + settings toggle — **až po rozhodnutí o počtu volání (§0.3)** | obě | 2 |
 
-Hotovo v tomto kole: **W-4** (eval sada), **W-5** (rozhodnuto NO-GO), **W-3** (persony na Windows),
-**W-6** (bulk poznámky na Windows), **T-1** (testový dluh §6), **M-1** (FSEvents watcher).
+Hotovo v tomto kole (v0.15.0): **R-1** (nezávislé `fetchK`/`topK`, viz níže), celý folder chat WP0–WP9 a
+**UI redesign** ve stylu Codexu na obou platformách (spec `docs/superpowers/specs/2026-10-10-ui-redesign-codex-style-design.md`,
+ruční checklist §9 v [`docs/release/0.15.0-checklist.md`](release/0.15.0-checklist.md)), jehož součástí je **M-2** (PDF export na macOS).
+Dříve (v0.14.0): **W-4** (eval sada), **W-5** (NO-GO), **W-3**, **W-6**, **T-1**, **M-1**.
+
+### 1.1 Odloženo z WP7 do dalšího releasu
+
+Uživatel 2026-10-09 rozhodl, že hardwarové měření (WP7 Task 12) se v0.15.0 **nedělá**. Proto:
+
+- Výchozí embedding model zůstává **`nomic-embed-text`**; `Sources/AINotebookCore/Resources/Benchmark/embedding-decision-v1.json` zůstává `status: "pending"` a runtime proto používá zmrazené hodnoty v1 (`fetchK` 32, `topK` 16, podíl evidence 6000 bp). `token-estimate-v2.json` je také `pending` — kalibrovaný odhad tokenů zatím neexistuje.
+- Benchmark CLI (macOS `ainotebook-eval --benchmark/--calibrate`, Windows `windows/tools/AINotebook.Eval`) a profile drain jsou v kódu, ale **spí** — nic je v aplikaci nespouští.
+- Odložené úkoly: **Task 12** (měření + rozhodnutí), **Task 13** (macOS UI: uložený profil a doporučení), **Task 14** (Windows: fresh default, doporučení, recovery), **Task 17/18** (kalibrovaný estimátor ve frozen chat turnu, Swift/Windows). `tools/benchmark/verify_reports.py` vzniká až v Task 12.
+
+**Jak měření spustit později** (plný postup v `docs/superpowers/plans/2026-10-09-wp7-benchmark.md`, Task 12). Na obou strojích stejný commit, Release build, napájení ze sítě, aplikace zavřená:
+
+```bash
+ollama pull nomic-embed-text-v2-moe
+ollama pull qwen3-embedding:0.6b
+ollama pull bge-m3
+ollama pull paraphrase-multilingual
+ollama pull llama3.2:3b          # výchozí chat model — jen pro kalibraci promptu, není kandidát
+```
+
+macOS:
+
+```bash
+swift build -c release --product ainotebook-eval
+benchmarkOllamaPid=$(ps -axo pid=,command= | awk '$2 ~ /(^|\/)ollama$/ && $3 == "serve" { print $1 }')
+.build/release/ainotebook-eval --calibrate --root eval/multilingual --host http://127.0.0.1:11434 --chat-model llama3.2:3b --embedding-counts all --json docs/eval/wp7/macos-calibration.json --out docs/eval/wp7/macos-calibration.md
+.build/release/ainotebook-eval --benchmark --mode live --root eval/multilingual --profiles all --host http://127.0.0.1:11434 --chat-model llama3.2:3b --calibration Sources/AINotebookCore/Resources/Benchmark/token-estimate-v2.json --chunks 100000,200000 --queries 200 --warmup 20 --concurrent both --fetch-k 32 --top-k 16 --evidence-share-bp 6000 --runtime-context 8192 --max-output 1024 --seed 17 --ollama-pid "$benchmarkOllamaPid" --json docs/eval/wp7/macos-benchmark.json --out docs/eval/wp7/macos-benchmark.md
+```
+
+Windows (PowerShell, kořen repozitáře):
+
+```powershell
+dotnet build windows/tools/AINotebook.Eval/AINotebook.Eval.csproj -c Release
+dotnet run --no-build -c Release --project windows/tools/AINotebook.Eval -- --calibrate --root eval/multilingual --host http://127.0.0.1:11434 --chat-model llama3.2:3b --embedding-counts all --json docs/eval/wp7/windows-calibration.json --out docs/eval/wp7/windows-calibration.md
+$ollamaRoots = @(Get-CimInstance Win32_Process | Where-Object { $_.Name -eq "ollama.exe" -and $_.CommandLine -match '(?:^|\s)serve(?:\s|$)' })
+$benchmarkOllamaPid = $ollamaRoots[0].ProcessId
+dotnet run --no-build -c Release --project windows/tools/AINotebook.Eval -- --benchmark --mode live --root eval/multilingual --profiles all --host http://127.0.0.1:11434 --chat-model llama3.2:3b --calibration Sources/AINotebookCore/Resources/Benchmark/token-estimate-v2.json --chunks 100000,200000 --queries 200 --warmup 20 --concurrent both --fetch-k 32 --top-k 16 --evidence-share-bp 6000 --runtime-context 8192 --max-output 1024 --seed 17 --ollama-pid $benchmarkOllamaPid --json docs/eval/wp7/windows-benchmark.json --out docs/eval/wp7/windows-benchmark.md
+```
+
+Kalibrace se nejdřív importuje do `tools/contracts/gen_benchmark_fixtures.py` (`--calibration … --windows-calibration …`), teprve pak běží benchmark nad vygenerovaným `token-estimate-v2.json`. Gate: warm p95 **< 300 ms** při 100K chunků na obou referenčních strojích; rozhodnutí zapisuje Task 12 Step 5–6.
+
+### 1.2 Budoucí položky (ze spec §13, jen pokud měření ukáže přínos)
+
+- Stemming cs/sk/de — jen pokud eval ukáže ztrátu recallu.
+- int8 vektory / sqlite-vec — podle naměřené paměti a výkonu při 200K chunků (WP7).
+- Plný map-reduce souhrn složky (dnešní Overview je vzorkovaný výběr výňatků), OCR, interpretace datumových formátů a vzorců v XLSX.
+- Přetrénování / rozšíření detektoru jazyka podle naměřené abstence. Zjištění z WP9: česká faktura `eval/multilingual/documents/cs/customer/finance/2026/10/invoice.md` má na úrovni dokumentu štítek `und` (podíl cs 6680 bp < 7000 bp), přestože passage label je `cs` a jiný jazyk nedostane žádný podíl. Held-out report: `docs/eval/language-detector-v1.md` (brána prošla, 40/44 WP1 dokumentů správně, 4 → `und`).
 
 Detailní specifikace FR zůstávají v Epicích B–E níže a slouží jako závazné zadání.
 
 ---
 
-## R-1 Oddělit fetchK od topK *(nové, z výsledků W-4)*
+## R-1 Oddělit fetchK od topK — ✅ hotovo (v0.15.0)
+
+Hotovo přes WP5/WP8: každá větev retrievalu (lexikální FTS i vektorová nad pinned generací) vybírá vlastní kandidátní pool o velikosti `fetchK` (32), integer RRF fúzuje celé sjednocení a teprve context pack po diverzitě a rozpočtu bere `topK` (16) pasáží. Hodnoty čte `RagRuntimeTuning` z `embedding-decision-v1.json` (dokud je `pending`, platí v1). Znovuměření s reálným embedderem je součástí odloženého WP7 Task 12 (§1.1).
+
+*Původní zadání:*
 
 `Retriever.search(topK:)` používá jedno číslo jak pro velikost kandidátního okna, tak
 pro počet vrácených výsledků. Eval (W-4) ukázal, že **retrieval není úzké hrdlo — je jím ořez**:
@@ -140,9 +193,10 @@ Dvě chyby, které odhalily testy: `kFSEventStreamCreateFlagIgnoreSelf` potlačo
 události způsobené vlastním procesem, a watch se registroval na nerozřešené cestě
 (FSEvents doručuje kanonické cesty, takže složka přes symlink nikdy neodpovídala vlastním událostem).
 
-### M-2 Export poznámky do PDF (FR-B1 PDF část, macOS)
+### M-2 Export poznámky do PDF (FR-B1 PDF část, macOS) — ✅ hotovo (v0.15.0)
 
 Tisk z editor `WKWebView` (`createPDF`) vedle stávajícího MD exportu — paritní s Windows `ExportPdfAsync`.
+Dodáno s UI redesignem (B6): dokumentový pohled poznámky (`NoteDocumentView.exportPDF`) nabízí Markdown i PDF export.
 
 ### D1-wire Zapojení contextual enrichment (FR-D1, obě)
 
@@ -154,7 +208,7 @@ Settings toggle (default **off**), jeden LLM průchod na zdroj při ingesci, vý
 
 **Cíl:** Denní práce na projektu s desítkami zdrojů — dostat data dovnitř rychle, najít cokoli, dostat výstupy ven.
 
-- **FR-B1 Export poznámky** → Markdown (`bodyMd` + přílohy do podsložky) a PDF (tisk z editor WebView). — *MD ✅ obě; PDF ✅ Windows / ❌ macOS (M-2).*
+- **FR-B1 Export poznámky** → Markdown (`bodyMd` + přílohy do podsložky) a PDF (tisk z editor WebView). — *MD ✅ obě; PDF ✅ obě (macOS od v0.15.0, M-2).*
 - **FR-B2 Export notebooku** → ZIP: `notes/*.md`, `attachments/`, `sources/`, `manifest.json`. — *✅ obě.*
 - **FR-B3 Záloha databáze** + obnovení ze zálohy s confirm dialogem. — *✅ obě (Windows přes SQLite online-backup API, macOS přes GRDB backup).*
 - **FR-B4 Globální vyhledávání** (Cmd/Ctrl+K paleta) napříč notebooky. — *✅ obě.*
@@ -232,7 +286,7 @@ a XAML vrstva (persona picker, bulk poznámky) je ověřená až Windows CI, ne 
 
 ## 7. Průřezové požadavky (platí pro všechny epicy)
 
-1. **Parita platforem.** Každá funkce se implementuje na obou platformách. Čísla **feature** migrací musí být identická (v12 tagy, v13 chat, v14 retrieval, v15 živé zdroje, v18 persony); Windows-only repair migrace (v16, v17) jsou dokumentovaná výjimka. Další feature migrace = **v19 na obou**.
+1. **Parita platforem.** Každá funkce se implementuje na obou platformách. Čísla **feature** migrací musí být identická (v12 tagy, v13 chat, v14 retrieval, v15 živé zdroje, v18 persony); Windows-only repair migrace (v16, v17) jsou dokumentovaná výjimka. v19 = folder RAG; další feature migrace = **v20 na obou**.
 2. **Lokalizace.** Každý nový string EN + CZ; Windows: `StringKey` + oba `Resources.resw` + aktualizovat počet klíčů v `LocalizedStringsTests`; macOS: `Localization.swift`.
 3. **Testy.** Core logika unit testy na obou platformách. Windows Core testy jdou spustit i na macOS (`dotnet test tests/AINotebook.Core.Tests`) — používat to. UI-kompoziční smoke testy rozšiřovat s každým epicem. Dluh viz §6.
 4. **Bezpečnost.** API klíče jen v OS úložišti; export nikdy neobsahuje klíče ani interní cesty; web fetch/re-crawl/web search drží CSP a sanitizaci a jdou jako **user-message context, ne system prompt**; všechny SQL přes parametrizované dotazy. Windows: **veškerý přístup k `SqliteConnection` serializovaný přes `_gate`** (invariant zavedený v 0.13.0).
@@ -253,6 +307,8 @@ a XAML vrstva (persona picker, bulk poznámky) je ověřená až Windows CI, ne 
 | **v0.11.0** | **Epic M — parita macOS**: schéma v12–v15 + v18, Epicy B/C/D1-core/E na macOS, persony (C5) včetně UI, `RetrievalEval` harness; Windows W-1 PDF export + W-2 bulk summarize. |
 | v0.12.0–v0.12.2 | Windows UI/UX opravy: crash při otevření notebooku, welcome wording, EN default, app ikona, tab spacing, zarovnání instrukcí; GitHub Pages produktový web. |
 | **v0.13.0** | Code-review fixy obě platformy: serializace SQLite přístupu přes `_gate`, path traversal v `AttachmentStore`, `Retry-After` na Windows, backup přes SQLite online-backup API, model tag u assistant zpráv, „Regenerate with…" na Windows. |
+| v0.14.0 | W-4 eval harness, W-5 NO-GO, persony a bulk poznámky na Windows, FSEvents watcher na macOS. |
+| **v0.15.0** *(připraveno, nevydáno)* | **Folder chat + vícejazyčná evidence (WP0–WP9)**: v19, perzistentní složky, detekce cs/sk/en/de, context pack + náhled + Overview, citace v2, provider presety/limity, R-1. **UI redesign** ve stylu Codexu na obou platformách (sidebar notebooků a chatů, pravý panel, composer s + menu a chipy, přejmenování chatu, Stop, dokumentový pohled poznámky s PDF exportem i na macOS = M-2). WP7 hardwarové měření odloženo. |
 
 ---
 
@@ -260,15 +316,13 @@ a XAML vrstva (persona picker, bulk poznámky) je ověřená až Windows CI, ne 
 
 | Pořadí | Práce | Cílový release |
 |---|---|---|
-| 1 | Vydat rozpracované: W-4 eval + W-3 + W-6 + T-1 + M-1 | **v0.14.0** |
-| 2 | **R-1** oddělení `fetchK`/`topK` + znovuměření s `--embedder ollama` | v0.15.0 |
-| 3 | Rozhodnout **počet LLM volání u D1** (§0.3), pak **D1-wire** | v0.15.0 |
-| 4 | **M-2** PDF export na macOS | v0.16.0 |
+| 1 | Folder chat WP0–WP9 + R-1 + UI redesign (vč. M-2) (po zelené Windows CI a ručních checklistech) | **v0.15.0** |
+| 2 | **WP7-HW** měření + rozhodnutí o výchozím embedderu, Tasks 12/13/14/17/18 (§1.1) | v0.16.0 |
+| 3 | Rozhodnout **počet LLM volání u D1** (§0.3), pak **D1-wire** | v0.16.0 |
 
-**Priorita:** R-1 je teď nejvýš, protože ho doporučuje měření a je to zároveň jediná
-cesta, po které by se dal někdy dodělat reranker. D1-wire je zablokovaný otázkou z §0.3 —
-zapojit enrichment, který dělá 50 LLM volání na dokument místo jednoho, by byl drahý omyl.
-M-2 je poslední zbývající nerovnost mezi platformami a je malé.
+**Priorita:** WP7-HW je teď nejvýš — bez něj zůstává výchozí `nomic-embed-text` a odhad
+tokenů nekalibrovaný. D1-wire je zablokovaný otázkou z §0.3 — zapojit enrichment, který
+dělá 50 LLM volání na dokument místo jednoho, by byl drahý omyl.
 
 Každý PR musí držet průřezové požadavky (§7) — zvlášť identická čísla migrací
-(další feature migrace = **v19 na obou**) a EN+CZ stringy.
+(další feature migrace = **v20 na obou**) a EN+CZ stringy.

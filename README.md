@@ -66,27 +66,43 @@ If you want NotebookLM-style "chat with your sources, get citations" but
 
 ## Screenshots
 
-*macOS app, showing the "Renewable Energy" demo notebook.*
+*macOS app with the 0.15 redesign, showing demo notebooks (light mode; dark
+mode and every surface in [`docs/design/screenshots/redesign/`](docs/design/screenshots/redesign/)).*
 
-| Sources — local ingestion & indexing | Chat with `[N]` citations |
+| Chat-first workspace with `[N]` citations | Right panel — Sources |
 |:---:|:---:|
-| ![Sources tab](docs/screenshots/sources.png) | ![Chat with citations](docs/screenshots/chat.png) |
-| **Notes — WYSIWYG editor + note-scoped chat** | **AI tools — transformation templates** |
-| ![Notes tab](docs/screenshots/notes.png) | ![Transformations tab](docs/screenshots/transformations.png) |
+| ![Conversation](docs/design/screenshots/redesign/conversation-light.png) | ![Sources panel](docs/design/screenshots/redesign/panel-sources-light.png) |
+| **Note as a document — editor, history, Markdown/PDF export** | **Settings window** |
+| ![Note document](docs/design/screenshots/redesign/note-document-light.png) | ![Settings](docs/design/screenshots/redesign/settings-providers-light.png) |
 
 ---
 
 ## Features
 
+- **Chat-first workspace (new in 0.15)** — a calm, Codex-style layout on both
+  platforms: notebooks and their chats in the sidebar (⌘N / Ctrl+N new chat,
+  ⌘K / Ctrl+K search), the conversation in the middle with Markdown answers
+  and a composer card (+ menu, scope / persona / model chips, context
+  preview, Send that turns into **Stop** while an answer streams), and a
+  collapsible right panel for Sources, Notes, Context and Citations. Notes open
+  as full documents, Settings is its own window (macOS, ⌘,) or page
+  (Windows), and chats can be renamed from the sidebar or the title bar.
 - **Notebooks** — organise research into separate projects.
 - **Sources** — ingest PDF, TXT, Markdown, web URLs, and Word / PowerPoint /
-  Excel. Each source is chunked and embedded locally.
+  Excel, or add a whole folder (see below). Each source is chunked and
+  embedded locally. Excel workbooks are read as sheet names plus cell
+  coordinates (`A1: …`); cached formula results and date serials are kept as
+  annotated values — formulas are not evaluated and there is no OCR for
+  scanned PDFs.
 - **Chat with citations** — ask questions across your sources; answers stream
-  in with clickable `[N]` chips that reveal the cited snippet. Scope a chat to
-  a specific subset of sources when you want a narrow answer.
+  in with clickable `[N]` chips that reveal the cited excerpt. Scope a chat to
+  the whole notebook, or to any mix of folders, source sets and individual
+  files.
 - **Hybrid retrieval** — semantic search (cosine similarity over local
   embeddings) fused with keyword search (SQLite FTS5 / BM25) via Reciprocal
-  Rank Fusion, so both meaning and exact terms are matched.
+  Rank Fusion, so both meaning and exact terms are matched. Each branch
+  fetches its own wider candidate pool (`fetchK`, 32) before the answer is cut
+  to the passages that fit (`topK`, 16).
 - **Notes** — a TipTap WYSIWYG editor with autosave, version history, and file
   attachments. Write by hand or save any AI answer as a note. Notes are
   auto-indexed and searchable alongside sources.
@@ -95,23 +111,53 @@ If you want NotebookLM-style "chat with your sources, get citations" but
   Entities) plus your own custom prompts, with batch runs and history.
 - **Follow-up suggestions & per-source summaries** — the chat surfaces
   suggested follow-up questions and one-line summaries for each source.
-- **Multi-provider AI** — route chat and embeddings to Ollama, Anthropic,
-  OpenAI, or any OpenAI-compatible server, or chat through an OpenWebUI
-  server on your network. Keys are stored in the OS credential vault
-  (macOS Keychain / Windows Credential Manager), never in the database.
-- **Optional web search** *(Windows)* — opt-in web results injected as
-  user-message context (kept out of the system prompt to limit prompt
-  injection).
-- **Export / import / backup** *(Windows)* — export a single note to Markdown
-  or a whole notebook to a ZIP archive; back up and restore the full database.
-- **Global search, tags & source sets** *(Windows)* — search across the whole
-  notebook, tag sources, and save reusable source sets for scoped chat.
-- **Bilingual UI** — English and Czech, auto-detected from the system locale
-  and switchable in Settings.
+- **Multi-provider AI** — chat through Ollama, Anthropic, OpenAI, any
+  OpenAI-compatible server or an OpenWebUI server on your network.
+  Embeddings use embedding-capable providers only (Ollama, OpenAI,
+  OpenAI-compatible); Anthropic and OpenWebUI are chat-only, and switching the
+  chat provider never silently changes the embedding provider. Presets for
+  common OpenAI-compatible servers (LM Studio, vLLM, OpenRouter, Groq,
+  Mistral, Together), a manual model ID when a server cannot list its models,
+  and per-model context / output-token limits. Keys are stored in the OS
+  credential vault (macOS Keychain / Windows Credential Manager), never in the
+  database.
+- **Optional web search** — opt-in web results injected as user-message
+  context (kept out of the system prompt to limit prompt injection).
+- **Export / import / backup** — export a single note to Markdown or a whole
+  notebook to a ZIP archive; back up and restore the full database.
+- **Global search, tags, source sets & personas** — search across all
+  notebooks, tag sources, save reusable source sets for scoped chat, and keep
+  named presets of instructions, sources and model.
+- **Bilingual UI** — English and Czech. The app starts in English; switch the
+  language in Settings. (UI language is independent of the document languages
+  detected below.)
 
-> **Platform parity:** both apps ship multi-provider AI (local Ollama plus
-> optional cloud and network providers). The Windows app additionally ships
-> web search, export/backup, tags, source sets, and global search.
+### Folder chat and multilingual evidence
+
+Add a folder once and it stays part of the notebook: it can be watched for
+changes, rescanned on demand ("Scan now" / "Verify all") and is reconciled
+after a restart. Folder rules control included file types, ignored paths,
+extraction limits and a Windows-1250 fallback for legacy Czech text files.
+Coverage shows searchable files separately from pending or failed refreshes,
+skipped and missing files, and the Sources list groups files under their
+folder.
+
+AI Notebook detects **Czech, Slovak, English and German** locally (a small
+bundled model, no network). Before each answer it prepares a *context pack*:
+scope and coverage, a relative-path map of the folder, the cited excerpts
+labelled with their language, your instructions and the question. The
+**context preview** shows exactly what will be sent, and **Overview** gives an
+explicitly sampled, excerpt-based view of a folder rather than an exhaustive
+summary. Saved citations keep their full excerpt and document revision, so
+they stay readable after a restart or after the original file changes or is
+deleted. Re-indexing with a different embedding model builds a replacement
+index while the active one keeps answering.
+
+> **Platform parity:** macOS and Windows ship the same feature set and, since
+> the 0.15 redesign, the same layout and strings — including folder chat and
+> note export to PDF on both platforms (see [`docs/roadmap.md`](docs/roadmap.md)). Release verification checklists live
+> in [`docs/release/`](docs/release/); retrieval evaluation notes in
+> [`docs/eval/README.md`](docs/eval/README.md).
 
 ---
 
@@ -257,9 +303,13 @@ A shared design and data model implemented natively per platform.
   store.
 - `AINotebook.App` — WinUI 3 app (WebView2-hosted TipTap editor).
 
-**Shared model** — 11 tables with a versioned migration history, hybrid
-retrieval (cosine + FTS5 BM25 → Reciprocal Rank Fusion), and a localization
-layer (EN/CZ, ~155 keys) common to both platforms.
+**Shared model** — one SQLite schema with identical feature migrations on both
+platforms (currently through v19: persisted folders, document revisions,
+durable ingestion jobs and versioned embedding generations), hybrid retrieval
+(cosine + FTS5 BM25 → Reciprocal Rank Fusion), and an EN/CS localization layer
+whose keys are kept identical across platforms by tests. Shared behaviour is
+pinned by JSON contract fixtures in `Tests/fixtures/` that both test suites
+execute.
 
 The full design spec lives in
 [`docs/superpowers/specs/`](docs/superpowers/specs/); the development roadmap is

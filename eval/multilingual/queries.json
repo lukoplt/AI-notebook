@@ -1,0 +1,3557 @@
+{
+  "contract": "eval-queries",
+  "corpus_id": "multilingual-v1",
+  "queries": [
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "93def343333100ccf1b5b968e20aadc4f44ca508db3648cc4c6bb1dc5e41aea7",
+          "document_id": "cs-01",
+          "occurrence": 1,
+          "phrase": "servis odpoví do 36 hodin"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-01-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Za jak dlouho se má ozvat servis chlazení observatoře?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "93def343333100ccf1b5b968e20aadc4f44ca508db3648cc4c6bb1dc5e41aea7",
+          "document_id": "cs-01",
+          "occurrence": 1,
+          "phrase": "CS-JAV-241"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-01-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "CS-JAV-241"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "93def343333100ccf1b5b968e20aadc4f44ca508db3648cc4c6bb1dc5e41aea7",
+          "document_id": "cs-01",
+          "occurrence": 1,
+          "phrase": "servis odpoví do 36 hodin"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-01-scope",
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Za jak dlouho se má ozvat servis chlazení observatoře?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "5e623e6b0e601938e35ad013300e2e6f4f334ede9a3e9260b6bb3a197007be95",
+          "document_id": "cs-02",
+          "occurrence": 1,
+          "phrase": "Záruka na snímače Morava trvá 18 měsíců od převzetí dodávky."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-02-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "overlap",
+        "cross_language"
+      ],
+      "text": "How long does the warranty last for sensors supplied by Morava?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "5e623e6b0e601938e35ad013300e2e6f4f334ede9a3e9260b6bb3a197007be95",
+          "document_id": "cs-02",
+          "occurrence": 1,
+          "phrase": "CS-MOR-242"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-02-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "CS-MOR-242"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "5e623e6b0e601938e35ad013300e2e6f4f334ede9a3e9260b6bb3a197007be95",
+          "document_id": "cs-02",
+          "occurrence": 1,
+          "phrase": "Záruka na snímače Morava trvá 18 měsíců od převzetí dodávky."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-02-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          102
+        ]
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Jak dlouho platí záruka na snímače dodané společností Morava?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "5f9c31f572e3e0a379396fda4ecddb028ddbe17acc7eb965204c03fb03daa083",
+          "document_id": "cs-03",
+          "occurrence": 2,
+          "phrase": "Celková částka činí 18 450 Kč."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-03-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "repeated_phrase"
+      ],
+      "text": "Jakou částku má druhá účetní ověřit před úhradou říjnové údržby observatoře Javor?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "5f9c31f572e3e0a379396fda4ecddb028ddbe17acc7eb965204c03fb03daa083",
+          "document_id": "cs-03",
+          "occurrence": 1,
+          "phrase": "FA-CS-2026-031"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-03-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "FA-CS-2026-031"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "5f9c31f572e3e0a379396fda4ecddb028ddbe17acc7eb965204c03fb03daa083",
+          "document_id": "cs-03",
+          "occurrence": 2,
+          "phrase": "Celková částka činí 18 450 Kč."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-03-scope",
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [
+        "repeated_phrase"
+      ],
+      "text": "Jakou částku má druhá účetní ověřit před úhradou říjnové údržby observatoře Javor?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "eb03ae4b04e49fa7384d4bf78a5b3bfd46c826930083c988ea798ba289ee78df",
+          "document_id": "cs-04",
+          "occurrence": 1,
+          "phrase": "Cena dodávky je 9 870 Kč a splatnost připadá na 28. října 2026."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-04-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "How much do we owe for the sensor delivery, and when must it be paid?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "eb03ae4b04e49fa7384d4bf78a5b3bfd46c826930083c988ea798ba289ee78df",
+          "document_id": "cs-04",
+          "occurrence": 1,
+          "phrase": "FA-CS-2026-032"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-04-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "FA-CS-2026-032"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "eb03ae4b04e49fa7384d4bf78a5b3bfd46c826930083c988ea798ba289ee78df",
+          "document_id": "cs-04",
+          "occurrence": 1,
+          "phrase": "Cena dodávky je 9 870 Kč a splatnost připadá na 28. října 2026."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-04-scope",
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          104
+        ]
+      },
+      "tags": [],
+      "text": "Kolik zaplatíme za dodávku snímačů a kdy je faktura splatná?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "c5c01b8e677f654fdcdd94a95ad4b253c72382bbead59005bd4b37fe7cab26cd",
+          "document_id": "cs-05",
+          "occurrence": 1,
+          "phrase": "Pilotní provoz začne 4. listopadu v místnosti B12."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-05-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Kdy a ve které místnosti začne zkušební provoz dohledového panelu observatoře Javor?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "c5c01b8e677f654fdcdd94a95ad4b253c72382bbead59005bd4b37fe7cab26cd",
+          "document_id": "cs-05",
+          "occurrence": 1,
+          "phrase": "ZAP-CS-05"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-05-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "ZAP-CS-05"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "c5c01b8e677f654fdcdd94a95ad4b253c72382bbead59005bd4b37fe7cab26cd",
+          "document_id": "cs-05",
+          "occurrence": 1,
+          "phrase": "Pilotní provoz začne 4. listopadu v místnosti B12."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-05-scope",
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Kdy a ve které místnosti začne zkušební provoz dohledového panelu observatoře Javor?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "6a6d21d8d3bd5cc09bcfa6a17de591e0d7cb5dd03f7bf53596eac13155f562fd",
+          "document_id": "cs-06",
+          "occurrence": 1,
+          "phrase": "Náhradní relé je uložené ve skříni 7."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-06-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Kde najde noční směna náhradní relé?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "6a6d21d8d3bd5cc09bcfa6a17de591e0d7cb5dd03f7bf53596eac13155f562fd",
+          "document_id": "cs-06",
+          "occurrence": 1,
+          "phrase": "RIZ-CS-06"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-06-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RIZ-CS-06"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "6a6d21d8d3bd5cc09bcfa6a17de591e0d7cb5dd03f7bf53596eac13155f562fd",
+          "document_id": "cs-06",
+          "occurrence": 1,
+          "phrase": "Náhradní relé je uložené ve skříni 7."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-06-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          106
+        ]
+      },
+      "tags": [],
+      "text": "Kde najde noční směna náhradní relé?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "e440b209a2de39c4bb6fae883a283d927dac1b4339a849992a620252bc8ce286",
+          "document_id": "cs-07",
+          "occurrence": 1,
+          "phrase": "Za kalibraci odpovídá Irena Vrbová."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-07-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Who is responsible for calibrating the measurement station with Morava sensors after handover?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "e440b209a2de39c4bb6fae883a283d927dac1b4339a849992a620252bc8ce286",
+          "document_id": "cs-07",
+          "occurrence": 1,
+          "phrase": "PRE-CS-07"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-07-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "PRE-CS-07"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "e440b209a2de39c4bb6fae883a283d927dac1b4339a849992a620252bc8ce286",
+          "document_id": "cs-07",
+          "occurrence": 1,
+          "phrase": "Za kalibraci odpovídá Irena Vrbová."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-07-scope",
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          107
+        ]
+      },
+      "tags": [],
+      "text": "Kdo odpovídá za kalibraci předaného měřicího stanoviště se snímači Morava?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "3dd566103d7ec27123eb734ce18df7fdb2f657ceadb0b33975b3be69d00904be",
+          "document_id": "cs-08",
+          "occurrence": 1,
+          "phrase": "Řídicí stanici obnovte ze snímku K31 a po spuštění ověřte port 4317."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-08-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Ze kterého snímku obnovíme řídicí stanici observatoře Javor a jaký port potom ověříme?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "3dd566103d7ec27123eb734ce18df7fdb2f657ceadb0b33975b3be69d00904be",
+          "document_id": "cs-08",
+          "occurrence": 1,
+          "phrase": "RUN-CS-08"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-08-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RUN-CS-08"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "3dd566103d7ec27123eb734ce18df7fdb2f657ceadb0b33975b3be69d00904be",
+          "document_id": "cs-08",
+          "occurrence": 1,
+          "phrase": "Řídicí stanici obnovte ze snímku K31 a po spuštění ověřte port 4317."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-08-scope",
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Ze kterého snímku obnovíme řídicí stanici observatoře Javor a jaký port potom ověříme?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "82fc24ca4a265eec124ed25179611e87fae51f3183a3aa68860939cd7b503148",
+          "document_id": "cs-09",
+          "occurrence": 1,
+          "phrase": "Identifikátor přenosu posílejte v hlavičce X-Javor-Trace. Po dočasném odmítnutí opakujte požadavek za 17 sekund."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-09-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Which header carries the transfer identifier in the Morava sensor interface, and how long should we wait after a temporary rejection?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "82fc24ca4a265eec124ed25179611e87fae51f3183a3aa68860939cd7b503148",
+          "document_id": "cs-09",
+          "occurrence": 1,
+          "phrase": "API-CS-09"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-09-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "API-CS-09"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "82fc24ca4a265eec124ed25179611e87fae51f3183a3aa68860939cd7b503148",
+          "document_id": "cs-09",
+          "occurrence": 1,
+          "phrase": "Identifikátor přenosu posílejte v hlavičce X-Javor-Trace. Po dočasném odmítnutí opakujte požadavek za 17 sekund."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-09-scope",
+      "scope": {
+        "folderIds": [
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          109
+        ]
+      },
+      "tags": [],
+      "text": "Ve které hlavičce rozhraní snímačů Morava se posílá identifikátor přenosu a kdy zopakovat dočasně odmítnutý požadavek?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "86c6b5690f725b22e146e1277f4049809a2cfd4a610ff42a66e1af9af6927fea",
+          "document_id": "cs-10",
+          "occurrence": 1,
+          "phrase": "Přenosovou rychlost nastavte na 19200 baudů."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-10-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cp1250"
+      ],
+      "text": "Jakou přenosovou rychlost potřebuje starší servisní terminál observatoře Javor?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "86c6b5690f725b22e146e1277f4049809a2cfd4a610ff42a66e1af9af6927fea",
+          "document_id": "cs-10",
+          "occurrence": 1,
+          "phrase": "TERM-CS-10"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-10-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cp1250"
+      ],
+      "text": "TERM-CS-10"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "86c6b5690f725b22e146e1277f4049809a2cfd4a610ff42a66e1af9af6927fea",
+          "document_id": "cs-10",
+          "occurrence": 1,
+          "phrase": "Přenosovou rychlost nastavte na 19200 baudů."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "cs-10-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          110
+        ]
+      },
+      "tags": [
+        "cp1250"
+      ],
+      "text": "Jakou přenosovou rychlost potřebuje starší servisní terminál observatoře Javor?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "f3f58bb403cacb6ee8819daedd7ea38180f2907b1490c4f19731c5c3d7d9b5ea",
+          "document_id": "sk-01",
+          "occurrence": 1,
+          "phrase": "Pri poruche vetrania archívu Lipa servis odpovie do 48 hodín."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-01-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "overlap",
+        "cross_language"
+      ],
+      "text": "Wie schnell muss der Service auf einen Lüftungsausfall im Archiv Lipa reagieren?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "f3f58bb403cacb6ee8819daedd7ea38180f2907b1490c4f19731c5c3d7d9b5ea",
+          "document_id": "sk-01",
+          "occurrence": 1,
+          "phrase": "SK-LIP-317"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-01-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "SK-LIP-317"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "f3f58bb403cacb6ee8819daedd7ea38180f2907b1490c4f19731c5c3d7d9b5ea",
+          "document_id": "sk-01",
+          "occurrence": 1,
+          "phrase": "Pri poruche vetrania archívu Lipa servis odpovie do 48 hodín."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-01-scope",
+      "scope": {
+        "folderIds": [
+          30
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Za aký čas má servis reagovať na poruchu vetrania v archíve Lipa?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "816ee15bc077b32459908558f8badc40748ec4e58b3eecc751706126a47fe606",
+          "document_id": "sk-02",
+          "occurrence": 1,
+          "phrase": "Na tesnenia Váh sa poskytuje záruka 20 mesiacov."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-02-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Ako dlho platí záruka na tesnenia od dodávateľa Váh?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "816ee15bc077b32459908558f8badc40748ec4e58b3eecc751706126a47fe606",
+          "document_id": "sk-02",
+          "occurrence": 1,
+          "phrase": "SK-VAH-318"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-02-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "SK-VAH-318"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "816ee15bc077b32459908558f8badc40748ec4e58b3eecc751706126a47fe606",
+          "document_id": "sk-02",
+          "occurrence": 1,
+          "phrase": "Na tesnenia Váh sa poskytuje záruka 20 mesiacov."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-02-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          202
+        ]
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Ako dlho platí záruka na tesnenia od dodávateľa Váh?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "bf815c9e753a0cd124edd58ec55933af07bd8eb5ece9a7f7c84f71870348cad5",
+          "document_id": "sk-03",
+          "occurrence": 1,
+          "phrase": "Celková suma na úhradu je 1 260 EUR; splatnosť je 22. októbra 2026."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-03-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Welchen Betrag muss das Archiv für die Herbstinspektion zahlen, und bis wann?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "bf815c9e753a0cd124edd58ec55933af07bd8eb5ece9a7f7c84f71870348cad5",
+          "document_id": "sk-03",
+          "occurrence": 1,
+          "phrase": "FA-SK-2026-041"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-03-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "FA-SK-2026-041"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "bf815c9e753a0cd124edd58ec55933af07bd8eb5ece9a7f7c84f71870348cad5",
+          "document_id": "sk-03",
+          "occurrence": 1,
+          "phrase": "Celková suma na úhradu je 1 260 EUR; splatnosť je 22. októbra 2026."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-03-scope",
+      "scope": {
+        "folderIds": [
+          30
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Koľko má archív zaplatiť za jesennú prehliadku a dokedy?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "486ba235016e44766548d4df2704938f4368a50ce97e2c9ef46e7602d47591a6",
+          "document_id": "sk-04",
+          "occurrence": 1,
+          "phrase": "Dodávateľská faktúra znie na 845 EUR a je splatná 29. októbra 2026."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-04-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Aká suma a termín úhrady patria k októbrovej dodávke tesnení?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "486ba235016e44766548d4df2704938f4368a50ce97e2c9ef46e7602d47591a6",
+          "document_id": "sk-04",
+          "occurrence": 1,
+          "phrase": "FA-SK-2026-042"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-04-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "FA-SK-2026-042"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "486ba235016e44766548d4df2704938f4368a50ce97e2c9ef46e7602d47591a6",
+          "document_id": "sk-04",
+          "occurrence": 1,
+          "phrase": "Dodávateľská faktúra znie na 845 EUR a je splatná 29. októbra 2026."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-04-scope",
+      "scope": {
+        "folderIds": [
+          30
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          204
+        ]
+      },
+      "tags": [],
+      "text": "Aká suma a termín úhrady patria k októbrovej dodávke tesnení?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "05f25dd14e6d268598ce55b9a5fb5a49cc8b2a0120dbb9037d29441aae63e2e0",
+          "document_id": "sk-05",
+          "occurrence": 1,
+          "phrase": "Pilotná prevádzka sa uskutoční 5. novembra 2026 v miestnosti C14."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-05-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Wann und in welchem Raum findet der Probebetrieb der Lüftungssteuerung statt?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "05f25dd14e6d268598ce55b9a5fb5a49cc8b2a0120dbb9037d29441aae63e2e0",
+          "document_id": "sk-05",
+          "occurrence": 1,
+          "phrase": "ZAP-SK-05"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-05-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "ZAP-SK-05"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "05f25dd14e6d268598ce55b9a5fb5a49cc8b2a0120dbb9037d29441aae63e2e0",
+          "document_id": "sk-05",
+          "occurrence": 1,
+          "phrase": "Pilotná prevádzka sa uskutoční 5. novembra 2026 v miestnosti C14."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-05-scope",
+      "scope": {
+        "folderIds": [
+          30
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Kde a kedy prebehne pilotná prevádzka ovládania vetrania?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "4aba2f3dc68fa0022d6a60e85a6473be1e78f157bdc87c0b67641192e9cf19a4",
+          "document_id": "sk-06",
+          "occurrence": 1,
+          "phrase": "Náhradná poistka je uložená v skrini 8."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-06-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Kde má obsluha hľadať náhradnú poistku?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "4aba2f3dc68fa0022d6a60e85a6473be1e78f157bdc87c0b67641192e9cf19a4",
+          "document_id": "sk-06",
+          "occurrence": 1,
+          "phrase": "RIZ-SK-06"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-06-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RIZ-SK-06"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "4aba2f3dc68fa0022d6a60e85a6473be1e78f157bdc87c0b67641192e9cf19a4",
+          "document_id": "sk-06",
+          "occurrence": 1,
+          "phrase": "Náhradná poistka je uložená v skrini 8."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-06-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          206
+        ]
+      },
+      "tags": [],
+      "text": "Kde má obsluha hľadať náhradnú poistku?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "05144bdfd8a5e308d892990fcab63e8cb2bac4529d0fb0d0c99ca6e663f2544f",
+          "document_id": "sk-07",
+          "occurrence": 1,
+          "phrase": "Za kalibráciu meradiel zodpovedá Milan Brezový."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-07-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Kto má na starosti kalibráciu meradiel odovzdaných dodávateľom Váh?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "05144bdfd8a5e308d892990fcab63e8cb2bac4529d0fb0d0c99ca6e663f2544f",
+          "document_id": "sk-07",
+          "occurrence": 1,
+          "phrase": "ODO-SK-07"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-07-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "ODO-SK-07"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "05144bdfd8a5e308d892990fcab63e8cb2bac4529d0fb0d0c99ca6e663f2544f",
+          "document_id": "sk-07",
+          "occurrence": 1,
+          "phrase": "Za kalibráciu meradiel zodpovedá Milan Brezový."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-07-scope",
+      "scope": {
+        "folderIds": [
+          30
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          207
+        ]
+      },
+      "tags": [],
+      "text": "Kto má na starosti kalibráciu meradiel odovzdaných dodávateľom Váh?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "3ec8cfa43cc138141155b243eb355524abb40fb272e950278474ee0ad226e1a9",
+          "document_id": "sk-08",
+          "occurrence": 1,
+          "phrase": "Obnovte snímku L42 a potom overte dostupnosť portu 4318."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-08-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "overlap",
+        "cross_language"
+      ],
+      "text": "Welcher Sicherungsstand wird für die Steuerstation im Archiv Lipa verwendet, und welcher Port ist danach zu prüfen?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "3ec8cfa43cc138141155b243eb355524abb40fb272e950278474ee0ad226e1a9",
+          "document_id": "sk-08",
+          "occurrence": 1,
+          "phrase": "RUN-SK-08"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-08-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RUN-SK-08"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "3ec8cfa43cc138141155b243eb355524abb40fb272e950278474ee0ad226e1a9",
+          "document_id": "sk-08",
+          "occurrence": 1,
+          "phrase": "Obnovte snímku L42 a potom overte dostupnosť portu 4318."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-08-scope",
+      "scope": {
+        "folderIds": [
+          30
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Z ktorej snímky sa obnovuje riadiaca stanica archívu Lipa a ktorý port treba následne skontrolovať?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "82941d5b0eb7078ed5fb5e2d8f7be16702b6bb957417b42b66d975de91bd76c8",
+          "document_id": "sk-09",
+          "occurrence": 1,
+          "phrase": "Hlavička X-Lipa-Trace nesie identifikátor požiadavky; opakovanie nasleduje po 19 sekundách."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-09-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Akú sledovaciu hlavičku používa rozhranie pre archív Lipa a po akom čase zopakuje požiadavku?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "82941d5b0eb7078ed5fb5e2d8f7be16702b6bb957417b42b66d975de91bd76c8",
+          "document_id": "sk-09",
+          "occurrence": 1,
+          "phrase": "API-SK-09"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-09-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "API-SK-09"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "82941d5b0eb7078ed5fb5e2d8f7be16702b6bb957417b42b66d975de91bd76c8",
+          "document_id": "sk-09",
+          "occurrence": 1,
+          "phrase": "Hlavička X-Lipa-Trace nesie identifikátor požiadavky; opakovanie nasleduje po 19 sekundách."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-09-scope",
+      "scope": {
+        "folderIds": [
+          30
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          209
+        ]
+      },
+      "tags": [],
+      "text": "Akú sledovaciu hlavičku používa rozhranie pre archív Lipa a po akom čase zopakuje požiadavku?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "c24c06b289924cbb29d04eead0b347660583aaec6d8b69e4ec8476cf3d7f5198",
+          "document_id": "sk-10",
+          "occurrence": 1,
+          "phrase": "Sériová linka terminálu pracuje rýchlosťou 38400 baudov."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-10-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Akú prenosovú rýchlosť treba nastaviť na staršom servisnom termináli archívu Lipa?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "c24c06b289924cbb29d04eead0b347660583aaec6d8b69e4ec8476cf3d7f5198",
+          "document_id": "sk-10",
+          "occurrence": 1,
+          "phrase": "TERM-SK-10"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-10-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "TERM-SK-10"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "c24c06b289924cbb29d04eead0b347660583aaec6d8b69e4ec8476cf3d7f5198",
+          "document_id": "sk-10",
+          "occurrence": 1,
+          "phrase": "Sériová linka terminálu pracuje rýchlosťou 38400 baudov."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "sk-10-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          210
+        ]
+      },
+      "tags": [],
+      "text": "Akú prenosovú rýchlosť treba nastaviť na staršom servisnom termináli archívu Lipa?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "dd5cb9f6de3050c0353ae46c479123544ad0fe485211b84b946b9a5f7a1ef6e8",
+          "document_id": "en-01",
+          "occurrence": 1,
+          "phrase": "respond within 24 hours"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-01-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "How quickly should the lighting service acknowledge a workshop fault?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "dd5cb9f6de3050c0353ae46c479123544ad0fe485211b84b946b9a5f7a1ef6e8",
+          "document_id": "en-01",
+          "occurrence": 1,
+          "phrase": "EN-ALD-482"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-01-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "EN-ALD-482"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "dd5cb9f6de3050c0353ae46c479123544ad0fe485211b84b946b9a5f7a1ef6e8",
+          "document_id": "en-01",
+          "occurrence": 1,
+          "phrase": "respond within 24 hours"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-01-scope",
+      "scope": {
+        "folderIds": [
+          50
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "How quickly should the lighting service acknowledge a workshop fault?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "f19d943db67a1b0997e3cc6b4f0dc5fd4c042098a31dd4b509be8fb97724363b",
+          "document_id": "en-02",
+          "occurrence": 1,
+          "phrase": "16-month warranty"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-02-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Jak dlouho platí záruka na dodané uzavírací ventily?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "f19d943db67a1b0997e3cc6b4f0dc5fd4c042098a31dd4b509be8fb97724363b",
+          "document_id": "en-02",
+          "occurrence": 1,
+          "phrase": "EN-ROW-483"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-02-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "EN-ROW-483"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "f19d943db67a1b0997e3cc6b4f0dc5fd4c042098a31dd4b509be8fb97724363b",
+          "document_id": "en-02",
+          "occurrence": 1,
+          "phrase": "16-month warranty"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-02-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          302
+        ]
+      },
+      "tags": [],
+      "text": "How long are the supplied isolation valves covered against defects?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "29fdda486871c4a5e499491dffd45f53c04574784e98c6e5b25713cfc81946e7",
+          "document_id": "en-03",
+          "occurrence": 1,
+          "phrase": "Payment is due on 23 October 2026."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-03-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "When must accounts settle the Alder lighting bill?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "29fdda486871c4a5e499491dffd45f53c04574784e98c6e5b25713cfc81946e7",
+          "document_id": "en-03",
+          "occurrence": 1,
+          "phrase": "INV-EN-2026-051"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-03-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "INV-EN-2026-051"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "29fdda486871c4a5e499491dffd45f53c04574784e98c6e5b25713cfc81946e7",
+          "document_id": "en-03",
+          "occurrence": 1,
+          "phrase": "Payment is due on 23 October 2026."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-03-scope",
+      "scope": {
+        "folderIds": [
+          50
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "When must accounts settle the Alder lighting bill?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "3ad6fa309f48ed809ff9ac1f0d7fa5ba6a120d018c1e3c01532a76db2375f427",
+          "document_id": "en-04",
+          "occurrence": 1,
+          "phrase": "The amount payable is 1 725 GBP."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-04-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Kolik máme celkem zaplatit za dodávku náhradních ventilů?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "3ad6fa309f48ed809ff9ac1f0d7fa5ba6a120d018c1e3c01532a76db2375f427",
+          "document_id": "en-04",
+          "occurrence": 1,
+          "phrase": "INV-EN-2026-052"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-04-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "INV-EN-2026-052"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "3ad6fa309f48ed809ff9ac1f0d7fa5ba6a120d018c1e3c01532a76db2375f427",
+          "document_id": "en-04",
+          "occurrence": 1,
+          "phrase": "The amount payable is 1 725 GBP."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-04-scope",
+      "scope": {
+        "folderIds": [
+          50
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          304
+        ]
+      },
+      "tags": [],
+      "text": "What is the total due for the replacement valve delivery?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "2e5ad3da25e6f9dc79f2887c5ffa41e2ce9a9517a8b9561877aea58fb844506f",
+          "document_id": "en-05",
+          "occurrence": 1,
+          "phrase": "room D16 on 6 November 2026"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-05-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Where and when will the initial lighting trial happen?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "2e5ad3da25e6f9dc79f2887c5ffa41e2ce9a9517a8b9561877aea58fb844506f",
+          "document_id": "en-05",
+          "occurrence": 1,
+          "phrase": "MIN-EN-05"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-05-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "MIN-EN-05"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "2e5ad3da25e6f9dc79f2887c5ffa41e2ce9a9517a8b9561877aea58fb844506f",
+          "document_id": "en-05",
+          "occurrence": 1,
+          "phrase": "room D16 on 6 November 2026"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-05-scope",
+      "scope": {
+        "folderIds": [
+          50
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Where and when will the initial lighting trial happen?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "76aa681087ec6e73cd513bfd6a0409bf05881496ce87b767cabdc531e8953165",
+          "document_id": "en-06",
+          "occurrence": 1,
+          "phrase": "The spare fan is stored in cabinet 9."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-06-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Kde má obsluha hledat náhradní ventilátor?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "76aa681087ec6e73cd513bfd6a0409bf05881496ce87b767cabdc531e8953165",
+          "document_id": "en-06",
+          "occurrence": 1,
+          "phrase": "RISK-EN-06"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-06-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RISK-EN-06"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "76aa681087ec6e73cd513bfd6a0409bf05881496ce87b767cabdc531e8953165",
+          "document_id": "en-06",
+          "occurrence": 1,
+          "phrase": "The spare fan is stored in cabinet 9."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-06-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          306
+        ]
+      },
+      "tags": [],
+      "text": "Where should staff look for the replacement ventilation part?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "8fa13696a2f63b05340e2049d26311816788cfb289e6a613ffadd479a13251e7",
+          "document_id": "en-07",
+          "occurrence": 1,
+          "phrase": "Eva Rowan is responsible for calibration."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-07-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Who signs off calibration of the measuring fixture in the Rowan handover?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "8fa13696a2f63b05340e2049d26311816788cfb289e6a613ffadd479a13251e7",
+          "document_id": "en-07",
+          "occurrence": 1,
+          "phrase": "HAND-EN-07"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-07-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "HAND-EN-07"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "8fa13696a2f63b05340e2049d26311816788cfb289e6a613ffadd479a13251e7",
+          "document_id": "en-07",
+          "occurrence": 1,
+          "phrase": "Eva Rowan is responsible for calibration."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-07-scope",
+      "scope": {
+        "folderIds": [
+          50
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          307
+        ]
+      },
+      "tags": [],
+      "text": "Who signs off calibration of the measuring fixture in the Rowan handover?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "46ad1aed86982b8f1e1f43bf4ce3bb44d7404e143fa3dfd29f9e289a11008bf1",
+          "document_id": "en-08",
+          "occurrence": 1,
+          "phrase": "Restore the controller from snapshot M53."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-08-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Which saved image should facilities use to recover the lighting controller?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "46ad1aed86982b8f1e1f43bf4ce3bb44d7404e143fa3dfd29f9e289a11008bf1",
+          "document_id": "en-08",
+          "occurrence": 1,
+          "phrase": "RUN-EN-08"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-08-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RUN-EN-08"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "46ad1aed86982b8f1e1f43bf4ce3bb44d7404e143fa3dfd29f9e289a11008bf1",
+          "document_id": "en-08",
+          "occurrence": 1,
+          "phrase": "Restore the controller from snapshot M53."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-08-scope",
+      "scope": {
+        "folderIds": [
+          50
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Which saved image should facilities use to recover the lighting controller?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "267b2f910de1a93a7e8a8e6786899627940537541f9cb95435f49109ccda896c",
+          "document_id": "en-09",
+          "occurrence": 1,
+          "phrase": "retry after 23 seconds"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-09-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Jak dlouho má odesílatel telemetrie výukového okruhu Rowan počkat před dalším pokusem o přenos?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "267b2f910de1a93a7e8a8e6786899627940537541f9cb95435f49109ccda896c",
+          "document_id": "en-09",
+          "occurrence": 1,
+          "phrase": "API-EN-09"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-09-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "API-EN-09"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "267b2f910de1a93a7e8a8e6786899627940537541f9cb95435f49109ccda896c",
+          "document_id": "en-09",
+          "occurrence": 1,
+          "phrase": "retry after 23 seconds"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-09-scope",
+      "scope": {
+        "folderIds": [
+          50
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          309
+        ]
+      },
+      "tags": [],
+      "text": "How long should the sender pause before another telemetry attempt on the Rowan teaching loop?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "7cef4943cfbc96f2c7ea96f3d47b84fb707ade898003d59b778d89f0df103851",
+          "document_id": "en-10",
+          "occurrence": 1,
+          "phrase": "disconnect its USB lead, wait five seconds, then reconnect it"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-10-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "How should the technician restart the serial adapter?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "7cef4943cfbc96f2c7ea96f3d47b84fb707ade898003d59b778d89f0df103851",
+          "document_id": "en-10",
+          "occurrence": 1,
+          "phrase": "TERM-EN-10"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-10-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "TERM-EN-10"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "7cef4943cfbc96f2c7ea96f3d47b84fb707ade898003d59b778d89f0df103851",
+          "document_id": "en-10",
+          "occurrence": 1,
+          "phrase": "disconnect its USB lead, wait five seconds, then reconnect it"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "en-10-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          310
+        ]
+      },
+      "tags": [],
+      "text": "How should the technician restart the serial adapter?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "b3cdd37cb959cf585d179b52defaeabd2933f2b045a3b63721c7c6dac681f28d",
+          "document_id": "de-01",
+          "occurrence": 1,
+          "phrase": "Bei einer Störung der Laborpumpen antwortet der Service innerhalb von 30 Stunden."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-01-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Welche Frist gilt für die Rückmeldung bei einer ausgefallenen Pumpe im Labor Birke?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "b3cdd37cb959cf585d179b52defaeabd2933f2b045a3b63721c7c6dac681f28d",
+          "document_id": "de-01",
+          "occurrence": 1,
+          "phrase": "DE-BIR-526"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-01-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "DE-BIR-526"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "b3cdd37cb959cf585d179b52defaeabd2933f2b045a3b63721c7c6dac681f28d",
+          "document_id": "de-01",
+          "occurrence": 1,
+          "phrase": "Bei einer Störung der Laborpumpen antwortet der Service innerhalb von 30 Stunden."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-01-scope",
+      "scope": {
+        "folderIds": [
+          70
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Welche Frist gilt für die Rückmeldung bei einer ausgefallenen Pumpe im Labor Birke?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "5e3900c56e8d727092db37420cf9087e1ce3cce1f9def98d2465cef4ec74319c",
+          "document_id": "de-02",
+          "occurrence": 1,
+          "phrase": "Für die Erle-Filter gilt eine Gewährleistungsfrist von 22 Monaten."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-02-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "overlap",
+        "cross_language"
+      ],
+      "text": "Ako dlho možno uplatniť záruku na filtre dodané spoločnosťou Erle?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "5e3900c56e8d727092db37420cf9087e1ce3cce1f9def98d2465cef4ec74319c",
+          "document_id": "de-02",
+          "occurrence": 1,
+          "phrase": "DE-ERL-527"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-02-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "DE-ERL-527"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "5e3900c56e8d727092db37420cf9087e1ce3cce1f9def98d2465cef4ec74319c",
+          "document_id": "de-02",
+          "occurrence": 1,
+          "phrase": "Für die Erle-Filter gilt eine Gewährleistungsfrist von 22 Monaten."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-02-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          402
+        ]
+      },
+      "tags": [
+        "overlap"
+      ],
+      "text": "Wie lange kann die Beschaffungsstelle bei Erle-Filtern Gewährleistung beanspruchen?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "a90de14476e1a9d832e871e904533bd5924137809cb6addf38abf0c5c058a8d1",
+          "document_id": "de-03",
+          "occurrence": 1,
+          "phrase": "Der Rechnungsbetrag beträgt 3 180 EUR und ist am 24. Oktober 2026 fällig."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-03-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Welcher Betrag ist für die Abnahme der Pumpensteuerung zu zahlen, und wann wird er fällig?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "a90de14476e1a9d832e871e904533bd5924137809cb6addf38abf0c5c058a8d1",
+          "document_id": "de-03",
+          "occurrence": 1,
+          "phrase": "RE-DE-2026-061"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-03-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RE-DE-2026-061"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "a90de14476e1a9d832e871e904533bd5924137809cb6addf38abf0c5c058a8d1",
+          "document_id": "de-03",
+          "occurrence": 1,
+          "phrase": "Der Rechnungsbetrag beträgt 3 180 EUR und ist am 24. Oktober 2026 fällig."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-03-scope",
+      "scope": {
+        "folderIds": [
+          70
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Welcher Betrag ist für die Abnahme der Pumpensteuerung zu zahlen, und wann wird er fällig?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "f95850495267536e6a39599fe9324ad7911c35607cfb355c11ceda9da2a386b6",
+          "document_id": "de-04",
+          "occurrence": 1,
+          "phrase": "Der offene Rechnungsbetrag von 2 460 EUR ist bis zum 31. Oktober 2026 zu begleichen."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-04-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Dokedy treba zaplatiť prvú dodávku filtrov a aká suma zostáva na úhradu?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "f95850495267536e6a39599fe9324ad7911c35607cfb355c11ceda9da2a386b6",
+          "document_id": "de-04",
+          "occurrence": 1,
+          "phrase": "RE-DE-2026-062"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-04-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RE-DE-2026-062"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "f95850495267536e6a39599fe9324ad7911c35607cfb355c11ceda9da2a386b6",
+          "document_id": "de-04",
+          "occurrence": 1,
+          "phrase": "Der offene Rechnungsbetrag von 2 460 EUR ist bis zum 31. Oktober 2026 zu begleichen."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-04-scope",
+      "scope": {
+        "folderIds": [
+          70
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          404
+        ]
+      },
+      "tags": [],
+      "text": "Bis wann muss die erste Filterlieferung bezahlt werden, und wie hoch ist die offene Summe?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "a9e92da6ad39434b1682a3bbb7ef2b243d0ab9b729a9f331bb088966d2baf6ca",
+          "document_id": "de-05",
+          "occurrence": 1,
+          "phrase": "Der Pilot startet am 9. November 2026 in Raum E18."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-05-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "An welchem Tag und in welchem Raum beginnt der Birke-Pilot?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "a9e92da6ad39434b1682a3bbb7ef2b243d0ab9b729a9f331bb088966d2baf6ca",
+          "document_id": "de-05",
+          "occurrence": 1,
+          "phrase": "PRO-DE-05"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-05-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "PRO-DE-05"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "a9e92da6ad39434b1682a3bbb7ef2b243d0ab9b729a9f331bb088966d2baf6ca",
+          "document_id": "de-05",
+          "occurrence": 1,
+          "phrase": "Der Pilot startet am 9. November 2026 in Raum E18."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-05-scope",
+      "scope": {
+        "folderIds": [
+          70
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "An welchem Tag und in welchem Raum beginnt der Birke-Pilot?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "3e209358e44f04e404a07b8c7c31b4505ca100a3f29d4c228fcd9c82bc839e30",
+          "document_id": "de-06",
+          "occurrence": 1,
+          "phrase": "Das Ersatzmanometer liegt in Schrank 10."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-06-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Wo findet die Schicht das Ersatzgerät für eine ausgefallene mechanische Druckanzeige?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "3e209358e44f04e404a07b8c7c31b4505ca100a3f29d4c228fcd9c82bc839e30",
+          "document_id": "de-06",
+          "occurrence": 1,
+          "phrase": "RIS-DE-06"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-06-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RIS-DE-06"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "3e209358e44f04e404a07b8c7c31b4505ca100a3f29d4c228fcd9c82bc839e30",
+          "document_id": "de-06",
+          "occurrence": 1,
+          "phrase": "Das Ersatzmanometer liegt in Schrank 10."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-06-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          406
+        ]
+      },
+      "tags": [],
+      "text": "Wo findet die Schicht das Ersatzgerät für eine ausgefallene mechanische Druckanzeige?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "b8662df2e0924ebe1f94833b16a4af0e8ce9d3663c94cb65ad8fbe5c1b37c5ac",
+          "document_id": "de-07",
+          "occurrence": 1,
+          "phrase": "Lena Hain ist für die Kalibrierung verantwortlich."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-07-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Kto v spoločnosti Erle zodpovedá za kalibráciu odovzdaného skúšobného vybavenia?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "b8662df2e0924ebe1f94833b16a4af0e8ce9d3663c94cb65ad8fbe5c1b37c5ac",
+          "document_id": "de-07",
+          "occurrence": 1,
+          "phrase": "UEB-DE-07"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-07-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "UEB-DE-07"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "b8662df2e0924ebe1f94833b16a4af0e8ce9d3663c94cb65ad8fbe5c1b37c5ac",
+          "document_id": "de-07",
+          "occurrence": 1,
+          "phrase": "Lena Hain ist für die Kalibrierung verantwortlich."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-07-scope",
+      "scope": {
+        "folderIds": [
+          70
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          407
+        ]
+      },
+      "tags": [],
+      "text": "Wer trägt bei Erle die Verantwortung für die Kalibrierung der übergebenen Prüfausrüstung?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "39375b18a89e7b8f1739ee714917b08e7b7e38a783027791e8c0c7eafa5e8825",
+          "document_id": "de-08",
+          "occurrence": 1,
+          "phrase": "Für die Wiederherstellung wird der Schnappschuss N64 verwendet; anschließend ist Port 4320 zu prüfen."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-08-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Welchen Sicherungsstand braucht der Birke-Messrechner beim Wiederanlauf, und welcher Anschluss wird danach geprüft?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "39375b18a89e7b8f1739ee714917b08e7b7e38a783027791e8c0c7eafa5e8825",
+          "document_id": "de-08",
+          "occurrence": 1,
+          "phrase": "RUN-DE-08"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-08-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "RUN-DE-08"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "39375b18a89e7b8f1739ee714917b08e7b7e38a783027791e8c0c7eafa5e8825",
+          "document_id": "de-08",
+          "occurrence": 1,
+          "phrase": "Für die Wiederherstellung wird der Schnappschuss N64 verwendet; anschließend ist Port 4320 zu prüfen."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-08-scope",
+      "scope": {
+        "folderIds": [
+          70
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Welchen Sicherungsstand braucht der Birke-Messrechner beim Wiederanlauf, und welcher Anschluss wird danach geprüft?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "7eb8d82e2cc5bfb0d1eed593ca7e70f3994242dd550c8daf3a9302a210894977",
+          "document_id": "de-09",
+          "occurrence": 1,
+          "phrase": "Jede Meldung trägt den Header X-Birke-Trace; nach einer vorübergehenden Ablehnung wird nach 29 Sekunden erneut gesendet."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-09-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Welchen Header muss eine Prüfmeldung an der Erle-Schnittstelle für Birke tragen, und wie lange wartet die Schnittstelle vor einem erneuten Versuch?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "7eb8d82e2cc5bfb0d1eed593ca7e70f3994242dd550c8daf3a9302a210894977",
+          "document_id": "de-09",
+          "occurrence": 1,
+          "phrase": "API-DE-09"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-09-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "API-DE-09"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "7eb8d82e2cc5bfb0d1eed593ca7e70f3994242dd550c8daf3a9302a210894977",
+          "document_id": "de-09",
+          "occurrence": 1,
+          "phrase": "Jede Meldung trägt den Header X-Birke-Trace; nach einer vorübergehenden Ablehnung wird nach 29 Sekunden erneut gesendet."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-09-scope",
+      "scope": {
+        "folderIds": [
+          70
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          409
+        ]
+      },
+      "tags": [],
+      "text": "Welchen Header muss eine Prüfmeldung an der Erle-Schnittstelle für Birke tragen, und wie lange wartet die Schnittstelle vor einem erneuten Versuch?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "94b666cd757fad49a40b8a1031500ea1fab43e6b1261918bd6cf916c13ac92e1",
+          "document_id": "de-10",
+          "occurrence": 1,
+          "phrase": "Die serielle Verbindung des Terminals läuft mit 115200 Baud."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-10-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "cross_language"
+      ],
+      "text": "Akou rýchlosťou prenáša údaje starší terminál v laboratóriu Birke?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "94b666cd757fad49a40b8a1031500ea1fab43e6b1261918bd6cf916c13ac92e1",
+          "document_id": "de-10",
+          "occurrence": 1,
+          "phrase": "TERM-DE-10"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-10-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "TERM-DE-10"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "94b666cd757fad49a40b8a1031500ea1fab43e6b1261918bd6cf916c13ac92e1",
+          "document_id": "de-10",
+          "occurrence": 1,
+          "phrase": "Die serielle Verbindung des Terminals läuft mit 115200 Baud."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "de-10-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          410
+        ]
+      },
+      "tags": [],
+      "text": "Mit welcher Übertragungsgeschwindigkeit wird das ältere Birke-Terminal betrieben?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "23c87c5d47066c2b67555c486db7c613ff5dfe24cf46736bd3eacd4dbef3ef55",
+          "document_id": "mix-01",
+          "occurrence": 1,
+          "phrase": "Tým schválil spuštění po podpisu kontrolního listu."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-01-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "Za jaké podmínky tým povolil společné česko-anglické uvedení ovládacího panelu do ostrého provozu?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "23c87c5d47066c2b67555c486db7c613ff5dfe24cf46736bd3eacd4dbef3ef55",
+          "document_id": "mix-01",
+          "occurrence": 1,
+          "phrase": "ROLL-501"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-01-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "ROLL-501"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "23c87c5d47066c2b67555c486db7c613ff5dfe24cf46736bd3eacd4dbef3ef55",
+          "document_id": "mix-01",
+          "occurrence": 1,
+          "phrase": "Roll back if two consecutive status checks fail."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-01-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          501
+        ]
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "When should support return the rollout panel to its accepted configuration?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "07685072c0904622b71b2cc51ae271435eaee60052aaa81c5c84249857d9aa00",
+          "document_id": "mix-02",
+          "occurrence": 1,
+          "phrase": "Dodávka príde v dvoch označených debnách."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-02-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "V akých obaloch dorazia objednané súčiastky?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "07685072c0904622b71b2cc51ae271435eaee60052aaa81c5c84249857d9aa00",
+          "document_id": "mix-02",
+          "occurrence": 1,
+          "phrase": "ADD-502"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-02-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "ADD-502"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "07685072c0904622b71b2cc51ae271435eaee60052aaa81c5c84249857d9aa00",
+          "document_id": "mix-02",
+          "occurrence": 1,
+          "phrase": "Die Prüfung endet spätestens am 12. November 2026."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-02-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          502
+        ]
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "Bis zu welchem Datum muss die Prüfung der gelieferten Teile abgeschlossen sein?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "83252cef7cf379f24d2a3d3607669e8d0dd80ac26941622345f1aa07f3814f6b",
+          "document_id": "mix-03",
+          "occurrence": 1,
+          "phrase": "The handover checklist requires a signed cable count."
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-03-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "What must the receiving instructor sign after checking the case?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "83252cef7cf379f24d2a3d3607669e8d0dd80ac26941622345f1aa07f3814f6b",
+          "document_id": "mix-03",
+          "occurrence": 1,
+          "phrase": "LOOSE-503"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-03-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "LOOSE-503"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "83252cef7cf379f24d2a3d3607669e8d0dd80ac26941622345f1aa07f3814f6b",
+          "document_id": "mix-03",
+          "occurrence": 1,
+          "phrase": "Der Schlüssel kommt in das gelbe Fach."
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "mix-03-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          503
+        ]
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "Wo wird der Schlüssel des Vorführkoffers nach der Rückgabe abgelegt?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "answer",
+      "gold": [
+        {
+          "content_hash": "5b72fc4fdaa0ad56af652247dd0a896f0fad6cd754446ac79c7bcbf291d61290",
+          "document_id": "mix-04",
+          "occurrence": 1,
+          "phrase": "Pro toto pracoviště obnovte snímek K99."
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 2,
+      "overview_document_ids": [],
+      "query_id": "mix-04-paraphrase",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "Ktorá snímka sa má použiť na obnovu oddeleného skúšobného pracoviska?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "exact_identifier",
+      "gold": [
+        {
+          "content_hash": "5b72fc4fdaa0ad56af652247dd0a896f0fad6cd754446ac79c7bcbf291d61290",
+          "document_id": "mix-04",
+          "occurrence": 1,
+          "phrase": "OTHER-504"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 2,
+      "overview_document_ids": [],
+      "query_id": "mix-04-identifier",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "OTHER-504"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "scope",
+      "gold": [
+        {
+          "content_hash": "5b72fc4fdaa0ad56af652247dd0a896f0fad6cd754446ac79c7bcbf291d61290",
+          "document_id": "mix-04",
+          "occurrence": 1,
+          "phrase": "Pro toto pracoviště obnovte snímek K99."
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 2,
+      "overview_document_ids": [],
+      "query_id": "mix-04-scope",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          504
+        ]
+      },
+      "tags": [
+        "mixed"
+      ],
+      "text": "Který snímek se má použít na odděleném zkušebním pracovišti?"
+    },
+    {
+      "absent_reason": "not_in_corpus",
+      "case_type": "absent",
+      "gold": [],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "absent-cs",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Jaké je číslo pojistné smlouvy observatoře Javor?"
+    },
+    {
+      "absent_reason": "empty_scope",
+      "case_type": "empty_selection",
+      "gold": [],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "empty-cs",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Kdo má v tomto výběru na starosti kalibraci?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "overview",
+      "gold": [
+        {
+          "content_hash": "93def343333100ccf1b5b968e20aadc4f44ca508db3648cc4c6bb1dc5e41aea7",
+          "document_id": "cs-01",
+          "occurrence": 1,
+          "phrase": "CS-JAV-241"
+        },
+        {
+          "content_hash": "5f9c31f572e3e0a379396fda4ecddb028ddbe17acc7eb965204c03fb03daa083",
+          "document_id": "cs-03",
+          "occurrence": 1,
+          "phrase": "Faktura je splatná 21. října 2026."
+        },
+        {
+          "content_hash": "c5c01b8e677f654fdcdd94a95ad4b253c72382bbead59005bd4b37fe7cab26cd",
+          "document_id": "cs-05",
+          "occurrence": 1,
+          "phrase": "ZAP-CS-05"
+        },
+        {
+          "content_hash": "86c6b5690f725b22e146e1277f4049809a2cfd4a610ff42a66e1af9af6927fea",
+          "document_id": "cs-10",
+          "occurrence": 1,
+          "phrase": "TERM-CS-10"
+        },
+        {
+          "content_hash": "3dd566103d7ec27123eb734ce18df7fdb2f657ceadb0b33975b3be69d00904be",
+          "document_id": "cs-08",
+          "occurrence": 1,
+          "phrase": "RUN-CS-08"
+        },
+        {
+          "content_hash": "5e623e6b0e601938e35ad013300e2e6f4f334ede9a3e9260b6bb3a197007be95",
+          "document_id": "cs-02",
+          "occurrence": 1,
+          "phrase": "CS-MOR-242"
+        },
+        {
+          "content_hash": "eb03ae4b04e49fa7384d4bf78a5b3bfd46c826930083c988ea798ba289ee78df",
+          "document_id": "cs-04",
+          "occurrence": 1,
+          "phrase": "FA-CS-2026-032"
+        },
+        {
+          "content_hash": "e440b209a2de39c4bb6fae883a283d927dac1b4339a849992a620252bc8ce286",
+          "document_id": "cs-07",
+          "occurrence": 1,
+          "phrase": "PRE-CS-07"
+        },
+        {
+          "content_hash": "82fc24ca4a265eec124ed25179611e87fae51f3183a3aa68860939cd7b503148",
+          "document_id": "cs-09",
+          "occurrence": 1,
+          "phrase": "API-CS-09"
+        },
+        {
+          "content_hash": "6a6d21d8d3bd5cc09bcfa6a17de591e0d7cb5dd03f7bf53596eac13155f562fd",
+          "document_id": "cs-06",
+          "occurrence": 1,
+          "phrase": "RIZ-CS-06"
+        }
+      ],
+      "language": "cs",
+      "notebook_id": 1,
+      "overview_document_ids": [
+        "cs-01",
+        "cs-03",
+        "cs-05",
+        "cs-10",
+        "cs-08",
+        "cs-02",
+        "cs-04",
+        "cs-07",
+        "cs-09",
+        "cs-06"
+      ],
+      "query_id": "overview-cs",
+      "scope": {
+        "folderIds": [
+          10,
+          20
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Podej přehled zákaznických a dodavatelských podkladů k observatoři a snímačům."
+    },
+    {
+      "absent_reason": "not_in_corpus",
+      "case_type": "absent",
+      "gold": [],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "absent-sk",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Aké je číslo poistnej zmluvy archívu Lipa?"
+    },
+    {
+      "absent_reason": "empty_scope",
+      "case_type": "empty_selection",
+      "gold": [],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "empty-sk",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Kto v tomto výbere zodpovedá za kalibráciu?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "overview",
+      "gold": [
+        {
+          "content_hash": "f3f58bb403cacb6ee8819daedd7ea38180f2907b1490c4f19731c5c3d7d9b5ea",
+          "document_id": "sk-01",
+          "occurrence": 1,
+          "phrase": "SK-LIP-317"
+        },
+        {
+          "content_hash": "bf815c9e753a0cd124edd58ec55933af07bd8eb5ece9a7f7c84f71870348cad5",
+          "document_id": "sk-03",
+          "occurrence": 1,
+          "phrase": "FA-SK-2026-041"
+        },
+        {
+          "content_hash": "05f25dd14e6d268598ce55b9a5fb5a49cc8b2a0120dbb9037d29441aae63e2e0",
+          "document_id": "sk-05",
+          "occurrence": 1,
+          "phrase": "ZAP-SK-05"
+        },
+        {
+          "content_hash": "c24c06b289924cbb29d04eead0b347660583aaec6d8b69e4ec8476cf3d7f5198",
+          "document_id": "sk-10",
+          "occurrence": 1,
+          "phrase": "TERM-SK-10"
+        },
+        {
+          "content_hash": "3ec8cfa43cc138141155b243eb355524abb40fb272e950278474ee0ad226e1a9",
+          "document_id": "sk-08",
+          "occurrence": 1,
+          "phrase": "RUN-SK-08"
+        },
+        {
+          "content_hash": "816ee15bc077b32459908558f8badc40748ec4e58b3eecc751706126a47fe606",
+          "document_id": "sk-02",
+          "occurrence": 1,
+          "phrase": "SK-VAH-318"
+        },
+        {
+          "content_hash": "486ba235016e44766548d4df2704938f4368a50ce97e2c9ef46e7602d47591a6",
+          "document_id": "sk-04",
+          "occurrence": 1,
+          "phrase": "FA-SK-2026-042"
+        },
+        {
+          "content_hash": "05144bdfd8a5e308d892990fcab63e8cb2bac4529d0fb0d0c99ca6e663f2544f",
+          "document_id": "sk-07",
+          "occurrence": 1,
+          "phrase": "ODO-SK-07"
+        },
+        {
+          "content_hash": "82941d5b0eb7078ed5fb5e2d8f7be16702b6bb957417b42b66d975de91bd76c8",
+          "document_id": "sk-09",
+          "occurrence": 1,
+          "phrase": "API-SK-09"
+        },
+        {
+          "content_hash": "4aba2f3dc68fa0022d6a60e85a6473be1e78f157bdc87c0b67641192e9cf19a4",
+          "document_id": "sk-06",
+          "occurrence": 1,
+          "phrase": "RIZ-SK-06"
+        }
+      ],
+      "language": "sk",
+      "notebook_id": 1,
+      "overview_document_ids": [
+        "sk-01",
+        "sk-03",
+        "sk-05",
+        "sk-10",
+        "sk-08",
+        "sk-02",
+        "sk-04",
+        "sk-07",
+        "sk-09",
+        "sk-06"
+      ],
+      "query_id": "overview-sk",
+      "scope": {
+        "folderIds": [
+          30,
+          40
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Zhrň zákaznícke a dodávateľské podklady k archívu a tesneniam."
+    },
+    {
+      "absent_reason": "not_in_corpus",
+      "case_type": "absent",
+      "gold": [],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "absent-en",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "What is the insurance policy number for the Alder workshop?"
+    },
+    {
+      "absent_reason": "empty_scope",
+      "case_type": "empty_selection",
+      "gold": [],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "empty-en",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Who handles calibration in this selection?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "overview",
+      "gold": [
+        {
+          "content_hash": "dd5cb9f6de3050c0353ae46c479123544ad0fe485211b84b946b9a5f7a1ef6e8",
+          "document_id": "en-01",
+          "occurrence": 1,
+          "phrase": "EN-ALD-482"
+        },
+        {
+          "content_hash": "29fdda486871c4a5e499491dffd45f53c04574784e98c6e5b25713cfc81946e7",
+          "document_id": "en-03",
+          "occurrence": 1,
+          "phrase": "INV-EN-2026-051"
+        },
+        {
+          "content_hash": "2e5ad3da25e6f9dc79f2887c5ffa41e2ce9a9517a8b9561877aea58fb844506f",
+          "document_id": "en-05",
+          "occurrence": 1,
+          "phrase": "MIN-EN-05"
+        },
+        {
+          "content_hash": "7cef4943cfbc96f2c7ea96f3d47b84fb707ade898003d59b778d89f0df103851",
+          "document_id": "en-10",
+          "occurrence": 1,
+          "phrase": "TERM-EN-10"
+        },
+        {
+          "content_hash": "46ad1aed86982b8f1e1f43bf4ce3bb44d7404e143fa3dfd29f9e289a11008bf1",
+          "document_id": "en-08",
+          "occurrence": 1,
+          "phrase": "RUN-EN-08"
+        },
+        {
+          "content_hash": "f19d943db67a1b0997e3cc6b4f0dc5fd4c042098a31dd4b509be8fb97724363b",
+          "document_id": "en-02",
+          "occurrence": 1,
+          "phrase": "EN-ROW-483"
+        },
+        {
+          "content_hash": "3ad6fa309f48ed809ff9ac1f0d7fa5ba6a120d018c1e3c01532a76db2375f427",
+          "document_id": "en-04",
+          "occurrence": 1,
+          "phrase": "INV-EN-2026-052"
+        },
+        {
+          "content_hash": "8fa13696a2f63b05340e2049d26311816788cfb289e6a613ffadd479a13251e7",
+          "document_id": "en-07",
+          "occurrence": 1,
+          "phrase": "HAND-EN-07"
+        },
+        {
+          "content_hash": "267b2f910de1a93a7e8a8e6786899627940537541f9cb95435f49109ccda896c",
+          "document_id": "en-09",
+          "occurrence": 1,
+          "phrase": "API-EN-09"
+        },
+        {
+          "content_hash": "76aa681087ec6e73cd513bfd6a0409bf05881496ce87b767cabdc531e8953165",
+          "document_id": "en-06",
+          "occurrence": 1,
+          "phrase": "RISK-EN-06"
+        }
+      ],
+      "language": "en",
+      "notebook_id": 1,
+      "overview_document_ids": [
+        "en-01",
+        "en-03",
+        "en-05",
+        "en-10",
+        "en-08",
+        "en-02",
+        "en-04",
+        "en-07",
+        "en-09",
+        "en-06"
+      ],
+      "query_id": "overview-en",
+      "scope": {
+        "folderIds": [
+          50,
+          60
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Summarise the customer and supplier records for the workshop and its valves."
+    },
+    {
+      "absent_reason": "not_in_corpus",
+      "case_type": "absent",
+      "gold": [],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "absent-de",
+      "scope": {
+        "kind": "all"
+      },
+      "tags": [],
+      "text": "Wie lautet die Versicherungsscheinnummer des Labors Birke?"
+    },
+    {
+      "absent_reason": "empty_scope",
+      "case_type": "empty_selection",
+      "gold": [],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [],
+      "query_id": "empty-de",
+      "scope": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Wer ist in dieser Auswahl für die Kalibrierung zuständig?"
+    },
+    {
+      "absent_reason": null,
+      "case_type": "overview",
+      "gold": [
+        {
+          "content_hash": "b3cdd37cb959cf585d179b52defaeabd2933f2b045a3b63721c7c6dac681f28d",
+          "document_id": "de-01",
+          "occurrence": 1,
+          "phrase": "DE-BIR-526"
+        },
+        {
+          "content_hash": "a90de14476e1a9d832e871e904533bd5924137809cb6addf38abf0c5c058a8d1",
+          "document_id": "de-03",
+          "occurrence": 1,
+          "phrase": "RE-DE-2026-061"
+        },
+        {
+          "content_hash": "a9e92da6ad39434b1682a3bbb7ef2b243d0ab9b729a9f331bb088966d2baf6ca",
+          "document_id": "de-05",
+          "occurrence": 1,
+          "phrase": "PRO-DE-05"
+        },
+        {
+          "content_hash": "94b666cd757fad49a40b8a1031500ea1fab43e6b1261918bd6cf916c13ac92e1",
+          "document_id": "de-10",
+          "occurrence": 1,
+          "phrase": "TERM-DE-10"
+        },
+        {
+          "content_hash": "39375b18a89e7b8f1739ee714917b08e7b7e38a783027791e8c0c7eafa5e8825",
+          "document_id": "de-08",
+          "occurrence": 1,
+          "phrase": "RUN-DE-08"
+        },
+        {
+          "content_hash": "5e3900c56e8d727092db37420cf9087e1ce3cce1f9def98d2465cef4ec74319c",
+          "document_id": "de-02",
+          "occurrence": 1,
+          "phrase": "DE-ERL-527"
+        },
+        {
+          "content_hash": "f95850495267536e6a39599fe9324ad7911c35607cfb355c11ceda9da2a386b6",
+          "document_id": "de-04",
+          "occurrence": 1,
+          "phrase": "RE-DE-2026-062"
+        },
+        {
+          "content_hash": "b8662df2e0924ebe1f94833b16a4af0e8ce9d3663c94cb65ad8fbe5c1b37c5ac",
+          "document_id": "de-07",
+          "occurrence": 1,
+          "phrase": "UEB-DE-07"
+        },
+        {
+          "content_hash": "7eb8d82e2cc5bfb0d1eed593ca7e70f3994242dd550c8daf3a9302a210894977",
+          "document_id": "de-09",
+          "occurrence": 1,
+          "phrase": "API-DE-09"
+        },
+        {
+          "content_hash": "3e209358e44f04e404a07b8c7c31b4505ca100a3f29d4c228fcd9c82bc839e30",
+          "document_id": "de-06",
+          "occurrence": 1,
+          "phrase": "RIS-DE-06"
+        }
+      ],
+      "language": "de",
+      "notebook_id": 1,
+      "overview_document_ids": [
+        "de-01",
+        "de-03",
+        "de-05",
+        "de-10",
+        "de-08",
+        "de-02",
+        "de-04",
+        "de-07",
+        "de-09",
+        "de-06"
+      ],
+      "query_id": "overview-de",
+      "scope": {
+        "folderIds": [
+          70,
+          80
+        ],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "tags": [],
+      "text": "Gib einen Überblick über die Kunden- und Lieferantenunterlagen zu Laborpumpen und Filtern."
+    }
+  ],
+  "version": 1
+}

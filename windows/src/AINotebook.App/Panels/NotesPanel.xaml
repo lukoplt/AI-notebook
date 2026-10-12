@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Right panel › Notes (spec §2.3): search, tag filter, + New, bulk delete and tool history;
+  clicking a note opens it as a document in the main area (§2.4).
+-->
+<UserControl
+    x:Class="AINotebook.App.Panels.NotesPanel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:AINotebook.Core.Models"
+    xmlns:panels="using:AINotebook.App.Panels">
+    <Grid Padding="12,0,12,12" RowSpacing="{StaticResource Space8}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid ColumnSpacing="{StaticResource Space4}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <!-- B9: search -->
+            <TextBox x:Name="SearchBox" Text="{x:Bind ViewModel.SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button x:Name="NewNoteButton" Grid.Column="1" Style="{StaticResource IconButtonStyle}" Click="OnNewNote">
+                <FontIcon Glyph="{StaticResource IconAdd}" Style="{StaticResource RowIcon}" />
+            </Button>
+            <Button x:Name="PanelMoreButton" Grid.Column="2" Style="{StaticResource IconButtonStyle}" Click="OnPanelMore">
+                <FontIcon Glyph="{StaticResource IconMore}" Style="{StaticResource RowIcon}" />
+            </Button>
+        </Grid>
+
+        <Button x:Name="TagFilterChip" Grid.Row="1" Style="{StaticResource ChipButtonStyle}" Click="OnClearTagFilter"
+                HorizontalAlignment="Left" Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space4}">
+                <FontIcon Glyph="{StaticResource IconTag}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}" />
+                <TextBlock x:Name="TagFilterText" />
+                <FontIcon Glyph="{StaticResource IconClose}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource FontSizeCaption}" />
+            </StackPanel>
+        </Button>
+
+        <!-- W-6: bulk bar while multi-select is on -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="{StaticResource Space8}"
+                    Visibility="{x:Bind ViewModel.IsBulkMode, Mode=OneWay, Converter={StaticResource BoolToVisibility}}">
+            <Button x:Name="BulkDeleteButton" Style="{StaticResource QuietButtonStyle}" Foreground="{ThemeResource DangerBrush}"
+                    Click="OnBulkDeleteNotes"
+                    IsEnabled="{x:Bind ViewModel.HasBulkSelection, Mode=OneWay}" />
+            <Button x:Name="BulkDoneButton" Style="{StaticResource QuietButtonStyle}" Command="{x:Bind ViewModel.ToggleBulkModeCommand}" />
+        </StackPanel>
+
+        <ListView x:Name="NotesList" Grid.Row="3"
+                  ItemsSource="{x:Bind ViewModel.FilteredNotes, Mode=OneWay}"
+                  ItemContainerStyle="{StaticResource FlatListItemStyle}"
+                  SelectionMode="None" IsItemClickEnabled="True"
+                  ItemClick="OnNoteClick" SelectionChanged="OnNotesSelectionChanged">
+            <ListView.Resources>
+                <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{ThemeResource Surface2}" />
+                <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="{ThemeResource Border}" />
+            </ListView.Resources>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Note">
+                    <Grid Padding="4,6" ColumnSpacing="{StaticResource Space8}" Tag="{x:Bind}" RightTapped="OnNoteRightTapped">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <FontIcon Glyph="{StaticResource IconNote}" Style="{StaticResource RowIcon}" VerticalAlignment="Top" Margin="0,2,0,0" />
+                        <StackPanel Grid.Column="1" Spacing="2">
+                            <TextBlock Text="{x:Bind Title}" Style="{StaticResource TextBody}" Foreground="{ThemeResource Text1Brush}"
+                                       TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{x:Bind panels:NotesPanel.Caption(Origin, UpdatedAt)}" Style="{StaticResource SecondaryCaption}" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel x:Name="EmptyNotes" Grid.Row="3" Visibility="Collapsed" Spacing="{StaticResource Space12}"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
+            <FontIcon Glyph="{StaticResource IconNote}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource Space32}"
+                      Foreground="{ThemeResource Text3Brush}" HorizontalAlignment="Center" />
+            <TextBlock x:Name="EmptyNotesText" Style="{StaticResource TextBody}" Foreground="{ThemeResource Text2Brush}"
+                       TextWrapping="Wrap" TextAlignment="Center" />
+            <Button x:Name="EmptyNewButton" Style="{StaticResource PrimaryButtonStyle}" HorizontalAlignment="Center" Click="OnNewNote" />
+        </StackPanel>
+    </Grid>
+</UserControl>

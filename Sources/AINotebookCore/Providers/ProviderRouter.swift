@@ -1,222 +1,400 @@
 import Foundation
 
-/// Routes `ChatStreaming` / `EmbeddingProducing` calls to the active
-/// provider. Adapters are cheap value types constructed per call and the API
-/// key is read from the secret store each time: no cache, no staleness.
-///
-/// The two protocols are handled differently:
-///
-/// - `stream` (chat): the `model` parameter is ignored. It reads the live
-///   (provider, model) selection on every call, since chat callers capture
-///   their model at launch and the router is what makes Settings changes
-///   effective immediately.
-/// - `embed`: the `model` parameter is HONORED as a composite
-///   `"{providerId}:{rawModel}"` key when it contains a colon. `Embedder`
-///   snapshots this composite key once per drain for storage (`FR-A11`); if
-///   the router instead re-sampled the live selection, a settings change
-///   mid-drain could route the network call to a NEW provider while rows
-///   get labeled with the OLD key — silently mislabeled vectors. Honoring
-///   the passed key keeps the storage label and the network call from ever
-///   diverging within a drain. Callers that pass a plain (colon-free) model
-///   string — the legacy/direct convenience path used by some tests — still
-///   get today's live-selection behavior.
-public final class ProviderRouter: @unchecked Sendable {
+/// Captures selection, configuration, credentials and limits together on MainActor.
+/// A returned session owns its adapter; later settings edits affect only new turns.
+public final class ProviderRouter: Sendable {
     private let store: NotebookStore
     private let secrets: any SecretStoring
     private let selection: any ProviderSelectionReading
     private let session: URLSession
 
-    public init(
-        store: NotebookStore,
-        secrets: any SecretStoring,
-        selection: any ProviderSelectionReading,
-        session: URLSession = .shared
-    ) {
+    public init(store: NotebookStore, secrets: any SecretStoring,
+                selection: any ProviderSelectionReading, session: URLSession = .shared) {
         self.store = store
         self.secrets = secrets
         self.selection = selection
         self.session = session
     }
 
-    // MARK: - Resolution
-
-    private func config(_ providerId: String) async -> ProviderConfig {
-        let storeRef = store
-        let cfg = try? await MainActor.run { try storeRef.provider(id: providerId) }
-        return (cfg ?? nil) ?? .builtInOllama()
+    private struct Capture: Sendable {
+        let config: ProviderConfig
+        let key: String?
+        let model: String
+        let limits: ProviderModelLimits?
     }
 
-    private func apiKey(for cfg: ProviderConfig) -> String? {
-        guard cfg.type.isCloud else { return nil }
-        return (try? secrets.load(providerId: cfg.id)) ?? nil
+    @MainActor
+    private func config(_ providerId: String) throws -> ProviderConfig {
+        guard let value = try store.provider(id: providerId) else { throw ProviderConfigurationError.missingProvider }
+        guard value.enabled else { throw ProviderConfigurationError.disabledProvider }
+        var normalized = value
+        normalized.baseURL = try ProviderAPIRoot.normalize(value.baseURL)
+        return normalized
     }
 
-    /// Splits a composite `"{providerId}:{rawModel}"` embedding key on the
-    /// FIRST colon only, so Ollama tags that themselves contain colons
-    /// (`llama3.2:3b`) survive intact in `rawModel`. Returns `nil` when the
-    /// string has no colon, or the prefix before the first colon is empty —
-    /// both signal "not a composite key" (legacy/direct callers), and the
-    /// caller should fall back to the live selection.
+    private func apiKey(for config: ProviderConfig) throws -> String? {
+        config.type.isCloud ? try secrets.load(providerId: config.id) : nil
+    }
+
+    private func checkConsent(_ config: ProviderConfig) throws {
+        if config.type.isCloud && !config.privacyAcknowledged { throw ProviderError.consentRequired }
+    }
+
     private static func parseCompositeKey(_ model: String) -> (providerId: String, rawModel: String)? {
-        guard let colonIndex = model.firstIndex(of: ":") else { return nil }
-        let providerId = String(model[model.startIndex..<colonIndex])
-        guard !providerId.isEmpty else { return nil }
-        let rawModel = String(model[model.index(after: colonIndex)...])
-        return (providerId, rawModel)
+        guard let colon = model.firstIndex(of: ":"), colon != model.startIndex else { return nil }
+        return (String(model[..<colon]), String(model[model.index(after: colon)...]))
     }
 
-    private func ollamaClient(baseURL: String) -> OllamaClient {
-        let url = URL(string: ProviderWire.trimBase(baseURL))
-            ?? URL(string: ProviderType.ollama.defaultBaseURL)!
+    @MainActor
+    private func isQualified(_ value: (providerId: String, rawModel: String), selectedId: String) throws -> Bool {
+        // Persisted/selected IDs and UUID provider keys remain recognizable if deleted.
+        if value.providerId == selectedId || UUID(uuidString: value.providerId) != nil { return true }
+        return try store.provider(id: value.providerId) != nil
+    }
+
+    @MainActor
+    private func captureChat(model: String?, legacyDirect: Bool = false) throws -> Capture {
+        var (providerId, activeModel) = selection.chatSelection()
+        if let model {
+            if let parsed = Self.parseCompositeKey(model), try isQualified(parsed, selectedId: providerId) {
+                (providerId, activeModel) = parsed
+            } else if !legacyDirect {
+                activeModel = model
+            }
+        }
+        return try capture(providerId: providerId, model: activeModel)
+    }
+
+    @MainActor
+    private func capture(providerId: String, model: String) throws -> Capture {
+        let cfg = try config(providerId)
+        try checkConsent(cfg)
+        guard !model.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            throw ProviderConfigurationError.invalidLimits
+        }
+        return Capture(config: cfg, key: try apiKey(for: cfg), model: model,
+                       limits: try store.providerModelLimits(providerId: providerId, model: model))
+    }
+
+    private func ollamaClient(baseURL: String) throws -> OllamaClient {
+        let root = try ProviderAPIRoot.normalize(baseURL)
+        guard let url = URL(string: root) else { throw ProviderConfigurationError.invalidBaseURL }
         return OllamaClient(baseURL: url, session: session)
     }
 
-    private func chatAdapter(for cfg: ProviderConfig) -> any ChatStreaming {
+    private func chatAdapter(for capture: Capture) throws -> any ChatStreaming {
+        let cfg = capture.config
         switch cfg.type {
-        case .ollama:
-            ollamaClient(baseURL: cfg.baseURL)
-        case .anthropic:
-            AnthropicChatAdapter(baseURL: cfg.baseURL, apiKey: apiKey(for: cfg) ?? "", session: session)
-        case .openai, .openaiCompatible:
-            OpenAIChatAdapter(baseURL: cfg.baseURL, apiKey: apiKey(for: cfg), session: session)
-        case .openwebui:
-            OpenWebUIChatAdapter(baseURL: cfg.baseURL, apiKey: apiKey(for: cfg), session: session)
+        case .ollama: return try ollamaClient(baseURL: cfg.baseURL)
+        case .anthropic: return AnthropicChatAdapter(baseURL: cfg.baseURL, apiKey: capture.key ?? "", session: session)
+        case .openai, .openaiCompatible: return OpenAIChatAdapter(baseURL: cfg.baseURL, apiKey: capture.key, session: session)
+        case .openwebui: return OpenWebUIChatAdapter(baseURL: cfg.baseURL, apiKey: capture.key, session: session)
         }
+    }
+
+    private func resolvedLimits(_ captured: Capture, refresh: Bool = false) async throws -> ProviderModelLimits {
+        try Task.checkCancellation()
+        if let limits = captured.limits, limits.source == "user" || !refresh { return limits }
+        let cfg = captured.config
+        var window: Int?
+        var listed = false
+        if refresh, ProviderLimitPolicy.listingTypes.contains(cfg.type) {
+            // provider-listing-limits-v1: an explicit refresh reads the model listing; any failure
+            // other than cancellation leaves the window unknown.
+            do {
+                let data = try await ProviderDiscovery.listing(type: cfg.type, baseURL: cfg.baseURL,
+                                                               apiKey: captured.key, session: session)
+                try Task.checkCancellation()
+                window = try ProviderLimitPolicy.contextWindow(fromModelListing: data, model: captured.model)
+                listed = window != nil
+            } catch {
+                try Task.checkCancellation()
+                if (error as? URLError)?.code == .cancelled { throw error }
+            }
+        } else if cfg.type == .ollama {
+            do {
+                let data = try await ollamaClient(baseURL: cfg.baseURL).show(model: captured.model)
+                try Task.checkCancellation()
+                window = try ProviderLimitPolicy.contextWindow(fromOllamaShow: data)
+            } catch {
+                try Task.checkCancellation()
+                guard case let OllamaError.httpStatus(code, _) = error,
+                      [404, 405, 501].contains(code) else { throw error }
+            }
+        }
+        let automatic = try ProviderLimitPolicy.automatic(providerId: cfg.id, type: cfg.type,
+                                                          model: captured.model, contextWindow: window, listed: listed)
+        return try await MainActor.run {
+            // Explicit user edits still win metadata refresh races, even across
+            // endpoint edits. Automatic results must stay with their captured root.
+            if let current = try self.store.providerModelLimits(providerId: cfg.id, model: captured.model),
+               current.source == "user" { return current }
+            guard let currentConfig = try self.store.provider(id: cfg.id),
+                  ProviderLimitPolicy.hasSameEndpoint(cfg, currentConfig) else { return automatic }
+            try self.store.saveProviderModelLimits(automatic)
+            // The conditional upsert protects a user edit made during metadata I/O.
+            return try self.store.providerModelLimits(providerId: cfg.id, model: captured.model) ?? automatic
+        }
+    }
+
+    private func prepare(_ captured: Capture) async throws -> ProviderChatSession {
+        let adapter = try chatAdapter(for: captured)
+        let limits = try await resolvedLimits(captured)
+        return ProviderChatSession(providerId: captured.config.id, model: captured.model, limits: limits, adapter: adapter)
+    }
+
+    public func resolveLimits(providerId: String, model: String, refresh: Bool = false) async throws -> ProviderModelLimits {
+        let captured = try await capture(providerId: providerId, model: model)
+        return try await resolvedLimits(captured, refresh: refresh)
+    }
+
+    public func discoverModels(providerId: String) async throws -> [ProviderModelInfo] {
+        let (cfg, key) = try await MainActor.run {
+            let cfg = try self.config(providerId)
+            return (cfg, try self.apiKey(for: cfg))
+        }
+        let models = try await ProviderDiscovery.models(type: cfg.type, baseURL: cfg.baseURL, apiKey: key, session: session)
+        // provider-listing-limits-v1: advertised windows become automatic limits (never over a user
+        // choice, and only while the endpoint that answered is still the configured one).
+        let listed = models.filter { $0.contextWindow != nil }
+        if ProviderLimitPolicy.listingTypes.contains(cfg.type), !listed.isEmpty {
+            try await MainActor.run {
+                guard let current = try self.store.provider(id: cfg.id), ProviderLimitPolicy.hasSameEndpoint(cfg, current) else { return }
+                for model in listed {
+                    guard let limits = try? ProviderLimitPolicy.automatic(providerId: cfg.id, type: cfg.type, model: model.id,
+                                                                         contextWindow: model.contextWindow, listed: true) else { continue }
+                    try self.store.saveProviderModelLimits(limits)
+                }
+            }
+        }
+        return models
+    }
+
+    public func probe(type: ProviderType, baseURL: String, apiKey: String?) async throws -> ProviderProbeResult {
+        try await ProviderDiscovery.probe(type: type, baseURL: baseURL, apiKey: apiKey, session: session)
     }
 }
 
-// MARK: - ChatStreaming
+extension ProviderRouter: ChatSessionPreparing {
+    public func prepareChat(model: String? = nil) async throws -> ProviderChatSession {
+        let captured = try await captureChat(model: model)
+        return try await prepare(captured)
+    }
+}
 
 extension ProviderRouter: ChatStreaming {
     public func stream(model: String, messages: [ChatTurn]) -> AsyncThrowingStream<String, Error> {
+        directStream(model: model, messages: messages, options: nil)
+    }
+
+    public func stream(model: String, messages: [ChatTurn], options: ChatRequestOptions) -> AsyncThrowingStream<String, Error> {
+        directStream(model: model, messages: messages, options: options)
+    }
+
+    private func directStream(model: String, messages: [ChatTurn], options: ChatRequestOptions?) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    // Honor an explicit provider-qualified model (FR-C3 regenerate
-                    // with a chosen model): treat `model` as composite ONLY when
-                    // its prefix before the first colon is a real provider id.
-                    // Raw chat model names routinely contain colons themselves
-                    // (`llama3.2:3b`), so a bare colon is NOT enough — validate
-                    // against the providers table, else fall back to the live
-                    // selection (the default send() path).
-                    let providerId: String
-                    let activeModel: String
-                    if let parsed = Self.parseCompositeKey(model),
-                       (try? await MainActor.run { try self.store.provider(id: parsed.providerId) }) ?? nil != nil {
-                        (providerId, activeModel) = parsed
-                    } else {
-                        (providerId, activeModel) = self.selection.chatSelection()
-                    }
-                    let cfg = await self.config(providerId)
-                    // FR-A8 defense-in-depth: without consent, a cloud/network
-                    // provider must not receive data — checked here (not just
-                    // at the add-provider gate) so a picker re-selection can
-                    // never bypass it. The built-in Ollama fallback config
-                    // is never cloud, so it is unaffected.
-                    guard !(cfg.type.isCloud && !cfg.privacyAcknowledged) else {
-                        throw ProviderError.consentRequired
-                    }
-                    let adapter = self.chatAdapter(for: cfg)
-                    for try await token in adapter.stream(model: activeModel, messages: messages) {
+                    try options?.validate()
+                    let captured = try await self.captureChat(model: model, legacyDirect: true)
+                    var prepared = try await self.prepare(captured)
+                    if let options { prepared = try prepared.withOptions(options) }
+                    for try await token in prepared.stream(messages: messages) {
+                        try Task.checkCancellation()
                         continuation.yield(token)
                     }
                     continuation.finish()
-                } catch {
-                    continuation.finish(throwing: error)
-                }
+                } catch { continuation.finish(throwing: error) }
             }
             continuation.onTermination = { _ in task.cancel() }
         }
     }
 }
 
-// MARK: - EmbeddingProducing
-
 extension ProviderRouter: EmbeddingProducing {
     public func embed(model: String, inputs: [String]) async throws -> [[Float]] {
-        let providerId: String
-        let activeModel: String
-        if let parsed = Self.parseCompositeKey(model) {
-            (providerId, activeModel) = parsed
-        } else {
-            (providerId, activeModel) = selection.embeddingSelection()
+        let captured = try await MainActor.run {
+            let target = Self.parseCompositeKey(model)
+            let (id, activeModel) = target.map { ($0.providerId, $0.rawModel) } ?? self.selection.embeddingSelection()
+            let cfg = try self.config(id)
+            try self.checkConsent(cfg)
+            // Validate before unsupportedEndpoint, with no silent endpoint substitution.
+            _ = try ProviderAPIRoot.build(type: cfg.type, baseURL: cfg.baseURL, endpoint: .embeddings)
+            return Capture(config: cfg, key: try self.apiKey(for: cfg), model: activeModel, limits: nil)
         }
-        let cfg = await config(providerId)
-        // FR-A8 defense-in-depth: same gate as `stream` above.
-        guard !(cfg.type.isCloud && !cfg.privacyAcknowledged) else {
-            throw ProviderError.consentRequired
-        }
-        switch cfg.type {
+        try Task.checkCancellation()
+        switch captured.config.type {
         case .openai, .openaiCompatible:
-            return try await OpenAIEmbeddingAdapter(
-                baseURL: cfg.baseURL, apiKey: apiKey(for: cfg), session: session
-            ).embed(model: activeModel, inputs: inputs)
+            return try await OpenAIEmbeddingAdapter(baseURL: captured.config.baseURL, apiKey: captured.key, session: session)
+                .embed(model: captured.model, inputs: inputs)
         case .ollama:
-            let doubles = try await ollamaClient(baseURL: cfg.baseURL)
-                .embed(model: activeModel, input: inputs)
-            return doubles.map { $0.map(Float.init) }
+            let vectors = try await ollamaClient(baseURL: captured.config.baseURL).embed(model: captured.model, input: inputs)
+            try Task.checkCancellation()
+            return vectors.map { $0.map(Float.init) }
         case .anthropic, .openwebui:
-            // Chat-only types never appear in the embedding picker; if the
-            // selection points here anyway, fall back to local Ollama
-            // (Windows parity — same treatment as Anthropic on Windows).
-            let doubles = try await ollamaClient(baseURL: ProviderType.ollama.defaultBaseURL)
-                .embed(model: activeModel, input: inputs)
-            return doubles.map { $0.map(Float.init) }
+            throw ProviderConfigurationError.unsupportedEndpoint
         }
     }
 }
 
-// MARK: - Settings-UI surface
-
-extension ProviderRouter {
-
-    /// Models for the pickers. UI-safe: failures collapse to an empty list
-    /// (Anthropic gets its static fallback list per FR-A3).
-    public func listModels(providerId: String) async -> [ProviderModelInfo] {
-        let cfg = await config(providerId)
-        do {
-            switch cfg.type {
-            case .ollama:
-                return try await ollamaClient(baseURL: cfg.baseURL).listModels()
-                    .map { ProviderModelInfo(id: $0.name) }
-                    .sorted { $0.id.localizedCaseInsensitiveCompare($1.id) == .orderedAscending }
-            case .anthropic:
-                return try await AnthropicChatAdapter.listModels(
-                    baseURL: cfg.baseURL, apiKey: apiKey(for: cfg) ?? "", session: session)
-            case .openai, .openaiCompatible:
-                return try await OpenAIChatAdapter.listModels(
-                    baseURL: cfg.baseURL, apiKey: apiKey(for: cfg), session: session)
-            case .openwebui:
-                return try await OpenWebUIChatAdapter.listModels(
-                    baseURL: cfg.baseURL, apiKey: apiKey(for: cfg), session: session)
-            }
-        } catch {
-            return cfg.type == .anthropic ? AnthropicChatAdapter.defaultModels : []
+extension ProviderRouter: EmbeddingSessionPreparing {
+    /// Captures provider configuration, credential and raw model in one MainActor
+    /// step, before any suspension that could observe a Settings edit. Format,
+    /// consent, capability and endpoint identity are checked before a request
+    /// can be constructed; there is no fallback provider.
+    public func prepareEmbedding(identity: GenerationIdentity) async throws -> ProviderEmbeddingSession {
+        if let profileId = OllamaBenchmarkClient.profileId(fromFormatVersion: identity.queryFormatVersion) {
+            return try await prepareNamedProfileEmbedding(identity: identity, profileId: profileId)
         }
+        try EmbeddingQueryFormat.validate(identity.queryFormatVersion)
+        let captured = try await MainActor.run { try self.captureEmbedding(identity: identity) }
+        try Task.checkCancellation()
+        return ProviderEmbeddingSession(client: try embeddingAdapter(for: captured.capture),
+                                        model: captured.capture.model, storageKey: captured.storageKey,
+                                        endpointRevision: captured.endpointRevision,
+                                        legacyEndpointUnverified: captured.legacy, rawFormat: identity.queryFormatVersion)
     }
 
-    /// nil = success. Otherwise returns the underlying error — 401, HTTP
-    /// failures, and network errors all surface (FR-A9; Phase 1 lesson: a
-    /// typo'd LAN URL must not show a green checkmark). The UI maps
-    /// `ProviderError` cases to localized strings.
-    public func testConnection(type: ProviderType, baseURL: String, apiKey: String?) async -> Error? {
-        do {
-            switch type {
-            case .ollama:
-                _ = try await ollamaClient(baseURL: baseURL).listModels()
-            case .anthropic:
-                _ = try await AnthropicChatAdapter.listModels(
-                    baseURL: baseURL, apiKey: apiKey ?? "", session: session)
-            case .openai, .openaiCompatible:
-                _ = try await OpenAIChatAdapter.listModels(
-                    baseURL: baseURL, apiKey: apiKey, session: session)
-            case .openwebui:
-                _ = try await OpenWebUIChatAdapter.listModels(
-                    baseURL: baseURL, apiKey: apiKey, session: session)
+    private struct EmbeddingCapture: Sendable {
+        let capture: Capture
+        let storageKey: String
+        let endpointRevision: String
+        let legacy: Bool
+    }
+
+    @MainActor
+    private func captureEmbedding(identity: GenerationIdentity) throws -> EmbeddingCapture {
+        let legacy = identity.providerId == "legacy"
+        let target = legacy ? try legacyTarget(storedKey: identity.model)
+                            : (providerId: identity.providerId, rawModel: identity.model)
+        let cfg = try config(target.providerId)
+        try checkConsent(cfg)
+        guard cfg.type.supportsEmbeddings else { throw ProviderConfigurationError.unsupportedEndpoint }
+        _ = try ProviderAPIRoot.build(type: cfg.type, baseURL: cfg.baseURL, endpoint: .embeddings)
+        // The fingerprint excludes the secret; adapter identity still captures the key.
+        let revision = EmbeddingEndpointRevision.make(type: cfg.type, normalizedRoot: cfg.baseURL)
+        if !legacy && revision != identity.endpointRevision { throw RetrievalError.endpointRevisionMismatch }
+        return EmbeddingCapture(
+            capture: Capture(config: cfg, key: try apiKey(for: cfg), model: target.rawModel, limits: nil),
+            storageKey: legacy ? identity.model : target.providerId + ":" + target.rawModel,
+            endpointRevision: revision, legacy: legacy)
+    }
+
+    /// Legacy keys: a registered provider-id prefix is split at the first colon
+    /// and the tagged raw model stays byte-for-byte intact. A prefix that is a
+    /// provider id by shape (UUID) or a provider type, but not registered, names
+    /// a removed provider and stays lexical-only. Any other key — including a bare
+    /// Ollama tag such as `nomic-embed-text:latest` — is, whole, a bare model of
+    /// today's selected embedding provider.
+    @MainActor
+    private func legacyTarget(storedKey: String) throws -> (providerId: String, rawModel: String) {
+        if let colon = storedKey.firstIndex(of: ":"), colon != storedKey.startIndex {
+            let prefix = String(storedKey[..<colon])
+            if try store.provider(id: prefix) != nil {
+                return (prefix, String(storedKey[storedKey.index(after: colon)...]))
             }
-            return nil
-        } catch {
-            return error
+            if UUID(uuidString: prefix) != nil || ProviderType(rawValue: prefix) != nil {
+                throw RetrievalError.legacyProviderUnresolved
+            }
         }
+        return (selection.embeddingSelection().providerId, storedKey)
+    }
+
+    /// Builds an adapter owning only captured values; no settings reference.
+    private func embeddingAdapter(for captured: Capture) throws -> any EmbeddingProducing {
+        try ProviderEmbeddingSession.rawAdapter(type: captured.config.type, root: captured.config.baseURL,
+                                                apiKey: captured.key, session: session)
+    }
+}
+
+/// A named WP7 profile prepared once on a captured provider snapshot.
+public struct PreparedEmbeddingProfile: Sendable {
+    public let identity: GenerationIdentity
+    public let session: ProviderEmbeddingSession
+    public let effectiveLimit: Int
+
+    public init(identity: GenerationIdentity, session: ProviderEmbeddingSession, effectiveLimit: Int) {
+        self.identity = identity
+        self.session = session
+        self.effectiveLimit = effectiveLimit
+    }
+}
+
+extension ProviderRouter {
+    /// Single discovery API for benchmark, Settings and fresh imports: snapshots the
+    /// provider row/root exactly once, then `/api/tags` + `/api/show` on that captured
+    /// root. Only an enabled, consented, embedding-capable Ollama provider qualifies;
+    /// there is never a substituted provider or raw-input fallback.
+    public func prepareEmbeddingProfile(providerId: String, profileId: String,
+                                        observer: (any EmbeddingTelemetryObserving)? = nil,
+                                        counter: (any ExactTokenCounting)? = nil) async throws -> PreparedEmbeddingProfile {
+        let profile = try EmbeddingProfiles.require(profileId)
+        let snapshot = try await MainActor.run { try self.embeddingProviderSnapshot(providerId) }
+        try Task.checkCancellation()
+        guard snapshot.type == .ollama, snapshot.enabled, snapshot.consented, snapshot.embeddingCapable else {
+            throw EmbeddingProfileError(code: "unsupportedEmbeddingProfile")
+        }
+        let client = try benchmarkClient(root: snapshot.root)
+        let prepared = try await OllamaBenchmarkClient.prepareProfile(profile, provider: snapshot, client: client)
+        let session = ProviderEmbeddingSession(
+            storageKey: providerId + ":" + profile.model, endpointRevision: prepared.identity.endpointRevision,
+            identity: prepared.identity, profile: profile,
+            pipeline: StrictEmbeddingPipeline(transport: client, counter: counter, observer: observer),
+            effectiveLimit: prepared.effectiveLimit)
+        return PreparedEmbeddingProfile(identity: prepared.identity, session: session,
+                                        effectiveLimit: prepared.effectiveLimit)
+    }
+
+    /// Re-opens a stored named-profile identity: exact catalog profile, captured
+    /// endpoint check, `/api/tags` digest revalidation only (ctx parsed, never re-probed).
+    public func prepareEmbeddingProfileSession(identity: GenerationIdentity,
+                                               observer: (any EmbeddingTelemetryObserving)? = nil,
+                                               counter: (any ExactTokenCounting)? = nil) async throws -> ProviderEmbeddingSession {
+        guard let profileId = OllamaBenchmarkClient.profileId(fromFormatVersion: identity.queryFormatVersion) else {
+            throw EmbeddingProfileError(code: "profileIdentityMismatch")
+        }
+        return try await prepareNamedProfileEmbedding(identity: identity, profileId: profileId,
+                                                      observer: observer, counter: counter)
+    }
+
+    fileprivate func prepareNamedProfileEmbedding(identity: GenerationIdentity, profileId: String,
+                                                  observer: (any EmbeddingTelemetryObserving)? = nil,
+                                                  counter: (any ExactTokenCounting)? = nil) async throws -> ProviderEmbeddingSession {
+        let profile = try EmbeddingProfiles.require(profileId)
+        try profile.validateIdentity(model: identity.model, dims: identity.dims,
+                                     queryFormatVersion: identity.queryFormatVersion,
+                                     docFormatVersion: identity.docFormatVersion)
+        guard identity.providerId != "legacy" else { throw EmbeddingProfileError(code: "profileIdentityMismatch") }
+        let snapshot = try await MainActor.run { () throws -> EmbeddingProviderSnapshot in
+            let snapshot = try self.embeddingProviderSnapshot(identity.providerId)
+            guard snapshot.type == .ollama, snapshot.enabled, snapshot.consented, snapshot.embeddingCapable else {
+                throw EmbeddingProfileError(code: "unsupportedEmbeddingProfile")
+            }
+            let revision = EmbeddingEndpointRevision.make(type: snapshot.type, normalizedRoot: snapshot.root)
+            guard revision == identity.endpointRevision else { throw RetrievalError.endpointRevisionMismatch }
+            return snapshot
+        }
+        try Task.checkCancellation()
+        let client = try benchmarkClient(root: snapshot.root)
+        let limit = try await OllamaBenchmarkClient.revalidate(identity, profile: profile, client: client)
+        return ProviderEmbeddingSession(
+            storageKey: identity.providerId + ":" + identity.model, endpointRevision: identity.endpointRevision,
+            identity: identity, profile: profile,
+            pipeline: StrictEmbeddingPipeline(transport: client, counter: counter, observer: observer),
+            effectiveLimit: limit)
+    }
+
+    @MainActor
+    private func embeddingProviderSnapshot(_ providerId: String) throws -> EmbeddingProviderSnapshot {
+        guard let row = try store.provider(id: providerId) else { throw ProviderConfigurationError.missingProvider }
+        return EmbeddingProviderSnapshot(providerId: row.id, type: row.type,
+                                         root: try ProviderAPIRoot.normalize(row.baseURL), enabled: row.enabled,
+                                         consented: !row.type.isCloud || row.privacyAcknowledged,
+                                         embeddingCapable: row.type.supportsEmbeddings)
+    }
+
+    private func benchmarkClient(root: String) throws -> OllamaBenchmarkClient {
+        guard let url = URL(string: root) else { throw ProviderConfigurationError.invalidBaseURL }
+        return OllamaBenchmarkClient(baseURL: url, session: session)
     }
 }

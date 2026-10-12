@@ -6,18 +6,28 @@ import Foundation
 /// which the core-ci privacy-grep job allowlists.
 enum ProviderWire {
 
+    // Kept for the existing router until Task 6 replaces its config capture.
+    // Every transport request validates with ProviderAPIRoot before dispatch.
     static func trimBase(_ baseURL: String) -> String {
-        var s = baseURL
-        while s.hasSuffix("/") { s.removeLast() }
-        return s
+        var root = baseURL
+        while root.hasSuffix("/") { root.removeLast() }
+        return root
     }
 
+    /// Auxiliary Ollama endpoints use the same exact-root validation.
     static func url(base: String, path: String) throws -> URL {
-        let trimmed = trimBase(base)
-        guard !trimmed.isEmpty, let url = URL(string: trimmed + path) else {
-            throw ProviderError.decoding("Invalid base URL: '\(base)'")
+        let root = try ProviderAPIRoot.normalize(base)
+        guard let url = URL(string: root + path) else {
+            throw ProviderConfigurationError.invalidBaseURL
         }
         return url
+    }
+
+    static func canonicalMessages(_ turns: [ChatTurn]) -> [ChatTurn] {
+        let systems = turns.filter { $0.role == .system }.map(\.content)
+        let rest = turns.filter { $0.role != .system }
+        return systems.isEmpty ? rest
+            : [.init(role: .system, content: systems.joined(separator: "\n\n"))] + rest
     }
 
     static func wireRole(_ role: ChatRole) -> String {
@@ -38,6 +48,32 @@ enum ProviderWire {
         }
     }
 
+    static func readErrorBody(_ bytes: URLSession.AsyncBytes) async throws -> Data {
+        var data = Data()
+        for try await byte in bytes.prefix(65_536) { data.append(byte) }
+        return data
+    }
+
+    static func isContextTooLong(status: Int, body: Data, anthropic: Bool = false) -> Bool {
+        if status == 413 { return true }
+        guard let object = try? JSONSerialization.jsonObject(with: body) as? [String: Any],
+              let error = object["error"] as? [String: Any] else { return false }
+        if let code = error["code"] as? String,
+           code == "context_length_exceeded" || code == "prompt_too_long" { return true }
+        return anthropic && error["type"] as? String == "invalid_request_error"
+            && (error["message"] as? String)?.hasPrefix("prompt is too long") == true
+    }
+
+    static func chatError(response: HTTPURLResponse, body: Data, anthropic: Bool = false) -> Error? {
+        guard !(200..<300).contains(response.statusCode) else { return nil }
+        if isContextTooLong(status: response.statusCode, body: body, anthropic: anthropic) {
+            return ProviderRequestError.contextTooLong
+        }
+        return error(forStatus: response.statusCode,
+                     retryAfter: response.value(forHTTPHeaderField: "Retry-After"),
+                     body: String(data: body, encoding: .utf8) ?? "")
+    }
+
     struct WireMessage: Encodable {
         let role: String
         let content: String
@@ -47,24 +83,28 @@ enum ProviderWire {
         let model: String
         let messages: [WireMessage]
         let stream: Bool
+        let max_tokens: Int
     }
 
     static func openAIStyleChatRequest(
         base: String,
-        path: String,
+        type: ProviderType,
         apiKey: String?,
         model: String,
-        messages: [ChatTurn]
+        messages: [ChatTurn],
+        options: ChatRequestOptions
     ) throws -> URLRequest {
-        var req = URLRequest(url: try url(base: base, path: path))
+        try options.validate()
+        var req = URLRequest(url: try ProviderAPIRoot.build(type: type, baseURL: base, endpoint: .chat))
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.setValue("text/event-stream", forHTTPHeaderField: "Accept")
         if let apiKey, !apiKey.isEmpty {
             req.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         }
-        let wire = messages.map { WireMessage(role: wireRole($0.role), content: $0.content) }
-        req.httpBody = try JSONEncoder().encode(OpenAIChatBody(model: model, messages: wire, stream: true))
+        let wire = canonicalMessages(messages).map { WireMessage(role: wireRole($0.role), content: $0.content) }
+        req.httpBody = try JSONEncoder().encode(OpenAIChatBody(
+            model: model, messages: wire, stream: true, max_tokens: options.maxOutputTokens))
         return req
     }
 
@@ -76,12 +116,9 @@ enum ProviderWire {
                 do {
                     let (bytes, response) = try await session.bytes(for: request)
                     if let http = response as? HTTPURLResponse,
-                       let err = error(
-                        forStatus: http.statusCode,
-                        retryAfter: http.value(forHTTPHeaderField: "Retry-After"),
-                        body: ""
-                       ) {
-                        continuation.finish(throwing: err)
+                       !(200..<300).contains(http.statusCode) {
+                        let body = try await readErrorBody(bytes)
+                        continuation.finish(throwing: chatError(response: http, body: body))
                         return
                     }
                     for try await line in bytes.lines {
@@ -108,16 +145,17 @@ enum ProviderWire {
         let data: [Item]
     }
 
-    /// GET {base}{path} → {"data":[{"id", "name"?}]}. Throws on ANY failure —
+    /// GET the provider's models endpoint → {"data":[{"id", "name"?}]}.
+    /// Throws on ANY failure —
     /// 401 → .auth, other statuses → .http, network errors → URLError.
     /// Sorted case-insensitively by label.
     static func listOpenAIStyleModels(
         base: String,
-        path: String,
+        type: ProviderType,
         apiKey: String?,
         session: URLSession
     ) async throws -> [ProviderModelInfo] {
-        var req = URLRequest(url: try url(base: base, path: path))
+        var req = URLRequest(url: try ProviderAPIRoot.build(type: type, baseURL: base, endpoint: .models))
         req.httpMethod = "GET"
         if let apiKey, !apiKey.isEmpty {
             req.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")

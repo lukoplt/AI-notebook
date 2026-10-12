@@ -1,0 +1,369 @@
+{
+  "contract": "ui-tokens",
+  "version": 1,
+  "colors": {
+    "bg": {
+      "light": "#FFFFFF",
+      "dark": "#1E1E1E"
+    },
+    "bg-sidebar": {
+      "light": "#F7F7F8",
+      "dark": "#181818"
+    },
+    "surface-1": {
+      "light": "#FFFFFF",
+      "dark": "#252525"
+    },
+    "surface-2": {
+      "light": "#F2F2F3",
+      "dark": "#2E2E2E"
+    },
+    "border": {
+      "light": "#E5E5E7",
+      "dark": "#3A3A3A"
+    },
+    "text-1": {
+      "light": "#0D0D0D",
+      "dark": "#ECECEC"
+    },
+    "text-2": {
+      "light": "#5D5D63",
+      "dark": "#A7A7AD"
+    },
+    "text-3": {
+      "light": "#8E8E93",
+      "dark": "#6E6E73"
+    },
+    "accent": {
+      "light": "#0D0D0D",
+      "dark": "#ECECEC"
+    },
+    "on-accent": {
+      "light": "#FFFFFF",
+      "dark": "#0D0D0D"
+    },
+    "focus": {
+      "light": "#2F6FEB",
+      "dark": "#4C8DFF"
+    },
+    "success": {
+      "light": "#1F8A4C",
+      "dark": "#3FB96E"
+    },
+    "warning": {
+      "light": "#B26A00",
+      "dark": "#E0A33A"
+    },
+    "danger": {
+      "light": "#C42B1C",
+      "dark": "#FF6B5E"
+    }
+  },
+  "type": {
+    "title": {
+      "size": 20,
+      "line": 28,
+      "weight": "semibold"
+    },
+    "headline": {
+      "size": 15,
+      "line": 22,
+      "weight": "semibold"
+    },
+    "body": {
+      "size": 14,
+      "line": 22,
+      "lineWindows": 20,
+      "weight": "regular"
+    },
+    "message": {
+      "size": 15,
+      "line": 24,
+      "weight": "regular"
+    },
+    "caption": {
+      "size": 12,
+      "line": 16,
+      "weight": "regular"
+    },
+    "mono": {
+      "size": 13,
+      "line": 20,
+      "weight": "regular"
+    }
+  },
+  "fonts": {
+    "macos": {
+      "text": "SF Pro",
+      "mono": "SF Mono"
+    },
+    "windows": {
+      "text": "Segoe UI Variable",
+      "mono": "Cascadia Mono",
+      "icons": "Segoe Fluent Icons"
+    }
+  },
+  "spacing": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32
+  ],
+  "radius": {
+    "sm": 6,
+    "md": 10,
+    "lg": 16,
+    "pill": 999
+  },
+  "size": {
+    "sidebarRow": 30,
+    "topBar": 44,
+    "hitMin": 28,
+    "primaryHitMin": 32,
+    "conversationMax": 760,
+    "sidebarMin": 240,
+    "sidebarMax": 300,
+    "panelMin": 320,
+    "panelMax": 420,
+    "iconRow": 16,
+    "iconTopBar": 18,
+    "userMessagePadV": 10,
+    "userMessagePadH": 14,
+    "userMessageMaxPercent": 80,
+    "composerMinLines": 1,
+    "composerMaxLines": 8,
+    "settingsContentMax": 640,
+    "onboardingCardMax": 520,
+    "focusRing": 2,
+    "borderWidth": 1,
+    "sidebarChatsVisible": 8
+  },
+  "motion": {
+    "fastMs": 120,
+    "slowMs": 180
+  },
+  "icons": {
+    "newChat": {
+      "sf": "square.and.pencil",
+      "fluent": "E70F"
+    },
+    "search": {
+      "sf": "magnifyingglass",
+      "fluent": "E721"
+    },
+    "settings": {
+      "sf": "gearshape",
+      "fluent": "E713"
+    },
+    "notebook": {
+      "sf": "book.closed",
+      "fluent": "E8F1"
+    },
+    "chat": {
+      "sf": "bubble.left",
+      "fluent": "E8BD"
+    },
+    "chevronDown": {
+      "sf": "chevron.down",
+      "fluent": "E70D"
+    },
+    "chevronRight": {
+      "sf": "chevron.right",
+      "fluent": "E76C"
+    },
+    "back": {
+      "sf": "chevron.left",
+      "fluent": "E72B"
+    },
+    "add": {
+      "sf": "plus",
+      "fluent": "E710"
+    },
+    "more": {
+      "sf": "ellipsis",
+      "fluent": "E712"
+    },
+    "togglePanel": {
+      "sf": "sidebar.right",
+      "fluent": "E8A0"
+    },
+    "updateDot": {
+      "sf": "circle.fill",
+      "fluent": "EA3B"
+    },
+    "send": {
+      "sf": "arrow.up",
+      "fluent": "E74A"
+    },
+    "stop": {
+      "sf": "stop.fill",
+      "fluent": "E71A"
+    },
+    "previewContext": {
+      "sf": "eye",
+      "fluent": "E890"
+    },
+    "scope": {
+      "sf": "scope",
+      "fluent": "E8B7"
+    },
+    "persona": {
+      "sf": "theatermasks",
+      "fluent": "E77B"
+    },
+    "model": {
+      "sf": "cpu",
+      "fluent": "E950"
+    },
+    "copy": {
+      "sf": "doc.on.doc",
+      "fluent": "E8C8"
+    },
+    "regenerate": {
+      "sf": "arrow.clockwise",
+      "fluent": "E72C"
+    },
+    "saveAsNote": {
+      "sf": "square.and.arrow.down",
+      "fluent": "E74E"
+    },
+    "sentContext": {
+      "sf": "doc.text.magnifyingglass",
+      "fluent": "E8A5"
+    },
+    "edit": {
+      "sf": "pencil",
+      "fluent": "E70F"
+    },
+    "warning": {
+      "sf": "exclamationmark.triangle",
+      "fluent": "E7BA"
+    },
+    "addFile": {
+      "sf": "doc.badge.plus",
+      "fluent": "E8E5"
+    },
+    "addFolder": {
+      "sf": "folder.badge.plus",
+      "fluent": "E8F4"
+    },
+    "addUrl": {
+      "sf": "link",
+      "fluent": "E71B"
+    },
+    "addText": {
+      "sf": "text.alignleft",
+      "fluent": "E8E4"
+    },
+    "webSearch": {
+      "sf": "globe",
+      "fluent": "E774"
+    },
+    "overview": {
+      "sf": "list.bullet.rectangle",
+      "fluent": "E8FD"
+    },
+    "runTool": {
+      "sf": "wand.and.stars",
+      "fluent": "E945"
+    },
+    "note": {
+      "sf": "note.text",
+      "fluent": "E7C3"
+    },
+    "folder": {
+      "sf": "folder",
+      "fluent": "E8B7"
+    },
+    "file": {
+      "sf": "doc",
+      "fluent": "E8A5"
+    },
+    "scan": {
+      "sf": "arrow.triangle.2.circlepath",
+      "fluent": "E895"
+    },
+    "verify": {
+      "sf": "checkmark.seal",
+      "fluent": "E73E"
+    },
+    "rules": {
+      "sf": "line.3.horizontal.decrease.circle",
+      "fluent": "E71C"
+    },
+    "watch": {
+      "sf": "binoculars",
+      "fluent": "E7B3"
+    },
+    "delete": {
+      "sf": "trash",
+      "fluent": "E74D"
+    },
+    "tag": {
+      "sf": "tag",
+      "fluent": "E8EC"
+    },
+    "bulkSelect": {
+      "sf": "checklist",
+      "fluent": "E762"
+    },
+    "history": {
+      "sf": "clock.arrow.circlepath",
+      "fluent": "E81C"
+    },
+    "export": {
+      "sf": "square.and.arrow.up",
+      "fluent": "EDE1"
+    },
+    "instructions": {
+      "sf": "text.badge.star",
+      "fluent": "E734"
+    },
+    "backup": {
+      "sf": "archivebox",
+      "fluent": "E896"
+    },
+    "restore": {
+      "sf": "arrow.uturn.backward",
+      "fluent": "E7A7"
+    },
+    "openOriginal": {
+      "sf": "arrow.up.forward.square",
+      "fluent": "E8A7"
+    },
+    "citation": {
+      "sf": "quote.opening",
+      "fluent": "E9D2"
+    },
+    "info": {
+      "sf": "info.circle",
+      "fluent": "E946"
+    },
+    "error": {
+      "sf": "xmark.octagon",
+      "fluent": "E783"
+    },
+    "success": {
+      "sf": "checkmark.circle",
+      "fluent": "E73E"
+    },
+    "close": {
+      "sf": "xmark",
+      "fluent": "E711"
+    },
+    "providers": {
+      "sf": "cloud",
+      "fluent": "E753"
+    },
+    "modelsLimits": {
+      "sf": "slider.horizontal.3",
+      "fluent": "E9E9"
+    },
+    "indexing": {
+      "sf": "square.stack.3d.up",
+      "fluent": "E81E"
+    }
+  }
+}

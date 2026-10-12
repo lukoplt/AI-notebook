@@ -10,13 +10,16 @@ public struct Notebook: Identifiable, Equatable, Hashable, Codable, Sendable {
     public var createdAt: Date
     public var updatedAt: Date
 
+    public var evidenceBudgetCap: Int?
+
     public init(
         id: Int64? = nil,
         name: String,
         description: String = "",
         instructions: String = "",
         createdAt: Date = Date(),
-        updatedAt: Date? = nil
+        updatedAt: Date? = nil,
+        evidenceBudgetCap: Int? = nil
     ) {
         self.id = id
         self.name = name
@@ -24,6 +27,7 @@ public struct Notebook: Identifiable, Equatable, Hashable, Codable, Sendable {
         self.instructions = instructions
         self.createdAt = createdAt
         self.updatedAt = updatedAt ?? createdAt
+        self.evidenceBudgetCap = evidenceBudgetCap
     }
 }
 
@@ -40,6 +44,8 @@ extension Notebook: FetchableRecord, MutablePersistableRecord {
         case instructions
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+
+        case evidenceBudgetCap = "evidence_budget_cap"
 
         var column: Column {
             Column(self.rawValue)

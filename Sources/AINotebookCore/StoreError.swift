@@ -9,6 +9,8 @@ public enum StoreError: Error, Equatable, Sendable {
     case invalidTagName(String)
     case invalidSourceSetName(String)
     case invalidPersonaName(String)
+    case chatSessionNotFound(id: Int64)
+    case invalidChatTitle(String)
 }
 
 extension StoreError: LocalizedError {
@@ -30,6 +32,10 @@ extension StoreError: LocalizedError {
             "Invalid source set name: \"\(name)\"."
         case .invalidPersonaName(let name):
             "Invalid persona name: \"\(name)\"."
+        case .chatSessionNotFound(let id):
+            "Chat \(id) not found."
+        case .invalidChatTitle(let title):
+            "Invalid chat title: \"\(title)\"."
         }
     }
 }

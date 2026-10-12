@@ -4,7 +4,7 @@ import GRDB
 extension NotebookStore {
 
     public func providers() throws -> [ProviderConfig] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             let rows = try Row.fetchAll(
                 db,
                 sql: """
@@ -17,7 +17,7 @@ extension NotebookStore {
     }
 
     public func provider(id: String) throws -> ProviderConfig? {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Row.fetchOne(
                 db,
                 sql: """
@@ -34,6 +34,14 @@ extension NotebookStore {
     /// edit must not reset it.
     public func saveProvider(_ config: ProviderConfig) throws {
         try runOnDatabase { db in
+            if let previous = try Row.fetchOne(db, sql: "SELECT * FROM providers WHERE id = ?",
+                                               arguments: [config.id]).map(Self.providerConfig(from:)),
+               !ProviderLimitPolicy.hasSameEndpoint(previous, config) {
+                // The provider edit and invalidation commit together. User choices
+                // are independent of automatic metadata from the previous endpoint.
+                try db.execute(sql: "DELETE FROM provider_model_limits WHERE provider_id = ? AND source = 'auto'",
+                               arguments: [config.id])
+            }
             try db.execute(
                 sql: """
                 INSERT INTO providers(id, type, name, base_url, enabled, privacy_acknowledged, created_at)

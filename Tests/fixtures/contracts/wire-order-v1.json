@@ -1,0 +1,599 @@
+{
+  "contract": "wire-order",
+  "version": 1,
+  "cases": [
+    {
+      "name": "no-history-openai",
+      "provider": "openai",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "Odpovídej stručně.",
+        "history": [],
+        "finalUserContent": "CONTEXT\n\nQ"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nOdpovídej stručně."
+          },
+          {
+            "role": "user",
+            "content": "CONTEXT\n\nQ"
+          }
+        ]
+      }
+    },
+    {
+      "name": "no-history-openai_compatible",
+      "provider": "openai_compatible",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "Odpovídej stručně.",
+        "history": [],
+        "finalUserContent": "CONTEXT\n\nQ"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nOdpovídej stručně."
+          },
+          {
+            "role": "user",
+            "content": "CONTEXT\n\nQ"
+          }
+        ]
+      }
+    },
+    {
+      "name": "no-history-openwebui",
+      "provider": "openwebui",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "Odpovídej stručně.",
+        "history": [],
+        "finalUserContent": "CONTEXT\n\nQ"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nOdpovídej stručně."
+          },
+          {
+            "role": "user",
+            "content": "CONTEXT\n\nQ"
+          }
+        ]
+      }
+    },
+    {
+      "name": "no-history-ollama",
+      "provider": "ollama",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "Odpovídej stručně.",
+        "history": [],
+        "finalUserContent": "CONTEXT\n\nQ"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nOdpovídej stručně."
+          },
+          {
+            "role": "user",
+            "content": "CONTEXT\n\nQ"
+          }
+        ]
+      }
+    },
+    {
+      "name": "no-history-anthropic",
+      "provider": "anthropic",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "Odpovídej stručně.",
+        "history": [],
+        "finalUserContent": "CONTEXT\n\nQ"
+      },
+      "expected": {
+        "system": "RULES\n\nOdpovídej stručně.",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CONTEXT\n\nQ"
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty-user-instructions-openai",
+      "provider": "openai",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "  ",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES"
+          },
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty-user-instructions-openai_compatible",
+      "provider": "openai_compatible",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "  ",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES"
+          },
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty-user-instructions-openwebui",
+      "provider": "openwebui",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "  ",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES"
+          },
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty-user-instructions-ollama",
+      "provider": "ollama",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "  ",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES"
+          },
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "empty-user-instructions-anthropic",
+      "provider": "anthropic",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "  ",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "system": "RULES",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "history-chronological-openai",
+      "provider": "openai",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "I",
+        "history": [
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          }
+        ],
+        "finalUserContent": "Q3"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nI"
+          },
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          },
+          {
+            "role": "user",
+            "content": "Q3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "history-chronological-openai_compatible",
+      "provider": "openai_compatible",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "I",
+        "history": [
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          }
+        ],
+        "finalUserContent": "Q3"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nI"
+          },
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          },
+          {
+            "role": "user",
+            "content": "Q3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "history-chronological-openwebui",
+      "provider": "openwebui",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "I",
+        "history": [
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          }
+        ],
+        "finalUserContent": "Q3"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nI"
+          },
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          },
+          {
+            "role": "user",
+            "content": "Q3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "history-chronological-ollama",
+      "provider": "ollama",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "I",
+        "history": [
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          }
+        ],
+        "finalUserContent": "Q3"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nI"
+          },
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          },
+          {
+            "role": "user",
+            "content": "Q3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "history-chronological-anthropic",
+      "provider": "anthropic",
+      "input": {
+        "rulesText": "RULES",
+        "userInstructions": "I",
+        "history": [
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          }
+        ],
+        "finalUserContent": "Q3"
+      },
+      "expected": {
+        "system": "RULES\n\nI",
+        "messages": [
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "q2"
+          },
+          {
+            "role": "assistant",
+            "content": "a2"
+          },
+          {
+            "role": "user",
+            "content": "Q3"
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiline-instructions-openai",
+      "provider": "openai",
+      "input": {
+        "rulesText": "R1\nR2",
+        "userInstructions": "line1\nline2",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "R1\nR2\n\nline1\nline2"
+          },
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiline-instructions-openai_compatible",
+      "provider": "openai_compatible",
+      "input": {
+        "rulesText": "R1\nR2",
+        "userInstructions": "line1\nline2",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "R1\nR2\n\nline1\nline2"
+          },
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiline-instructions-openwebui",
+      "provider": "openwebui",
+      "input": {
+        "rulesText": "R1\nR2",
+        "userInstructions": "line1\nline2",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "R1\nR2\n\nline1\nline2"
+          },
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiline-instructions-ollama",
+      "provider": "ollama",
+      "input": {
+        "rulesText": "R1\nR2",
+        "userInstructions": "line1\nline2",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "R1\nR2\n\nline1\nline2"
+          },
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiline-instructions-anthropic",
+      "provider": "anthropic",
+      "input": {
+        "rulesText": "R1\nR2",
+        "userInstructions": "line1\nline2",
+        "history": [],
+        "finalUserContent": "Q"
+      },
+      "expected": {
+        "system": "R1\nR2\n\nline1\nline2",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Q"
+          }
+        ]
+      }
+    }
+  ]
+}

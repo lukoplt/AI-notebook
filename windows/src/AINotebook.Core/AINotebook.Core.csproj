@@ -25,6 +25,15 @@
     <PackageReference Include="Dapper" Version="2.1.79" />
     <PackageReference Include="PdfPig" Version="0.1.14" />
     <PackageReference Include="AngleSharp" Version="1.4.0" />
+    <PackageReference Include="System.Numerics.Tensors" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\..\Sources\AINotebookCore\Resources\Language\*"
+                      LogicalName="AINotebook.Core.Language.%(Filename)%(Extension)" />
+    <!-- WP7 production benchmark resources: the exact shared files, never hand-copied. -->
+    <EmbeddedResource Include="..\..\..\Sources\AINotebookCore\Resources\Benchmark\*.json"
+                      LogicalName="AINotebook.Benchmark.%(Filename)%(Extension)" />
   </ItemGroup>
 
 </Project>

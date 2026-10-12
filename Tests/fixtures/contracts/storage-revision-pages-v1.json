@@ -1,0 +1,185 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "pages": [
+          {
+            "charEnd": 2,
+            "charStart": 0,
+            "page": 1
+          },
+          {
+            "charEnd": 4,
+            "charStart": 4,
+            "page": 2
+          },
+          {
+            "charEnd": 9,
+            "charStart": 6,
+            "page": 3
+          }
+        ],
+        "updateError": "immutable revision page"
+      },
+      "input": {
+        "canonicalText": "A😀\n\n\n\néZ",
+        "pages": [
+          {
+            "charEnd": 9,
+            "charStart": 6,
+            "page": 3
+          },
+          {
+            "charEnd": 2,
+            "charStart": 0,
+            "page": 1
+          },
+          {
+            "charEnd": 4,
+            "charStart": 4,
+            "page": 2
+          }
+        ]
+      },
+      "name": "pdf-empty-middle",
+      "operation": "pages"
+    },
+    {
+      "expected": {
+        "sqlError": "CHECK constraint failed"
+      },
+      "input": {
+        "charEnd": 0,
+        "charStart": 0,
+        "page": 0
+      },
+      "name": "page-must-be-positive",
+      "operation": "invalid-page"
+    },
+    {
+      "expected": {
+        "sqlError": "CHECK constraint failed"
+      },
+      "input": {
+        "charEnd": 0,
+        "charStart": -1,
+        "page": 1
+      },
+      "name": "page-start-must-be-nonnegative",
+      "operation": "invalid-page"
+    },
+    {
+      "expected": {
+        "sqlError": "CHECK constraint failed"
+      },
+      "input": {
+        "charEnd": 1,
+        "charStart": 2,
+        "page": 1
+      },
+      "name": "page-end-must-not-precede-start",
+      "operation": "invalid-page"
+    },
+    {
+      "name": "revision-pages-schema",
+      "operation": "schema",
+      "queries": [
+        {
+          "name": "columns-revision_pages",
+          "rows": [
+            [
+              "revision_id",
+              "INTEGER",
+              1,
+              null,
+              1
+            ],
+            [
+              "page",
+              "INTEGER",
+              1,
+              null,
+              2
+            ],
+            [
+              "char_start",
+              "INTEGER",
+              1,
+              null,
+              0
+            ],
+            [
+              "char_end",
+              "INTEGER",
+              1,
+              null,
+              0
+            ]
+          ],
+          "sql": "SELECT name,upper(type),\"notnull\",dflt_value,pk FROM pragma_table_info('revision_pages') ORDER BY cid"
+        },
+        {
+          "name": "foreign-keys-revision_pages",
+          "rows": [
+            [
+              "revision_id",
+              "source_revisions",
+              "id",
+              "NO ACTION",
+              "CASCADE",
+              "NONE"
+            ]
+          ],
+          "sql": "SELECT \"from\",\"table\",\"to\",on_update,on_delete,match FROM pragma_foreign_key_list('revision_pages') ORDER BY \"from\",\"table\",\"to\""
+        },
+        {
+          "name": "revision-pages-immutable-trigger",
+          "rows": [
+            [
+              "revision_pages_no_update",
+              "revision_pages"
+            ]
+          ],
+          "sql": "SELECT name,tbl_name FROM sqlite_master WHERE type='trigger' AND name='revision_pages_no_update'"
+        },
+        {
+          "name": "no-synthetic-legacy-pages",
+          "rows": [
+            [
+              0
+            ]
+          ],
+          "sql": "SELECT count(*) FROM revision_pages"
+        }
+      ]
+    },
+    {
+      "name": "durable-job-options-schema",
+      "operation": "schema",
+      "queries": [
+        {
+          "name": "columns-job-handoff",
+          "rows": [
+            [
+              "next_retry_at",
+              "INTEGER",
+              0,
+              null,
+              0
+            ],
+            [
+              "options_json",
+              "TEXT",
+              1,
+              "'{}'",
+              0
+            ]
+          ],
+          "sql": "SELECT name,upper(type),\"notnull\",dflt_value,pk FROM pragma_table_info('ingest_jobs') WHERE name IN ('options_json','next_retry_at') ORDER BY name"
+        }
+      ]
+    }
+  ],
+  "contract": "storage-revision-pages",
+  "version": 1
+}

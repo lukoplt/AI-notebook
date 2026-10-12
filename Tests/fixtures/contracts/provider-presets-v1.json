@@ -1,0 +1,55 @@
+{
+  "contract": "provider-presets",
+  "version": 1,
+  "cases": [
+    {
+      "name": "lmstudio",
+      "label": "LM Studio",
+      "baseURL": "http://localhost:1234/v1",
+      "helpKey": "providerPresetLocalHelp",
+      "type": "openai_compatible"
+    },
+    {
+      "name": "openrouter",
+      "label": "OpenRouter",
+      "baseURL": "https://openrouter.ai/api/v1",
+      "helpKey": "providerPresetRemoteHelp",
+      "type": "openai_compatible"
+    },
+    {
+      "name": "vllm",
+      "label": "vLLM",
+      "baseURL": "http://localhost:8000/v1",
+      "helpKey": "providerPresetLocalHelp",
+      "type": "openai_compatible"
+    },
+    {
+      "name": "groq",
+      "label": "Groq",
+      "baseURL": "https://api.groq.com/openai/v1",
+      "helpKey": "providerPresetRemoteHelp",
+      "type": "openai_compatible"
+    },
+    {
+      "name": "mistral",
+      "label": "Mistral",
+      "baseURL": "https://api.mistral.ai/v1",
+      "helpKey": "providerPresetRemoteHelp",
+      "type": "openai_compatible"
+    },
+    {
+      "name": "together",
+      "label": "Together",
+      "baseURL": "https://api.together.ai/v1",
+      "helpKey": "providerPresetRemoteHelp",
+      "type": "openai_compatible"
+    },
+    {
+      "name": "custom",
+      "label": "Custom",
+      "baseURL": "",
+      "helpKey": "providerPresetCustomHelp",
+      "type": "openai_compatible"
+    }
+  ]
+}

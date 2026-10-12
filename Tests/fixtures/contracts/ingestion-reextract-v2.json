@@ -1,0 +1,2536 @@
+{
+  "batchSize": 8,
+  "cases": [
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "ready-v1-spreadsheet"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "m.xlsm",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "macro-enabled-workbook"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "corruptArchive",
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {},
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "older-failed-unstamped-job"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "textLimit",
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 1
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "older-stamp-failed"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "textLimit",
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": "2"
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "non-integer-stamp-is-unstamped"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "cancelled",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "cancelled-upgrade-requeued"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 1,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {},
+            "state": "done",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "completed-older-jobs"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:102",
+            "targetRevision": 1020
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:103",
+            "targetRevision": 1030
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:104",
+            "targetRevision": 1040
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:105",
+            "targetRevision": 1050
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:106",
+            "targetRevision": 1060
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:107",
+            "targetRevision": 1070
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:108",
+            "targetRevision": 1080
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 8,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 102,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 103,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 104,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 105,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 106,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 107,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 108,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 109,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 110,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h102",
+            "id": 1020,
+            "revision": 1,
+            "sourceId": 102,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h103",
+            "id": 1030,
+            "revision": 1,
+            "sourceId": 103,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h104",
+            "id": 1040,
+            "revision": 1,
+            "sourceId": 104,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h105",
+            "id": 1050,
+            "revision": 1,
+            "sourceId": 105,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h106",
+            "id": 1060,
+            "revision": 1,
+            "sourceId": 106,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h107",
+            "id": 1070,
+            "revision": 1,
+            "sourceId": 107,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h108",
+            "id": 1080,
+            "revision": 1,
+            "sourceId": 108,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h109",
+            "id": 1090,
+            "revision": 1,
+            "sourceId": 109,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h110",
+            "id": 1100,
+            "revision": 1,
+            "sourceId": 110,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h102",
+            "currentRevision": 1020,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 102,
+            "notebookId": 1,
+            "publishedRevisionId": 1020,
+            "relPath": "s102.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h103",
+            "currentRevision": 1030,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 103,
+            "notebookId": 1,
+            "publishedRevisionId": 1030,
+            "relPath": "s103.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h104",
+            "currentRevision": 1040,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 104,
+            "notebookId": 1,
+            "publishedRevisionId": 1040,
+            "relPath": "s104.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h105",
+            "currentRevision": 1050,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 105,
+            "notebookId": 1,
+            "publishedRevisionId": 1050,
+            "relPath": "s105.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h106",
+            "currentRevision": 1060,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 106,
+            "notebookId": 1,
+            "publishedRevisionId": 1060,
+            "relPath": "s106.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h107",
+            "currentRevision": 1070,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 107,
+            "notebookId": 1,
+            "publishedRevisionId": 1070,
+            "relPath": "s107.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h108",
+            "currentRevision": 1080,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 108,
+            "notebookId": 1,
+            "publishedRevisionId": 1080,
+            "relPath": "s108.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h109",
+            "currentRevision": 1090,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 109,
+            "notebookId": 1,
+            "publishedRevisionId": 1090,
+            "relPath": "s109.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h110",
+            "currentRevision": 1100,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 110,
+            "notebookId": 1,
+            "publishedRevisionId": 1100,
+            "relPath": "s110.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "batch-limit"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:102",
+            "targetRevision": 1020
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:103",
+            "targetRevision": 1030
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:104",
+            "targetRevision": 1040
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:105",
+            "targetRevision": 1050
+          }
+        ],
+        "notified": [
+          1
+        ],
+        "requeued": 5,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 102,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 103,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 104,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 105,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 106,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 107,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 108,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 109,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 110,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:201",
+            "targetRevision": null
+          },
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 302,
+            "kind": "extract",
+            "leaseToken": "lease-302",
+            "leaseUntil": 5300,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "running",
+            "target": "source:202",
+            "targetRevision": null
+          },
+          {
+            "attempts": 2,
+            "error": null,
+            "id": 303,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": 5060,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "failed",
+            "target": "source:203",
+            "targetRevision": null
+          },
+          {
+            "attempts": 5,
+            "error": "textLimit",
+            "id": 304,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "failed",
+            "target": "source:204",
+            "targetRevision": null
+          },
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 305,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "done",
+            "target": "source:205",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 306,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "cancelled",
+            "target": "source:206",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 307,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {},
+            "state": "queued",
+            "target": "source:207",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h102",
+            "id": 1020,
+            "revision": 1,
+            "sourceId": 102,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h103",
+            "id": 1030,
+            "revision": 1,
+            "sourceId": 103,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h104",
+            "id": 1040,
+            "revision": 1,
+            "sourceId": 104,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h105",
+            "id": 1050,
+            "revision": 1,
+            "sourceId": 105,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h106",
+            "id": 1060,
+            "revision": 1,
+            "sourceId": 106,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h107",
+            "id": 1070,
+            "revision": 1,
+            "sourceId": 107,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h108",
+            "id": 1080,
+            "revision": 1,
+            "sourceId": 108,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h109",
+            "id": 1090,
+            "revision": 1,
+            "sourceId": 109,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h110",
+            "id": 1100,
+            "revision": 1,
+            "sourceId": 110,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h102",
+            "currentRevision": 1020,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 102,
+            "notebookId": 1,
+            "publishedRevisionId": 1020,
+            "relPath": "s102.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h103",
+            "currentRevision": 1030,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 103,
+            "notebookId": 1,
+            "publishedRevisionId": 1030,
+            "relPath": "s103.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h104",
+            "currentRevision": 1040,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 104,
+            "notebookId": 1,
+            "publishedRevisionId": 1040,
+            "relPath": "s104.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h105",
+            "currentRevision": 1050,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 105,
+            "notebookId": 1,
+            "publishedRevisionId": 1050,
+            "relPath": "s105.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h106",
+            "currentRevision": 1060,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 106,
+            "notebookId": 1,
+            "publishedRevisionId": 1060,
+            "relPath": "s106.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h107",
+            "currentRevision": 1070,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 107,
+            "notebookId": 1,
+            "publishedRevisionId": 1070,
+            "relPath": "s107.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h108",
+            "currentRevision": 1080,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 108,
+            "notebookId": 1,
+            "publishedRevisionId": 1080,
+            "relPath": "s108.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h109",
+            "currentRevision": 1090,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 109,
+            "notebookId": 1,
+            "publishedRevisionId": 1090,
+            "relPath": "s109.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h110",
+            "currentRevision": 1100,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 110,
+            "notebookId": 1,
+            "publishedRevisionId": 1100,
+            "relPath": "s110.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "batch-tops-up-outstanding"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:201",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 302,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:202",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 303,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:203",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 304,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:204",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 305,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:205",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 306,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:206",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 307,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:207",
+            "targetRevision": null
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 308,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:208",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "batch-full"
+    },
+    {
+      "expected": {
+        "newJobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": 1010
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:102",
+            "targetRevision": 1020
+          },
+          {
+            "attempts": 0,
+            "error": null,
+            "kind": "extract",
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "queued",
+            "target": "source:103",
+            "targetRevision": 1030
+          }
+        ],
+        "notified": [
+          1,
+          2
+        ],
+        "requeued": 3,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 102,
+            "status": "ready"
+          },
+          {
+            "error": null,
+            "id": 103,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h102",
+            "id": 1020,
+            "revision": 1,
+            "sourceId": 102,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h103",
+            "id": 1030,
+            "revision": 1,
+            "sourceId": 103,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 2,
+            "id": 101,
+            "notebookId": 2,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h102",
+            "currentRevision": 1020,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 102,
+            "notebookId": 1,
+            "publishedRevisionId": 1020,
+            "relPath": "s102.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          },
+          {
+            "availability": "present",
+            "contentHash": "h103",
+            "currentRevision": 1030,
+            "eligible": true,
+            "error": null,
+            "folderId": 2,
+            "id": 103,
+            "notebookId": 2,
+            "publishedRevisionId": 1030,
+            "relPath": "s103.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "two-notebooks"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 2
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "compact-revision"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "a.docx",
+            "status": "ready",
+            "type": "docx"
+          }
+        ]
+      },
+      "name": "non-spreadsheet"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": null,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": null,
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "loose-spreadsheet"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "pending"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "pending",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "pending-source"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "chunking"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "chunking",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "chunking-source"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": "textLimit",
+            "id": 101,
+            "status": "error"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": "textLimit",
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "error",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "error-source"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "missing",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "missing-source"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "unavailable",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "unavailable-root"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": false,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "ineligible-source"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": null,
+            "currentRevision": null,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": null,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "never-published"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          },
+          {
+            "canonicalText": "new",
+            "contentHash": "h2",
+            "id": 1011,
+            "revision": 2,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1011,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "newer-revision-pending"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {},
+            "state": "queued",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "queued-job-exists"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 1,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": "lease-301",
+            "leaseUntil": 5300,
+            "nextRetryAt": null,
+            "options": {},
+            "state": "running",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "running-job-exists"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 0,
+            "error": null,
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "paused",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "paused-job-exists"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 2,
+            "error": "textLimit",
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": 5060,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "retry-pending-job-exists"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "textLimit",
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 2
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "upgrade-failed-terminally"
+    },
+    {
+      "expected": {
+        "newJobs": [],
+        "notified": [],
+        "requeued": 0,
+        "sources": [
+          {
+            "error": null,
+            "id": 101,
+            "status": "ready"
+          }
+        ]
+      },
+      "input": {
+        "jobs": [
+          {
+            "attempts": 5,
+            "error": "textLimit",
+            "id": 301,
+            "kind": "extract",
+            "leaseToken": null,
+            "leaseUntil": null,
+            "nextRetryAt": null,
+            "options": {
+              "spreadsheetTextVersion": 3
+            },
+            "state": "failed",
+            "target": "source:101",
+            "targetRevision": null
+          }
+        ],
+        "now": 5000,
+        "revisions": [
+          {
+            "canonicalText": "## Sheet1\nA1: old",
+            "contentHash": "h101",
+            "id": 1010,
+            "revision": 1,
+            "sourceId": 101,
+            "textFormatVersion": 1
+          }
+        ],
+        "sources": [
+          {
+            "availability": "present",
+            "contentHash": "h101",
+            "currentRevision": 1010,
+            "eligible": true,
+            "error": null,
+            "folderId": 1,
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 1010,
+            "relPath": "s101.xlsx",
+            "status": "ready",
+            "type": "xlsx"
+          }
+        ]
+      },
+      "name": "future-stamp-failed"
+    }
+  ],
+  "contract": "ingestion-reextract",
+  "seed": {
+    "folders": [
+      {
+        "components": [
+          "docs"
+        ],
+        "id": 1,
+        "notebookId": 1,
+        "rootFileId": "r",
+        "rootPath": "/docs",
+        "volumeId": "v"
+      },
+      {
+        "components": [
+          "other"
+        ],
+        "id": 2,
+        "notebookId": 2,
+        "rootFileId": "o",
+        "rootPath": "/other",
+        "volumeId": "v"
+      }
+    ],
+    "notebooks": [
+      1,
+      2
+    ]
+  },
+  "spreadsheetOptionsKey": "spreadsheetTextVersion",
+  "spreadsheetTextVersion": 2,
+  "version": 2
+}

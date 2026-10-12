@@ -1,0 +1,175 @@
+{
+  "contract": "fts-query",
+  "version": 1,
+  "provisional": false,
+  "cases": [
+    {
+      "name": "fts-00",
+      "documentText": "Smlouva končí 31. prosince.",
+      "query": "kdy končí smlouva",
+      "expectedMatchExpr": "\"kdy\" OR \"končí\" OR \"smlouva\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-01",
+      "documentText": "Smlouva končí 31. prosince.",
+      "query": "kdy konci smlouva",
+      "expectedMatchExpr": "\"kdy\" OR \"konci\" OR \"smlouva\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-02",
+      "documentText": "Smlouva končí 31. prosince.",
+      "query": "končí",
+      "expectedMatchExpr": "\"končí\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-03",
+      "documentText": "Výpovědní lhůta je dva měsíce.",
+      "query": "vypovedni lhuta",
+      "expectedMatchExpr": "\"vypovedni\" OR \"lhuta\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-04",
+      "documentText": "Ľúbiť sa dá aj v zime.",
+      "query": "lubit",
+      "expectedMatchExpr": "\"lubit\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-05",
+      "documentText": "Die Kündigungsfrist beträgt drei Monate.",
+      "query": "kündigungsfrist",
+      "expectedMatchExpr": "\"kündigungsfrist\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-06",
+      "documentText": "Die Kündigungsfrist beträgt drei Monate.",
+      "query": "kundigungsfrist",
+      "expectedMatchExpr": "\"kundigungsfrist\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-07",
+      "documentText": "Die Straße ist gesperrt.",
+      "query": "strasse",
+      "expectedMatchExpr": "\"strasse\"",
+      "shouldMatchDocument": false
+    },
+    {
+      "name": "fts-08",
+      "documentText": "Die Strasse ist gesperrt.",
+      "query": "straße",
+      "expectedMatchExpr": "\"straße\"",
+      "shouldMatchDocument": false
+    },
+    {
+      "name": "fts-09",
+      "documentText": "The lease ends in March.",
+      "query": "When does the LEASE end?",
+      "expectedMatchExpr": "\"When\" OR \"does\" OR \"the\" OR \"LEASE\" OR \"end\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-10",
+      "documentText": "Invoice INV-2024-0042 was paid.",
+      "query": "INV-2024-0042",
+      "expectedMatchExpr": "\"INV\" OR \"2024\" OR \"0042\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-11",
+      "documentText": "He said \"hello\" twice.",
+      "query": "\"hello\"",
+      "expectedMatchExpr": "\"hello\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-12",
+      "documentText": "Use NEAR and AND carefully.",
+      "query": "NEAR AND",
+      "expectedMatchExpr": "\"NEAR\" OR \"AND\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-13",
+      "documentText": "Use NEAR and AND carefully.",
+      "query": "AND",
+      "expectedMatchExpr": "\"AND\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-14",
+      "documentText": "prefix matching is off",
+      "query": "pref*",
+      "expectedMatchExpr": "\"pref\"",
+      "shouldMatchDocument": false
+    },
+    {
+      "name": "fts-15",
+      "documentText": "Emoji only text",
+      "query": "❤️🎉",
+      "expectedMatchExpr": null,
+      "shouldMatchDocument": null
+    },
+    {
+      "name": "fts-16",
+      "documentText": "anything",
+      "query": "   ...  !!! ",
+      "expectedMatchExpr": null,
+      "shouldMatchDocument": null
+    },
+    {
+      "name": "fts-17",
+      "documentText": "anything",
+      "query": "",
+      "expectedMatchExpr": null,
+      "shouldMatchDocument": null
+    },
+    {
+      "name": "fts-18",
+      "documentText": "token token token ",
+      "query": "w0 w1 w2 w3 w4 w5 w6 w7 w8 w9 w10 w11 w12 w13 w14 w15 w16 w17 w18 w19 w20 w21 w22 w23 w24 w25 w26 w27 w28 w29 w30 w31 w32 w33 w34 w35 w36 w37 w38 w39",
+      "expectedMatchExpr": "\"w0\" OR \"w1\" OR \"w2\" OR \"w3\" OR \"w4\" OR \"w5\" OR \"w6\" OR \"w7\" OR \"w8\" OR \"w9\" OR \"w10\" OR \"w11\" OR \"w12\" OR \"w13\" OR \"w14\" OR \"w15\" OR \"w16\" OR \"w17\" OR \"w18\" OR \"w19\" OR \"w20\" OR \"w21\" OR \"w22\" OR \"w23\" OR \"w24\" OR \"w25\" OR \"w26\" OR \"w27\" OR \"w28\" OR \"w29\" OR \"w30\" OR \"w31\"",
+      "shouldMatchDocument": false
+    },
+    {
+      "name": "fts-19",
+      "documentText": "a+b c$d",
+      "query": "a+b",
+      "expectedMatchExpr": "\"a\" OR \"b\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-20",
+      "documentText": "foo_bar baz",
+      "query": "foo_bar",
+      "expectedMatchExpr": "\"foo\" OR \"bar\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-21",
+      "documentText": "Łódź is a city.",
+      "query": "lodz",
+      "expectedMatchExpr": "\"lodz\"",
+      "shouldMatchDocument": false
+    },
+    {
+      "name": "fts-22",
+      "documentText": "Łódź is a city.",
+      "query": "łódź",
+      "expectedMatchExpr": "\"łódź\"",
+      "shouldMatchDocument": true
+    },
+    {
+      "name": "fts-23",
+      "documentText": "Kůň a kun",
+      "query": "kůň kun KŮŇ",
+      "expectedMatchExpr": "\"kůň\" OR \"kun\" OR \"KŮŇ\"",
+      "shouldMatchDocument": true
+    }
+  ]
+}

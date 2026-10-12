@@ -35,7 +35,7 @@ public partial class TransformationEditorViewModel : ObservableObject
             Selected = Customs.FirstOrDefault(x => x.Id == prev) ?? Customs.FirstOrDefault();
             SyncDraft();
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ChatFailureText.Format(ex, _t.Get); }
     }
 
     partial void OnSelectedChanged(Transformation? v) => SyncDraft();
@@ -58,7 +58,7 @@ public partial class TransformationEditorViewModel : ObservableObject
             Selected = Customs.FirstOrDefault(x => x.Id == tx.Id);
             Changed?.Invoke();
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ChatFailureText.Format(ex, _t.Get); }
     }
 
     [RelayCommand]
@@ -72,7 +72,7 @@ public partial class TransformationEditorViewModel : ObservableObject
             Reload();
             Changed?.Invoke();
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ChatFailureText.Format(ex, _t.Get); }
     }
 
     [RelayCommand]
@@ -80,6 +80,6 @@ public partial class TransformationEditorViewModel : ObservableObject
     {
         if (Selected?.Id is not { } id) return;
         try { _store.DeleteTransformation(id); Selected = null; Reload(); Changed?.Invoke(); }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ChatFailureText.Format(ex, _t.Get); }
     }
 }

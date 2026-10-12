@@ -1,0 +1,2436 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "cs": "Přidat složku…",
+        "en": "Add folder…"
+      },
+      "input": {
+        "key": "addFolderButton"
+      },
+      "name": "addFolderButton",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Poslední úplný sken",
+        "en": "Last full scan"
+      },
+      "input": {
+        "key": "folderLastFullScan"
+      },
+      "name": "folderLastFullScan",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Dosud neskenováno",
+        "en": "Never scanned"
+      },
+      "input": {
+        "key": "folderNeverScanned"
+      },
+      "name": "folderNeverScanned",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Sledovat změny",
+        "en": "Watch for changes"
+      },
+      "input": {
+        "key": "folderWatchEnabled"
+      },
+      "name": "folderWatchEnabled",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Skenovat teď",
+        "en": "Scan now"
+      },
+      "input": {
+        "key": "folderScanNow"
+      },
+      "name": "folderScanNow",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Ověřit vše",
+        "en": "Verify all"
+      },
+      "input": {
+        "key": "folderVerifyAll"
+      },
+      "name": "folderVerifyAll",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Pravidla složky",
+        "en": "Folder rules"
+      },
+      "input": {
+        "key": "folderRulesTitle"
+      },
+      "name": "folderRulesTitle",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Zahrnuté přípony",
+        "en": "Include extensions"
+      },
+      "input": {
+        "key": "folderIncludeExtensions"
+      },
+      "name": "folderIncludeExtensions",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Ignorované vzory (jeden na řádek)",
+        "en": "Ignore patterns (one per line)"
+      },
+      "input": {
+        "key": "folderIgnoreGlobs"
+      },
+      "name": "folderIgnoreGlobs",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Nejvýše bajtů souboru",
+        "en": "Maximum file bytes"
+      },
+      "input": {
+        "key": "folderMaxFileBytes"
+      },
+      "name": "folderMaxFileBytes",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Nejvýše rozbalených bajtů Office",
+        "en": "Maximum expanded Office bytes"
+      },
+      "input": {
+        "key": "folderMaxOfficeBytes"
+      },
+      "name": "folderMaxOfficeBytes",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Nejvýše znaků textu",
+        "en": "Maximum text characters"
+      },
+      "input": {
+        "key": "folderMaxTextScalars"
+      },
+      "name": "folderMaxTextScalars",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Nejvýše stran PDF",
+        "en": "Maximum PDF pages"
+      },
+      "input": {
+        "key": "folderMaxPdfPages"
+      },
+      "name": "folderMaxPdfPages",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Nejvýše pasáží na soubor",
+        "en": "Maximum passages per file"
+      },
+      "input": {
+        "key": "folderMaxChunks"
+      },
+      "name": "folderMaxChunks",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Nejvýše buněk tabulky",
+        "en": "Maximum spreadsheet cells"
+      },
+      "input": {
+        "key": "folderMaxCells"
+      },
+      "name": "folderMaxCells",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Náhradní kódování textu",
+        "en": "Text encoding fallback"
+      },
+      "input": {
+        "key": "folderEncodingFallback"
+      },
+      "name": "folderEncodingFallback",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Pouze striktní UTF",
+        "en": "Strict UTF only"
+      },
+      "input": {
+        "key": "folderEncodingNone"
+      },
+      "name": "folderEncodingNone",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Windows-1250",
+        "en": "Windows-1250"
+      },
+      "input": {
+        "key": "folderEncodingCp1250"
+      },
+      "name": "folderEncodingCp1250",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Kódování",
+        "en": "Encoding"
+      },
+      "input": {
+        "key": "folderEncodingUsed"
+      },
+      "name": "folderEncodingUsed",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Zkontrolujte vzory, přípony a kladné limity.",
+        "en": "Check patterns, extensions and positive limits."
+      },
+      "input": {
+        "key": "folderRulesInvalid"
+      },
+      "name": "folderRulesInvalid",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Odebrat z notebooku",
+        "en": "Remove from notebook"
+      },
+      "input": {
+        "key": "folderRemoveButton"
+      },
+      "name": "folderRemoveButton",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Odebrat tuto složku z notebooku?",
+        "en": "Remove this folder from the notebook?"
+      },
+      "input": {
+        "key": "folderRemoveConfirm"
+      },
+      "name": "folderRemoveConfirm",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Soubory na disku zůstanou zachovány.",
+        "en": "Files on disk will be kept."
+      },
+      "input": {
+        "key": "folderRemoveKeepsFiles"
+      },
+      "name": "folderRemoveKeepsFiles",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Prohledatelné",
+        "en": "Searchable"
+      },
+      "input": {
+        "key": "folderSearchable"
+      },
+      "name": "folderSearchable",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Dosud neprohledatelné",
+        "en": "Not yet searchable"
+      },
+      "input": {
+        "key": "folderNotSearchable"
+      },
+      "name": "folderNotSearchable",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Aktuální",
+        "en": "Current"
+      },
+      "input": {
+        "key": "folderCurrent"
+      },
+      "name": "folderCurrent",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Čeká na aktualizaci",
+        "en": "Refresh pending"
+      },
+      "input": {
+        "key": "folderRefreshPending"
+      },
+      "name": "folderRefreshPending",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Aktualizace selhala",
+        "en": "Refresh failed"
+      },
+      "input": {
+        "key": "folderRefreshError"
+      },
+      "name": "folderRefreshError",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Přeskočené",
+        "en": "Skipped"
+      },
+      "input": {
+        "key": "folderSkipped"
+      },
+      "name": "folderSkipped",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Chybějící",
+        "en": "Missing"
+      },
+      "input": {
+        "key": "folderMissing"
+      },
+      "name": "folderMissing",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Nedostupné",
+        "en": "Unavailable"
+      },
+      "input": {
+        "key": "folderUnavailable"
+      },
+      "name": "folderUnavailable",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Alespoň",
+        "en": "At least"
+      },
+      "input": {
+        "key": "folderAtLeast"
+      },
+      "name": "folderAtLeast",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Tato složka se překrývá se složkou již přidanou do notebooku.",
+        "en": "This folder overlaps a folder already in this notebook."
+      },
+      "input": {
+        "key": "folderOverlapError"
+      },
+      "name": "folderOverlapError",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Složku nebo soubor se nepodařilo přečíst.",
+        "en": "The folder or file could not be read."
+      },
+      "input": {
+        "key": "folderReadError"
+      },
+      "name": "folderReadError",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Byl překročen limit extrakce.",
+        "en": "The extraction limit was exceeded."
+      },
+      "input": {
+        "key": "folderLimitError"
+      },
+      "name": "folderLimitError",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Kódování textu není podporováno.",
+        "en": "The text encoding is not supported."
+      },
+      "input": {
+        "key": "folderEncodingError"
+      },
+      "name": "folderEncodingError",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Dokument je poškozený nebo nepodporovaný.",
+        "en": "The document is damaged or unsupported."
+      },
+      "input": {
+        "key": "folderDocumentError"
+      },
+      "name": "folderDocumentError",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Celý notebook",
+        "en": "Whole notebook"
+      },
+      "input": {
+        "key": "scopeWholeNotebook"
+      },
+      "name": "scopeWholeNotebook",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Vybrané položky",
+        "en": "Selected items"
+      },
+      "input": {
+        "key": "scopeSelection"
+      },
+      "name": "scopeSelection",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Složky",
+        "en": "Folders"
+      },
+      "input": {
+        "key": "scopeFolders"
+      },
+      "name": "scopeFolders",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Sady zdrojů",
+        "en": "Source sets"
+      },
+      "input": {
+        "key": "scopeSourceSets"
+      },
+      "name": "scopeSourceSets",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Jednotlivé zdroje",
+        "en": "Individual sources"
+      },
+      "input": {
+        "key": "scopeSources"
+      },
+      "name": "scopeSources",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Nejsou vybrány žádné zdroje",
+        "en": "No sources selected"
+      },
+      "input": {
+        "key": "scopeEmpty"
+      },
+      "name": "scopeEmpty",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Přeindexovat",
+        "en": "Re-index"
+      },
+      "input": {
+        "key": "reindexButton"
+      },
+      "name": "reindexButton",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Průběh přeindexování",
+        "en": "Re-index progress"
+      },
+      "input": {
+        "key": "reindexProgress"
+      },
+      "name": "reindexProgress",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Připravuje se nový index",
+        "en": "Preparing the new index"
+      },
+      "input": {
+        "key": "reindexDiscovering"
+      },
+      "name": "reindexDiscovering",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Indexování na pozadí je pozastaveno kvůli chatu",
+        "en": "Background indexing paused for chat"
+      },
+      "input": {
+        "key": "reindexPausedForChat"
+      },
+      "name": "reindexPausedForChat",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Přeindexování selhalo; stávající vyhledávání zůstává dostupné.",
+        "en": "Re-indexing failed; existing search remains available."
+      },
+      "input": {
+        "key": "reindexFailed"
+      },
+      "name": "reindexFailed",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Stávající index zůstává dostupný během vytváření nového indexu. Dočasně je potřeba více místa na disku.",
+        "en": "The existing index stays available while the new index is built. Temporary extra disk space is required."
+      },
+      "input": {
+        "key": "reindexDualSpaceNote"
+      },
+      "name": "reindexDualSpaceNote",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Zahodit nový index",
+        "en": "Discard new index"
+      },
+      "input": {
+        "key": "reindexDiscard"
+      },
+      "name": "reindexDiscard",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "cs": "Zkusit přeindexování znovu",
+        "en": "Retry re-indexing"
+      },
+      "input": {
+        "key": "reindexRetry"
+      },
+      "name": "reindexRetry",
+      "operation": "localization"
+    },
+    {
+      "expected": {
+        "kind": "all"
+      },
+      "input": {
+        "folderIds": [
+          8
+        ],
+        "members": [],
+        "setIds": [
+          9
+        ],
+        "sourceIds": [
+          1
+        ],
+        "wholeNotebook": true
+      },
+      "name": "all",
+      "operation": "scope"
+    },
+    {
+      "expected": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "input": {
+        "folderIds": [],
+        "members": [],
+        "setIds": [],
+        "sourceIds": [],
+        "wholeNotebook": false
+      },
+      "name": "empty",
+      "operation": "scope"
+    },
+    {
+      "expected": {
+        "folderIds": [
+          7,
+          8
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          1,
+          2
+        ]
+      },
+      "input": {
+        "folderIds": [
+          8
+        ],
+        "members": [
+          {
+            "folderIds": [
+              7,
+              8
+            ],
+            "setId": 9,
+            "sourceIds": [
+              1,
+              2
+            ]
+          }
+        ],
+        "setIds": [
+          9
+        ],
+        "sourceIds": [
+          1,
+          1
+        ],
+        "wholeNotebook": false
+      },
+      "name": "duplicate-union",
+      "operation": "scope"
+    },
+    {
+      "expected": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": [
+          1,
+          2,
+          3
+        ]
+      },
+      "input": {
+        "folderIds": [],
+        "members": [],
+        "setIds": [],
+        "sourceIds": [
+          1,
+          2,
+          3
+        ],
+        "wholeNotebook": false
+      },
+      "name": "all-sources-explicit",
+      "operation": "scope"
+    },
+    {
+      "expected": {
+        "folderIds": [
+          7,
+          8
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          1,
+          2
+        ]
+      },
+      "input": {
+        "folderIds": [
+          8
+        ],
+        "members": [
+          {
+            "folderIds": [
+              7
+            ],
+            "setId": 9,
+            "sourceIds": [
+              2
+            ]
+          }
+        ],
+        "setIds": [
+          9
+        ],
+        "sourceIds": [
+          1
+        ],
+        "wholeNotebook": false
+      },
+      "name": "set-membership-old",
+      "operation": "scope"
+    },
+    {
+      "expected": {
+        "folderIds": [
+          8,
+          10
+        ],
+        "kind": "selection",
+        "sourceIds": [
+          1,
+          3
+        ]
+      },
+      "input": {
+        "folderIds": [
+          8
+        ],
+        "members": [
+          {
+            "folderIds": [
+              10
+            ],
+            "setId": 9,
+            "sourceIds": [
+              3
+            ]
+          }
+        ],
+        "setIds": [
+          9
+        ],
+        "sourceIds": [
+          1
+        ],
+        "wholeNotebook": false
+      },
+      "name": "set-membership-new",
+      "operation": "scope"
+    },
+    {
+      "expected": {
+        "folderIds": [],
+        "kind": "selection",
+        "sourceIds": []
+      },
+      "input": {
+        "folderIds": [],
+        "members": [],
+        "setIds": [
+          9
+        ],
+        "sourceIds": [],
+        "wholeNotebook": false
+      },
+      "name": "removed-set",
+      "operation": "scope"
+    },
+    {
+      "expected": {
+        "scope": {
+          "folderIds": [],
+          "kind": "selection",
+          "sourceIds": []
+        }
+      },
+      "input": {
+        "notebookId": 1,
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1
+            },
+            {
+              "id": 2,
+              "notebookId": 2
+            }
+          ],
+          "notebooks": [
+            {
+              "id": 1
+            },
+            {
+              "id": 2
+            }
+          ],
+          "sets": [
+            {
+              "folderIds": [
+                1
+              ],
+              "id": 9,
+              "notebookId": 1,
+              "sourceIds": [
+                101
+              ]
+            },
+            {
+              "folderIds": [
+                2
+              ],
+              "id": 10,
+              "notebookId": 2,
+              "sourceIds": [
+                102
+              ]
+            }
+          ],
+          "sources": [
+            {
+              "folderId": 1,
+              "id": 101,
+              "notebookId": 1
+            },
+            {
+              "folderId": 2,
+              "id": 102,
+              "notebookId": 2
+            }
+          ]
+        },
+        "selection": {
+          "folderIds": [
+            99
+          ],
+          "setIds": [],
+          "sourceIds": [],
+          "wholeNotebook": false
+        }
+      },
+      "name": "removed-explicit-folder",
+      "operation": "scope-store"
+    },
+    {
+      "expected": {
+        "error": "notebookMismatch"
+      },
+      "input": {
+        "notebookId": 1,
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1
+            },
+            {
+              "id": 2,
+              "notebookId": 2
+            }
+          ],
+          "notebooks": [
+            {
+              "id": 1
+            },
+            {
+              "id": 2
+            }
+          ],
+          "sets": [
+            {
+              "folderIds": [
+                1
+              ],
+              "id": 9,
+              "notebookId": 1,
+              "sourceIds": [
+                101
+              ]
+            },
+            {
+              "folderIds": [
+                2
+              ],
+              "id": 10,
+              "notebookId": 2,
+              "sourceIds": [
+                102
+              ]
+            }
+          ],
+          "sources": [
+            {
+              "folderId": 1,
+              "id": 101,
+              "notebookId": 1
+            },
+            {
+              "folderId": 2,
+              "id": 102,
+              "notebookId": 2
+            }
+          ]
+        },
+        "selection": {
+          "folderIds": [],
+          "setIds": [],
+          "sourceIds": [
+            102
+          ],
+          "wholeNotebook": false
+        }
+      },
+      "name": "cross-notebook-source",
+      "operation": "scope-store"
+    },
+    {
+      "expected": {
+        "error": "notebookMismatch"
+      },
+      "input": {
+        "notebookId": 1,
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1
+            },
+            {
+              "id": 2,
+              "notebookId": 2
+            }
+          ],
+          "notebooks": [
+            {
+              "id": 1
+            },
+            {
+              "id": 2
+            }
+          ],
+          "sets": [
+            {
+              "folderIds": [
+                1
+              ],
+              "id": 9,
+              "notebookId": 1,
+              "sourceIds": [
+                101
+              ]
+            },
+            {
+              "folderIds": [
+                2
+              ],
+              "id": 10,
+              "notebookId": 2,
+              "sourceIds": [
+                102
+              ]
+            }
+          ],
+          "sources": [
+            {
+              "folderId": 1,
+              "id": 101,
+              "notebookId": 1
+            },
+            {
+              "folderId": 2,
+              "id": 102,
+              "notebookId": 2
+            }
+          ]
+        },
+        "selection": {
+          "folderIds": [
+            2
+          ],
+          "setIds": [],
+          "sourceIds": [],
+          "wholeNotebook": false
+        }
+      },
+      "name": "cross-notebook-folder",
+      "operation": "scope-store"
+    },
+    {
+      "expected": {
+        "error": "notebookMismatch"
+      },
+      "input": {
+        "notebookId": 1,
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1
+            },
+            {
+              "id": 2,
+              "notebookId": 2
+            }
+          ],
+          "notebooks": [
+            {
+              "id": 1
+            },
+            {
+              "id": 2
+            }
+          ],
+          "sets": [
+            {
+              "folderIds": [
+                1
+              ],
+              "id": 9,
+              "notebookId": 1,
+              "sourceIds": [
+                101
+              ]
+            },
+            {
+              "folderIds": [
+                2
+              ],
+              "id": 10,
+              "notebookId": 2,
+              "sourceIds": [
+                102
+              ]
+            }
+          ],
+          "sources": [
+            {
+              "folderId": 1,
+              "id": 101,
+              "notebookId": 1
+            },
+            {
+              "folderId": 2,
+              "id": 102,
+              "notebookId": 2
+            }
+          ]
+        },
+        "selection": {
+          "folderIds": [],
+          "setIds": [
+            10
+          ],
+          "sourceIds": [],
+          "wholeNotebook": false
+        }
+      },
+      "name": "cross-notebook-set",
+      "operation": "scope-store"
+    },
+    {
+      "expected": {
+        "scope": {
+          "folderIds": [
+            1
+          ],
+          "kind": "selection",
+          "sourceIds": [
+            101
+          ]
+        }
+      },
+      "input": {
+        "notebookId": 1,
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1
+            },
+            {
+              "id": 2,
+              "notebookId": 2
+            }
+          ],
+          "notebooks": [
+            {
+              "id": 1
+            },
+            {
+              "id": 2
+            }
+          ],
+          "sets": [
+            {
+              "folderIds": [
+                1
+              ],
+              "id": 9,
+              "notebookId": 1,
+              "sourceIds": [
+                101
+              ]
+            },
+            {
+              "folderIds": [
+                2
+              ],
+              "id": 10,
+              "notebookId": 2,
+              "sourceIds": [
+                102
+              ]
+            }
+          ],
+          "sources": [
+            {
+              "folderId": 1,
+              "id": 101,
+              "notebookId": 1
+            },
+            {
+              "folderId": 2,
+              "id": 102,
+              "notebookId": 2
+            }
+          ]
+        },
+        "selection": {
+          "folderIds": [],
+          "setIds": [
+            9
+          ],
+          "sourceIds": [],
+          "wholeNotebook": false
+        }
+      },
+      "name": "owned-set-scope",
+      "operation": "scope-store"
+    },
+    {
+      "expected": {
+        "forceHash": false
+      },
+      "input": {
+        "kind": "created"
+      },
+      "name": "watch-created",
+      "operation": "watch"
+    },
+    {
+      "expected": {
+        "forceHash": true
+      },
+      "input": {
+        "kind": "changed"
+      },
+      "name": "watch-changed",
+      "operation": "watch"
+    },
+    {
+      "expected": {
+        "forceHash": true
+      },
+      "input": {
+        "kind": "renamed"
+      },
+      "name": "watch-renamed",
+      "operation": "watch"
+    },
+    {
+      "expected": {
+        "forceHash": true
+      },
+      "input": {
+        "kind": "deleted"
+      },
+      "name": "watch-deleted",
+      "operation": "watch"
+    },
+    {
+      "expected": {
+        "forceHash": true
+      },
+      "input": {
+        "kind": "overflow"
+      },
+      "name": "watch-overflow",
+      "operation": "watch"
+    },
+    {
+      "expected": {
+        "diskDeleteCalls": 0,
+        "folderIds": [
+          1,
+          2,
+          3
+        ],
+        "jobs": [
+          {
+            "folderId": 1,
+            "id": 201,
+            "kind": "scan",
+            "state": "queued",
+            "verifyAll": false
+          },
+          {
+            "folderId": 2,
+            "id": 202,
+            "kind": "scan",
+            "state": "queued",
+            "verifyAll": false
+          }
+        ],
+        "providerCallCount": 0,
+        "queuedJobIds": [
+          201,
+          202
+        ],
+        "scanStarts": [],
+        "sources": [],
+        "watchedFolderIds": []
+      },
+      "input": {
+        "embeddingSelection": null,
+        "events": [
+          {
+            "at": 0,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201,
+                202
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "operation": "start",
+            "watchTokens": {
+              "1": "watch-1",
+              "2": "watch-2"
+            }
+          },
+          {
+            "at": 1,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201,
+                202
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "operation": "start"
+          },
+          {
+            "at": 2,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201,
+                202
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": []
+            },
+            "operation": "stop"
+          }
+        ],
+        "projectJobKinds": [
+          "scan"
+        ],
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1,
+              "rootPath": "/docs/one",
+              "watchEnabled": true
+            },
+            {
+              "id": 2,
+              "notebookId": 2,
+              "rootPath": "/docs/two",
+              "watchEnabled": true
+            },
+            {
+              "id": 3,
+              "notebookId": 1,
+              "rootPath": "/docs/disabled",
+              "watchEnabled": false
+            }
+          ],
+          "jobs": [],
+          "notebooks": [
+            1,
+            2
+          ],
+          "sources": []
+        }
+      },
+      "name": "runtime-two-notebooks-disabled-and-stop",
+      "operation": "runtime"
+    },
+    {
+      "expected": {
+        "diskDeleteCalls": 0,
+        "folderIds": [
+          1,
+          3
+        ],
+        "jobs": [
+          {
+            "folderId": 1,
+            "id": 201,
+            "kind": "scan",
+            "state": "queued",
+            "verifyAll": false
+          },
+          {
+            "folderId": 2,
+            "id": 202,
+            "kind": "scan",
+            "state": "cancelled",
+            "verifyAll": false
+          }
+        ],
+        "providerCallCount": 0,
+        "queuedJobIds": [
+          201
+        ],
+        "scanStarts": [],
+        "sources": [],
+        "watchedFolderIds": []
+      },
+      "input": {
+        "embeddingSelection": null,
+        "events": [
+          {
+            "at": 0,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201,
+                202
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "operation": "start",
+            "watchTokens": {
+              "1": "watch-1",
+              "2": "watch-2"
+            }
+          },
+          {
+            "at": 1,
+            "enabled": false,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201,
+                202
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": [
+                2
+              ]
+            },
+            "folderId": 1,
+            "operation": "watch"
+          },
+          {
+            "at": 2,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "cancelled",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": []
+            },
+            "folderId": 2,
+            "operation": "remove"
+          },
+          {
+            "at": 3,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "cancelled",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": []
+            },
+            "folderId": 2,
+            "forceHash": true,
+            "operation": "signal",
+            "watchToken": "watch-2"
+          },
+          {
+            "at": 503,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "cancelled",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": []
+            },
+            "operation": "tick"
+          }
+        ],
+        "projectJobKinds": [
+          "scan"
+        ],
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1,
+              "rootPath": "/docs/one",
+              "watchEnabled": true
+            },
+            {
+              "id": 2,
+              "notebookId": 2,
+              "rootPath": "/docs/two",
+              "watchEnabled": true
+            },
+            {
+              "id": 3,
+              "notebookId": 1,
+              "rootPath": "/docs/disabled",
+              "watchEnabled": false
+            }
+          ],
+          "jobs": [],
+          "notebooks": [
+            1,
+            2
+          ],
+          "sources": []
+        }
+      },
+      "name": "runtime-callback-after-remove",
+      "operation": "runtime"
+    },
+    {
+      "expected": {
+        "diskDeleteCalls": 0,
+        "folderIds": [
+          1,
+          2,
+          3
+        ],
+        "jobs": [
+          {
+            "folderId": 1,
+            "id": 201,
+            "kind": "scan",
+            "state": "done",
+            "verifyAll": false
+          },
+          {
+            "folderId": 2,
+            "id": 202,
+            "kind": "scan",
+            "state": "done",
+            "verifyAll": false
+          },
+          {
+            "folderId": 1,
+            "id": 203,
+            "kind": "scan",
+            "state": "done",
+            "verifyAll": true
+          }
+        ],
+        "providerCallCount": 0,
+        "queuedJobIds": [],
+        "scanStarts": [
+          201,
+          202,
+          203
+        ],
+        "sources": [],
+        "watchedFolderIds": [
+          1,
+          2
+        ]
+      },
+      "input": {
+        "embeddingSelection": null,
+        "events": [
+          {
+            "at": 0,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                201,
+                202
+              ],
+              "scanStarts": [],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "operation": "start",
+            "watchTokens": {
+              "1": "watch-1",
+              "2": "watch-2"
+            }
+          },
+          {
+            "at": 1,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "running",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                202
+              ],
+              "scanStarts": [
+                201
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "folderId": 1,
+            "jobId": 201,
+            "operation": "start-scan"
+          },
+          {
+            "at": 100,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "running",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                202
+              ],
+              "scanStarts": [
+                201
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "folderId": 1,
+            "forceHash": false,
+            "operation": "signal",
+            "watchToken": "watch-1"
+          },
+          {
+            "at": 200,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "running",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                202
+              ],
+              "scanStarts": [
+                201
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "folderId": 1,
+            "forceHash": true,
+            "operation": "signal",
+            "watchToken": "watch-1"
+          },
+          {
+            "at": 300,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                202
+              ],
+              "scanStarts": [
+                201
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "folderId": 1,
+            "jobId": 201,
+            "operation": "finish-scan"
+          },
+          {
+            "at": 699,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                202
+              ],
+              "scanStarts": [
+                201
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "operation": "tick"
+          },
+          {
+            "at": 700,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 1,
+                  "id": 203,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": true
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                202,
+                203
+              ],
+              "scanStarts": [
+                201
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "operation": "tick"
+          },
+          {
+            "at": 701,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 1,
+                  "id": 203,
+                  "kind": "scan",
+                  "state": "queued",
+                  "verifyAll": true
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [
+                203
+              ],
+              "scanStarts": [
+                201,
+                202
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "jobId": 202,
+            "operation": "drain"
+          },
+          {
+            "at": 702,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 1,
+                  "id": 203,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": true
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [],
+              "scanStarts": [
+                201,
+                202,
+                203
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "jobId": 203,
+            "operation": "drain"
+          },
+          {
+            "at": 703,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [
+                {
+                  "folderId": 1,
+                  "id": 201,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 2,
+                  "id": 202,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": false
+                },
+                {
+                  "folderId": 1,
+                  "id": 203,
+                  "kind": "scan",
+                  "state": "done",
+                  "verifyAll": true
+                }
+              ],
+              "providerCallCount": 0,
+              "queuedJobIds": [],
+              "scanStarts": [
+                201,
+                202,
+                203
+              ],
+              "sources": [],
+              "watchedFolderIds": [
+                1,
+                2
+              ]
+            },
+            "jobId": null,
+            "operation": "drain"
+          }
+        ],
+        "projectJobKinds": [
+          "scan"
+        ],
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1,
+              "rootPath": "/docs/one",
+              "watchEnabled": true
+            },
+            {
+              "id": 2,
+              "notebookId": 2,
+              "rootPath": "/docs/two",
+              "watchEnabled": true
+            },
+            {
+              "id": 3,
+              "notebookId": 1,
+              "rootPath": "/docs/disabled",
+              "watchEnabled": false
+            }
+          ],
+          "jobs": [],
+          "notebooks": [
+            1,
+            2
+          ],
+          "sources": []
+        }
+      },
+      "name": "runtime-one-trailing-scan",
+      "operation": "runtime"
+    },
+    {
+      "expected": {
+        "diskDeleteCalls": 0,
+        "folderIds": [
+          1,
+          2,
+          3
+        ],
+        "jobs": [],
+        "providerCallCount": 0,
+        "queuedJobIds": [],
+        "scanStarts": [],
+        "sources": [
+          {
+            "canonicalText": "second",
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 12,
+            "retainedRevisionIds": [
+              11,
+              12
+            ],
+            "type": "text",
+            "uri": null
+          }
+        ],
+        "watchedFolderIds": []
+      },
+      "input": {
+        "embeddingSelection": null,
+        "events": [
+          {
+            "at": 0,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [],
+              "providerCallCount": 0,
+              "queuedJobIds": [],
+              "scanStarts": [],
+              "sources": [
+                {
+                  "canonicalText": "first",
+                  "id": 101,
+                  "notebookId": 1,
+                  "publishedRevisionId": 11,
+                  "retainedRevisionIds": [
+                    11
+                  ],
+                  "type": "text",
+                  "uri": null
+                }
+              ],
+              "watchedFolderIds": []
+            },
+            "kind": "text",
+            "leaseToken": "source-1",
+            "notebookId": 1,
+            "operation": "ingest-source",
+            "sourceId": 101,
+            "text": "first",
+            "uri": null
+          },
+          {
+            "at": 1,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [],
+              "providerCallCount": 0,
+              "queuedJobIds": [],
+              "scanStarts": [],
+              "sources": [
+                {
+                  "canonicalText": "second",
+                  "id": 101,
+                  "notebookId": 1,
+                  "publishedRevisionId": 12,
+                  "retainedRevisionIds": [
+                    11,
+                    12
+                  ],
+                  "type": "text",
+                  "uri": null
+                }
+              ],
+              "watchedFolderIds": []
+            },
+            "leaseToken": "source-2",
+            "operation": "refresh-source",
+            "sourceId": 101,
+            "text": "second"
+          }
+        ],
+        "projectJobKinds": [
+          "scan"
+        ],
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1,
+              "rootPath": "/docs/one",
+              "watchEnabled": true
+            },
+            {
+              "id": 2,
+              "notebookId": 2,
+              "rootPath": "/docs/two",
+              "watchEnabled": true
+            },
+            {
+              "id": 3,
+              "notebookId": 1,
+              "rootPath": "/docs/disabled",
+              "watchEnabled": false
+            }
+          ],
+          "jobs": [],
+          "notebooks": [
+            1,
+            2
+          ],
+          "sources": []
+        }
+      },
+      "name": "runtime-loose-source",
+      "operation": "runtime"
+    },
+    {
+      "expected": {
+        "diskDeleteCalls": 0,
+        "folderIds": [
+          1,
+          2,
+          3
+        ],
+        "jobs": [],
+        "providerCallCount": 0,
+        "queuedJobIds": [],
+        "scanStarts": [],
+        "sources": [
+          {
+            "canonicalText": "second",
+            "id": 101,
+            "notebookId": 1,
+            "publishedRevisionId": 12,
+            "retainedRevisionIds": [
+              11,
+              12
+            ],
+            "type": "url",
+            "uri": "https://fixture.invalid/doc"
+          }
+        ],
+        "watchedFolderIds": []
+      },
+      "input": {
+        "embeddingSelection": null,
+        "events": [
+          {
+            "at": 0,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [],
+              "providerCallCount": 0,
+              "queuedJobIds": [],
+              "scanStarts": [],
+              "sources": [
+                {
+                  "canonicalText": "first",
+                  "id": 101,
+                  "notebookId": 1,
+                  "publishedRevisionId": 11,
+                  "retainedRevisionIds": [
+                    11
+                  ],
+                  "type": "url",
+                  "uri": "https://fixture.invalid/doc"
+                }
+              ],
+              "watchedFolderIds": []
+            },
+            "kind": "url",
+            "leaseToken": "source-1",
+            "notebookId": 1,
+            "operation": "ingest-source",
+            "sourceId": 101,
+            "text": "first",
+            "uri": "https://fixture.invalid/doc"
+          },
+          {
+            "at": 1,
+            "expected": {
+              "diskDeleteCalls": 0,
+              "folderIds": [
+                1,
+                2,
+                3
+              ],
+              "jobs": [],
+              "providerCallCount": 0,
+              "queuedJobIds": [],
+              "scanStarts": [],
+              "sources": [
+                {
+                  "canonicalText": "second",
+                  "id": 101,
+                  "notebookId": 1,
+                  "publishedRevisionId": 12,
+                  "retainedRevisionIds": [
+                    11,
+                    12
+                  ],
+                  "type": "url",
+                  "uri": "https://fixture.invalid/doc"
+                }
+              ],
+              "watchedFolderIds": []
+            },
+            "leaseToken": "source-2",
+            "operation": "refresh-url",
+            "sourceId": 101,
+            "text": "second"
+          }
+        ],
+        "projectJobKinds": [
+          "scan"
+        ],
+        "seed": {
+          "folders": [
+            {
+              "id": 1,
+              "notebookId": 1,
+              "rootPath": "/docs/one",
+              "watchEnabled": true
+            },
+            {
+              "id": 2,
+              "notebookId": 2,
+              "rootPath": "/docs/two",
+              "watchEnabled": true
+            },
+            {
+              "id": 3,
+              "notebookId": 1,
+              "rootPath": "/docs/disabled",
+              "watchEnabled": false
+            }
+          ],
+          "jobs": [],
+          "notebooks": [
+            1,
+            2
+          ],
+          "sources": []
+        }
+      },
+      "name": "runtime-url-refresh",
+      "operation": "runtime"
+    }
+  ],
+  "contract": "ingestion-ui",
+  "version": 1
+}
