@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.15.0] — 2026-10-09
+## [0.15.0] — 2026-10-12
 
 Chat with whole folders, in Czech, Slovak, English and German, on macOS and
 Windows — and see exactly what goes to the model before it does. Both apps
@@ -39,6 +39,27 @@ also get a new, calmer chat-first look.
 - Providers: presets for LM Studio, vLLM, OpenRouter, Groq, Mistral and
   Together; a manual model ID when a server cannot list models; per-model
   context and output-token limits.
+- Large folders: an indexing strip in the Sources panel shows what is
+  happening (checking the folder, processing files d / t, indexing chunks
+  d / t, waiting to retry, or why indexing is blocked) with "Retry now" and
+  "Open settings" actions; a dot on the panel button shows activity while
+  the panel is closed. Scan now gives immediate feedback and builds a
+  missing index on an unchanged folder.
+- New file types: Outlook `.msg` and `.eml` e-mail (subject, people, date,
+  body and attachment names) and macro-enabled `.xlsm`, `.docm`, `.pptm`
+  (macros are never read or run). Existing folders with the default file
+  types pick them up automatically.
+- Inventory questions ("which offers did we send in 2026 for …?") use file
+  paths and dates: year folders, dated file names and document-type folders
+  rank first, and matching files are grouped by project in the context.
+- Semantic search works while the first index is still building, and
+  documents are indexed before spreadsheets.
+- Context windows are read from OpenWebUI and OpenAI-compatible model
+  listings when the server advertises them; otherwise the context panel
+  offers "Set context size".
+- Failed files are retried three times and then shown as errors with a
+  reason and a "Retry" action ("Retry all failed" for the whole notebook).
+  URL sources are only re-fetched when you ask.
 - Re-index: rebuild the index with another embedding model while the current
   one keeps answering; progress survives a restart and can be retried or
   discarded.
@@ -51,15 +72,31 @@ also get a new, calmer chat-first look.
 - Retrieval looks wider before it cuts: each search branch fetches 32
   candidates and the answer keeps the best 16 passages that fit the model's
   context.
-- Excel workbooks are read as sheet names and cell coordinates; cached
-  formula results and date serials are kept as annotated values.
+- Spreadsheets are indexed as compact rows (`R12: value | value`), without
+  formula markers or empty cells, with dates as ISO dates and hidden sheets
+  skipped. At most the first 64 chunks of a spreadsheet are embedded; the
+  rest stays in full-text search. Existing spreadsheets are re-read once in
+  the background.
+- Much faster on large folders: identical text is embedded once, folder
+  checks write in batches and re-verify every 6 hours while the watch is
+  healthy, language detection is several times faster, extraction uses more
+  cores when the computer is idle and slows down (never stops) under memory
+  pressure, and vector search keeps a compact in-memory matrix.
+- Chat stays responsive during folder checks and indexing and answers from
+  the last completed state (macOS: WAL database with background work off the
+  main thread).
+- Better Czech, Slovak, German and English search: common words are ignored
+  and inflected forms match by word stem.
+- Office files that previously failed (hyperlinks, text boxes, renamed main
+  parts, Strict Open XML, chart sheets) are read correctly and re-tried once
+  automatically.
 - Text files are decoded strictly (UTF-8, then the folder's fallback), so
   broken bytes are reported instead of silently replaced.
 - Embeddings use only embedding-capable providers. If an older install had
   Anthropic or OpenWebUI selected for embeddings, it switches once to local
   Ollama (`nomic-embed-text`) and tells you. Changing the chat provider never
   changes the embedding provider.
-- The database upgrades to schema v19 automatically. Existing indexes keep
+- The database upgrades to schema v21 automatically. Existing indexes keep
   working and are not converted; re-index when you change embedding model.
 
 ### Not in this release
