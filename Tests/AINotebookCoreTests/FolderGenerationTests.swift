@@ -780,6 +780,8 @@ final class FolderGenerationTests: XCTestCase {
         try await settle("periodic pass") {
             try store.runOnDatabase { try Int.fetchOne($0, sql: "SELECT count(*) FROM ingest_jobs WHERE state='queued'")! } == 1
         }
+        // The pass queues the scan before it reschedules; wait for both under parallel load.
+        try await settle("rescheduled") { await reconciler.nextReconcileAt == 4000 }
         let rescheduled = await reconciler.nextReconcileAt
         XCTAssertEqual(rescheduled, 4000)
         _ = try store.requestFolderScan(folderId: manual.id, verifyAll: true, now: 2201)
