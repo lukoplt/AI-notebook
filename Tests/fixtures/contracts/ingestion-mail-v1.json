@@ -1,0 +1,1080 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "text": "Subject: Příliš žluťoučký kůň úpěl\nFrom: Jan Novák <jan@example.cz>\nTo: Petr Svoboda <petr@example.cz>, Eva <eva@example.cz>\nCc: Jiří <jiri@example.cz>\nDate: Tue, 07 Oct 2026 10:15:00 +0200\n\nDobrý den,\n\nposílám podklady.  \n\n-- \nJan",
+        "title": "Příliš žluťoučký kůň úpěl"
+      },
+      "input": {
+        "asset": "ingestion/formats/plain-utf8.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-plain-utf8-encoded-words",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Žádost\nFrom: info@example.cz\nDate: Mon, 6 Oct 2026 08:00:00 +0000\n\nŽádost o schůzku, příští týden.\nSoft break= okend = literal =4 and =zz",
+        "title": "Žádost"
+      },
+      "input": {
+        "asset": "ingestion/formats/qp-latin2.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-quoted-printable-iso-8859-2",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Faktura č. 15\nFrom: \"Účtárna\" <ucto@example.cz>\nTo: klient@example.com\n\nVážený pane,\nzasílám fakturu č. 2026/15.\nS pozdravem",
+        "title": "Faktura č. 15"
+      },
+      "input": {
+        "asset": "ingestion/formats/base64-cp1250.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-base64-windows-1250",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Alternative\nFrom: a@example.com\n\nPlain version",
+        "title": "Alternative"
+      },
+      "input": {
+        "asset": "ingestion/formats/alternative.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-alternative-prefers-plain",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: HTML only\nFrom: news@example.com\n\nNadpis\nPrvní odstavec & další\nA\nB\n\nC\nx y\nčč&bogus; 1 < 2 link",
+        "title": "HTML only"
+      },
+      "input": {
+        "asset": "ingestion/formats/html-only.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-html-only",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Přílohy\nFrom: Tester <t@example.com>\nTo: x@example.com\nAttachments: Smlouva č. 1.pdf, Účet.xlsx, poznámky.txt\n\nViz přílohy.\n\nDruhý inline text.",
+        "title": "Přílohy"
+      },
+      "input": {
+        "asset": "ingestion/formats/mixed-attachments.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-mixed-attachments",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Bez kódování\nFrom: x@example.com\n\nPříliš žluťoučký kůň úpěl ďábelské ódy.",
+        "title": "Bez kódování"
+      },
+      "input": {
+        "asset": "ingestion/formats/no-charset.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-no-charset-fallback-cp1250",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Bez kódování\nFrom: x@example.com\n\nPøíliš žlu�ouèký kùò úpìl ïábelské ódy.",
+        "title": "Bez kódování"
+      },
+      "input": {
+        "asset": "ingestion/formats/no-charset.eml",
+        "fallback": "none",
+        "limits": {}
+      },
+      "name": "eml-no-charset-fallback-none",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: LF only folded continuation\nFrom: jan@example.cz\n\nLine one\nLine two\nLine three",
+        "title": "LF only folded continuation"
+      },
+      "input": {
+        "asset": "ingestion/formats/mbox-lf.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-mbox-lf-only",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "officeLimit"
+      },
+      "input": {
+        "asset": "ingestion/formats/depth-bomb.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-depth-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "textLimit"
+      },
+      "input": {
+        "asset": "ingestion/formats/long.eml",
+        "fallback": "cp1250",
+        "limits": {
+          "maxExtractedChars": 100
+        }
+      },
+      "name": "eml-text-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "officeLimit"
+      },
+      "input": {
+        "asset": "ingestion/formats/base64-cp1250.eml",
+        "fallback": "cp1250",
+        "limits": {
+          "maxOfficeDecompressedBytes": 20
+        }
+      },
+      "name": "eml-decoded-budget",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "fileLimit"
+      },
+      "input": {
+        "asset": "ingestion/formats/long.eml",
+        "fallback": "cp1250",
+        "limits": {
+          "maxFileBytes": 64
+        }
+      },
+      "name": "eml-file-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Porada – zápis\nFrom: Jana Dvořáková <jana@example.cz>\nTo: Tým projektu; Petr Novák\nDate: 2026-10-07T08:15:00Z\nAttachments: Rozpočet 2027.xlsx, Pozvánka\n\nZápis z porady:\n\n1. Rozpočet 😀\n2. Termíny",
+        "title": "Porada – zápis"
+      },
+      "input": {
+        "asset": "ingestion/formats/outlook-saved-as.eml",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "eml-containing-cfb-reads-as-msg",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Porada – zápis\nFrom: Jana Dvořáková <jana@example.cz>\nTo: Tým projektu; Petr Novák\nDate: 2026-10-07T08:15:00Z\nAttachments: Rozpočet 2027.xlsx, Pozvánka\n\nZápis z porady:\n\n1. Rozpočet 😀\n2. Termíny",
+        "title": "Porada – zápis"
+      },
+      "input": {
+        "asset": "ingestion/formats/unicode.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-unicode",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Příliš žluťoučký kůň\nFrom: Účetní oddělení <ucto@example.cz>\nTo: Novák Jiří\nCc: Eva\nDate: 2025-12-31T23:59:59Z\n\nDobrý den,\nv příloze faktura.",
+        "title": "Příliš žluťoučký kůň"
+      },
+      "input": {
+        "asset": "ingestion/formats/ansi-cp1250.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-ansi-cp1250",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Příliš žluťoučký kůň\nFrom: Účetní oddělení <ucto@example.cz>\nTo: Novák Jiří\nCc: Eva\nDate: 2025-12-31T23:59:59Z\n\nDobrý den,\nv příloze faktura.",
+        "title": "Příliš žluťoučký kůň"
+      },
+      "input": {
+        "asset": "ingestion/formats/ansi-cp1250.msg",
+        "fallback": "none",
+        "limits": {}
+      },
+      "name": "msg-ansi-codepage-beats-fallback",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Kódová stránka č. 1250 chybí\n\nŽluťoučký kůň úpěl, ďábelské ódy.",
+        "title": "Kódová stránka č. 1250 chybí"
+      },
+      "input": {
+        "asset": "ingestion/formats/ansi-no-codepage.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-ansi-no-codepage-fallback-cp1250",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Kódová stránka è. 1250 chybí\n\nŽlu�ouèký kùò úpìl, ïábelské ódy.",
+        "title": "Kódová stránka è. 1250 chybí"
+      },
+      "input": {
+        "asset": "ingestion/formats/ansi-no-codepage.msg",
+        "fallback": "none",
+        "limits": {}
+      },
+      "name": "msg-ansi-no-codepage-fallback-none",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: HTML only\nFrom: Web <web@example.com>\n\nDobrý den,\nHTML tělo.",
+        "title": "HTML only"
+      },
+      "input": {
+        "asset": "ingestion/formats/html-only.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-html-only-v4-sectors",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "Subject: Large body\n\nŘádek 0000 s textem.\nŘádek 0001 s textem.\nŘádek 0002 s textem.\nŘádek 0003 s textem.\nŘádek 0004 s textem.\nŘádek 0005 s textem.\nŘádek 0006 s textem.\nŘádek 0007 s textem.\nŘádek 0008 s textem.\nŘádek 0009 s textem.\nŘádek 0010 s textem.\nŘádek 0011 s textem.\nŘádek 0012 s textem.\nŘádek 0013 s textem.\nŘádek 0014 s textem.\nŘádek 0015 s textem.\nŘádek 0016 s textem.\nŘádek 0017 s textem.\nŘádek 0018 s textem.\nŘádek 0019 s textem.\nŘádek 0020 s textem.\nŘádek 0021 s textem.\nŘádek 0022 s textem.\nŘádek 0023 s textem.\nŘádek 0024 s textem.\nŘádek 0025 s textem.\nŘádek 0026 s textem.\nŘádek 0027 s textem.\nŘádek 0028 s textem.\nŘádek 0029 s textem.\nŘádek 0030 s textem.\nŘádek 0031 s textem.\nŘádek 0032 s textem.\nŘádek 0033 s textem.\nŘádek 0034 s textem.\nŘádek 0035 s textem.\nŘádek 0036 s textem.\nŘádek 0037 s textem.\nŘádek 0038 s textem.\nŘádek 0039 s textem.\nŘádek 0040 s textem.\nŘádek 0041 s textem.\nŘádek 0042 s textem.\nŘádek 0043 s textem.\nŘádek 0044 s textem.\nŘádek 0045 s textem.\nŘádek 0046 s textem.\nŘádek 0047 s textem.\nŘádek 0048 s textem.\nŘádek 0049 s textem.\nŘádek 0050 s textem.\nŘádek 0051 s textem.\nŘádek 0052 s textem.\nŘádek 0053 s textem.\nŘádek 0054 s textem.\nŘádek 0055 s textem.\nŘádek 0056 s textem.\nŘádek 0057 s textem.\nŘádek 0058 s textem.\nŘádek 0059 s textem.\nŘádek 0060 s textem.\nŘádek 0061 s textem.\nŘádek 0062 s textem.\nŘádek 0063 s textem.\nŘádek 0064 s textem.\nŘádek 0065 s textem.\nŘádek 0066 s textem.\nŘádek 0067 s textem.\nŘádek 0068 s textem.\nŘádek 0069 s textem.\nŘádek 0070 s textem.\nŘádek 0071 s textem.\nŘádek 0072 s textem.\nŘádek 0073 s textem.\nŘádek 0074 s textem.\nŘádek 0075 s textem.\nŘádek 0076 s textem.\nŘádek 0077 s textem.\nŘádek 0078 s textem.\nŘádek 0079 s textem.\nŘádek 0080 s textem.\nŘádek 0081 s textem.\nŘádek 0082 s textem.\nŘádek 0083 s textem.\nŘádek 0084 s textem.\nŘádek 0085 s textem.\nŘádek 0086 s textem.\nŘádek 0087 s textem.\nŘádek 0088 s textem.\nŘádek 0089 s textem.\nŘádek 0090 s textem.\nŘádek 0091 s textem.\nŘádek 0092 s textem.\nŘádek 0093 s textem.\nŘádek 0094 s textem.\nŘádek 0095 s textem.\nŘádek 0096 s textem.\nŘádek 0097 s textem.\nŘádek 0098 s textem.\nŘádek 0099 s textem.\nŘádek 0100 s textem.\nŘádek 0101 s textem.\nŘádek 0102 s textem.\nŘádek 0103 s textem.\nŘádek 0104 s textem.\nŘádek 0105 s textem.\nŘádek 0106 s textem.\nŘádek 0107 s textem.\nŘádek 0108 s textem.\nŘádek 0109 s textem.\nŘádek 0110 s textem.\nŘádek 0111 s textem.\nŘádek 0112 s textem.\nŘádek 0113 s textem.\nŘádek 0114 s textem.\nŘádek 0115 s textem.\nŘádek 0116 s textem.\nŘádek 0117 s textem.\nŘádek 0118 s textem.\nŘádek 0119 s textem.\nŘádek 0120 s textem.\nŘádek 0121 s textem.\nŘádek 0122 s textem.\nŘádek 0123 s textem.\nŘádek 0124 s textem.\nŘádek 0125 s textem.\nŘádek 0126 s textem.\nŘádek 0127 s textem.\nŘádek 0128 s textem.\nŘádek 0129 s textem.\nŘádek 0130 s textem.\nŘádek 0131 s textem.\nŘádek 0132 s textem.\nŘádek 0133 s textem.\nŘádek 0134 s textem.\nŘádek 0135 s textem.\nŘádek 0136 s textem.\nŘádek 0137 s textem.\nŘádek 0138 s textem.\nŘádek 0139 s textem.\nŘádek 0140 s textem.\nŘádek 0141 s textem.\nŘádek 0142 s textem.\nŘádek 0143 s textem.\nŘádek 0144 s textem.\nŘádek 0145 s textem.\nŘádek 0146 s textem.\nŘádek 0147 s textem.\nŘádek 0148 s textem.\nŘádek 0149 s textem.\nŘádek 0150 s textem.\nŘádek 0151 s textem.\nŘádek 0152 s textem.\nŘádek 0153 s textem.\nŘádek 0154 s textem.\nŘádek 0155 s textem.\nŘádek 0156 s textem.\nŘádek 0157 s textem.\nŘádek 0158 s textem.\nŘádek 0159 s textem.\nŘádek 0160 s textem.\nŘádek 0161 s textem.\nŘádek 0162 s textem.\nŘádek 0163 s textem.\nŘádek 0164 s textem.\nŘádek 0165 s textem.\nŘádek 0166 s textem.\nŘádek 0167 s textem.\nŘádek 0168 s textem.\nŘádek 0169 s textem.\nŘádek 0170 s textem.\nŘádek 0171 s textem.\nŘádek 0172 s textem.\nŘádek 0173 s textem.\nŘádek 0174 s textem.\nŘádek 0175 s textem.\nŘádek 0176 s textem.\nŘádek 0177 s textem.\nŘádek 0178 s textem.\nŘádek 0179 s textem.\nŘádek 0180 s textem.\nŘádek 0181 s textem.\nŘádek 0182 s textem.\nŘádek 0183 s textem.\nŘádek 0184 s textem.\nŘádek 0185 s textem.\nŘádek 0186 s textem.\nŘádek 0187 s textem.\nŘádek 0188 s textem.\nŘádek 0189 s textem.\nŘádek 0190 s textem.\nŘádek 0191 s textem.\nŘádek 0192 s textem.\nŘádek 0193 s textem.\nŘádek 0194 s textem.\nŘádek 0195 s textem.\nŘádek 0196 s textem.\nŘádek 0197 s textem.\nŘádek 0198 s textem.\nŘádek 0199 s textem.\nŘádek 0200 s textem.\nŘádek 0201 s textem.\nŘádek 0202 s textem.\nŘádek 0203 s textem.\nŘádek 0204 s textem.\nŘádek 0205 s textem.\nŘádek 0206 s textem.\nŘádek 0207 s textem.\nŘádek 0208 s textem.\nŘádek 0209 s textem.\nŘádek 0210 s textem.\nŘádek 0211 s textem.\nŘádek 0212 s textem.\nŘádek 0213 s textem.\nŘádek 0214 s textem.\nŘádek 0215 s textem.\nŘádek 0216 s textem.\nŘádek 0217 s textem.\nŘádek 0218 s textem.\nŘádek 0219 s textem.\nŘádek 0220 s textem.\nŘádek 0221 s textem.\nŘádek 0222 s textem.\nŘádek 0223 s textem.\nŘádek 0224 s textem.\nŘádek 0225 s textem.\nŘádek 0226 s textem.\nŘádek 0227 s textem.\nŘádek 0228 s textem.\nŘádek 0229 s textem.\nŘádek 0230 s textem.\nŘádek 0231 s textem.\nŘádek 0232 s textem.\nŘádek 0233 s textem.\nŘádek 0234 s textem.\nŘádek 0235 s textem.\nŘádek 0236 s textem.\nŘádek 0237 s textem.\nŘádek 0238 s textem.\nŘádek 0239 s textem.\nŘádek 0240 s textem.\nŘádek 0241 s textem.\nŘádek 0242 s textem.\nŘádek 0243 s textem.\nŘádek 0244 s textem.\nŘádek 0245 s textem.\nŘádek 0246 s textem.\nŘádek 0247 s textem.\nŘádek 0248 s textem.\nŘádek 0249 s textem.",
+        "title": "Large body"
+      },
+      "input": {
+        "asset": "ingestion/formats/large-body.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-large-body-regular-sectors",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "corruptArchive"
+      },
+      "input": {
+        "asset": "ingestion/formats/fat-loop.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-fat-loop",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "corruptArchive"
+      },
+      "input": {
+        "asset": "ingestion/formats/tree-cycle.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-directory-cycle",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "corruptArchive"
+      },
+      "input": {
+        "asset": "ingestion/formats/bad-header.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-bad-header",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "corruptArchive"
+      },
+      "input": {
+        "asset": "ingestion/formats/not-cfb.msg",
+        "fallback": "cp1250",
+        "limits": {}
+      },
+      "name": "msg-not-cfb",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "officeLimit"
+      },
+      "input": {
+        "asset": "ingestion/formats/unicode.msg",
+        "fallback": "cp1250",
+        "limits": {
+          "maxOfficeDecompressedBytes": 1024
+        }
+      },
+      "name": "msg-read-budget",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "textLimit"
+      },
+      "input": {
+        "asset": "ingestion/formats/large-body.msg",
+        "fallback": "cp1250",
+        "limits": {
+          "maxExtractedChars": 200
+        }
+      },
+      "name": "msg-text-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "č"
+      },
+      "input": {
+        "fallback": "cp1250",
+        "text": "=?utf-8?Q?=C4?= =?utf-8?Q?=8D?="
+      },
+      "name": "header-adjacent-split-utf8",
+      "operation": "decode-header"
+    },
+    {
+      "expected": {
+        "text": "Žž text"
+      },
+      "input": {
+        "fallback": "cp1250",
+        "text": "=?iso-8859-2?Q?=AE?=  =?utf-8?B?xb4=?= text"
+      },
+      "name": "header-mixed-charsets",
+      "operation": "decode-header"
+    },
+    {
+      "expected": {
+        "text": "a b c d"
+      },
+      "input": {
+        "fallback": "cp1250",
+        "text": "a =?utf-8?Q?b?= c =?utf-8?Q?d?="
+      },
+      "name": "header-literal-between",
+      "operation": "decode-header"
+    },
+    {
+      "expected": {
+        "text": "=?utf-8?X?abc?= =?utf-8?B?***?= =?utf-8?Q?=Z1?="
+      },
+      "input": {
+        "fallback": "cp1250",
+        "text": "=?utf-8?X?abc?= =?utf-8?B?***?= =?utf-8?Q?=Z1?="
+      },
+      "name": "header-invalid-word-kept",
+      "operation": "decode-header"
+    },
+    {
+      "expected": {
+        "text": "Příklad textu"
+      },
+      "input": {
+        "fallback": "cp1250",
+        "text": "=?UTF-8*cs?Q?P=C5=99=C3=ADklad_textu?="
+      },
+      "name": "header-lang-suffix-and-underscore",
+      "operation": "decode-header"
+    },
+    {
+      "expected": {
+        "text": "ĂĹÎé"
+      },
+      "input": {
+        "fallback": "cp1250",
+        "text": "=?koi8-r?B?w8XO?= =?x-unknown?Q?=C3=A9?="
+      },
+      "name": "header-unknown-charset-auto",
+      "operation": "decode-header"
+    },
+    {
+      "expected": {
+        "text": "a b"
+      },
+      "input": {
+        "fallback": "cp1250",
+        "text": "  a\t\r\n b  "
+      },
+      "name": "header-whitespace-collapse",
+      "operation": "decode-header"
+    },
+    {
+      "expected": {
+        "text": "a\nb\n\nc\nd e"
+      },
+      "input": {
+        "html": "<div>a</div><div>b<br><br><br>c</div><p>  d  e </p>"
+      },
+      "name": "html-blocks-and-breaks",
+      "operation": "html-to-text"
+    },
+    {
+      "expected": {
+        "text": "&<>\"' xAB���&copy;&amp"
+      },
+      "input": {
+        "html": "&amp;&lt;&gt;&quot;&apos;&nbsp;x&#65;&#x42;&#0;&#xD800;&#99999999;&copy;&amp"
+      },
+      "name": "html-entities",
+      "operation": "html-to-text"
+    },
+    {
+      "expected": {
+        "text": "z"
+      },
+      "input": {
+        "html": "<HEAD><TITLE>t</TITLE></HEAD><Script>x<y</SCRIPT>z<style>s"
+      },
+      "name": "html-skipped-elements",
+      "operation": "html-to-text"
+    },
+    {
+      "expected": {
+        "text": "abc"
+      },
+      "input": {
+        "html": "<!doctype html>a<!-- <p>x</p> -->b<?xml?>c<!-- open"
+      },
+      "name": "html-comments-and-doctype",
+      "operation": "html-to-text"
+    },
+    {
+      "expected": {
+        "text": "link tail"
+      },
+      "input": {
+        "html": "<a title=\"1>2\" alt='3>4'>link</a> <img src=x>tail"
+      },
+      "name": "html-quoted-attribute",
+      "operation": "html-to-text"
+    },
+    {
+      "expected": {
+        "text": "a b\nc"
+      },
+      "input": {
+        "html": "<table><tr><td>a</td><td>b</td></tr><tr><th>c</th></tr></table>"
+      },
+      "name": "html-cells",
+      "operation": "html-to-text"
+    },
+    {
+      "expected": {
+        "text": "1 < 2 and 3 <> 4 <5"
+      },
+      "input": {
+        "html": "1 < 2 and 3 <> 4 <5"
+      },
+      "name": "html-literal-angle",
+      "operation": "html-to-text"
+    },
+    {
+      "expected": {
+        "text": "€�‚�„…†‡�‰Š‹ŚŤŽŹ�‘’“”•–—�™š›śťžź ˇ˘Ł¤Ą¦§¨©Ş«¬­®Ż°±˛ł´µ¶·¸ąş»Ľ˝ľżŔÁÂĂÄĹĆÇČÉĘËĚÍÎĎĐŃŇÓÔŐÖ×ŘŮÚŰÜÝŢßŕáâăäĺćçčéęëěíîďđńňóôőö÷řůúűüýţ˙"
+      },
+      "input": {
+        "bytes": [
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232,
+          233,
+          234,
+          235,
+          236,
+          237,
+          238,
+          239,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255
+        ],
+        "charset": "windows-1250",
+        "fallback": "none"
+      },
+      "name": "charset-table-windows-1250",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "€�‚ƒ„…†‡ˆ‰Š‹Œ�Ž��‘’“”•–—˜™š›œ�žŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
+      },
+      "input": {
+        "bytes": [
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232,
+          233,
+          234,
+          235,
+          236,
+          237,
+          238,
+          239,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255
+        ],
+        "charset": "windows-1252",
+        "fallback": "none"
+      },
+      "name": "charset-table-windows-1252",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": " Ą˘Ł¤ĽŚ§¨ŠŞŤŹ­ŽŻ°ą˛ł´ľśˇ¸šşťź˝žżŔÁÂĂÄĹĆÇČÉĘËĚÍÎĎĐŃŇÓÔŐÖ×ŘŮÚŰÜÝŢßŕáâăäĺćçčéęëěíîďđńňóôőö÷řůúűüýţ˙"
+      },
+      "input": {
+        "bytes": [
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232,
+          233,
+          234,
+          235,
+          236,
+          237,
+          238,
+          239,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255
+        ],
+        "charset": "iso-8859-2",
+        "fallback": "none"
+      },
+      "name": "charset-table-iso-8859-2",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "Žluť"
+      },
+      "input": {
+        "bytes": [
+          197,
+          189,
+          108,
+          117,
+          197,
+          165
+        ],
+        "charset": "UTF-8",
+        "fallback": "none"
+      },
+      "name": "charset-utf8-valid",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "čš"
+      },
+      "input": {
+        "bytes": [
+          232,
+          154
+        ],
+        "charset": "utf-8",
+        "fallback": "cp1250"
+      },
+      "name": "charset-utf8-invalid-fallback-cp1250",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "èš"
+      },
+      "input": {
+        "bytes": [
+          232,
+          154
+        ],
+        "charset": "utf-8",
+        "fallback": "none"
+      },
+      "name": "charset-utf8-invalid-fallback-none",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "€é"
+      },
+      "input": {
+        "bytes": [
+          128,
+          233
+        ],
+        "charset": "ISO-8859-1",
+        "fallback": "cp1250"
+      },
+      "name": "charset-latin1-is-windows-1252",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "Š"
+      },
+      "input": {
+        "bytes": [
+          169
+        ],
+        "charset": "\"latin2\"",
+        "fallback": "none"
+      },
+      "name": "charset-quoted-label",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "č"
+      },
+      "input": {
+        "bytes": [
+          232
+        ],
+        "charset": "x-mac-ce",
+        "fallback": "cp1250"
+      },
+      "name": "charset-unknown-label-auto",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "À¯"
+      },
+      "input": {
+        "bytes": [
+          192,
+          175
+        ],
+        "charset": "",
+        "fallback": "none"
+      },
+      "name": "charset-overlong-rejected",
+      "operation": "decode-charset"
+    },
+    {
+      "expected": {
+        "text": "1970-01-01T00:00:00Z"
+      },
+      "input": {
+        "value": 116444736000000000
+      },
+      "name": "filetime-epoch",
+      "operation": "filetime"
+    },
+    {
+      "expected": {
+        "text": "2024-02-29T12:00:01Z"
+      },
+      "input": {
+        "value": 133536816010000000
+      },
+      "name": "filetime-leap-day",
+      "operation": "filetime"
+    },
+    {
+      "expected": {
+        "text": ""
+      },
+      "input": {
+        "value": 0
+      },
+      "name": "filetime-zero",
+      "operation": "filetime"
+    },
+    {
+      "expected": {
+        "text": ""
+      },
+      "input": {
+        "value": 2650467744000000000
+      },
+      "name": "filetime-beyond-9999",
+      "operation": "filetime"
+    }
+  ],
+  "contract": "ingestion-mail",
+  "limits": {
+    "maxAttachments": 10000,
+    "maxCompoundEntries": 100000,
+    "maxMimeDepth": 32,
+    "maxMimeParts": 10000
+  },
+  "version": 1
+}

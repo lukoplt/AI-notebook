@@ -22,6 +22,28 @@ import NaturalLanguage
 
 // MARK: - Arguments
 
+let evalUsage = """
+usage: ainotebook-eval --dataset multilingual [--root DIR]
+                       [--mode lexical|ollama] [--model NAME] [--host URL]
+                       [--top-k N] [--fetch-k N] [--json FILE] [--out FILE.md]
+                       [--validate-only]
+       ainotebook-eval --benchmark|--calibrate [--mode live|fixture] [--root DIR]
+                       [--profiles all|ID,...] [--chunks N,...] [--chat-model NAME]
+                       [--calibration FILE] [--ollama-pid N] [--tokenizer-root DIR]
+                       [--embedding-counts all] [--queries N] [--warmup N]
+                       [--concurrent both|off|on] --json FILE --out FILE.md
+       ainotebook-eval [--corpus DIR] [--queries FILE]
+                       [--embedder lexical|nl|ollama] [--model NAME]
+                       [--host URL] [--out FILE.md]
+
+Multilingual defaults: root eval/multilingual, mode lexical, top-k 16, fetch-k 32.
+Lexical mode measures FTS retrieval without embedding calls.
+Ollama mode requires --model NAME and an already available model.
+--validate-only validates the corpus without creating a provider or eval store.
+The English path retains its lexical hashing embedder and recall/cut-sweep report.
+--help shows both paths and exits.
+"""
+
 struct Options {
     var corpus = "eval/corpus"
     var queries = "eval/queries.json"
@@ -52,11 +74,7 @@ func parseOptions() -> Options {
         case "--host":     o.host = value()
         case "--out":      o.out = value()
         case "-h", "--help":
-            print("""
-            usage: ainotebook-eval [--corpus DIR] [--queries FILE]
-                                   [--embedder lexical|nl|ollama] [--model NAME]
-                                   [--host URL] [--out FILE.md]
-            """)
+            print(evalUsage)
             exit(0)
         default:
             FileHandle.standardError.write(Data("unknown flag \(flag)\n".utf8))
@@ -230,6 +248,85 @@ struct QueryDiagnostic {
 }
 
 // MARK: - Run
+
+let evalArguments = Array(CommandLine.arguments.dropFirst())
+if evalArguments.contains("--help") || evalArguments.contains("-h") {
+    print(evalUsage)
+    exit(0)
+}
+// WP7 benchmark / chat-token calibration (benchmark-v1 §8 cli). Exit 0 complete,
+// 1 incomplete/provider/corpus/I-O failure, 2 argument error. Outputs are written
+// atomically (sibling temporary file + rename) only after the report validates.
+if evalArguments.contains("--benchmark") || evalArguments.contains("--calibrate") {
+    let benchmarkOptions: BenchmarkOptions
+    do { benchmarkOptions = try BenchmarkOptions.parse(evalArguments) } catch {
+        FileHandle.standardError.write(Data("invalidArguments\n".utf8))
+        exit(2)
+    }
+    do {
+        let json: Data, markdown: String, complete: Bool
+        if benchmarkOptions.command == "benchmark" {
+            let report = try await BenchmarkRunner.run(options: benchmarkOptions)
+            try report.validate()
+            (json, markdown, complete) = (try report.jsonData(), report.markdown(), report.status == "complete")
+        } else {
+            let report = try await BenchmarkRunner.calibrate(options: benchmarkOptions)
+            try report.validate()
+            (json, markdown, complete) = (try report.jsonData(), report.markdown(), report.status == "complete")
+        }
+        try json.write(to: URL(fileURLWithPath: benchmarkOptions.json), options: .atomic)
+        try Data(markdown.utf8).write(to: URL(fileURLWithPath: benchmarkOptions.out), options: .atomic)
+        print(markdown, terminator: "")
+        exit(complete ? 0 : 1)
+    } catch {
+        let code: String
+        switch error {
+        case let e as BenchmarkError: code = e.code
+        case let e as EmbeddingProfileError: code = e.code
+        case let e as EvalFailure: code = e.code
+        case is CancellationError: code = "cancelled"
+        default: code = "benchmark_failed"
+        }
+        FileHandle.standardError.write(Data((code + "\n").utf8))
+        exit(1)
+    }
+}
+if evalArguments.contains("--dataset") {
+    do {
+        let options = try EvalOptions.parse(evalArguments)
+        let loaded = try EvalRunner.load(root: URL(fileURLWithPath: options.root))
+        if options.validateOnly {
+            print("Validated \(loaded.corpus.documents.count) documents and \(loaded.corpus.questions.count) queries.")
+            exit(0)
+        }
+        let client: (any EmbeddingProducing)?
+        if options.mode == "ollama" {
+            guard let url = URL(string: options.host) else { throw EvalFailure("usage") }
+            client = OllamaClient(baseURL: url)
+        } else {
+            client = nil
+        }
+        let report = try await EvalRunner.run(corpus: loaded.corpus, corpusHash: loaded.hash,
+            options: options, embedder: client)
+        let markdown = report.markdown()
+        let json = try report.jsonData()
+        print(markdown, terminator: "")
+        if let path = options.jsonPath {
+            try json.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+        if let path = options.markdownPath {
+            try Data(markdown.utf8).write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+        exit(0)
+    } catch let error as EvalFailure {
+        let message = error.code + "\n" + (error.code == "usage" ? evalUsage + "\n" : "")
+        FileHandle.standardError.write(Data(message.utf8))
+        exit(error.code == "usage" ? 2 : 1)
+    } catch {
+        FileHandle.standardError.write(Data("eval_failed: \(error.localizedDescription)\n".utf8))
+        exit(1)
+    }
+}
 
 let opts = parseOptions()
 let cwd = FileManager.default.currentDirectoryPath

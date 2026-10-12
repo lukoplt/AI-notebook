@@ -1,0 +1,15 @@
+Subject: Alternative
+From: a@example.com
+Content-Type: multipart/alternative; boundary="ALT"
+
+This is a multi-part message in MIME format.
+--ALT
+Content-Type: text/html; charset=utf-8
+
+<p>HTML <b>version</b></p>
+--ALT
+Content-Type: text/plain; charset=utf-8
+
+Plain version
+--ALT--
+epilogue ignored

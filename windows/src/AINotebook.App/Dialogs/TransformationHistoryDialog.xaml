@@ -32,25 +32,25 @@
                             <TextBlock Text="{x:Bind TemplateName}" Style="{ThemeResource BodyStrongTextBlockStyle}"
                                        TextTrimming="CharacterEllipsis"/>
                             <TextBlock Text="{x:Bind SourceTitle}" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                       Foreground="{ThemeResource Text2Brush}"
                                        TextTrimming="CharacterEllipsis"/>
                             <TextBlock Text="{x:Bind RanAt}" Style="{ThemeResource CaptionTextBlockStyle}"
-                                       Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                       Foreground="{ThemeResource Text3Brush}"/>
                         </StackPanel>
                         <FontIcon Grid.Column="1" Glyph="" FontSize="12"
                                   VerticalAlignment="Center"
-                                  Foreground="{ThemeResource TextFillColorTertiaryBrush}"/>
+                                  Foreground="{ThemeResource Text3Brush}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
         <TextBlock Grid.Row="1" x:Name="EmptyText" TextWrapping="Wrap"
-                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                   Foreground="{ThemeResource Text2Brush}"
                    Visibility="Collapsed"/>
 
         <TextBlock Grid.Row="2" x:Name="ErrorText"
                    Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-                   Foreground="Red" TextWrapping="Wrap"/>
+                   Foreground="{ThemeResource DangerBrush}" TextWrapping="Wrap"/>
     </Grid>
 </ContentDialog>

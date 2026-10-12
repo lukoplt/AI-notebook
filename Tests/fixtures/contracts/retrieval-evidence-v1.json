@@ -1,0 +1,240 @@
+{
+  "canonicalText": "A😀B é C\nneedle tail",
+  "cases": [
+    {
+      "expectedSnippet": "A😀B é ",
+      "expectedSpans": [
+        {
+          "end": 7,
+          "start": 0
+        }
+      ],
+      "expectedText": "A😀B é ",
+      "name": "full-text",
+      "reference": {
+        "chunkId": 1020,
+        "ord": 0,
+        "revisionId": 102,
+        "sourceId": 1
+      },
+      "row": {
+        "chunkText": "A😀B é ",
+        "chunkerVersion": 2,
+        "end": 7,
+        "pageHint": null,
+        "start": 0
+      }
+    },
+    {
+      "expectedSnippet": "é C\nnee",
+      "expectedSpans": [
+        {
+          "end": 12,
+          "start": 4
+        }
+      ],
+      "expectedText": "é C\nnee",
+      "name": "supplementary-prefix",
+      "reference": {
+        "chunkId": 1021,
+        "ord": 1,
+        "revisionId": 102,
+        "sourceId": 1
+      },
+      "row": {
+        "chunkText": "é C\nnee",
+        "chunkerVersion": 2,
+        "end": 12,
+        "pageHint": null,
+        "start": 4
+      }
+    },
+    {
+      "expectedNeighbours": [
+        {
+          "chunkId": 1020,
+          "ord": 0,
+          "revisionId": 102,
+          "sourceId": 1
+        },
+        {
+          "chunkId": 1022,
+          "ord": 2,
+          "revisionId": 102,
+          "sourceId": 1
+        }
+      ],
+      "name": "published-neighbours",
+      "radius": 1,
+      "reference": {
+        "chunkId": 1021,
+        "ord": 1,
+        "revisionId": 102,
+        "sourceId": 1
+      }
+    },
+    {
+      "expectedNeighbours": [
+        {
+          "chunkId": 1020,
+          "ord": 0,
+          "revisionId": 102,
+          "sourceId": 1
+        },
+        {
+          "chunkId": 1021,
+          "ord": 1,
+          "revisionId": 102,
+          "sourceId": 1
+        }
+      ],
+      "mayMerge": false,
+      "name": "old-vector",
+      "publishedRevisionId": 102,
+      "radius": 1,
+      "reference": {
+        "chunkId": 1010,
+        "ord": 0,
+        "revisionId": 101,
+        "sourceId": 1
+      }
+    },
+    {
+      "expectedSnippet": "legacy whole text",
+      "expectedSpans": [],
+      "expectedText": "legacy whole text",
+      "name": "legacy",
+      "row": {
+        "chunkText": "legacy whole text",
+        "chunkerVersion": 1,
+        "end": null,
+        "pageHint": null,
+        "start": null
+      }
+    },
+    {
+      "expectedError": "invalidSpan",
+      "name": "invalid-span",
+      "row": {
+        "chunkText": "A😀B é C\nneedle tail",
+        "chunkerVersion": 2,
+        "end": 99,
+        "pageHint": null,
+        "start": 0
+      }
+    },
+    {
+      "expectedError": "revisionMismatch",
+      "name": "wrong-revision",
+      "reference": {
+        "chunkId": 1020,
+        "ord": 0,
+        "revisionId": 101,
+        "sourceId": 1
+      }
+    },
+    {
+      "expectedSnippet": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+      "expectedSpans": [
+        {
+          "end": 241,
+          "start": 0
+        }
+      ],
+      "expectedText": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+      "name": "snippet",
+      "row": {
+        "canonicalText": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+        "chunkText": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+        "chunkerVersion": 2,
+        "end": 241,
+        "pageHint": null,
+        "start": 0
+      }
+    },
+    {
+      "events": [
+        {
+          "kind": "setAvailability",
+          "sourceId": 1,
+          "value": "missing"
+        }
+      ],
+      "expectedPassages": [],
+      "name": "revoked",
+      "reference": {
+        "chunkId": 1020,
+        "ord": 0,
+        "revisionId": 102,
+        "sourceId": 1
+      }
+    },
+    {
+      "currentRevisionId": 102,
+      "deletedChunkId": 1010,
+      "deletedGenerationId": 90,
+      "deletedRevisionId": 101,
+      "deletedVectorChunkId": 1010,
+      "expectedText": "needle revision 101",
+      "name": "gc-pin",
+      "publishedRevisionId": 102,
+      "reference": {
+        "chunkId": 1010,
+        "ord": 0,
+        "revisionId": 101,
+        "sourceId": 1
+      },
+      "retainedChunkIds": [
+        1010,
+        1020
+      ],
+      "retainedRevisionIds": [
+        101,
+        102
+      ],
+      "retireGenerationId": 90,
+      "survivingChunkIds": [
+        1020
+      ],
+      "survivingRevisionIds": [
+        102
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": 1020,
+      "chunkText": "A😀B é ",
+      "chunkerVersion": 2,
+      "end": 7,
+      "ord": 0,
+      "revisionId": 102,
+      "sourceId": 1,
+      "start": 0
+    },
+    {
+      "chunkId": 1021,
+      "chunkText": "é C\nnee",
+      "chunkerVersion": 2,
+      "end": 12,
+      "ord": 1,
+      "revisionId": 102,
+      "sourceId": 1,
+      "start": 4
+    },
+    {
+      "chunkId": 1022,
+      "chunkText": "dle tail",
+      "chunkerVersion": 2,
+      "end": 20,
+      "ord": 2,
+      "revisionId": 102,
+      "sourceId": 1,
+      "start": 12
+    }
+  ],
+  "contract": "retrieval-evidence",
+  "revisionId": 102,
+  "sourceId": 1,
+  "version": 1
+}

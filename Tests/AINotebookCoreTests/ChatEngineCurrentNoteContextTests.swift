@@ -19,7 +19,7 @@ final class ChatEngineCurrentNoteContextTests: XCTestCase {
         }
     }
 
-    func testCurrentNoteContextAppearsInSystemPrompt() async throws {
+    func testCurrentNoteContextAppearsOnlyInLabelledUserNoteSection() async throws {
         let store = try NotebookStore(path: .inMemory)
         let nb = try store.createNotebook(name: "NB")
         let session = try store.createChatSession(notebookId: nb.id!, title: "T")
@@ -35,10 +35,15 @@ final class ChatEngineCurrentNoteContextTests: XCTestCase {
             currentNoteContent: "Ingredient list: flour 500g, water 300g."
         ) { _ in }
 
-        let systemTurn = try XCTUnwrap(chat.captured.first?.first)
+        let turns = try XCTUnwrap(chat.captured.first)
+        let systemTurn = try XCTUnwrap(turns.first)
         XCTAssertEqual(systemTurn.role, .system)
-        XCTAssertTrue(systemTurn.content.contains("CURRENTLY OPEN NOTE"))
-        XCTAssertTrue(systemTurn.content.contains("flour 500g"))
+        XCTAssertFalse(systemTurn.content.contains("flour 500g"), "the open note is data, never system text")
+        let finalTurn = try XCTUnwrap(turns.last)
+        XCTAssertEqual(finalTurn.role, .user)
+        XCTAssertTrue(finalTurn.content.contains(
+            "[NOTE — NOT CONTENT OF THE SELECTED FOLDER]\nIngredient list: flour 500g, water 300g.\n[/NOTE — NOT CONTENT OF THE SELECTED FOLDER]"))
+        XCTAssertEqual(turns.filter { $0.content.contains("flour 500g") }.count, 1)
     }
 
     func testNilCurrentNoteContextLeavesPromptUnchanged() async throws {
@@ -56,7 +61,8 @@ final class ChatEngineCurrentNoteContextTests: XCTestCase {
             userText: "what?"
         ) { _ in }
 
-        let systemTurn = try XCTUnwrap(chat.captured.first?.first)
-        XCTAssertFalse(systemTurn.content.contains("CURRENTLY OPEN NOTE"))
+        let turns = try XCTUnwrap(chat.captured.first)
+        XCTAssertFalse(turns.contains { $0.content.contains("NOT CONTENT OF THE SELECTED FOLDER") })
+        XCTAssertFalse(turns.contains { $0.content.contains("CURRENTLY OPEN NOTE") })
     }
 }

@@ -1,0 +1,684 @@
+{
+  "contract": "budget",
+  "version": 1,
+  "cases": [
+    {
+      "name": "default-8k-czech-chunks",
+      "input": {
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 768,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 786
+          },
+          {
+            "id": 2,
+            "tokens": 786
+          },
+          {
+            "id": 3,
+            "tokens": 786
+          },
+          {
+            "id": 4,
+            "tokens": 786
+          },
+          {
+            "id": 5,
+            "tokens": 786
+          },
+          {
+            "id": 6,
+            "tokens": 786
+          }
+        ],
+        "mapTokensDesired": 400,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": [
+          300,
+          300,
+          900
+        ]
+      },
+      "expected": {
+        "remainder": 6400,
+        "evidenceTarget": 3840,
+        "includedPassageIds": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 3930,
+        "mapTokens": 400,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 3,
+        "historyTokens": 1500,
+        "unusedTokens": 570
+      }
+    },
+    {
+      "name": "skip-oversized-later-passage",
+      "input": {
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 768,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 500
+          },
+          {
+            "id": 2,
+            "tokens": 3500
+          },
+          {
+            "id": 3,
+            "tokens": 600
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 6400,
+        "evidenceTarget": 3840,
+        "includedPassageIds": [
+          1,
+          2,
+          3
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 4600,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 1800
+      }
+    },
+    {
+      "name": "first-passage-truncated",
+      "input": {
+        "runtimeContext": 4096,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 1000,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 7,
+            "tokens": 5000,
+            "truncationCandidates": [
+              {
+                "tokens": 1000,
+                "endScalar": 3900
+              },
+              {
+                "tokens": 1200,
+                "endScalar": 4800
+              },
+              {
+                "tokens": 1400,
+                "endScalar": 5500
+              }
+            ]
+          },
+          {
+            "id": 8,
+            "tokens": 100
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 2072,
+        "evidenceTarget": 1243,
+        "includedPassageIds": [
+          7,
+          8
+        ],
+        "truncatedPassageId": 7,
+        "truncatedPassageEndScalar": 4800,
+        "truncatedPassageTokens": 1200,
+        "evidenceTokens": 1300,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 772
+      }
+    },
+    {
+      "name": "evidence-cap-applies",
+      "input": {
+        "runtimeContext": 32768,
+        "maxOutputTokens": 2048,
+        "mandatoryTokens": 1000,
+        "evidenceBudgetCap": 2000,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 900
+          },
+          {
+            "id": 2,
+            "tokens": 900
+          },
+          {
+            "id": 3,
+            "tokens": 900
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 29720,
+        "evidenceTarget": 2000,
+        "includedPassageIds": [
+          1,
+          2
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 1800,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 27920
+      }
+    },
+    {
+      "name": "topk-limits-count",
+      "input": {
+        "runtimeContext": 32768,
+        "maxOutputTokens": 2048,
+        "mandatoryTokens": 1000,
+        "evidenceBudgetCap": null,
+        "topK": 2,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 100
+          },
+          {
+            "id": 2,
+            "tokens": 100
+          },
+          {
+            "id": 3,
+            "tokens": 100
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 29720,
+        "evidenceTarget": 17832,
+        "includedPassageIds": [
+          1,
+          2
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 200,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 29520
+      }
+    },
+    {
+      "name": "note-web-capped",
+      "input": {
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 768,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 700
+          }
+        ],
+        "mapTokensDesired": 200,
+        "noteWebTokensDesired": 5000,
+        "historyTurnTokensNewestFirst": [
+          100
+        ]
+      },
+      "expected": {
+        "remainder": 6400,
+        "evidenceTarget": 3840,
+        "includedPassageIds": [
+          1
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 700,
+        "mapTokens": 200,
+        "noteWebTokens": 960,
+        "historyTurnsIncluded": 1,
+        "historyTokens": 100,
+        "unusedTokens": 4440
+      }
+    },
+    {
+      "name": "history-stops-at-first-misfit",
+      "input": {
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 768,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 3000
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": [
+          1000,
+          5000,
+          10
+        ]
+      },
+      "expected": {
+        "remainder": 6400,
+        "evidenceTarget": 3840,
+        "includedPassageIds": [
+          1
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 3000,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 1,
+        "historyTokens": 1000,
+        "unusedTokens": 2400
+      }
+    },
+    {
+      "name": "mandatory-too-big",
+      "input": {
+        "runtimeContext": 4096,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 3100,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 10
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "error": "contextTooSmall"
+      }
+    },
+    {
+      "name": "output-reserve-exceeds-context",
+      "input": {
+        "runtimeContext": 1024,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 1,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "error": "contextTooSmall"
+      }
+    },
+    {
+      "name": "no-passages-history-and-map-grow",
+      "input": {
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 768,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [],
+        "mapTokensDesired": 3000,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": [
+          2000,
+          2000
+        ]
+      },
+      "expected": {
+        "remainder": 6400,
+        "evidenceTarget": 3840,
+        "includedPassageIds": [],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 0,
+        "mapTokens": 960,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 2,
+        "historyTokens": 4000,
+        "unusedTokens": 1440
+      }
+    },
+    {
+      "name": "zero-remainder-no-evidence",
+      "input": {
+        "runtimeContext": 1024,
+        "maxOutputTokens": 100,
+        "mandatoryTokens": 924,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 20
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 0,
+        "evidenceTarget": 0,
+        "includedPassageIds": [],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 0,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 0
+      }
+    },
+    {
+      "name": "zero-explicit-cap-no-evidence",
+      "input": {
+        "runtimeContext": 4096,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 1000,
+        "evidenceBudgetCap": 0,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 20
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 2072,
+        "evidenceTarget": 0,
+        "includedPassageIds": [],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 0,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 2072
+      }
+    },
+    {
+      "name": "zero-floored-share-no-redistribution-citation",
+      "input": {
+        "runtimeContext": 1024,
+        "maxOutputTokens": 100,
+        "mandatoryTokens": 923,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 1,
+            "tokens": 1
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 1,
+        "evidenceTarget": 0,
+        "includedPassageIds": [],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 0,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 1
+      }
+    },
+    {
+      "name": "truncated-first-continues-and-redistributes",
+      "input": {
+        "runtimeContext": 4096,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 1000,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 7,
+            "tokens": 5000,
+            "truncationCandidates": [
+              {
+                "tokens": 1000,
+                "endScalar": 3900
+              },
+              {
+                "tokens": 1200,
+                "endScalar": 4800
+              },
+              {
+                "tokens": 1400,
+                "endScalar": 5500
+              }
+            ]
+          },
+          {
+            "id": 8,
+            "tokens": 100
+          },
+          {
+            "id": 9,
+            "tokens": 700
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 2072,
+        "evidenceTarget": 1243,
+        "includedPassageIds": [
+          7,
+          8,
+          9
+        ],
+        "truncatedPassageId": 7,
+        "truncatedPassageEndScalar": 4800,
+        "truncatedPassageTokens": 1200,
+        "evidenceTokens": 2000,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 72
+      }
+    },
+    {
+      "name": "no-sentence-boundary-skips-first",
+      "input": {
+        "runtimeContext": 4096,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 1000,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 7,
+            "tokens": 5000
+          },
+          {
+            "id": 8,
+            "tokens": 100
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 2072,
+        "evidenceTarget": 1243,
+        "includedPassageIds": [
+          8
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 100,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 1972
+      }
+    },
+    {
+      "name": "no-fitting-sentence-boundary-skips-first",
+      "input": {
+        "runtimeContext": 4096,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 1000,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 7,
+            "tokens": 5000,
+            "truncationCandidates": [
+              {
+                "tokens": 1400,
+                "endScalar": 5500
+              }
+            ]
+          },
+          {
+            "id": 8,
+            "tokens": 100
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 2072,
+        "evidenceTarget": 1243,
+        "includedPassageIds": [
+          8
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 100,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 1972
+      }
+    },
+    {
+      "name": "skipped-first-can-fit-whole-during-redistribution",
+      "input": {
+        "runtimeContext": 4096,
+        "maxOutputTokens": 1024,
+        "mandatoryTokens": 1000,
+        "evidenceBudgetCap": null,
+        "topK": 16,
+        "passages": [
+          {
+            "id": 7,
+            "tokens": 1500
+          },
+          {
+            "id": 8,
+            "tokens": 100
+          }
+        ],
+        "mapTokensDesired": 0,
+        "noteWebTokensDesired": 0,
+        "historyTurnTokensNewestFirst": []
+      },
+      "expected": {
+        "remainder": 2072,
+        "evidenceTarget": 1243,
+        "includedPassageIds": [
+          7,
+          8
+        ],
+        "truncatedPassageId": null,
+        "truncatedPassageEndScalar": null,
+        "truncatedPassageTokens": null,
+        "evidenceTokens": 1600,
+        "mapTokens": 0,
+        "noteWebTokens": 0,
+        "historyTurnsIncluded": 0,
+        "historyTokens": 0,
+        "unusedTokens": 472
+      }
+    }
+  ]
+}

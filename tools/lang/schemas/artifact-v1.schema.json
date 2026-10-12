@@ -1,0 +1,334 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ainotebook:lang-detector:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "kind",
+    "modelId",
+    "targets",
+    "normalizationTablesVersion",
+    "alpha",
+    "parameters",
+    "vocabulary",
+    "profiles",
+    "thresholds",
+    "attribution"
+  ],
+  "properties": {
+    "contract": {
+      "const": "lang-detector"
+    },
+    "version": {
+      "const": 1
+    },
+    "kind": {
+      "enum": [
+        "production",
+        "synthetic"
+      ]
+    },
+    "modelId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+$"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z]{2,3}$"
+      },
+      "minItems": 2,
+      "maxItems": 4
+    },
+    "normalizationTablesVersion": {
+      "const": "ucd-15.1.0-default-full-v1"
+    },
+    "alpha": {
+      "const": 1
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxFeaturesPerProfile",
+        "orderWeights",
+        "scoreScale",
+        "lengthBucketStarts",
+        "minLetters",
+        "minWords",
+        "mixedDominanceBp",
+        "inputCapScalars",
+        "textCapScalars",
+        "windowCount",
+        "windowScalars"
+      ],
+      "properties": {
+        "maxFeaturesPerProfile": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4096
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "orderWeights": {
+          "const": [
+            1,
+            2,
+            3
+          ]
+        },
+        "scoreScale": {
+          "const": 1024
+        },
+        "lengthBucketStarts": {
+          "const": [
+            12,
+            32,
+            80,
+            200
+          ]
+        },
+        "minLetters": {
+          "const": 12
+        },
+        "minWords": {
+          "const": 3
+        },
+        "mixedDominanceBp": {
+          "const": 7000
+        },
+        "inputCapScalars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000000
+        },
+        "textCapScalars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000000
+        },
+        "windowCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "windowScalars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000000
+        }
+      }
+    },
+    "vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "order",
+          "features"
+        ],
+        "properties": {
+          "order": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      -2,
+                      -1
+                    ]
+                  },
+                  {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 55295
+                      },
+                      {
+                        "type": "integer",
+                        "minimum": 57344,
+                        "maximum": 1114111
+                      }
+                    ]
+                  }
+                ]
+              },
+              "minItems": 1,
+              "maxItems": 3
+            },
+            "minItems": 0,
+            "maxItems": 20480
+          }
+        }
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "priorWeight",
+          "orders"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^([a-z]{2,3}|background)$"
+          },
+          "priorWeight": {
+            "type": "integer",
+            "minimum": -1000000,
+            "maximum": 0
+          },
+          "orders": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "order",
+                "weights",
+                "unknownWeight"
+              ],
+              "properties": {
+                "order": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 3
+                },
+                "weights": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": -1000000,
+                    "maximum": 0
+                  },
+                  "minItems": 0,
+                  "maxItems": 20480
+                },
+                "unknownWeight": {
+                  "type": "integer",
+                  "minimum": -1000000,
+                  "maximum": 0
+                }
+              }
+            },
+            "minItems": 3,
+            "maxItems": 3
+          }
+        }
+      },
+      "minItems": 3,
+      "maxItems": 5
+    },
+    "thresholds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "start",
+          "enabled",
+          "minWinningScore",
+          "minMargin",
+          "minKnownCoverageBp"
+        ],
+        "properties": {
+          "start": {
+            "enum": [
+              12,
+              32,
+              80,
+              200
+            ]
+          },
+          "enabled": {
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "minWinningScore": {
+            "type": "integer",
+            "minimum": -7000000,
+            "maximum": 0
+          },
+          "minMargin": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7000000
+          },
+          "minKnownCoverageBp": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000
+          }
+        }
+      },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceIds",
+        "licenseIds",
+        "attributionPath",
+        "attributionSha256",
+        "noticePath",
+        "noticeSha256"
+      ],
+      "properties": {
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "minItems": 0
+        },
+        "licenseIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "attributionPath": {
+          "type": "string"
+        },
+        "attributionSha256": {
+          "type": "string",
+          "pattern": "^([0-9a-f]{64})?$"
+        },
+        "noticePath": {
+          "type": "string"
+        },
+        "noticeSha256": {
+          "type": "string",
+          "pattern": "^([0-9a-f]{64})?$"
+        }
+      }
+    }
+  }
+}

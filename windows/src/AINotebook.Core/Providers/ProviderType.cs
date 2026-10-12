@@ -28,7 +28,7 @@ public static class ProviderTypeExtensions
     {
         ProviderType.Ollama => "http://127.0.0.1:11434",
         ProviderType.Anthropic => "https://api.anthropic.com",
-        ProviderType.OpenAI => "https://api.openai.com",
+        ProviderType.OpenAI => "https://api.openai.com/v1",
         ProviderType.OpenAICompatible => "",
         ProviderType.OpenWebUI => "",
         _ => ""

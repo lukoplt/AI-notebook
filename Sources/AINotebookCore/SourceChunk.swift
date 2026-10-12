@@ -12,6 +12,12 @@ public struct SourceChunk: Identifiable, Equatable, Hashable, Codable, Sendable 
     /// Nil when contextual enrichment is off (the default).
     public var context: String?
 
+    public var revisionId: Int64?
+    public var charStart: Int?
+    public var charEnd: Int?
+    public var lang: String?
+    public var langInherited: Bool
+
     public init(
         id: Int64? = nil,
         sourceId: Int64,
@@ -19,7 +25,12 @@ public struct SourceChunk: Identifiable, Equatable, Hashable, Codable, Sendable 
         text: String,
         tokenCount: Int,
         pageHint: Int? = nil,
-        context: String? = nil
+        context: String? = nil,
+        revisionId: Int64? = nil,
+        charStart: Int? = nil,
+        charEnd: Int? = nil,
+        lang: String? = nil,
+        langInherited: Bool = false
     ) {
         self.id = id
         self.sourceId = sourceId
@@ -28,6 +39,11 @@ public struct SourceChunk: Identifiable, Equatable, Hashable, Codable, Sendable 
         self.tokenCount = tokenCount
         self.pageHint = pageHint
         self.context = context
+        self.revisionId = revisionId
+        self.charStart = charStart
+        self.charEnd = charEnd
+        self.lang = lang
+        self.langInherited = langInherited
     }
 
     /// The text used for embedding: the document context (if enriched) followed
@@ -53,6 +69,12 @@ extension SourceChunk: FetchableRecord, MutablePersistableRecord {
         case tokenCount = "token_count"
         case pageHint   = "page_hint"
         case context
+
+        case revisionId = "revision_id"
+        case charStart = "char_start"
+        case charEnd = "char_end"
+        case lang = "lang"
+        case langInherited = "lang_inherited"
 
         var column: Column { Column(self.rawValue) }
     }

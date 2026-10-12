@@ -31,11 +31,26 @@ public static class ChatRoleExtensions
     public static ChatRole FromDb(string raw) => FromRawValue(raw);
 }
 
+// Swift Int is 64-bit: offsets must support the full JSON-safe integer range.
+public record CitationSpan(long Start, long End, int? PageFrom, int? PageTo);
+
 public record Citation(
     int Marker,
     long ChunkId,
     long SourceId,
-    string Snippet);
+    string Snippet)
+{
+    public long? FolderId { get; init; }
+    public string? RelPath { get; init; }
+    public string? DisplayName { get; init; }
+    public long? RevisionId { get; init; }
+    public IReadOnlyList<CitationSpan> Spans { get; init; } = Array.Empty<CitationSpan>();
+    public IReadOnlyList<long> ChunkIds { get; init; } = Array.Empty<long>();
+    public string? Text { get; init; }
+
+    public bool IsV2 => FolderId is not null || RelPath is not null || DisplayName is not null
+        || RevisionId is not null || Spans.Count > 0 || ChunkIds.Count > 0 || Text is not null;
+}
 
 public record ChatMessage(
     long? Id,

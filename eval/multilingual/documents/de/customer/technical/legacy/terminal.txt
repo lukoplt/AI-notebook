@@ -1,0 +1,17 @@
+Terminal am älteren Birke-Prüfplatz
+
+Datum: 4. Oktober 2026
+Verantwortlich: Greta Moos, Gerätebetreuung
+Dokumentnummer: TERM-DE-10
+
+Am älteren Prüfplatz bleibt ein separates Terminal für die Wartungsanzeige angeschlossen. Es dient zur Sichtkontrolle der Gerätemeldungen, während die eigentliche Messreihe am Messrechner verwaltet wird. Diese Notiz hält die überprüfte Verbindungseinstellung fest, weil die handschriftliche Karte am Gehäuse unleserlich geworden ist. Das Terminal besitzt keine Berechtigung, Schutzgrenzen zu ändern.
+
+Die serielle Verbindung des Terminals läuft mit 115200 Baud.
+
+Vor dem Anschließen wird das gekennzeichnete Kabel auf Knicke und lose Schrauben geprüft. Der Stecker darf nicht mit Gewalt eingesetzt werden. Die Gerätebetreuung kontrolliert außerdem, dass keine Feuchtigkeit im Anschlussbereich steht. Der Prüfplatz wird erst wieder freigegeben, wenn das Gehäuse geschlossen ist und die Leitung außerhalb des Laufwegs liegt.
+
+Für die Anzeigeprüfung wird eine vorbereitete Meldung mit Umlauten verwendet: „Öffnung prüfen, äußere Größe bestätigen.“ Die Zeichen müssen vollständig lesbar sein; Kästchen anstelle von Buchstaben sind als Darstellungsfehler zu vermerken. Die Meldung ist ein reiner Anzeigetext und keine Arbeitsanweisung zur Öffnung des Geräts. Ein zusätzlicher Test zeigt die Ziffern von null bis neun, damit ähnliche Zeichen nicht verwechselt werden.
+
+Im Zubehörfach liegen ein kurzer Ersatzadapter und zwei Kabelbinder. Ein längeres Kabel wurde ausgesondert, weil seine Verriegelung beschädigt ist. Es bleibt bis zur Entsorgung in der gekennzeichneten roten Tüte und darf nicht aus Bequemlichkeit wieder angeschlossen werden. Die Materialliste enthält einen entsprechenden Vermerk.
+
+Greta Moos trägt nach jeder Änderung Datum, beobachtetes Verhalten und verwendetes Zubehör in das Geräteheft ein. Bleibt die Anzeige leer, wird zuerst die Anschlussbelegung anhand der vorhandenen Skizze geprüft. Ein unbekannter Adapter wird nicht versuchsweise eingesetzt. Nach erfolgreicher Kontrolle bestätigt die Schicht den normalen Meldungsablauf. Das Geräteheft bleibt beim Prüfplatz, während eine Kopie der aktualisierten Anschlussübersicht in die zentrale technische Ablage geht.

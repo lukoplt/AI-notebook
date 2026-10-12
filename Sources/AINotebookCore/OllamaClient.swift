@@ -21,10 +21,10 @@ public final class OllamaClient: @unchecked Sendable {
 
     /// Best-effort 1.5s probe of `/api/tags`. Returns `true` if reachable.
     public func detect(timeout: TimeInterval = 1.5) async -> Bool {
-        var req = URLRequest(url: baseURL.appendingPathComponent("api/tags"))
-        req.httpMethod = "GET"
-        req.timeoutInterval = timeout
         do {
+            var req = URLRequest(url: try ProviderAPIRoot.build(type: .ollama, baseURL: baseURL.absoluteString, endpoint: .models))
+            req.httpMethod = "GET"
+            req.timeoutInterval = timeout
             let (_, response) = try await session.data(for: req)
             guard let http = response as? HTTPURLResponse else { return false }
             return (200..<300).contains(http.statusCode)
@@ -35,7 +35,7 @@ public final class OllamaClient: @unchecked Sendable {
 
     /// `GET /api/tags` — returns the locally-installed models.
     public func listModels() async throws -> [OllamaModel] {
-        let url = baseURL.appendingPathComponent("api/tags")
+        let url = try ProviderAPIRoot.build(type: .ollama, baseURL: baseURL.absoluteString, endpoint: .models)
         var req = URLRequest(url: url)
         req.httpMethod = "GET"
         let (data, response) = try await sendData(req)
@@ -54,7 +54,7 @@ public final class OllamaClient: @unchecked Sendable {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    let url = baseURL.appendingPathComponent("api/pull")
+                    let url = try ProviderWire.url(base: baseURL.absoluteString, path: "/api/pull")
                     var req = URLRequest(url: url)
                     req.httpMethod = "POST"
                     req.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -108,7 +108,7 @@ public final class OllamaClient: @unchecked Sendable {
 
     /// `POST /api/embed` — returns one `[Double]` per input string.
     public func embed(model: String, input: [String]) async throws -> [[Double]] {
-        let url = baseURL.appendingPathComponent("api/embed")
+        let url = try ProviderAPIRoot.build(type: .ollama, baseURL: baseURL.absoluteString, endpoint: .embeddings)
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -134,7 +134,7 @@ public final class OllamaClient: @unchecked Sendable {
         AsyncThrowingStream { continuation in
             let task = Task {
                 do {
-                    let url = baseURL.appendingPathComponent("api/chat")
+                    let url = try ProviderAPIRoot.build(type: .ollama, baseURL: baseURL.absoluteString, endpoint: .chat)
                     var req = URLRequest(url: url)
                     req.httpMethod = "POST"
                     req.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -148,15 +148,15 @@ public final class OllamaClient: @unchecked Sendable {
                     let (bytes, response) = try await session.bytes(for: req)
                     if let http = response as? HTTPURLResponse,
                        !(200..<300).contains(http.statusCode) {
-                        var data = Data()
-                        for try await byte in bytes {
-                            data.append(byte)
-                            if data.count > 10_000 { break }
+                        let data = try await ProviderWire.readErrorBody(bytes)
+                        if ProviderWire.isContextTooLong(status: http.statusCode, body: data) {
+                            continuation.finish(throwing: ProviderRequestError.contextTooLong)
+                        } else {
+                            continuation.finish(throwing: OllamaError.httpStatus(
+                                code: http.statusCode,
+                                body: String(data: data, encoding: .utf8) ?? ""
+                            ))
                         }
-                        continuation.finish(throwing: OllamaError.httpStatus(
-                            code: http.statusCode,
-                            body: String(data: data, encoding: .utf8) ?? ""
-                        ))
                         return
                     }
 
@@ -191,7 +191,7 @@ public final class OllamaClient: @unchecked Sendable {
 
     /// `DELETE /api/delete` — removes a locally-installed model.
     public func deleteModel(name: String) async throws {
-        let url = baseURL.appendingPathComponent("api/delete")
+        let url = try ProviderWire.url(base: baseURL.absoluteString, path: "/api/delete")
         var req = URLRequest(url: url)
         req.httpMethod = "DELETE"
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -210,6 +210,17 @@ public final class OllamaClient: @unchecked Sendable {
     }
 
     // MARK: - Helpers
+
+    /// `POST /api/show` — raw metadata consumed by the provider limit policy.
+    public func show(model: String) async throws -> Data {
+        var req = URLRequest(url: try ProviderWire.url(base: baseURL.absoluteString, path: "/api/show"))
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.httpBody = try encoder.encode(["model": model])
+        let (data, response) = try await sendData(req)
+        try ensureSuccess(response: response, body: data)
+        return data
+    }
 
     private func sendData(_ req: URLRequest) async throws -> (Data, URLResponse) {
         do {

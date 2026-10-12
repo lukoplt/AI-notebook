@@ -29,7 +29,8 @@ public sealed record OllamaChatMessage(
 
 public sealed record OllamaChatOptions(
     [property: JsonPropertyName("temperature")] double? Temperature = null,
-    [property: JsonPropertyName("num_ctx")] int? NumCtx = null);
+    [property: JsonPropertyName("num_ctx")] int? NumCtx = null,
+    [property: JsonPropertyName("num_predict")] int? NumPredict = null);
 
 public sealed record OllamaChatRequest(
     [property: JsonPropertyName("model")] string Model,

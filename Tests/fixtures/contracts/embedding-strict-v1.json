@@ -1,0 +1,4016 @@
+{
+  "cases": [
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:abc",
+          "outcome": "ok",
+          "promptTokens": 5,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": null,
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "query",
+            "start": null,
+            "tokens": 5
+          },
+          {
+            "end": 3,
+            "kind": "partAccepted",
+            "purpose": "query",
+            "start": 0,
+            "tokens": 5
+          }
+        ],
+        "parts": [
+          {
+            "end": 3,
+            "start": 0,
+            "tokens": 5
+          }
+        ],
+        "rejectedRequests": 0,
+        "requestCount": 1,
+        "successfulTokens": 5,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "measured",
+          "serviceTokens": 5,
+          "splitParts": 1,
+          "successfulTokens": 5,
+          "uncountedRequests": 0
+        },
+        "vectorMillionths": [
+          1000000,
+          0
+        ]
+      },
+      "kind": "pipeline",
+      "name": "fits",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:ab😀cd",
+          "outcome": "lengthRejected"
+        },
+        {
+          "input": "q:ab",
+          "outcome": "ok",
+          "promptTokens": 4,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "input": "q:😀cd",
+          "outcome": "ok",
+          "promptTokens": 5,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": null,
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "lengthRejected",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "query",
+            "start": null,
+            "tokens": 4
+          },
+          {
+            "end": 2,
+            "kind": "partAccepted",
+            "purpose": "query",
+            "start": 0,
+            "tokens": 4
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "query",
+            "start": null,
+            "tokens": 5
+          },
+          {
+            "end": 5,
+            "kind": "partAccepted",
+            "purpose": "query",
+            "start": 2,
+            "tokens": 5
+          }
+        ],
+        "parts": [
+          {
+            "end": 2,
+            "start": 0,
+            "tokens": 4
+          },
+          {
+            "end": 5,
+            "start": 2,
+            "tokens": 5
+          }
+        ],
+        "rejectedRequests": 1,
+        "requestCount": 3,
+        "successfulTokens": 9,
+        "telemetry": {
+          "rejectedRequests": 1,
+          "requestCount": 3,
+          "serviceTokenStatus": "partial",
+          "serviceTokens": null,
+          "splitParts": 2,
+          "successfulTokens": 9,
+          "uncountedRequests": 1
+        },
+        "vectorMillionths": [
+          1000000,
+          0
+        ]
+      },
+      "kind": "pipeline",
+      "name": "split",
+      "note": "typed rejection then accepted children; telemetry 3 requests/2 responses",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "ab😀cd"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:abcdefg",
+          "outcome": "lengthRejected"
+        },
+        {
+          "input": "q:abc",
+          "outcome": "ok",
+          "promptTokens": 5,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "input": "q:defg",
+          "outcome": "lengthRejected"
+        },
+        {
+          "input": "q:de",
+          "outcome": "ok",
+          "promptTokens": 4,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "input": "q:fg",
+          "outcome": "ok",
+          "promptTokens": 4,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": null,
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "lengthRejected",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "query",
+            "start": null,
+            "tokens": 5
+          },
+          {
+            "end": 3,
+            "kind": "partAccepted",
+            "purpose": "query",
+            "start": 0,
+            "tokens": 5
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "lengthRejected",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "query",
+            "start": null,
+            "tokens": 4
+          },
+          {
+            "end": 5,
+            "kind": "partAccepted",
+            "purpose": "query",
+            "start": 3,
+            "tokens": 4
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "query",
+            "start": null,
+            "tokens": 4
+          },
+          {
+            "end": 7,
+            "kind": "partAccepted",
+            "purpose": "query",
+            "start": 5,
+            "tokens": 4
+          }
+        ],
+        "parts": [
+          {
+            "end": 3,
+            "start": 0,
+            "tokens": 5
+          },
+          {
+            "end": 5,
+            "start": 3,
+            "tokens": 4
+          },
+          {
+            "end": 7,
+            "start": 5,
+            "tokens": 4
+          }
+        ],
+        "rejectedRequests": 2,
+        "requestCount": 5,
+        "successfulTokens": 13,
+        "telemetry": {
+          "rejectedRequests": 2,
+          "requestCount": 5,
+          "serviceTokenStatus": "partial",
+          "serviceTokens": null,
+          "splitParts": 3,
+          "successfulTokens": 13,
+          "uncountedRequests": 2
+        },
+        "vectorMillionths": [
+          928477,
+          371391
+        ]
+      },
+      "kind": "pipeline",
+      "name": "three-leaf-unequal-depth",
+      "note": "pool all leaves once by scalar length; never normalize intermediate nodes",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abcdefg"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 2,
+      "exchanges": [
+        {
+          "input": "q:ab",
+          "outcome": "lengthRejected"
+        },
+        {
+          "input": "q:a",
+          "outcome": "lengthRejected"
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": "inputCannotFit",
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "lengthRejected",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "lengthRejected",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          }
+        ],
+        "requestCount": 2,
+        "telemetry": {
+          "rejectedRequests": 2,
+          "requestCount": 2,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 2
+        }
+      },
+      "kind": "pipeline",
+      "name": "prefix-exhausts",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "ab"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "abcdefgh",
+          "outcome": "lengthRejected"
+        },
+        {
+          "input": "abcd",
+          "outcome": "ok",
+          "promptTokens": 4,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "input": "efgh",
+          "outcome": "ok",
+          "promptTokens": 4,
+          "vector": [
+            0,
+            1
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": null,
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "document",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "lengthRejected",
+            "purpose": "document",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "document",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "document",
+            "start": null,
+            "tokens": 4
+          },
+          {
+            "end": 4,
+            "kind": "partAccepted",
+            "purpose": "document",
+            "start": 0,
+            "tokens": 4
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "document",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "document",
+            "start": null,
+            "tokens": 4
+          },
+          {
+            "end": 8,
+            "kind": "partAccepted",
+            "purpose": "document",
+            "start": 4,
+            "tokens": 4
+          }
+        ],
+        "parts": [
+          {
+            "end": 4,
+            "start": 0,
+            "tokens": 4
+          },
+          {
+            "end": 8,
+            "start": 4,
+            "tokens": 4
+          }
+        ],
+        "rejectedRequests": 1,
+        "requestCount": 3,
+        "successfulTokens": 8,
+        "telemetry": {
+          "rejectedRequests": 1,
+          "requestCount": 3,
+          "serviceTokenStatus": "partial",
+          "serviceTokens": null,
+          "splitParts": 2,
+          "successfulTokens": 8,
+          "uncountedRequests": 1
+        },
+        "vectorMillionths": [
+          0,
+          1000000
+        ]
+      },
+      "kind": "pipeline",
+      "name": "server-limit",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "document",
+      "text": "abcdefgh"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "abcdefgh",
+          "outcome": "ok",
+          "promptTokens": 8,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "input": "abcd",
+          "outcome": "ok",
+          "promptTokens": 4,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "input": "efgh",
+          "outcome": "ok",
+          "promptTokens": 4,
+          "vector": [
+            0,
+            1
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": null,
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "document",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "document",
+            "start": null,
+            "tokens": 8
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "document",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "document",
+            "start": null,
+            "tokens": 4
+          },
+          {
+            "end": 4,
+            "kind": "partAccepted",
+            "purpose": "document",
+            "start": 0,
+            "tokens": 4
+          },
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "document",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "document",
+            "start": null,
+            "tokens": 4
+          },
+          {
+            "end": 8,
+            "kind": "partAccepted",
+            "purpose": "document",
+            "start": 4,
+            "tokens": 4
+          }
+        ],
+        "parts": [
+          {
+            "end": 4,
+            "start": 0,
+            "tokens": 4
+          },
+          {
+            "end": 8,
+            "start": 4,
+            "tokens": 4
+          }
+        ],
+        "rejectedRequests": 0,
+        "requestCount": 3,
+        "successfulTokens": 8,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 3,
+          "serviceTokenStatus": "measured",
+          "serviceTokens": 16,
+          "splitParts": 2,
+          "successfulTokens": 8,
+          "uncountedRequests": 0
+        },
+        "vectorMillionths": [
+          707107,
+          707107
+        ]
+      },
+      "kind": "pipeline",
+      "name": "count-over-limit",
+      "note": "successful response above the ceiling splits; service count kept, no useful tokens",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "document",
+      "text": "abcdefgh"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "body": "{\"error\":\"model \\\"fixture\\\" not found\"}",
+          "input": "q:abc",
+          "outcome": "httpError",
+          "status": 400
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": "providerError",
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          }
+        ],
+        "requestCount": 1,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 1
+        }
+      },
+      "kind": "pipeline",
+      "name": "unrelated-400",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "body": "{\"error\":\"internal\"}",
+          "input": "q:abc",
+          "outcome": "httpError",
+          "status": 500
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": "providerError",
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          }
+        ],
+        "requestCount": 1,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 1
+        }
+      },
+      "kind": "pipeline",
+      "name": "http-500",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:ab😀cd",
+          "outcome": "cancel"
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": "cancelled",
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          }
+        ],
+        "requestCount": 1,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 1
+        }
+      },
+      "kind": "pipeline",
+      "name": "cancel",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "ab😀cd"
+    },
+    {
+      "counter": {
+        "q:abc": 5
+      },
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:abc",
+          "outcome": "ok",
+          "promptTokens": null,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [
+          {
+            "text": "q:abc",
+            "tokenizerId": "fixture-only"
+          }
+        ],
+        "error": null,
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": 3,
+            "kind": "partAccepted",
+            "purpose": "query",
+            "start": 0,
+            "tokens": 5
+          }
+        ],
+        "parts": [
+          {
+            "end": 3,
+            "start": 0,
+            "tokens": 5
+          }
+        ],
+        "rejectedRequests": 0,
+        "requestCount": 1,
+        "successfulTokens": 5,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 1,
+          "successfulTokens": 5,
+          "uncountedRequests": 1
+        },
+        "vectorMillionths": [
+          1000000,
+          0
+        ]
+      },
+      "kind": "pipeline",
+      "name": "no-count",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:abc",
+          "outcome": "ok",
+          "promptTokens": null,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": "tokenCountUnavailable",
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          },
+          {
+            "end": null,
+            "kind": "response",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          }
+        ],
+        "requestCount": 1,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 1
+        }
+      },
+      "kind": "pipeline",
+      "name": "no-count-no-tokenizer",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:abc",
+          "outcome": "ok",
+          "promptTokens": -1,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": "invalidTokenCount",
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          }
+        ],
+        "requestCount": 1,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 1
+        }
+      },
+      "kind": "pipeline",
+      "name": "negative-count",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:abc",
+          "outcome": "ok",
+          "promptTokens": 5,
+          "vector": [
+            1,
+            0,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": "invalidEmbedding",
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          }
+        ],
+        "requestCount": 1,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 1
+        }
+      },
+      "kind": "pipeline",
+      "name": "wrong-dim",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [
+        {
+          "input": "q:abc",
+          "outcome": "ok",
+          "promptTokens": 5,
+          "vector": [
+            "NaN",
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "counterCalls": [],
+        "error": "invalidEmbedding",
+        "events": [
+          {
+            "end": null,
+            "kind": "request",
+            "purpose": "query",
+            "start": null,
+            "tokens": null
+          }
+        ],
+        "requestCount": 1,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 1,
+          "serviceTokenStatus": "not_available",
+          "serviceTokens": null,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 1
+        }
+      },
+      "kind": "pipeline",
+      "name": "nonfinite",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 5,
+      "exchanges": [],
+      "expected": {
+        "counterCalls": [],
+        "error": "emptyInput",
+        "events": [],
+        "requestCount": 0,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 0,
+          "serviceTokenStatus": "measured",
+          "serviceTokens": 0,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 0
+        }
+      },
+      "kind": "pipeline",
+      "name": "empty-input",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": ""
+    },
+    {
+      "counter": null,
+      "effectiveLimit": 6,
+      "exchanges": [],
+      "expected": {
+        "counterCalls": [],
+        "error": "invalidEffectiveLimit",
+        "events": [],
+        "requestCount": 0,
+        "telemetry": {
+          "rejectedRequests": 0,
+          "requestCount": 0,
+          "serviceTokenStatus": "measured",
+          "serviceTokens": 0,
+          "splitParts": 0,
+          "successfulTokens": 0,
+          "uncountedRequests": 0
+        }
+      },
+      "kind": "pipeline",
+      "name": "limit-above-profile",
+      "profile": {
+        "dims": 2,
+        "documentPrefix": "",
+        "id": "fixture",
+        "matryoshka": false,
+        "maxInputTokens": 5,
+        "model": "fixture",
+        "nativeDims": 2,
+        "queryPrefix": "q:",
+        "tokenizerId": "fixture-only"
+      },
+      "purpose": "query",
+      "text": "abc"
+    },
+    {
+      "events": [
+        {
+          "end": null,
+          "kind": "request",
+          "purpose": "query",
+          "start": null,
+          "tokens": null
+        },
+        {
+          "end": null,
+          "kind": "lengthRejected",
+          "purpose": "query",
+          "start": null,
+          "tokens": null
+        },
+        {
+          "end": null,
+          "kind": "request",
+          "purpose": "query",
+          "start": null,
+          "tokens": null
+        },
+        {
+          "end": null,
+          "kind": "response",
+          "purpose": "query",
+          "start": null,
+          "tokens": 4
+        },
+        {
+          "end": 2,
+          "kind": "partAccepted",
+          "purpose": "query",
+          "start": 0,
+          "tokens": 4
+        },
+        {
+          "end": null,
+          "kind": "request",
+          "purpose": "query",
+          "start": null,
+          "tokens": null
+        },
+        {
+          "end": null,
+          "kind": "response",
+          "purpose": "query",
+          "start": null,
+          "tokens": 5
+        },
+        {
+          "end": 5,
+          "kind": "partAccepted",
+          "purpose": "query",
+          "start": 2,
+          "tokens": 5
+        }
+      ],
+      "kind": "telemetry",
+      "name": "telemetry-split",
+      "snapshot": {
+        "rejectedRequests": 1,
+        "requestCount": 3,
+        "serviceTokenStatus": "partial",
+        "serviceTokens": null,
+        "splitParts": 2,
+        "successfulTokens": 9,
+        "uncountedRequests": 1
+      },
+      "source": "split"
+    },
+    {
+      "events": [
+        {
+          "end": null,
+          "kind": "request",
+          "purpose": "document",
+          "start": null,
+          "tokens": null
+        },
+        {
+          "end": null,
+          "kind": "response",
+          "purpose": "document",
+          "start": null,
+          "tokens": 8
+        },
+        {
+          "end": null,
+          "kind": "request",
+          "purpose": "document",
+          "start": null,
+          "tokens": null
+        },
+        {
+          "end": null,
+          "kind": "response",
+          "purpose": "document",
+          "start": null,
+          "tokens": 4
+        },
+        {
+          "end": 4,
+          "kind": "partAccepted",
+          "purpose": "document",
+          "start": 0,
+          "tokens": 4
+        },
+        {
+          "end": null,
+          "kind": "request",
+          "purpose": "document",
+          "start": null,
+          "tokens": null
+        },
+        {
+          "end": null,
+          "kind": "response",
+          "purpose": "document",
+          "start": null,
+          "tokens": 4
+        },
+        {
+          "end": 8,
+          "kind": "partAccepted",
+          "purpose": "document",
+          "start": 4,
+          "tokens": 4
+        }
+      ],
+      "kind": "telemetry",
+      "name": "telemetry-over-limit",
+      "snapshot": {
+        "rejectedRequests": 0,
+        "requestCount": 3,
+        "serviceTokenStatus": "measured",
+        "serviceTokens": 16,
+        "splitParts": 2,
+        "successfulTokens": 8,
+        "uncountedRequests": 0
+      },
+      "source": "count-over-limit"
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "loadDurationNs": 0,
+        "promptTokens": 5,
+        "totalDurationNs": 1000,
+        "vectorMillionths": [
+          600000,
+          800000
+        ]
+      },
+      "kind": "wire",
+      "name": "wire-embed",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [
+            [
+              0.6,
+              0.8
+            ]
+          ],
+          "load_duration": 0,
+          "model": "fixture",
+          "prompt_eval_count": 5,
+          "total_duration": 1000
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "https://proxy.example/ollama"
+      },
+      "expected": {
+        "loadDurationNs": 0,
+        "promptTokens": 5,
+        "totalDurationNs": 1000,
+        "vectorMillionths": [
+          600000,
+          800000
+        ]
+      },
+      "kind": "wire",
+      "name": "wire-proxy-root",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "https://proxy.example/ollama/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [
+            [
+              0.6,
+              0.8
+            ]
+          ],
+          "load_duration": 0,
+          "model": "fixture",
+          "prompt_eval_count": 5,
+          "total_duration": 1000
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "search_query: Kdo ručí?",
+        "inputLimit": 512,
+        "method": "embed",
+        "model": "nomic-embed-text-v2-moe",
+        "nativeDims": 768,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "firstComponentMillionths": 1000000,
+        "loadDurationNs": null,
+        "promptTokens": 7,
+        "totalDurationNs": null,
+        "vectorLength": 768
+      },
+      "kind": "wire",
+      "name": "wire-profile-request",
+      "request": {
+        "body": {
+          "dimensions": 768,
+          "input": [
+            "search_query: Kdo ručí?"
+          ],
+          "model": "nomic-embed-text-v2-moe",
+          "options": {
+            "num_ctx": 512
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "model": "nomic-embed-text-v2-moe",
+          "prompt_eval_count": 7
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "loadDurationNs": null,
+        "promptTokens": null,
+        "totalDurationNs": null,
+        "vectorMillionths": [
+          600000,
+          800000
+        ]
+      },
+      "kind": "wire",
+      "name": "wire-missing-count",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [
+            [
+              0.6,
+              0.8
+            ]
+          ],
+          "model": "fixture"
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "inputTooLong"
+      },
+      "kind": "wire",
+      "name": "wire-length-rejection",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "error": "the input length exceeds the context length"
+        },
+        "status": 400
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "providerError",
+        "status": 400
+      },
+      "kind": "wire",
+      "name": "wire-unrelated-400",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "error": "the input length exceeds the limit"
+        },
+        "status": 400
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "providerError",
+        "status": 413
+      },
+      "kind": "wire",
+      "name": "wire-413",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "error": "the input length exceeds the context length"
+        },
+        "status": 413
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "providerError",
+        "status": 401
+      },
+      "kind": "wire",
+      "name": "wire-401",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "error": "unauthorized"
+        },
+        "status": 401
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "providerError",
+        "status": 500
+      },
+      "kind": "wire",
+      "name": "wire-500",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "error": "internal"
+        },
+        "status": 500
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "invalidEmbedding"
+      },
+      "kind": "wire",
+      "name": "wire-empty-vectors",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [],
+          "model": "fixture",
+          "prompt_eval_count": 5
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "invalidEmbedding"
+      },
+      "kind": "wire",
+      "name": "wire-multiple-vectors",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [
+            [
+              0.6,
+              0.8
+            ],
+            [
+              0.6,
+              0.8
+            ]
+          ],
+          "model": "fixture",
+          "prompt_eval_count": 5
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "invalidEmbedding"
+      },
+      "kind": "wire",
+      "name": "wire-wrong-dimension",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [
+            [
+              0.6,
+              0.8,
+              0
+            ]
+          ],
+          "model": "fixture",
+          "prompt_eval_count": 5
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "invalidTokenCount"
+      },
+      "kind": "wire",
+      "name": "wire-negative-count",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [
+            [
+              0.6,
+              0.8
+            ]
+          ],
+          "model": "fixture",
+          "prompt_eval_count": -1
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "invalidTokenCount"
+      },
+      "kind": "wire",
+      "name": "wire-fractional-count",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "body": {
+          "embeddings": [
+            [
+              0.6,
+              0.8
+            ]
+          ],
+          "model": "fixture",
+          "prompt_eval_count": 1.5
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "input": "q:abc",
+        "inputLimit": 5,
+        "method": "embed",
+        "model": "fixture",
+        "nativeDims": 2,
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "error": "invalidResponse"
+      },
+      "kind": "wire",
+      "name": "wire-malformed",
+      "request": {
+        "body": {
+          "dimensions": 2,
+          "input": [
+            "q:abc"
+          ],
+          "model": "fixture",
+          "options": {
+            "num_ctx": 5
+          },
+          "truncate": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/embed"
+      },
+      "response": {
+        "bodyText": "{\"embeddings\":",
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "method": "observeRaw",
+        "model": "llama3.2:3b",
+        "options": {
+          "maxOutputTokens": 1,
+          "runtimeContext": 8192
+        },
+        "root": "http://127.0.0.1:11434",
+        "text": "Záruka platí."
+      },
+      "expected": {
+        "method": "ollama-raw-prompt",
+        "outputTokens": 1,
+        "promptTokens": 6,
+        "text": "x"
+      },
+      "kind": "wire",
+      "name": "raw-calibration",
+      "request": {
+        "body": {
+          "model": "llama3.2:3b",
+          "options": {
+            "num_ctx": 8192,
+            "num_predict": 1,
+            "temperature": 0
+          },
+          "prompt": "Záruka platí.",
+          "raw": true,
+          "stream": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/generate"
+      },
+      "response": {
+        "body": {
+          "done": true,
+          "eval_count": 1,
+          "model": "llama3.2:3b",
+          "prompt_eval_count": 6,
+          "response": "x"
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "method": "observeRaw",
+        "model": "llama3.2:3b",
+        "options": {
+          "maxOutputTokens": 1,
+          "runtimeContext": 8192
+        },
+        "root": "http://127.0.0.1:11434",
+        "text": "Záruka platí."
+      },
+      "expected": {
+        "fallbackRequest": {
+          "requestId": "raw-missing-count",
+          "text": "Záruka platí.",
+          "tokenizerId": "fixture-chat-tokenizer"
+        },
+        "fallbackResponse": {
+          "assetsSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "requestId": "raw-missing-count",
+          "revision": "fixture-revision",
+          "tokenizerId": "fixture-chat-tokenizer",
+          "tokens": 7
+        },
+        "method": "documented-tokenizer",
+        "observedTokens": 7,
+        "outputTokens": null,
+        "promptTokens": null,
+        "text": "x"
+      },
+      "kind": "wire",
+      "name": "raw-missing-count",
+      "request": {
+        "body": {
+          "model": "llama3.2:3b",
+          "options": {
+            "num_ctx": 8192,
+            "num_predict": 1,
+            "temperature": 0
+          },
+          "prompt": "Záruka platí.",
+          "raw": true,
+          "stream": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/generate"
+      },
+      "response": {
+        "body": {
+          "done": true,
+          "model": "llama3.2:3b",
+          "response": "x"
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "method": "observeRaw",
+        "model": "llama3.2:3b",
+        "options": {
+          "maxOutputTokens": 1,
+          "runtimeContext": 8192
+        },
+        "root": "http://127.0.0.1:11434",
+        "text": "Záruka platí."
+      },
+      "expected": {
+        "error": "invalidTokenCount"
+      },
+      "kind": "wire",
+      "name": "raw-negative-count",
+      "request": {
+        "body": {
+          "model": "llama3.2:3b",
+          "options": {
+            "num_ctx": 8192,
+            "num_predict": 1,
+            "temperature": 0
+          },
+          "prompt": "Záruka platí.",
+          "raw": true,
+          "stream": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/generate"
+      },
+      "response": {
+        "body": {
+          "done": true,
+          "eval_count": 1,
+          "model": "llama3.2:3b",
+          "prompt_eval_count": -1,
+          "response": "x"
+        },
+        "status": 200
+      }
+    },
+    {
+      "call": {
+        "messages": [
+          {
+            "content": "rules",
+            "role": "system"
+          },
+          {
+            "content": "[SCOPE]\nScope\n[/SCOPE]\n\nQ",
+            "role": "user"
+          }
+        ],
+        "method": "observeChat",
+        "model": "llama3.2:3b",
+        "options": {
+          "maxOutputTokens": 1,
+          "runtimeContext": 8192
+        },
+        "root": "http://127.0.0.1:11434"
+      },
+      "expected": {
+        "method": "ollama-chat-prompt",
+        "outputTokens": 1,
+        "promptTokens": 40,
+        "text": "[1]"
+      },
+      "kind": "wire",
+      "name": "chat-full-prompt",
+      "request": {
+        "body": {
+          "messages": [
+            {
+              "content": "rules",
+              "role": "system"
+            },
+            {
+              "content": "[SCOPE]\nScope\n[/SCOPE]\n\nQ",
+              "role": "user"
+            }
+          ],
+          "model": "llama3.2:3b",
+          "options": {
+            "num_ctx": 8192,
+            "num_predict": 1,
+            "temperature": 0
+          },
+          "stream": false
+        },
+        "method": "POST",
+        "url": "http://127.0.0.1:11434/api/chat"
+      },
+      "response": {
+        "body": {
+          "done": true,
+          "eval_count": 1,
+          "message": {
+            "content": "[1]",
+            "role": "assistant"
+          },
+          "model": "llama3.2:3b",
+          "prompt_eval_count": 40
+        },
+        "status": 200
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": 32768,
+        "embeddingRequests": 0,
+        "error": null,
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 512,
+          "docFormatVersion": "wp7:qwen3-06b-512:document:split1:scalarpool1:prefixl2:ctx32768",
+          "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+          "model": "qwen3-embedding:0.6b",
+          "modelDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "normalization": "l2",
+          "providerId": "00000000-0000-0000-0000-000000000000",
+          "queryFormatVersion": "wp7:qwen3-06b-512:query:split1:scalarpool1:prefixl2:ctx32768"
+        },
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          },
+          {
+            "body": {
+              "model": "qwen3-embedding:0.6b"
+            },
+            "method": "POST",
+            "url": "http://127.0.0.1:11434/api/show"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "prepare-profile",
+      "note": "context above the profile ceiling is capped at 32768",
+      "profileId": "qwen3-06b-512",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": {
+        "model_info": {
+          "general.architecture": "qwen3",
+          "qwen3.context_length": 40960
+        }
+      },
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "1111111111111111111111111111111111111111111111111111111111111111",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "qwen3-embedding:0.6b",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": 4096,
+        "embeddingRequests": 0,
+        "error": null,
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 1024,
+          "docFormatVersion": "wp7:bge-m3-1024:document:split1:scalarpool1:prefixl2:ctx4096",
+          "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+          "model": "bge-m3",
+          "modelDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "normalization": "l2",
+          "providerId": "00000000-0000-0000-0000-000000000000",
+          "queryFormatVersion": "wp7:bge-m3-1024:query:split1:scalarpool1:prefixl2:ctx4096"
+        },
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          },
+          {
+            "body": {
+              "model": "bge-m3"
+            },
+            "method": "POST",
+            "url": "http://127.0.0.1:11434/api/show"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "prepare-profile-context-cap",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": {
+        "model_info": {
+          "bert.context_length": 4096,
+          "general.architecture": "bert"
+        }
+      },
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "2222222222222222222222222222222222222222222222222222222222222222",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "bge-m3:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": 512,
+        "embeddingRequests": 0,
+        "error": null,
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 256,
+          "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+          "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+          "model": "nomic-embed-text-v2-moe",
+          "modelDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "normalization": "l2",
+          "providerId": "00000000-0000-0000-0000-000000000000",
+          "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+        },
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          },
+          {
+            "body": {
+              "model": "nomic-embed-text-v2-moe"
+            },
+            "method": "POST",
+            "url": "http://127.0.0.1:11434/api/show"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [
+        {
+          "after": "tags",
+          "field": "root",
+          "value": "http://10.0.0.2:11434"
+        }
+      ],
+      "name": "prepare-profile-root-change",
+      "note": "settings change after /api/tags; /api/show and every embed stay on the captured root",
+      "profileId": "nomic-v2-256",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": {
+        "model_info": {
+          "general.architecture": "nomic-bert-moe",
+          "nomic-bert-moe.context_length": 2048
+        }
+      },
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "3333333333333333333333333333333333333333333333333333333333333333",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "embeddingModelUnavailable",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "prepare-profile-no-model",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": null,
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "4444444444444444444444444444444444444444444444444444444444444444",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "bge-m3-large:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "modelMetadataUnavailable",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          },
+          {
+            "body": {
+              "model": "bge-m3"
+            },
+            "method": "POST",
+            "url": "http://127.0.0.1:11434/api/show"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "prepare-profile-no-context",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": {
+        "model_info": {
+          "general.architecture": "bert"
+        }
+      },
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "4444444444444444444444444444444444444444444444444444444444444444",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "bge-m3",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "modelMetadataUnavailable",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          },
+          {
+            "body": {
+              "model": "bge-m3"
+            },
+            "method": "POST",
+            "url": "http://127.0.0.1:11434/api/show"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "prepare-profile-invalid-context",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": {
+        "model_info": {
+          "bert.context_length": 1,
+          "general.architecture": "bert"
+        }
+      },
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "4444444444444444444444444444444444444444444444444444444444444444",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "bge-m3",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "unsupportedEmbeddingProfile",
+        "requests": []
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "prepare-profile-chat-only",
+      "note": "converted chat-only provider; never substitutes another provider",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": false,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": null,
+      "tags": {
+        "models": []
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "unsupportedEmbeddingProfile",
+        "requests": []
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "prepare-profile-remote-type",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "https://api.openai.com/v1",
+        "type": "openai"
+      },
+      "show": null,
+      "tags": {
+        "models": []
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": 512,
+        "embeddingRequests": 0,
+        "error": null,
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "wp7:nomic-v2-768:document:split1:scalarpool1:prefixl2:ctx512",
+          "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+          "model": "nomic-embed-text-v2-moe",
+          "modelDigest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+          "normalization": "l2",
+          "providerId": "00000000-0000-0000-0000-000000000000",
+          "queryFormatVersion": "wp7:nomic-v2-768:query:split1:scalarpool1:prefixl2:ctx512"
+        },
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          },
+          {
+            "body": {
+              "model": "nomic-embed-text-v2-moe"
+            },
+            "method": "POST",
+            "url": "http://127.0.0.1:11434/api/show"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "latest-alias-exact",
+      "note": "an untagged profile model equals only its explicit :latest alias",
+      "profileId": "nomic-v2-768",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": {
+        "model_info": {
+          "general.architecture": "nomic-bert-moe",
+          "nomic-bert-moe.context_length": 2048
+        }
+      },
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "5555555555555555555555555555555555555555555555555555555555555555",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "embeddingModelUnavailable",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "latest-alias-no-substring",
+      "profileId": "nomic-v2-768",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": null,
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "5555555555555555555555555555555555555555555555555555555555555555",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe:q8_0",
+            "size": 1
+          },
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "6666666666666666666666666666666666666666666666666666666666666666",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe-latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "embeddingModelUnavailable",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "tagged-model-no-substring",
+      "profileId": "qwen3-06b-256",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": null,
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "7777777777777777777777777777777777777777777777777777777777777777",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "qwen3-embedding:0.6b-q8_0",
+            "size": 1
+          },
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "8888888888888888888888888888888888888888888888888888888888888888",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "qwen3-embedding:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "embeddingModelUnavailable",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "duplicate-model-rows",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": null,
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "4444444444444444444444444444444444444444444444444444444444444444",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "bge-m3",
+            "size": 1
+          },
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "9999999999999999999999999999999999999999999999999999999999999999",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "bge-m3:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": 8192,
+        "embeddingRequests": 0,
+        "error": null,
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 1024,
+          "docFormatVersion": "wp7:bge-m3-1024:document:split1:scalarpool1:prefixl2:ctx8192",
+          "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+          "model": "bge-m3",
+          "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "normalization": "l2",
+          "providerId": "00000000-0000-0000-0000-000000000000",
+          "queryFormatVersion": "wp7:bge-m3-1024:query:split1:scalarpool1:prefixl2:ctx8192"
+        },
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          },
+          {
+            "body": {
+              "model": "bge-m3"
+            },
+            "method": "POST",
+            "url": "http://127.0.0.1:11434/api/show"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "prefixed-digest",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": {
+        "model_info": {
+          "bert.context_length": 8192,
+          "general.architecture": "bert"
+        }
+      },
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "bge-m3",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "embeddingRequests": 0,
+        "error": "embeddingModelUnavailable",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "kind": "prepare",
+      "mutations": [],
+      "name": "truncated-digest",
+      "profileId": "bge-m3-1024",
+      "provider": {
+        "consented": true,
+        "embeddingCapable": true,
+        "enabled": true,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "root": "http://127.0.0.1:11434",
+        "type": "ollama"
+      },
+      "show": null,
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "aaaaaaaaaaaa",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "bge-m3",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": 512,
+        "embeddingRequests": 0,
+        "error": null,
+        "note": "ctx suffix is parsed from the stored identity; never re-probed",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "identity": {
+        "chunkerVersion": "2",
+        "dims": 256,
+        "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+        "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+        "model": "nomic-embed-text-v2-moe",
+        "modelDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "normalization": "l2",
+        "providerId": "00000000-0000-0000-0000-000000000000",
+        "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+      },
+      "kind": "resume",
+      "name": "resume-digest-same",
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "3333333333333333333333333333333333333333333333333333333333333333",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": null,
+        "embeddingRequests": 0,
+        "error": "embeddingModelChanged",
+        "note": "ctx suffix is parsed from the stored identity; never re-probed",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "identity": {
+        "chunkerVersion": "2",
+        "dims": 256,
+        "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+        "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+        "model": "nomic-embed-text-v2-moe",
+        "modelDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "normalization": "l2",
+        "providerId": "00000000-0000-0000-0000-000000000000",
+        "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+      },
+      "kind": "resume",
+      "name": "resume-digest-changed",
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": null,
+        "embeddingRequests": 0,
+        "error": "embeddingModelChanged",
+        "note": "ctx suffix is parsed from the stored identity; never re-probed",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "identity": {
+        "chunkerVersion": "2",
+        "dims": 256,
+        "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+        "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+        "model": "nomic-embed-text-v2-moe",
+        "modelDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "normalization": "l2",
+        "providerId": "00000000-0000-0000-0000-000000000000",
+        "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+      },
+      "kind": "resume",
+      "name": "resume-digest-missing",
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "effectiveLimit": null,
+        "embeddingRequests": 0,
+        "error": "embeddingModelChanged",
+        "note": "ctx suffix is parsed from the stored identity; never re-probed",
+        "requests": [
+          {
+            "body": null,
+            "method": "GET",
+            "url": "http://127.0.0.1:11434/api/tags"
+          }
+        ]
+      },
+      "identity": {
+        "chunkerVersion": "2",
+        "dims": 256,
+        "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+        "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+        "model": "nomic-embed-text-v2-moe",
+        "modelDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "normalization": "l2",
+        "providerId": "00000000-0000-0000-0000-000000000000",
+        "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+      },
+      "kind": "resume",
+      "name": "resume-model-removed",
+      "tags": {
+        "models": []
+      }
+    },
+    {
+      "expected": {
+        "activated": false,
+        "activeGenerationUnchanged": true,
+        "error": "embeddingModelChanged"
+      },
+      "identity": {
+        "chunkerVersion": "2",
+        "dims": 256,
+        "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+        "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+        "model": "nomic-embed-text-v2-moe",
+        "modelDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "normalization": "l2",
+        "providerId": "00000000-0000-0000-0000-000000000000",
+        "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+      },
+      "kind": "publish",
+      "name": "publish-digest-changed",
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe:latest",
+            "size": 1
+          }
+        ]
+      }
+    },
+    {
+      "expected": {
+        "activated": true,
+        "activeGenerationUnchanged": false,
+        "error": null
+      },
+      "identity": {
+        "chunkerVersion": "2",
+        "dims": 256,
+        "docFormatVersion": "wp7:nomic-v2-256:document:split1:scalarpool1:prefixl2:ctx512",
+        "endpointRevision": "1497405493095f143425750ff4b52c72371279b4f09ec8a2977c4b82eb60bc99",
+        "model": "nomic-embed-text-v2-moe",
+        "modelDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "normalization": "l2",
+        "providerId": "00000000-0000-0000-0000-000000000000",
+        "queryFormatVersion": "wp7:nomic-v2-256:query:split1:scalarpool1:prefixl2:ctx512"
+      },
+      "kind": "publish",
+      "name": "publish-digest-same",
+      "tags": {
+        "models": [
+          {
+            "details": {
+              "family": "fixture",
+              "format": "gguf",
+              "parameter_size": "fixture",
+              "quantization_level": "fixture"
+            },
+            "digest": "3333333333333333333333333333333333333333333333333333333333333333",
+            "modified_at": "2026-10-09T00:00:00Z",
+            "name": "nomic-embed-text-v2-moe:latest",
+            "size": 1
+          }
+        ]
+      }
+    }
+  ],
+  "contract": "embedding-strict",
+  "fixtureProfile": {
+    "dims": 2,
+    "documentPrefix": "",
+    "id": "fixture",
+    "matryoshka": false,
+    "maxInputTokens": 5,
+    "model": "fixture",
+    "nativeDims": 2,
+    "queryPrefix": "q:",
+    "tokenizerId": "fixture-only"
+  },
+  "lengthRejectionError": "the input length exceeds the context length",
+  "vectorSentinels": [
+    "NaN",
+    "Infinity",
+    "-Infinity"
+  ],
+  "version": 1
+}

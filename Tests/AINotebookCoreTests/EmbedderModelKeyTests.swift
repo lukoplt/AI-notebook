@@ -67,10 +67,33 @@ final class EmbedderModelKeyTests: XCTestCase {
         XCTAssertFalse(hits.isEmpty, "stored vectors under prov-A:m must be found")
 
         box.value = "prov-B:other"
-        let missHits = try await retriever.search(notebookId: notebookId, query: "hello")
-        // Vector arm finds nothing under the new key (FTS may still hit);
-        // assert the embed call went out with the NEW key.
+        let generation = try store.prepareEmbeddingGeneration(notebookId: notebookId, modelKey: box.value, dims: 2, now: 0, copyExisting: false)
+        for source in try store.sourcesIncludingShadow(notebookId: notebookId) {
+            for chunk in try store.chunks(sourceId: source.id!) {
+                try store.storeGenerationEmbedding(generationId: generation.id, chunkId: chunk.id!, vector: EmbeddingVector(values: [1, 0]))
+            }
+            try store.setManifest(generationId: generation.id, entries: [ManifestEntry(sourceId: source.id!, revisionId: source.publishedRevisionId!, state: "done", reason: nil)])
+        }
+        try store.activateGeneration(id: generation.id, now: 1)
+        let switchedHits = try await retriever.search(notebookId: notebookId, query: "hello")
+        XCTAssertFalse(switchedHits.isEmpty)
         XCTAssertEqual(client.models.last, "prov-B:other")
-        _ = missHits
     }
+
+    func testUnindexedModelUsesSharedLexicalFixtureWithoutProviderCall() async throws {
+        let root = try SharedFixtures.json("contracts/storage-integration-v1.json")
+        let cases = try XCTUnwrap(root["cases"] as? [[String: Any]])
+        let fixture = try XCTUnwrap(cases.first { $0["name"] as? String == "no-vector-provider-call" })
+        let query = try XCTUnwrap(fixture["query"] as? String)
+        let expected = try XCTUnwrap(fixture["expected"] as? [String: Any])
+        let store = try NotebookStore(path: .inMemory, configuredEmbeddingModelKey: nil)
+        let notebook = try store.createNotebook(name: "lexical")
+        let source = try store.createSource(notebookId: notebook.id!, type: .text, title: query, uri: nil, rawPath: nil)
+        try store.replaceChunks(sourceId: source.id!, chunks: [ChunkDraft(text: query, tokenCount: 1)])
+        let client = RecordingClient()
+        let hits = try await Retriever(store: store, client: client, model: "unindexed").search(notebookId: notebook.id!, query: query)
+        XCTAssertEqual(hits.count, expected["hits"] as? Int)
+        XCTAssertEqual(client.models.count, expected["providerCalls"] as? Int)
+    }
+
 }

@@ -19,7 +19,8 @@ public record ProviderConfig(
                         || Type == ProviderType.OpenWebUI;
 }
 
-public record ProviderModelInfo(string Id, string? DisplayName)
+/// <remarks>ContextWindow (provider-listing-limits-v1): the window an OpenWebUI / OpenAI-compatible listing advertises.</remarks>
+public record ProviderModelInfo(string Id, string? DisplayName, int? ContextWindow = null)
 {
     public string Label => DisplayName is { Length: > 0 } d ? d : Id;
 }

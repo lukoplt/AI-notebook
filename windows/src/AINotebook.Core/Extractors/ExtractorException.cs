@@ -37,6 +37,13 @@ public abstract class ExtractorException : Exception
         public OfficeArchiveCorrupt(Uri url) : base($"Office archive corrupt: {url}") => Url = url;
     }
 
+    /// <summary>A valid package without a main document part (<c>missingMainPart</c>).</summary>
+    public sealed class OfficeMainPartMissing : ExtractorException
+    {
+        public Uri Url { get; }
+        public OfficeMainPartMissing(Uri url) : base($"Office document has no main part: {url}") => Url = url;
+    }
+
     public sealed class WebFetchFailed : ExtractorException
     {
         public Uri Url { get; }

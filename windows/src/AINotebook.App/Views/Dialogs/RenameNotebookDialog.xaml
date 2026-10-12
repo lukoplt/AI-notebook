@@ -12,7 +12,7 @@
     <StackPanel Width="380" Spacing="12">
         <TextBox Header="{Binding L[notebookName]}"
                  Text="{x:Bind ViewModel.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBlock Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+        <TextBlock Foreground="{ThemeResource DangerBrush}"
                    Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" />
     </StackPanel>
 </ContentDialog>

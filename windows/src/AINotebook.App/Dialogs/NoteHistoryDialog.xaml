@@ -21,7 +21,7 @@
                     <StackPanel Spacing="2" Padding="0,4">
                         <TextBlock Text="{x:Bind Reason}" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                         <TextBlock Text="{x:Bind SavedAt}" Style="{ThemeResource CaptionTextBlockStyle}"
-                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                                   Foreground="{ThemeResource Text2Brush}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -41,11 +41,11 @@
 
             <ScrollViewer Grid.Row="1" Margin="0,8,0,8">
                 <TextBlock Text="{x:Bind ViewModel.Selected.BodyMd, Mode=OneWay}"
-                           FontFamily="Consolas" TextWrapping="Wrap" IsTextSelectionEnabled="True"/>
+                           FontFamily="{StaticResource FontMono}" TextWrapping="Wrap" IsTextSelectionEnabled="True"/>
             </ScrollViewer>
 
             <Button Grid.Row="2" x:Name="RestoreButton" HorizontalAlignment="Right"
-                    Style="{ThemeResource AccentButtonStyle}"
+                    Style="{StaticResource PrimaryButtonStyle}"
                     Command="{x:Bind ViewModel.RestoreCommand}"/>
         </Grid>
     </Grid>

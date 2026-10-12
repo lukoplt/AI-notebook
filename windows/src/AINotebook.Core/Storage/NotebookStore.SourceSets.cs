@@ -1,5 +1,6 @@
 using AINotebook.Core.Models;
 using Dapper;
+using Microsoft.Data.Sqlite;
 
 namespace AINotebook.Core.Storage;
 
@@ -52,6 +53,14 @@ public sealed partial class NotebookStore
         lock (_gate)
         {
             using var tx = Connection.BeginTransaction();
+            long notebook = RequireSourceSetNotebook(setId, tx);
+            foreach (long sourceId in sourceIds.Distinct())
+            {
+                long? sourceNotebook = Connection.QuerySingleOrDefault<long?>(
+                    "SELECT notebook_id FROM sources WHERE id=$sourceId", new { sourceId }, tx);
+                if (sourceNotebook is null) throw new StorageV19Exception("notFound");
+                if (sourceNotebook != notebook) throw new StorageV19Exception("notebookMismatch");
+            }
             Connection.Execute("DELETE FROM source_set_members WHERE set_id=$sid", new { sid = setId }, tx);
             foreach (var srcId in sourceIds)
                 Connection.Execute(
@@ -68,4 +77,35 @@ public sealed partial class NotebookStore
                 "SELECT source_id FROM source_set_members WHERE set_id=$sid", new { sid = setId })
                 .ToList();
     }
+
+    public void SetSourceSetFolders(long setId, IReadOnlyList<long> folderIds)
+    {
+        lock (_gate)
+        {
+            using var transaction = _conn.BeginTransaction();
+            long notebook = RequireSourceSetNotebook(setId, transaction);
+            foreach (long folderId in folderIds.Distinct())
+                if (RequireFolderNotebook(folderId, transaction) != notebook)
+                    throw new StorageV19Exception("notebookMismatch");
+            _conn.Execute("DELETE FROM source_set_folders WHERE set_id=$setId", new { setId }, transaction);
+            foreach (long folderId in folderIds.Distinct())
+                _conn.Execute("INSERT INTO source_set_folders(set_id,folder_id) VALUES($setId,$folderId)",
+                    new { setId, folderId }, transaction);
+            transaction.Commit();
+        }
+    }
+
+    public IReadOnlyList<long> SourceSetFolders(long setId)
+    {
+        lock (_gate)
+        {
+            RequireSourceSetNotebook(setId);
+            return _conn.Query<long>("SELECT folder_id FROM source_set_folders WHERE set_id=$setId ORDER BY folder_id",
+                new { setId }).ToArray();
+        }
+    }
+
+    private long RequireSourceSetNotebook(long setId, SqliteTransaction? transaction = null)
+        => _conn.QuerySingleOrDefault<long?>("SELECT notebook_id FROM source_sets WHERE id=$setId", new { setId }, transaction)
+            ?? throw new StorageV19Exception("notFound");
 }

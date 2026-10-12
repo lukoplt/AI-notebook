@@ -104,11 +104,12 @@ public class WebSearchAdapterTests
 
         Assert.DoesNotContain(Injection, system);
         Assert.Contains(Injection, user);
-        Assert.Contains("external content only", user);
+        // WP8: web results are a labelled user-turn section outside the selected folder.
+        Assert.Contains("[WEB — NOT CONTENT OF THE SELECTED FOLDER]\n[W1] Evil\n" + Injection, user);
     }
 
     [Fact]
-    public async Task WithoutWebResultsTheUserTurnIsLeftExactlyAsTyped()
+    public async Task WithoutWebResultsTheQuestionIsSentExactlyAsTypedWithNoWebSection()
     {
         using var store = new NotebookStore(StorePath.InMemory);
         var nb = store.CreateNotebook("N", "");
@@ -125,6 +126,8 @@ public class WebSearchAdapterTests
         await engine.SendAsync(session.Id!.Value, nb.Id!.Value, "plain question");
 
         var user = chat.CapturedMessages.Single().Last(t => t.Role == ChatRole.User).Content;
-        Assert.Equal("plain question", user);
+        // WP8: the final user turn is the prepared pack; its last section is the typed question.
+        Assert.EndsWith("[QUESTION]\nplain question\n[/QUESTION]", user);
+        Assert.DoesNotContain("[WEB", user);
     }
 }

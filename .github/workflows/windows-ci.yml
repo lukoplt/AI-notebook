@@ -35,6 +35,7 @@ jobs:
         run: |
           dotnet restore windows/src/AINotebook.Core/AINotebook.Core.csproj --locked-mode
           dotnet restore windows/src/AINotebook.App/AINotebook.App.csproj --locked-mode
+          dotnet restore windows/tools/AINotebook.Eval/AINotebook.Eval.csproj --locked-mode
 
       - name: Build Core (Release)
         run: dotnet build windows/src/AINotebook.Core/AINotebook.Core.csproj -c Release --no-restore
@@ -62,3 +63,36 @@ jobs:
 
       - name: Test App
         run: dotnet test windows/tests/AINotebook.App.Tests/AINotebook.App.Tests.csproj -c Release -p:Platform=x64
+
+      # Launches the real unpackaged executable headlessly (--startup-smoke): resolves the DI graph against an
+      # isolated temp profile, migrates a copied v18 database through the ordinary store, reopens it and writes a
+      # result marker. Both exit code 0 and a valid marker are required; a crash without a marker cannot pass.
+      # GetTempPath (not RUNNER_TEMP) because the App only accepts profiles below its own temp directory.
+      - name: Smoke unpackaged App startup and v18 migration
+        shell: pwsh
+        run: |
+          $project = 'windows/src/AINotebook.App/AINotebook.App.csproj'
+          $target = (& dotnet msbuild $project -nologo -getProperty:TargetPath -p:Configuration=Release -p:Platform=x64).Trim()
+          if ($LASTEXITCODE -ne 0) { throw 'Could not resolve App TargetPath' }
+          $exe = [IO.Path]::ChangeExtension($target, '.exe')
+          if (-not (Test-Path $exe)) { throw "App executable missing: $exe" }
+          $smokeProfile = Join-Path ([IO.Path]::GetTempPath()) ('ainotebook-smoke-' + [Guid]::NewGuid().ToString('N'))
+          New-Item -ItemType Directory -Path $smokeProfile | Out-Null
+          Copy-Item Tests/fixtures/storage/v18.sqlite (Join-Path $smokeProfile 'db.sqlite')
+          $process = Start-Process -FilePath $exe -ArgumentList "--startup-smoke `"$smokeProfile`"" -PassThru
+          if (-not $process.WaitForExit(60000)) {
+            $process.Kill($true)
+            throw 'App startup smoke timed out after 60 seconds'
+          }
+          if ($process.ExitCode -ne 0) {
+            Get-Content (Join-Path ([IO.Path]::GetTempPath()) 'ainotebook-crash.log') -ErrorAction SilentlyContinue
+            throw "App startup smoke exited $($process.ExitCode)"
+          }
+          $resultPath = Join-Path $smokeProfile 'smoke-result.json'
+          if (-not (Test-Path $resultPath)) { throw 'Smoke result missing' }
+          $result = Get-Content $resultPath -Raw | ConvertFrom-Json
+          if ($result.status -ne 'passed') { throw 'Smoke did not pass' }
+          if ($result.version -ne (Get-Content VERSION -Raw).Trim()) { throw 'Smoke version mismatch' }
+          if ($result.profile -ne $smokeProfile) { throw 'Smoke used wrong profile' }
+          Write-Host 'PASS: unpackaged App DI, v18 migration, and store reopen'
+          Remove-Item $smokeProfile -Recurse -Force

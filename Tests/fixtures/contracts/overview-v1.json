@@ -1,0 +1,335 @@
+{
+  "contract": "overview",
+  "version": 1,
+  "cases": [
+    {
+      "name": "round-robin-across-dirs",
+      "evidenceBudget": 10000,
+      "maxPassages": 40,
+      "files": [
+        {
+          "sourceId": 1,
+          "folderId": null,
+          "relPath": "a/x.md",
+          "firstChunkId": 100,
+          "firstChunkTokens": 100
+        },
+        {
+          "sourceId": 2,
+          "folderId": null,
+          "relPath": "a/y.md",
+          "firstChunkId": 200,
+          "firstChunkTokens": 100
+        },
+        {
+          "sourceId": 3,
+          "folderId": null,
+          "relPath": "b/z.md",
+          "firstChunkId": 300,
+          "firstChunkTokens": 100
+        },
+        {
+          "sourceId": 4,
+          "folderId": null,
+          "relPath": "root.md",
+          "firstChunkId": 400,
+          "firstChunkTokens": 100
+        },
+        {
+          "sourceId": 5,
+          "folderId": null,
+          "relPath": "a/w.md",
+          "firstChunkId": 500,
+          "firstChunkTokens": 100
+        }
+      ],
+      "expected": {
+        "visitOrder": [
+          4,
+          5,
+          3,
+          1,
+          2
+        ],
+        "includedSourceIds": [
+          4,
+          5,
+          3,
+          1,
+          2
+        ],
+        "filesIncluded": 5,
+        "filesWithPublishedChunks": 5,
+        "filesInScope": 5,
+        "evidenceTokens": 500
+      }
+    },
+    {
+      "name": "budget-skips-large-file",
+      "evidenceBudget": 300,
+      "maxPassages": 40,
+      "files": [
+        {
+          "sourceId": 1,
+          "folderId": null,
+          "relPath": "a/x.md",
+          "firstChunkId": 100,
+          "firstChunkTokens": 250
+        },
+        {
+          "sourceId": 2,
+          "folderId": null,
+          "relPath": "b/y.md",
+          "firstChunkId": 200,
+          "firstChunkTokens": 100
+        },
+        {
+          "sourceId": 3,
+          "folderId": null,
+          "relPath": "c/z.md",
+          "firstChunkId": 300,
+          "firstChunkTokens": 100
+        }
+      ],
+      "expected": {
+        "visitOrder": [
+          1,
+          2,
+          3
+        ],
+        "includedSourceIds": [
+          1
+        ],
+        "filesIncluded": 1,
+        "filesWithPublishedChunks": 3,
+        "filesInScope": 3,
+        "evidenceTokens": 250
+      }
+    },
+    {
+      "name": "unicode-path-order",
+      "evidenceBudget": 10000,
+      "maxPassages": 40,
+      "files": [
+        {
+          "sourceId": 1,
+          "folderId": null,
+          "relPath": "účty/b.pdf",
+          "firstChunkId": 100,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 2,
+          "folderId": null,
+          "relPath": "zmluvy/a.pdf",
+          "firstChunkId": 200,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 3,
+          "folderId": null,
+          "relPath": "Verträge/c.pdf",
+          "firstChunkId": 300,
+          "firstChunkTokens": 10
+        }
+      ],
+      "expected": {
+        "visitOrder": [
+          3,
+          2,
+          1
+        ],
+        "includedSourceIds": [
+          3,
+          2,
+          1
+        ],
+        "filesIncluded": 3,
+        "filesWithPublishedChunks": 3,
+        "filesInScope": 3,
+        "evidenceTokens": 30
+      }
+    },
+    {
+      "name": "empty-scope",
+      "evidenceBudget": 10000,
+      "maxPassages": 40,
+      "files": [],
+      "expected": {
+        "visitOrder": [],
+        "includedSourceIds": [],
+        "filesIncluded": 0,
+        "filesWithPublishedChunks": 0,
+        "filesInScope": 0,
+        "evidenceTokens": 0
+      }
+    },
+    {
+      "name": "duplicate-relative-paths-across-folders",
+      "evidenceBudget": 10000,
+      "maxPassages": 40,
+      "files": [
+        {
+          "sourceId": 5,
+          "folderId": 20,
+          "relPath": "docs/a.md",
+          "firstChunkId": 500,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 3,
+          "folderId": 10,
+          "relPath": "docs/b.md",
+          "firstChunkId": 300,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 2,
+          "folderId": null,
+          "relPath": "docs/a.md",
+          "firstChunkId": 200,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 1,
+          "folderId": 10,
+          "relPath": "docs/a.md",
+          "firstChunkId": 100,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 4,
+          "folderId": null,
+          "relPath": "docs/a.md",
+          "firstChunkId": 400,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 6,
+          "folderId": 20,
+          "relPath": "empty.md",
+          "firstChunkId": null,
+          "firstChunkTokens": null
+        }
+      ],
+      "expected": {
+        "visitOrder": [
+          2,
+          1,
+          5,
+          4,
+          3
+        ],
+        "includedSourceIds": [
+          2,
+          1,
+          5,
+          4,
+          3
+        ],
+        "filesIncluded": 5,
+        "filesWithPublishedChunks": 5,
+        "filesInScope": 6,
+        "evidenceTokens": 50
+      }
+    },
+    {
+      "name": "duplicate-relative-paths-permuted-input",
+      "evidenceBudget": 10000,
+      "maxPassages": 40,
+      "files": [
+        {
+          "sourceId": 6,
+          "folderId": 20,
+          "relPath": "empty.md",
+          "firstChunkId": null,
+          "firstChunkTokens": null
+        },
+        {
+          "sourceId": 4,
+          "folderId": null,
+          "relPath": "docs/a.md",
+          "firstChunkId": 400,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 1,
+          "folderId": 10,
+          "relPath": "docs/a.md",
+          "firstChunkId": 100,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 2,
+          "folderId": null,
+          "relPath": "docs/a.md",
+          "firstChunkId": 200,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 3,
+          "folderId": 10,
+          "relPath": "docs/b.md",
+          "firstChunkId": 300,
+          "firstChunkTokens": 10
+        },
+        {
+          "sourceId": 5,
+          "folderId": 20,
+          "relPath": "docs/a.md",
+          "firstChunkId": 500,
+          "firstChunkTokens": 10
+        }
+      ],
+      "expected": {
+        "visitOrder": [
+          2,
+          1,
+          5,
+          4,
+          3
+        ],
+        "includedSourceIds": [
+          2,
+          1,
+          5,
+          4,
+          3
+        ],
+        "filesIncluded": 5,
+        "filesWithPublishedChunks": 5,
+        "filesInScope": 6,
+        "evidenceTokens": 50
+      }
+    },
+    {
+      "name": "no-published-chunks-still-counts-scope",
+      "evidenceBudget": 10000,
+      "maxPassages": 40,
+      "files": [
+        {
+          "sourceId": 1,
+          "folderId": 10,
+          "relPath": "pending.md",
+          "firstChunkId": null,
+          "firstChunkTokens": null
+        },
+        {
+          "sourceId": 2,
+          "folderId": 10,
+          "relPath": "empty.md",
+          "firstChunkId": null,
+          "firstChunkTokens": null
+        }
+      ],
+      "expected": {
+        "visitOrder": [],
+        "includedSourceIds": [],
+        "filesIncluded": 0,
+        "filesWithPublishedChunks": 0,
+        "filesInScope": 2,
+        "evidenceTokens": 0
+      }
+    }
+  ]
+}

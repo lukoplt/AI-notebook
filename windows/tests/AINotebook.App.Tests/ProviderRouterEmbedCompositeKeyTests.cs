@@ -32,10 +32,10 @@ public class ProviderRouterEmbedCompositeKeyTests
 
         var live = new ProviderConfig(
             "11111111-1111-1111-1111-111111111111", ProviderType.OpenAI,
-            "Live", "https://live.example.com", true, true, DateTime.UtcNow);
+            "Live", "https://live.example.com/v1", true, true, DateTime.UtcNow);
         var target = new ProviderConfig(
             "22222222-2222-2222-2222-222222222222", ProviderType.OpenAICompatible,
-            "Target", "https://target.example.com", true, true, DateTime.UtcNow);
+            "Target", "https://target.example.com/v1", true, true, DateTime.UtcNow);
         store.SaveProvider(live);
         store.SaveProvider(target);
 
@@ -70,7 +70,7 @@ public class ProviderRouterEmbedCompositeKeyTests
         using var store = new NotebookStore(StorePath.InMemory);
         var target = new ProviderConfig(
             "33333333-3333-3333-3333-333333333333", ProviderType.OpenAICompatible,
-            "Target", "https://target.example.com", true, true, DateTime.UtcNow);
+            "Target", "https://target.example.com/v1", true, true, DateTime.UtcNow);
         store.SaveProvider(target);
 
         var router = MakeRouter(store, http, new FakeSettings());
@@ -96,7 +96,7 @@ public class ProviderRouterEmbedCompositeKeyTests
         using var store = new NotebookStore(StorePath.InMemory);
         var live = new ProviderConfig(
             "44444444-4444-4444-4444-444444444444", ProviderType.OpenAICompatible,
-            "Live", "https://live.example.com", true, true, DateTime.UtcNow);
+            "Live", "https://live.example.com/v1", true, true, DateTime.UtcNow);
         store.SaveProvider(live);
 
         var settings = new FakeSettings
@@ -133,7 +133,7 @@ public class ProviderRouterEmbedCompositeKeyTests
         using var store = new NotebookStore(StorePath.InMemory);
         var target = new ProviderConfig(
             "88888888-8888-8888-8888-888888888888", ProviderType.OpenAICompatible,
-            "Target", "https://target.example.com", true, false, DateTime.UtcNow); // PrivacyAcknowledged: false
+            "Target", "https://target.example.com/v1", true, false, DateTime.UtcNow); // PrivacyAcknowledged: false
         store.SaveProvider(target);
 
         var router = MakeRouter(store, http, new FakeSettings());
@@ -156,7 +156,7 @@ public class ProviderRouterEmbedCompositeKeyTests
         using var store = new NotebookStore(StorePath.InMemory);
         var target = new ProviderConfig(
             "99999999-9999-9999-9999-999999999999", ProviderType.OpenAICompatible,
-            "Target", "https://target.example.com", true, true, DateTime.UtcNow); // PrivacyAcknowledged: true
+            "Target", "https://target.example.com/v1", true, true, DateTime.UtcNow); // PrivacyAcknowledged: true
         store.SaveProvider(target);
 
         var router = MakeRouter(store, http, new FakeSettings());
@@ -165,6 +165,55 @@ public class ProviderRouterEmbedCompositeKeyTests
 
         Assert.NotNull(capturedBody);
         Assert.Contains("\"model\":\"target-model\"", capturedBody!);
+    }
+
+    [Theory]
+    [InlineData(ProviderType.Anthropic)]
+    [InlineData(ProviderType.OpenWebUI)]
+    public async Task Chat_only_embedding_selection_is_rejected_without_fallback(ProviderType type)
+    {
+        var invoked = false;
+        using var http = new HttpClient(new CapturingHandler(HttpStatusCode.OK, "{}", (_, _) => invoked = true));
+        using var store = new NotebookStore(StorePath.InMemory);
+        store.SaveProvider(new("chat-only", type, "P", "https://provider.example", true, true, DateTime.UtcNow));
+        var router = MakeRouter(store, http, new FakeSettings());
+        var error = await Assert.ThrowsAsync<ProviderConfigurationException>(() => router.EmbedAsync("chat-only:m", ["private"]));
+        Assert.Equal("unsupportedEndpoint", error.Code);
+        Assert.False(invoked);
+    }
+
+    [Fact]
+    public void Pending_migration_conversion_is_applied_once_before_embedding_key_is_read()
+    {
+        var path = Path.Combine(Path.GetTempPath(), "ainotebook-bridge-" + Guid.NewGuid() + ".sqlite");
+        var connectionGate = new object();
+        try
+        {
+            lock (connectionGate)
+            {
+                using var connection = new Microsoft.Data.Sqlite.SqliteConnection("Data Source=" + path + ";Pooling=False");
+                connection.Open();
+                Migrator.Migrate(connection, throughVersion: 18);
+                using var command = connection.CreateCommand();
+                command.CommandText = "INSERT INTO providers(id,type,name,base_url,enabled,privacy_acknowledged,created_at) VALUES('chat-only','anthropic','P','https://provider.example',1,1,'2026-10-09 00:00:00')";
+                command.ExecuteNonQuery();
+            }
+            using var store = new NotebookStore(new StorePath(path), configuredEmbeddingModelKey: "chat-only:old");
+            var settings = new FakeSettings { SelectedEmbeddingProviderId = "chat-only", SelectedEmbeddingModel = "old" };
+            using var http = new HttpClient(new CapturingHandler(HttpStatusCode.OK, "{}", (_, _) => throw new InvalidOperationException("No HTTP expected")));
+            var router = MakeRouter(store, http, settings);
+            Assert.Equal(ProviderConfig.OllamaId, settings.SelectedEmbeddingProviderId);
+            Assert.Equal("nomic-embed-text", settings.SelectedEmbeddingModel);
+            Assert.Equal(ProviderConfig.OllamaId + ":nomic-embed-text", router.CurrentEmbeddingKey);
+            Assert.Null(store.PendingEmbeddingSelectionConversion());
+            Assert.True(store.HasEmbeddingSelectionConversionNotice());
+            settings.SelectedEmbeddingModel = "new-manual-model";
+            var next = MakeRouter(store, http, settings);
+            Assert.EndsWith(":new-manual-model", next.CurrentEmbeddingKey);
+            store.DismissEmbeddingSelectionConversionNotice();
+            Assert.False(store.HasEmbeddingSelectionConversionNotice());
+        }
+        finally { File.Delete(path); }
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
@@ -184,6 +233,9 @@ public class ProviderRouterEmbedCompositeKeyTests
         public string SelectedEmbeddingProviderId { get; set; } = ProviderConfig.OllamaId;
         public bool AutoCheckUpdates { get; set; } = true;
         public DateTimeOffset? LastUpdateCheckUtc { get; set; }
+        public bool WebSearchEnabled { get; set; }
+        public string RightPanel { get; set; } = "";
+        public double RightPanelWidth { get; set; } = 360;
     }
 
     private sealed class FakeSecrets : ISecretStore

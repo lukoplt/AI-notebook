@@ -23,7 +23,7 @@
             <!-- File -->
             <StackPanel x:Name="FilePanel" Spacing="8" VerticalAlignment="Top">
                 <Button x:Name="ChooseFileButton" Click="OnChooseFile" />
-                <TextBlock x:Name="ChosenFileText" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <TextBlock x:Name="ChosenFileText" Foreground="{ThemeResource Text2Brush}" />
             </StackPanel>
             <!-- URL -->
             <StackPanel x:Name="UrlPanel" Spacing="8" VerticalAlignment="Top" Visibility="Collapsed">

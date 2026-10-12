@@ -1,3 +1,7 @@
+<!--
+  Right panel › Note chat (spec §2.4, document mode only): chat about the open note. Answers render
+  as Markdown rows without the thread actions; Enter sends, Shift+Enter is a new line.
+-->
 <UserControl
     x:Class="AINotebook.App.Controls.NotesChatPanel"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -7,59 +11,69 @@
     mc:Ignorable="d"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
-    <Grid Padding="12" Background="{ThemeResource LayerFillColorDefaultBrush}">
+    <Grid Padding="12,0,12,12" RowSpacing="{StaticResource Space8}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Spacing="2" Margin="0,0,0,8">
-            <TextBlock x:Name="PanelTitle" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-            <TextBlock x:Name="CurrentNoteHint" Style="{ThemeResource CaptionTextBlockStyle}"
-                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                       Visibility="Collapsed"/>
-        </StackPanel>
+        <!-- Kept for the window-level title; the panel tab already says "Note chat". -->
+        <TextBlock x:Name="PanelTitle" Visibility="Collapsed"/>
+        <TextBlock x:Name="CurrentNoteHint" Style="{StaticResource SecondaryCaption}" TextWrapping="Wrap" Visibility="Collapsed"/>
 
-        <!-- Messages -->
         <TextBlock Grid.Row="1" x:Name="EmptyState"
                    Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay}"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    TextWrapping="Wrap" TextAlignment="Center"
-                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                   Style="{StaticResource TextBody}" Foreground="{ThemeResource Text2Brush}"/>
 
         <ScrollViewer Grid.Row="1" x:Name="MessagesScroller"
                       Visibility="{x:Bind ViewModel.ShowEmptyState, Mode=OneWay, Converter={StaticResource InvertBoolToVisibility}}">
-            <StackPanel Spacing="6">
+            <StackPanel Spacing="{StaticResource Space4}">
                 <ItemsControl ItemsSource="{x:Bind ViewModel.Messages, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="vm:MessageViewModel">
-                            <ctrl:MessageBubble ViewModel="{x:Bind}"
-                                                CitationTapped="OnCitationTapped"
-                                                SaveAsNoteRequested="OnSaveAsNote"/>
+                            <ctrl:MessageRow ViewModel="{x:Bind}" ShowThreadActions="False"
+                                             CitationTapped="OnCitationTapped"
+                                             ActionRequested="OnMessageAction"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <Border x:Name="StreamingBubble" CornerRadius="10" Padding="10"
-                        Background="{ThemeResource SubtleFillColorSecondaryBrush}"
-                        HorizontalAlignment="Left"
-                        Visibility="{x:Bind ViewModel.StreamingDraft, Mode=OneWay, Converter={StaticResource StringToVisibility}}">
-                    <TextBlock Text="{x:Bind ViewModel.StreamingDraft, Mode=OneWay}" TextWrapping="Wrap"/>
-                </Border>
-                <TextBlock x:Name="ErrorText" Foreground="Red" TextWrapping="Wrap"
-                           Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource StringToVisibility}}"/>
+                <TextBlock x:Name="StreamingText" Style="{StaticResource TextMessage}" Foreground="{ThemeResource Text1Brush}"
+                           TextWrapping="Wrap" Text="{x:Bind ViewModel.StreamingDraft, Mode=OneWay}"
+                           Visibility="{x:Bind ViewModel.StreamingDraft, Mode=OneWay, Converter={StaticResource StringToVisibility}}"/>
+                <Grid ColumnSpacing="{StaticResource Space8}"
+                      Visibility="{x:Bind ViewModel.ErrorMessage, Mode=OneWay, Converter={StaticResource StringToVisibility}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="{StaticResource IconWarning}" Style="{StaticResource RowIcon}" Foreground="{ThemeResource WarningBrush}"/>
+                    <TextBlock Grid.Column="1" x:Name="ErrorText" Style="{StaticResource TextCaption}"
+                               Foreground="{ThemeResource Text2Brush}" TextWrapping="Wrap"/>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
 
-        <!-- Input -->
-        <TextBox Grid.Row="2" x:Name="InputBox" Margin="0,8,0,0"
-                 Text="{x:Bind ViewModel.Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="120"
-                 IsEnabled="{x:Bind ViewModel.Sending, Mode=OneWay, Converter={StaticResource InvertBool}}">
-            <TextBox.KeyboardAccelerators>
-                <KeyboardAccelerator Modifiers="Control" Key="Enter" Invoked="OnSendAccelerator"/>
-            </TextBox.KeyboardAccelerators>
-        </TextBox>
+        <!-- Input card -->
+        <Border Grid.Row="2" Background="{ThemeResource Surface1Brush}" BorderBrush="{ThemeResource BorderBrush}"
+                BorderThickness="1" CornerRadius="{StaticResource RadiusLg}" Padding="4">
+            <TextBox x:Name="InputBox"
+                     Text="{x:Bind ViewModel.Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="{StaticResource SizeSettingsContentMax}"
+                     PreviewKeyDown="OnInputPreviewKeyDown"
+                     IsEnabled="{x:Bind ViewModel.Sending, Mode=OneWay, Converter={StaticResource InvertBool}}">
+                <TextBox.Resources>
+                    <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlBorderBrush" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="Transparent" />
+                    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="Transparent" />
+                    <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+                </TextBox.Resources>
+            </TextBox>
+        </Border>
     </Grid>
 </UserControl>

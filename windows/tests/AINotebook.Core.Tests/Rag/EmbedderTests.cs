@@ -1,5 +1,6 @@
 using AINotebook.Core;
 using AINotebook.Core.Models;
+using AINotebook.Core.Ollama;
 using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using AINotebook.Core.Tests.Helpers;
@@ -56,5 +57,38 @@ public class EmbedderTests
         Assert.Equal(1, written);
         Assert.Single(client.Calls);
         Assert.Equal(new[] { "b" }, client.Calls[0]);
+    }
+    [Fact]
+    public async Task ExplicitProfileDrainSkipsRawLegacyTransport()
+    {
+        using var store = new NotebookStore(StorePath.InMemory);
+        var raw = new RawCounter();
+        var embedder = new Embedder(store, raw, () => "legacy-key",
+            profileDrain: ct => Task.FromResult<int?>(7));
+        Assert.Equal(7, await embedder.EmbedAllPendingAsync());
+        Assert.Equal(0, raw.Calls);
+    }
+
+    [Fact]
+    public async Task NullProfileDrainFallsThroughToUnchangedLegacyDrain()
+    {
+        using var store = new NotebookStore(StorePath.InMemory);
+        var nb = store.CreateNotebook("N", "");
+        var src = store.CreateSource(nb.Id!.Value, SourceType.Text, "S", null, null);
+        store.ReplaceChunks(src.Id!.Value, new[] { new ChunkDraft("a", 1, null) });
+        var raw = new RawCounter();
+        var embedder = new Embedder(store, raw, () => "legacy-key", profileDrain: ct => Task.FromResult<int?>(null));
+        Assert.Equal(1, await embedder.EmbedAllPendingAsync());
+        Assert.Equal(1, raw.Calls);
+    }
+
+    private sealed class RawCounter : IEmbeddingProducing
+    {
+        public int Calls;
+        public Task<float[][]> EmbedAsync(string model, IReadOnlyList<string> inputs, CancellationToken ct = default)
+        {
+            Calls++;
+            return Task.FromResult(inputs.Select(_ => new[] { 1f, 0f }).ToArray());
+        }
     }
 }

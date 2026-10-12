@@ -1,0 +1,607 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 1,
+        "refreshError": 0,
+        "refreshPending": 1,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": null,
+        "availability": "present",
+        "currentRevision": null,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": null,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "pending"
+      },
+      "name": "first-pending",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 1,
+        "refreshError": 1,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": null,
+        "availability": "present",
+        "currentRevision": null,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": null,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "error"
+      },
+      "name": "first-error",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 1,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 1,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "published-current",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 1,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 2,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "chunking"
+      },
+      "name": "published-refresh-pending",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 1,
+        "refreshPending": 0,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 2,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "error"
+      },
+      "name": "published-refresh-error",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 1,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 2,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 2,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "newly-published",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 1,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": null,
+        "availability": "present",
+        "currentRevision": 2,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 2,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "newly-published-no-vectors",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 1,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 1,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "pending"
+      },
+      "name": "observed-not-extracted",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 1,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "missing",
+        "currentRevision": 1,
+        "eligible": false,
+        "folderId": 1,
+        "hasScanItem": true,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": "skipped",
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "error"
+      },
+      "name": "missing-precedence",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 1
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "unavailable",
+        "currentRevision": 1,
+        "eligible": false,
+        "folderId": 1,
+        "hasScanItem": true,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": "skipped",
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "unavailable-precedence",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 1,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 1,
+        "eligible": false,
+        "folderId": 1,
+        "hasScanItem": true,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": "skipped",
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "skipped-source-inventory-dedup",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 1,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": null,
+        "availability": "present",
+        "currentRevision": null,
+        "eligible": false,
+        "folderId": 1,
+        "hasScanItem": true,
+        "notebookId": 1,
+        "publishedRevisionId": null,
+        "relPath": "a.md",
+        "scanKind": "skipped",
+        "scanState": "idle",
+        "sourceId": null,
+        "status": "ready"
+      },
+      "name": "source-less-skipped",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 1,
+        "refreshError": 0,
+        "refreshPending": 1,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": null,
+        "availability": "present",
+        "currentRevision": null,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": true,
+        "notebookId": 1,
+        "publishedRevisionId": null,
+        "relPath": "a.md",
+        "scanKind": "eligible",
+        "scanState": "idle",
+        "sourceId": null,
+        "status": "ready"
+      },
+      "name": "source-less-eligible",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 1,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 1,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": true,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": "eligible",
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "eligible-source-inventory-dedup",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 1,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "scope": {
+          "folderIds": [],
+          "kind": "selection",
+          "sourceIds": []
+        },
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "empty-selection",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 1,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 2,
+        "publishedRevisionId": 1,
+        "queryNotebookId": 1,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "other-notebook",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 1,
+        "isLowerBound": false,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 1,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "idle",
+        "scope": {
+          "folderIds": [
+            1,
+            1
+          ],
+          "kind": "selection",
+          "sourceIds": [
+            101,
+            101
+          ]
+        },
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "duplicate-folder-source-selection",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 0,
+        "isLowerBound": true,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": null,
+        "availability": "present",
+        "currentRevision": null,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": null,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "partial",
+        "scope": {
+          "folderIds": [
+            1
+          ],
+          "kind": "selection",
+          "sourceIds": []
+        },
+        "sourceId": null,
+        "status": "ready"
+      },
+      "name": "partial-empty-folder",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "current": 1,
+        "isLowerBound": true,
+        "missing": 0,
+        "notSearchable": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 1,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "activeVectorRevision": 1,
+        "availability": "present",
+        "currentRevision": 1,
+        "eligible": true,
+        "folderId": 1,
+        "hasScanItem": false,
+        "notebookId": 1,
+        "publishedRevisionId": 1,
+        "relPath": "a.md",
+        "scanKind": null,
+        "scanState": "partial",
+        "scope": {
+          "folderIds": [],
+          "kind": "selection",
+          "sourceIds": [
+            101
+          ]
+        },
+        "sourceId": 101,
+        "status": "ready"
+      },
+      "name": "explicit-source-in-partial-folder",
+      "operation": "coverage"
+    }
+  ],
+  "contract": "ingestion-coverage",
+  "version": 1
+}

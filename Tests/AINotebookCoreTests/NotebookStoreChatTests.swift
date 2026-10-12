@@ -42,4 +42,47 @@ final class NotebookStoreChatTests: XCTestCase {
         try store.deleteChatSession(id: session.id!)
         XCTAssertEqual(try store.messages(sessionId: session.id!).count, 0)
     }
+    // MARK: Rename (UI redesign C1)
+
+    func testRenameTrimsAndPersistsTitle() throws {
+        let store = try NotebookStore(path: .inMemory)
+        let nb = try store.createNotebook(name: "NB")
+        let session = try store.createChatSession(notebookId: nb.id!, title: "Old")
+        let renamed = try store.renameChatSession(id: session.id!, title: "  New title \n")
+        XCTAssertEqual(renamed.title, "New title")
+        XCTAssertEqual(renamed.id, session.id)
+        let stored = try XCTUnwrap(store.chatSessions(notebookId: nb.id!).first)
+        XCTAssertEqual(stored.title, "New title")
+        XCTAssertEqual(stored.createdAt, renamed.createdAt)
+        XCTAssertEqual(stored.createdAt.timeIntervalSince1970, session.createdAt.timeIntervalSince1970, accuracy: 0.001)
+    }
+
+    func testRenameRejectsBlankTitleAndKeepsOldOne() throws {
+        let store = try NotebookStore(path: .inMemory)
+        let nb = try store.createNotebook(name: "NB")
+        let session = try store.createChatSession(notebookId: nb.id!, title: "Keep")
+        XCTAssertThrowsError(try store.renameChatSession(id: session.id!, title: " \n\t ")) { error in
+            XCTAssertEqual(error as? StoreError, .invalidChatTitle(" \n\t "))
+        }
+        XCTAssertEqual(try store.chatSessions(notebookId: nb.id!).map(\.title), ["Keep"])
+    }
+
+    func testRenameUnknownSessionThrowsNotFound() throws {
+        let store = try NotebookStore(path: .inMemory)
+        XCTAssertThrowsError(try store.renameChatSession(id: 4242, title: "x")) { error in
+            XCTAssertEqual(error as? StoreError, .chatSessionNotFound(id: 4242))
+        }
+    }
+
+    func testRenameTouchesOnlyThatSessionAndKeepsMessages() throws {
+        let store = try NotebookStore(path: .inMemory)
+        let nb = try store.createNotebook(name: "NB")
+        let first = try store.createChatSession(notebookId: nb.id!, title: "first")
+        let second = try store.createChatSession(notebookId: nb.id!, title: "second")
+        try store.appendMessage(ChatMessage(sessionId: first.id!, role: .user, content: "q"))
+        try store.renameChatSession(id: first.id!, title: "renamed")
+        XCTAssertEqual(try store.messages(sessionId: first.id!).map(\.content), ["q"])
+        let titles = Dictionary(uniqueKeysWithValues: try store.chatSessions(notebookId: nb.id!).map { ($0.id!, $0.title) })
+        XCTAssertEqual(titles, [first.id!: "renamed", second.id!: "second"])
+    }
 }

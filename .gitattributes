@@ -1,0 +1,4 @@
+# Keep every file byte-exact on all platforms. Fixtures, corpora and
+# resources are hash-checked, and Windows checkouts would otherwise turn
+# LF into CRLF and break those hashes.
+* -text

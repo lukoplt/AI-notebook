@@ -16,8 +16,12 @@ struct AINotebookAppEntry: App {
     @StateObject private var noteJump = NoteJumpCoordinator()
     @StateObject private var tabSwitch = TabSwitchCoordinator()
     @StateObject private var updates: UpdateService
+    @StateObject private var folderWatch: FolderWatchController
 
     init() {
+        #if DEBUG
+        IndexingStripRenderer.runIfRequested()
+        #endif
         let settings = AppSettings()
         _settings = StateObject(wrappedValue: settings)
 
@@ -28,6 +32,7 @@ struct AINotebookAppEntry: App {
         do {
             let path = try StorePath.production()
             store = try NotebookStore(path: path)
+            try settings.convertLegacyProviderSelection(store: store)
         } catch {
             fatalError("Failed to open AINotebook database: \(error)")
         }
@@ -43,17 +48,49 @@ struct AINotebookAppEntry: App {
             router: router, selection: selection, secrets: secrets
         ))
 
+        // One admission gate and one durable folder runtime per process, sized for this
+        // machine (ingestion-memory-pressure-v1 addendum A: half the cores, 6 % of RAM).
+        let admission = IngestionAdmission.standard()
+        // The factory explains a missing session (no provider/model, disabled, consent,
+        // credential) instead of returning nil; the Sources panel shows the reason.
+        let resolveSession: @Sendable (Int64) async throws -> EmbeddingSessionResolution = { [store, secrets, selection] _ in
+            let chosen = selection.embeddingSelection()
+            return try await MainActor.run { () throws -> EmbeddingSessionResolution in
+                let config = try store.provider(id: chosen.providerId)
+                return FolderEmbeddingSession.resolve(config: config, model: chosen.model, loadKey: {
+                    guard let config, config.type.isCloud else { return nil }
+                    return try secrets.load(providerId: config.id)
+                })
+            }
+        }
+        let session: @Sendable (Int64) async throws -> FolderEmbeddingSession? = { try await resolveSession($0).session }
+        let runtime: FolderIngestionRuntime
+        do {
+            // Memory pressure is sampled on every scheduler tick (ingestion-memory-pressure-v1 §3);
+            // load, thermal state and power every 2 s for the adaptive worker limit (addendum A).
+            runtime = try FolderIngestionRuntime.standard(store: store, admission: admission, resolveSession: resolveSession,
+                                                          memoryPressure: { MemoryPressureLevel.sampleDarwin() },
+                                                          systemLoad: { AdaptiveConcurrency.sampleDarwin() })
+        } catch {
+            fatalError("Failed to build the folder ingestion runtime: \(error)")
+        }
+        FolderWatchController.installedRuntime = runtime
+        let folderWatch = FolderWatchController(runtime: runtime)
+        _folderWatch = StateObject(wrappedValue: folderWatch)
+
         let embedder = Embedder(
             store: store,
             client: router,
-            modelKey: { selection.embeddingKey() }
+            modelKey: { selection.embeddingKey() },
+            admission: admission
         )
-        let worker = EmbeddingWorker(embedder: embedder)
+        // Publications wake durable generation work; the legacy embedder never runs in production.
+        let worker = EmbeddingWorker(wake: { try await runtime.wakeGenerationWork() })
         _embedderHolder = StateObject(wrappedValue: EmbedderHolder(embedder: embedder, worker: worker))
 
         let ingestion = IngestionService(store: store, onChunksWritten: {
             await worker.kick()
-        })
+        }, folderRuntime: runtime, embeddingSelection: { try await session($0)?.selection })
         _ingestion = StateObject(wrappedValue: IngestionServiceHolder(service: ingestion))
 
         let indexer = NoteIndexer(store: store, onChunksWritten: { [worker] in
@@ -73,14 +110,21 @@ struct AINotebookAppEntry: App {
             client: router,
             modelKey: { selection.embeddingKey() }
         )
+        // WP8: production adapters over the merged WP5 retriever, WP6
+        // coverage/folders and WP2 provider sessions; one preview cache.
+        let coordinator = ContextPackCoordinator(
+            data: CompatibilityPackDataSource(store: store, retriever: retriever, webSearch: DuckDuckGoWebSearch()),
+            transports: CompatibilityPackTransportFactory(chat: router, model: settings.selectedChatModel, store: store)
+        )
         let engine = ChatEngine(
             store: store,
-            retriever: retriever,
-            chat: router,
+            coordinator: coordinator,
+            previews: ContextPreviewSession(),
             chatModel: settings.selectedChatModel,
-            webSearch: DuckDuckGoWebSearch()
+            admission: admission
         )
-        _chatHolder = StateObject(wrappedValue: ChatEngineHolder(engine: engine))
+        _chatHolder = StateObject(wrappedValue: ChatEngineHolder(
+            engine: engine, originals: NativeCitationOriginalResolver(store: store)))
 
         let txEngine = TransformationEngine(
             store: store, chat: router, chatModel: settings.selectedChatModel
@@ -97,32 +141,44 @@ struct AINotebookAppEntry: App {
                 try? attachments.deleteFolder(noteUuid: uuid)
             }
         }
+        // Started here, once per process — never per WindowGroup view.
+        folderWatch.startProcessRuntime()
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(settings)
-                .environmentObject(store)
-                .environmentObject(ollama)
-                .environmentObject(routerHolder)
-                .environmentObject(ingestion)
-                .environmentObject(embedderHolder)
-                .environmentObject(onboarding)
-                .environmentObject(chatHolder)
-                .environmentObject(transformationHolder)
-                .environmentObject(attachmentsHolder)
-                .environmentObject(noteJump)
-                .environmentObject(tabSwitch)
-                .environmentObject(updates)
-                .frame(minWidth: 900, minHeight: 600)
+            injectEnvironment(ContentView())
+                .frame(minWidth: 1100, minHeight: 640)
         }
+        .defaultSize(width: 1360, height: 860)
         .windowStyle(.titleBar)
+        .windowToolbarStyle(.unified(showsTitle: true))
         .commands {
-            CommandGroup(replacing: .appSettings) {
-                EmptyView()
-            }
+            ShellCommands(settings: settings)
         }
+
+        Settings {
+            injectEnvironment(SettingsWindowView())
+        }
+    }
+
+    /// Every app-wide service as an environment object (windows and Settings).
+    private func injectEnvironment<V: View>(_ view: V) -> some View {
+        view
+            .environmentObject(settings)
+            .environmentObject(store)
+            .environmentObject(ollama)
+            .environmentObject(routerHolder)
+            .environmentObject(ingestion)
+            .environmentObject(embedderHolder)
+            .environmentObject(onboarding)
+            .environmentObject(chatHolder)
+            .environmentObject(transformationHolder)
+            .environmentObject(attachmentsHolder)
+            .environmentObject(noteJump)
+            .environmentObject(tabSwitch)
+            .environmentObject(updates)
+            .environmentObject(folderWatch)
     }
 }
 

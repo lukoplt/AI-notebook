@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Type-checks the whole WinUI App on macOS: every App .cs file (code-behind included) plus one
+    generated stub per .xaml (x:Name fields, InitializeComponent, event-handler and x:Bind checks),
+    compiled against the real WinAppSDK projection assemblies. Nothing is run; a green build means
+    the C# compiles. The XAML compiler itself still only runs on Windows CI.
+    Run through ../run.sh; it generates $(WtcWork)Versions.props and the stubs first.
+  -->
+  <PropertyGroup>
+    <WtcRepo>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../../'))</WtcRepo>
+    <WtcWork Condition="'$(WtcWork)' == ''">$(MSBuildThisFileDirectory)../.work/</WtcWork>
+    <WtcApp>$(WtcRepo)windows/src/AINotebook.App/</WtcApp>
+    <!-- The SDK reference pack the App's net10.0-windows10.0.19041.0 TFM uses. -->
+    <WtcWindowsSdkRefVersion Condition="'$(WtcWindowsSdkRefVersion)' == ''">10.0.19041.57</WtcWindowsSdkRefVersion>
+  </PropertyGroup>
+  <Import Project="$(WtcWork)Versions.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>AINotebook.App</RootNamespace>
+    <AssemblyName>AINotebook.App</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- Warnings the real App build does not treat as errors either; platform analyzers do not apply here. -->
+    <NoWarn>$(NoWarn);CS0067;CS0169;CS0414;CS0649;CS8618;CS1998;CS0618;CA1416;NU1603</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="$(WtcMvvmVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(WtcDependencyInjectionVersion)" />
+    <ProjectReference Include="$(WtcRepo)windows/src/AINotebook.Core/AINotebook.Core.csproj" />
+    <!-- Download-only: the packages target Windows, so they are never referenced as packages. -->
+    <PackageDownload Include="Microsoft.WindowsAppSDK.WinUI" Version="[$(WtcWinUIVersion)]" />
+    <PackageDownload Include="Microsoft.WindowsAppSDK.Foundation" Version="[$(WtcFoundationVersion)]" />
+    <PackageDownload Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="[$(WtcInteractiveExperiencesVersion)]" />
+    <PackageDownload Include="Microsoft.Web.WebView2" Version="[$(WtcWebView2Version)]" />
+    <PackageDownload Include="Microsoft.Windows.SDK.NET.Ref" Version="[$(WtcWindowsSdkRefVersion)]" />
+  </ItemGroup>
+
+  <!-- Projection assemblies from the NuGet cache (NuGetPackageRoot is known after restore). -->
+  <Target Name="WtcAddProjections" BeforeTargets="ResolveAssemblyReferences">
+    <PropertyGroup>
+      <WtcPkgs>$([MSBuild]::EnsureTrailingSlash('$(NuGetPackageRoot)'))</WtcPkgs>
+    </PropertyGroup>
+    <ItemGroup>
+      <Reference Include="$(WtcPkgs)microsoft.windowsappsdk.winui/$(WtcWinUIVersion)/lib/net6.0-windows10.0.17763.0/Microsoft.WinUI.dll" />
+      <Reference Include="$(WtcPkgs)microsoft.windowsappsdk.foundation/$(WtcFoundationVersion)/lib/net6.0-windows10.0.17763.0/Microsoft.Windows.ApplicationModel.Resources.Projection.dll" />
+      <Reference Include="$(WtcPkgs)microsoft.windowsappsdk.foundation/$(WtcFoundationVersion)/lib/net6.0-windows10.0.17763.0/Microsoft.Windows.Foundation.Projection.dll" />
+      <Reference Include="$(WtcPkgs)microsoft.windowsappsdk.interactiveexperiences/$(WtcInteractiveExperiencesVersion)/lib/net6.0-windows10.0.17763.0/Microsoft.InteractiveExperiences.Projection.dll" />
+      <Reference Include="$(WtcPkgs)microsoft.web.webview2/$(WtcWebView2Version)/lib_manual/net8.0-windows10.0.17763.0/Microsoft.Web.WebView2.Core.Projection.dll" />
+      <Reference Include="$(WtcPkgs)microsoft.windows.sdk.net.ref/$(WtcWindowsSdkRefVersion)/lib/net8.0/Microsoft.Windows.SDK.NET.dll" />
+      <Reference Include="$(WtcPkgs)microsoft.windows.sdk.net.ref/$(WtcWindowsSdkRefVersion)/lib/net8.0/WinRT.Runtime.dll" />
+    </ItemGroup>
+    <Error Condition="!Exists('%(Reference.Identity)') And '%(Reference.Extension)' == '.dll'"
+           Text="WinAppSDK projection missing: %(Reference.Identity). Run without --no-restore (network needed once)." />
+  </Target>
+
+  <ItemGroup>
+    <Compile Include="$(WtcApp)**/*.cs" Exclude="$(WtcApp)obj/**;$(WtcApp)bin/**" />
+    <Compile Include="$(WtcWork)typecheck-stubs/*.cs" />
+  </ItemGroup>
+</Project>

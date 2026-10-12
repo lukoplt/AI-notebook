@@ -1,0 +1,21 @@
+# Wartungsvereinbarung für die Laborpumpen bei Birke
+
+Datum: 2. Oktober 2026
+Verantwortlich: Maren Tann, technische Betriebsleitung
+Vertragsnummer: DE-BIR-526
+
+Das Prüflabor Birke betreibt zwei voneinander unabhängige Pumpenkreisläufe für seine Werkstoffuntersuchungen. Diese Vereinbarung regelt die Störungsbearbeitung während der anstehenden Umbauphase. Vertragspartner auf Auftragnehmerseite ist die fiktive Werkstatt Quellenbogen. Die Betriebsleitung übermittelt Störungsmeldungen ausschließlich über das gemeinsam geführte Wartungsbuch; telefonische Hinweise ergänzen die Dokumentation, ersetzen jedoch keinen nachvollziehbaren Eintrag mit Zeitangabe.
+
+Vor einer Untersuchung kennzeichnet die Schichtverantwortliche sämtliche betroffenen Anschlüsse und stellt vorhandene Druckverlaufsaufzeichnungen bereit. Beschäftigte müssen weder Pumpengehäuse öffnen noch elektrische Schutzvorrichtungen überbrücken. Der Auftragnehmer entscheidet anhand der Fehlerbeschreibung, welche Fachkraft erforderlich ist. Fehlen Messwerte, darf die Störung trotzdem gemeldet werden. Die Werkstatt bestätigt zunächst den Eingang und unterscheidet anschließend zwischen einer sicherheitsbedingten Stilllegung und eingeschränktem Untersuchungsbetrieb.
+
+Zur planmäßigen Wartung gehören die Sichtprüfung der Schlauchverbindungen sowie eine dokumentierte Geräuschkontrolle. Verbrauchsmaterial liegt im Materialraum neben dem südlichen Treppenhaus. Für zusätzliche Verschleißteile ist eine gesonderte Bestellfreigabe erforderlich; die jährliche Wartungspauschale beinhaltet keine Austauschpumpen. Die nächste Bestandskontrolle findet am 12. November statt. Währenddessen bleibt der zweite Kreislauf verfügbar, sofern seine Schutzabschaltung ordnungsgemäß arbeitet. Wiederkehrende Wartungstermine ändern die vereinbarte Behandlung ungeplanter Ausfälle nicht. Maßgeblich bleibt die vollständig erfasste Störungsmeldung.
+
+Bei einer Störung der Laborpumpen antwortet der Service innerhalb von 30 Stunden.
+
+Die Antwort enthält eine verständliche Ersteinschätzung, einen verantwortlichen Ansprechpartner und den nächsten vereinbarten Prüfschritt. Eine automatisierte Eingangsbestätigung erfüllt diese Anforderung nicht. Bei einem unklaren Fehlerbild nennt die Fachkraft ausdrücklich die noch benötigten Beobachtungen. Die Betriebsleitung dokumentiert diese Rückmeldung im Wartungsbuch und informiert anschließend das Untersuchungsteam. Ein Werkstattbesuch wird separat terminiert; aus der Antwortfrist ergibt sich keine Zusage über die Wiederherstellung des vollständigen Laborbetriebs.
+
+Vor jeder Wiederinbetriebnahme vergleichen Auftragnehmer und Betriebsleitung die aufgezeichneten Ausgangswerte mit einer neuen Kontrollmessung. Ungewöhnliche Druckschwankungen werden zusammen mit dem verwendeten Prüfaufbau vermerkt. Die Freigabe verlangt zwei namentliche Bestätigungen, damit spätere Schichten den Entscheidungsweg nachvollziehen können. Ein unbeschrifteter Messzettel reicht dafür nicht aus. Ältere Kontrollblätter bleiben im Anlagenordner, erhalten jedoch einen Hinweis auf den neueren Prüfstand.
+
+Für planbare Untersuchungsunterbrechungen stimmt die Betriebsleitung geeignete Zeiträume mit der Probenannahme ab. Bereits eingelagerte Proben werden nach ihrer Haltbarkeit priorisiert; die Wartungsvereinbarung verändert keine fachlichen Untersuchungsanforderungen. Erfordert eine Reparatur eine Fremdleistung, legt die Werkstatt vor der Beauftragung eine getrennte Kostenschätzung vor. Zusätzliche Ausgaben werden nicht mit einer allgemeinen Störungsfreigabe gleichgesetzt. Mündliche Nebenabsprachen werden spätestens bei der nächsten Schichtübergabe schriftlich zusammengefasst.
+
+Die Vertragsunterlagen werden im technischen Anlagenarchiv aufbewahrt. Zugriffsberechtigt sind Betriebsleitung, Stellvertretung und die zuständige Beschaffungsfachkraft. Externe Monteure erhalten nur die für ihren Einsatz notwendigen Auszüge. Bei einem Personalwechsel übernimmt die neue verantwortliche Person das Wartungsbuch gemeinsam mit der bisherigen Vertretung. Offene Störungen, ausstehende Ersatzteilbestellungen und vorläufige Betriebsfreigaben werden dabei einzeln abgeglichen. Die Abschlussbesprechung am Quartalsende bewertet Dokumentationsqualität und wiederkehrende Fehlerbilder, ohne einzelne Störungsfristen nachträglich umzudeuten.

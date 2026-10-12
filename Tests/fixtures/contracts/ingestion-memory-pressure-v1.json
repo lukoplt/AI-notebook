@@ -1,0 +1,886 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "level": "warning",
+        "reservations": [],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "b"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "warning-admits-one",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "warning",
+        "reservations": [],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": [
+                "c"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "c"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "b"
+              ],
+              "waiters": [
+                "c"
+              ]
+            },
+            "operation": "release",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "c"
+              ],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "c"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "warning-keeps-granted-work",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "reservations": [
+          "b"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "critical",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "level": "critical",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "critical",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "critical",
+              "reservations": [],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "release",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "b"
+              ],
+              "waiters": []
+            },
+            "level": "normal",
+            "operation": "pressure"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "critical-pauses-new-work",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "reservations": [
+          "b"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "critical",
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "critical",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "critical",
+              "reservations": [],
+              "waiters": [
+                "a"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "critical",
+              "reservations": [],
+              "waiters": [
+                "a",
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "b"
+              ],
+              "waiters": []
+            },
+            "level": "normal",
+            "operation": "pressure"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "critical-to-warning-grants-one",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "reservations": [
+          "a",
+          "b"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "level": "normal",
+            "operation": "pressure"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "warning-to-normal-grants-second",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "reservations": [
+          "a",
+          "b"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "level": "normal",
+            "operation": "pressure"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "level": "normal",
+            "operation": "pressure"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "repeated-level-is-idempotent",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "warning",
+        "reservations": [
+          "b"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 600000000,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "a"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "warning-oversize-runs-alone",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "warning",
+        "reservations": [
+          "c"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "bytes": 400000000,
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 400000000,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b",
+                "c"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "c"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "b"
+              ],
+              "waiters": [
+                "c"
+              ]
+            },
+            "operation": "release",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "c"
+              ],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "b"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "warning-keeps-fifo",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "reservations": [
+          "a",
+          "b"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "blocked": true,
+            "expected": {
+              "level": "critical",
+              "reservations": [],
+              "waiters": []
+            },
+            "operation": "blocked"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "critical",
+              "reservations": [],
+              "waiters": [
+                "a"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "blocked": false,
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "blocked"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 536870912
+      },
+      "name": "blocked-flag-is-critical",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "warning",
+        "reservations": [
+          "b"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "reservations": [
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "a"
+          }
+        ],
+        "maxExtractions": 1,
+        "memoryBytes": 536870912
+      },
+      "name": "single-slot-warning",
+      "operation": "admission"
+    },
+    {
+      "expected": "normal",
+      "input": 0,
+      "name": "darwin-0",
+      "operation": "darwin-level"
+    },
+    {
+      "expected": "normal",
+      "input": 1,
+      "name": "darwin-1",
+      "operation": "darwin-level"
+    },
+    {
+      "expected": "warning",
+      "input": 2,
+      "name": "darwin-2",
+      "operation": "darwin-level"
+    },
+    {
+      "expected": "normal",
+      "input": 3,
+      "name": "darwin-3",
+      "operation": "darwin-level"
+    },
+    {
+      "expected": "critical",
+      "input": 4,
+      "name": "darwin-4",
+      "operation": "darwin-level"
+    },
+    {
+      "expected": "normal",
+      "input": 8,
+      "name": "darwin-8",
+      "operation": "darwin-level"
+    },
+    {
+      "expected": "normal",
+      "input": -1,
+      "name": "darwin--1",
+      "operation": "darwin-level"
+    },
+    {
+      "expected": "normal",
+      "input": 0,
+      "name": "load-0",
+      "operation": "memory-load"
+    },
+    {
+      "expected": "normal",
+      "input": 50,
+      "name": "load-50",
+      "operation": "memory-load"
+    },
+    {
+      "expected": "normal",
+      "input": 84,
+      "name": "load-84",
+      "operation": "memory-load"
+    },
+    {
+      "expected": "warning",
+      "input": 85,
+      "name": "load-85",
+      "operation": "memory-load"
+    },
+    {
+      "expected": "warning",
+      "input": 90,
+      "name": "load-90",
+      "operation": "memory-load"
+    },
+    {
+      "expected": "warning",
+      "input": 94,
+      "name": "load-94",
+      "operation": "memory-load"
+    },
+    {
+      "expected": "critical",
+      "input": 95,
+      "name": "load-95",
+      "operation": "memory-load"
+    },
+    {
+      "expected": "critical",
+      "input": 99,
+      "name": "load-99",
+      "operation": "memory-load"
+    },
+    {
+      "expected": "critical",
+      "input": 100,
+      "name": "load-100",
+      "operation": "memory-load"
+    }
+  ],
+  "contract": "ingestion-memory-pressure",
+  "criticalLoadPercent": 95,
+  "levels": [
+    "normal",
+    "warning",
+    "critical"
+  ],
+  "version": 1,
+  "warningConcurrency": 1,
+  "warningLoadPercent": 85
+}

@@ -6,4 +6,5 @@ public record Notebook(
     string Description,
     DateTime CreatedAt,
     DateTime UpdatedAt,
-    string Instructions = "");
+    string Instructions = "",
+    int? EvidenceBudgetCap = null);

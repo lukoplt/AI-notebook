@@ -34,7 +34,8 @@ let package = Package(
                 .product(name: "GRDB", package: "GRDB.swift"),
                 "SwiftSoup",
                 .product(name: "ZIPFoundation", package: "ZIPFoundation")
-            ]
+            ],
+            resources: [.copy("Resources/Language"), .copy("Resources/Benchmark")]
         ),
         .executableTarget(
             name: "AINotebookApp",

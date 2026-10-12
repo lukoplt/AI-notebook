@@ -2,12 +2,14 @@ using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
+using AINotebook.Core.Providers;
 
 namespace AINotebook.Core.Ollama;
 
 public sealed class OllamaClient
 {
     private readonly HttpClient _http;
+    private readonly string _baseUrl;
     private static readonly JsonSerializerOptions Json = OllamaJson.Options;
 
     public Uri BaseUrl { get; }
@@ -15,18 +17,19 @@ public sealed class OllamaClient
     public OllamaClient(HttpClient? http = null, Uri? baseUrl = null)
     {
         BaseUrl = baseUrl ?? new Uri("http://127.0.0.1:11434");
+        _baseUrl = BaseUrl.OriginalString;
         _http = http ?? new HttpClient();
-        if (_http.BaseAddress is null) _http.BaseAddress = BaseUrl;
     }
 
     /// Best-effort 1.5s probe of /api/tags. true iff a 2xx response arrives.
     public async Task<bool> DetectAsync(TimeSpan? timeout = null, CancellationToken ct = default)
     {
+        var url = ProviderApiRoot.Build(ProviderType.Ollama, _baseUrl, ProviderEndpoint.Models);
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
         cts.CancelAfter(timeout ?? TimeSpan.FromSeconds(1.5));
         try
         {
-            using var resp = await _http.GetAsync("api/tags", HttpCompletionOption.ResponseHeadersRead, cts.Token);
+            using var resp = await _http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cts.Token);
             return resp.IsSuccessStatusCode;
         }
         catch
@@ -37,12 +40,25 @@ public sealed class OllamaClient
 
     public async Task<IReadOnlyList<OllamaModel>> ListModelsAsync(CancellationToken ct = default)
     {
-        using var req = new HttpRequestMessage(HttpMethod.Get, "api/tags");
+        using var req = new HttpRequestMessage(HttpMethod.Get,
+            ProviderApiRoot.Build(ProviderType.Ollama, _baseUrl, ProviderEndpoint.Models));
         using var resp = await SendAsync(req, ct);
         var body = await resp.Content.ReadAsStringAsync(ct);
         EnsureSuccess(resp, body);
         try
         {
+            using var document = JsonDocument.Parse(body);
+            if (document.RootElement.ValueKind != JsonValueKind.Object ||
+                !document.RootElement.TryGetProperty("models", out var models) ||
+                models.ValueKind != JsonValueKind.Array)
+                throw new JsonException("Expected a models array.");
+            foreach (var model in models.EnumerateArray())
+            {
+                if (model.ValueKind != JsonValueKind.Object ||
+                    !model.TryGetProperty("name", out var name) ||
+                    name.ValueKind != JsonValueKind.String)
+                    throw new JsonException("Expected a model name string.");
+            }
             return JsonSerializer.Deserialize<OllamaModelList>(body, Json)!.Models;
         }
         catch (Exception e)
@@ -53,7 +69,8 @@ public sealed class OllamaClient
 
     public async Task<double[][]> EmbedAsync(string model, IReadOnlyList<string> input, CancellationToken ct = default)
     {
-        using var req = new HttpRequestMessage(HttpMethod.Post, "api/embed")
+        using var req = new HttpRequestMessage(HttpMethod.Post,
+            ProviderApiRoot.Build(ProviderType.Ollama, _baseUrl, ProviderEndpoint.Embeddings))
         {
             Content = JsonContent.Create(new OllamaEmbedRequest(model, input), options: Json),
         };
@@ -70,9 +87,31 @@ public sealed class OllamaClient
         }
     }
 
+    public async Task<string> ShowAsync(string model, CancellationToken ct = default)
+    {
+        using var req = new HttpRequestMessage(HttpMethod.Post, ProviderApiRoot.BuildOllama(_baseUrl, "api/show"))
+        {
+            Content = JsonContent.Create(new { model }, options: Json)
+        };
+        using var resp = await SendAsync(req, ct);
+        var body = await resp.Content.ReadAsStringAsync(ct);
+        EnsureSuccess(resp, body);
+        try
+        {
+            using var document = JsonDocument.Parse(body);
+            if (document.RootElement.ValueKind != JsonValueKind.Object)
+                throw new JsonException("Expected a model metadata object.");
+        }
+        catch (JsonException)
+        {
+            throw new OllamaException.Decoding("Invalid model metadata response.");
+        }
+        return body;
+    }
+
     public async Task DeleteModelAsync(string name, CancellationToken ct = default)
     {
-        using var req = new HttpRequestMessage(HttpMethod.Delete, "api/delete")
+        using var req = new HttpRequestMessage(HttpMethod.Delete, ProviderApiRoot.BuildOllama(_baseUrl, "api/delete"))
         {
             // Compact, key-ordered exactly as Swift's ["name": name] encode.
             Content = new StringContent($$"""{"name":"{{name}}"}""", Encoding.UTF8, "application/json"),
@@ -119,7 +158,7 @@ public sealed class OllamaClient
         Func<T, bool> isTerminal,
         [EnumeratorCancellation] CancellationToken ct)
     {
-        using var req = new HttpRequestMessage(HttpMethod.Post, path)
+        using var req = new HttpRequestMessage(HttpMethod.Post, ProviderApiRoot.BuildOllama(_baseUrl, path))
         {
             Content = JsonContent.Create(payload, options: Json),
         };
@@ -146,6 +185,9 @@ public sealed class OllamaClient
         {
             if (!resp.IsSuccessStatusCode)
             {
+                if (path == "api/chat")
+                    await OpenAIStyleWire.ThrowForChatStatusAsync(resp, ProviderType.Ollama, ct);
+
                 // Capture up to 10000 bytes of the error body.
                 await using var es = await resp.Content.ReadAsStreamAsync(ct);
                 var buf = new byte[10_000];

@@ -6,37 +6,38 @@ struct DetectOllamaStepView: View {
     @ObservedObject var viewModel: OnboardingViewModel
 
     var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: viewModel.isOllamaReachable ? "checkmark.circle.fill" : "cloud.bolt")
-                .font(.system(size: 48))
-                .foregroundStyle(viewModel.isOllamaReachable ? .green : .secondary)
+        VStack(spacing: DesignTokens.spacing(16)) {
+            OnboardingIcon(systemName: viewModel.isOllamaReachable ? DesignTokens.icon(.success) : "cloud.bolt",
+                           color: viewModel.isOllamaReachable ? .success : .text2)
             Text(settings.text.string(.onboardingDetectTitle))
-                .font(.title).bold()
+                .tokenFont(.title)
+                .tokenForeground(.text1)
             Text(settings.text.string(.onboardingDetectBody))
-                .foregroundStyle(.secondary)
+                .tokenFont(.body)
+                .tokenForeground(.text2)
                 .multilineTextAlignment(.center)
 
             if viewModel.isOllamaReachable {
                 Text(settings.text.string(.onboardingDetectFound))
-                    .foregroundStyle(.green)
+                    .tokenFont(.body)
+                    .tokenForeground(.success)
                 Button(settings.text.string(.continueLabel)) {
                     viewModel.stopDetectionPolling()
                     viewModel.advance()
                 }
+                .buttonStyle(.primary)
                 .keyboardShortcut(.defaultAction)
-                .controlSize(.large)
             } else {
-                ProgressView()
+                ProgressView().controlSize(.small)
                 Text(settings.text.string(.onboardingDetectWaiting))
-                    .font(.callout)
-                    .foregroundStyle(.tertiary)
+                    .tokenFont(.caption)
+                    .tokenForeground(.text3)
                 Button(settings.text.string(.openOllamaDownload)) {
                     viewModel.openOllamaDownloadPage()
                 }
+                .buttonStyle(.secondary)
             }
         }
-        .padding(40)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear { viewModel.startDetectionPolling() }
         .onDisappear { viewModel.stopDetectionPolling() }
     }

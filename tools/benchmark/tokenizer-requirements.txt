@@ -1,0 +1,5 @@
+# Optional, offline only: tools/benchmark/tokenize_offline.py live factory.
+# Never installed in CI; tokenizer assets are supplied locally and hash-verified.
+transformers==4.51.3
+tokenizers==0.21.1
+sentencepiece==0.2.0

@@ -8,7 +8,7 @@ extension NotebookStore {
 
     /// All tags, alphabetical.
     public func tags() throws -> [Tag] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Row.fetchAll(db, sql: "SELECT id, name FROM tags ORDER BY name ASC")
                 .map { Tag(id: $0["id"], name: $0["name"]) }
         }
@@ -61,7 +61,7 @@ extension NotebookStore {
     }
 
     public func tagsForNote(noteId: Int64) throws -> [Tag] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Row.fetchAll(
                 db,
                 sql: "SELECT t.id, t.name FROM tags t JOIN note_tags nt ON nt.tag_id=t.id WHERE nt.note_id=? ORDER BY t.name",
@@ -71,7 +71,7 @@ extension NotebookStore {
     }
 
     public func tagsForSource(sourceId: Int64) throws -> [Tag] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Row.fetchAll(
                 db,
                 sql: "SELECT t.id, t.name FROM tags t JOIN source_tags st ON st.tag_id=t.id WHERE st.source_id=? ORDER BY t.name",

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings › Tools: the transformation template editor inline (was TransformationEditorDialog). -->
+<UserControl
+    x:Class="AINotebook.App.Settings.TransformationEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:AINotebook.Core.Models">
+    <Grid ColumnSpacing="{StaticResource Space16}" MinHeight="{StaticResource SizeSettingsContentMax}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Custom templates + New -->
+        <Grid RowSpacing="{StaticResource Space8}" Width="{StaticResource SizeSidebarMin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ListView ItemsSource="{x:Bind ViewModel.Customs, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Transformation">
+                        <StackPanel Spacing="2" Padding="0,4">
+                            <TextBlock Text="{x:Bind Name}" Style="{StaticResource TextBody}" FontWeight="SemiBold"
+                                       Foreground="{ThemeResource Text1Brush}" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{x:Bind Description}" Style="{StaticResource SecondaryCaption}" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Grid.Row="1" x:Name="NewButton" Style="{StaticResource QuietButtonStyle}" HorizontalAlignment="Stretch"
+                    Command="{x:Bind ViewModel.CreateBlankCommand}" />
+        </Grid>
+
+        <!-- Draft editor -->
+        <Grid Grid.Column="1" RowSpacing="{StaticResource Space8}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBox x:Name="NameBox" Text="{x:Bind ViewModel.DraftName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Row="1" x:Name="DescriptionBox"
+                     Text="{x:Bind ViewModel.DraftDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ComboBox Grid.Row="2" x:Name="ScopeSeg" MinWidth="{StaticResource SizeSidebarMin}" SelectionChanged="OnScopeChanged">
+                <ComboBoxItem x:Name="ScopeSource" />
+                <ComboBoxItem x:Name="ScopeNotebook" />
+            </ComboBox>
+            <TextBox Grid.Row="3" x:Name="TemplateBox" AcceptsReturn="True" TextWrapping="Wrap"
+                     FontFamily="{StaticResource FontMono}" FontSize="{StaticResource FontSizeMono}" VerticalAlignment="Stretch"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     Text="{x:Bind ViewModel.DraftTemplate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="{StaticResource Space8}" HorizontalAlignment="Right">
+                <Button x:Name="DeleteButton" Style="{StaticResource QuietButtonStyle}" Foreground="{ThemeResource DangerBrush}"
+                        Command="{x:Bind ViewModel.DeleteCommand}" />
+                <Button x:Name="SaveButton" Style="{StaticResource PrimaryButtonStyle}" Command="{x:Bind ViewModel.SaveCommand}" />
+            </StackPanel>
+            <TextBlock Grid.Row="5" Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}" Style="{StaticResource TextCaption}"
+                       Foreground="{ThemeResource DangerBrush}" TextWrapping="Wrap" />
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using AINotebook.Core.Models;
+using AINotebook.Core.Providers;
 
 namespace AINotebook.Core.Ollama;
 
@@ -28,16 +29,25 @@ public sealed class OllamaChatAdapter : IChatStreaming
     private readonly OllamaClient _client;
     public OllamaChatAdapter(OllamaClient client) => _client = client;
 
+    public IAsyncEnumerable<string> StreamAsync(
+        string model,
+        IReadOnlyList<ChatTurn> messages,
+        CancellationToken ct = default) => StreamAsync(model, messages, ChatRequestOptions.Defaults, ct);
+
     public async IAsyncEnumerable<string> StreamAsync(
         string model,
         IReadOnlyList<ChatTurn> messages,
+        ChatRequestOptions options,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
-        var wire = new OllamaChatMessage[messages.Count];
-        for (var i = 0; i < messages.Count; i++)
-            wire[i] = new OllamaChatMessage(RoleMap(messages[i].Role), messages[i].Content);
+        options.Validate();
+        var canonical = OpenAIStyleWire.CanonicalMessages(messages);
+        var wire = new OllamaChatMessage[canonical.Count];
+        for (var i = 0; i < canonical.Count; i++)
+            wire[i] = new OllamaChatMessage(RoleMap(canonical[i].Role), canonical[i].Content);
 
-        await foreach (var chunk in _client.ChatAsync(model, wire, options: null, ct))
+        var wireOptions = new OllamaChatOptions(NumCtx: options.RuntimeContext, NumPredict: options.MaxOutputTokens);
+        await foreach (var chunk in _client.ChatAsync(model, wire, wireOptions, ct))
         {
             var delta = chunk.Message.Content;
             if (!string.IsNullOrEmpty(delta))

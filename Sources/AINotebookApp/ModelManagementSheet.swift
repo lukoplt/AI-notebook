@@ -16,15 +16,15 @@ struct ModelManagementSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(t.string(.manageModelsTitle)).font(.title2).bold()
+            Text(t.string(.manageModelsTitle)).tokenFont(.title)
             List {
                 ForEach(models, id: \.name) { m in
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(m.name).font(.headline)
+                            Text(m.name).tokenFont(.headline)
                             Text(byteString(m.size))
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .tokenFont(.caption)
+                                .tokenForeground(.text2)
                         }
                         Spacer()
                         Button(role: .destructive) {
@@ -46,7 +46,7 @@ struct ModelManagementSheet: View {
             }
             if !pullProgress.isEmpty { ProgressView(pullProgress) }
             if let errorMessage {
-                Text(errorMessage).font(.caption).foregroundStyle(.red)
+                Text(errorMessage).tokenFont(.caption).tokenForeground(.danger)
             }
             HStack {
                 Button(t.string(.manageModelsRefreshButton)) { Task { await reload() } }

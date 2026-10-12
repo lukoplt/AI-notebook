@@ -1,0 +1,565 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nA1: Příliš\tC1: A😀B\nA2: 42\tB2: TRUE\tC2: #DIV/0!\nA3: 2 [cached formula]\tC3: 45292 [date serial]\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "workbook-order",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "A\nB😀\n"
+      },
+      "input": {
+        "asset": "ingestion/paragraphs.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "paragraphs",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Slide 1\nA\n\n## Slide 2\nB"
+      },
+      "input": {
+        "asset": "ingestion/slides.pptx",
+        "kind": "pptx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "slides",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Slide 1\nB\n\n## Slide 2\nA"
+      },
+      "input": {
+        "asset": "ingestion/slides.pptx",
+        "kind": "pptx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "ppt/presentation.xml",
+            "operation": "replace-entry",
+            "text": "<p:presentation xmlns:p=\"http://schemas.openxmlformats.org/presentationml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><p:sldIdLst><p:sldId id=\"256\" r:id=\"rId2\"/><p:sldId id=\"257\" r:id=\"rId10\"/></p:sldIdLst></p:presentation>"
+          }
+        ]
+      },
+      "name": "slides-relationship-not-lexical",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "pages": [
+          {
+            "end": 1,
+            "page": 1,
+            "start": 0
+          },
+          {
+            "end": 3,
+            "page": 2,
+            "start": 3
+          },
+          {
+            "end": 6,
+            "page": 3,
+            "start": 5
+          }
+        ],
+        "text": "A\n\n\n\nB"
+      },
+      "input": {
+        "asset": "ingestion/pages.pdf",
+        "kind": "pdf",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "pages",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "corruptArchive"
+      },
+      "input": {
+        "asset": "ingestion/corrupt.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "corrupt-zip",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidRelationship"
+      },
+      "input": {
+        "asset": "ingestion/external.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "external-relationship",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidCell"
+      },
+      "input": {
+        "asset": "ingestion/bad-index.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "bad-shared-index",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Zeta\nA1: [formula; no cached value]\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\"><f>1+1</f></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "formula-no-cache",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Zeta\nA1: 45292 [cached formula] [date serial]\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><f>1+1</f><v>45292</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "cached-formula-date",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Zeta\n\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "empty-sheet",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Zeta\nZ2: FALSE\nA10: 0\tAA10: 7\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"10\"><c r=\"AA10\"><v>7</v></c><c r=\"B10\"/><c r=\"A10\"><v>0</v></c></row><row r=\"2\"><c r=\"Z2\" t=\"b\"><v>0</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "blank-cells-and-sparse-coordinates",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidCell"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A0\"><v>1</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "invalid-cell-reference",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidCell"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\"><v>1</v></c><c r=\"A1\"><v>2</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "duplicate-coordinate",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidRelationship"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/_rels/workbook.xml.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"/>"
+          }
+        ]
+      },
+      "name": "missing-relationship",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidRelationship"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "remove-entry"
+          }
+        ]
+      },
+      "name": "missing-part",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidRelationship"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/_rels/workbook.xml.rels",
+            "operation": "replace-entry",
+            "text": "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rIdB\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"../../escape.xml\"/></Relationships>"
+          }
+        ]
+      },
+      "name": "escaping-relationship",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "corruptArchive"
+      },
+      "input": {
+        "asset": "ingestion/paragraphs.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "word/document.xml",
+            "operation": "replace-entry",
+            "text": "<document>"
+          }
+        ]
+      },
+      "name": "malformed-xml",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "corruptArchive",
+        "externalReads": 0
+      },
+      "input": {
+        "asset": "ingestion/paragraphs.docx",
+        "kind": "docx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "word/document.xml",
+            "operation": "replace-entry",
+            "text": "<!DOCTYPE document [<!ENTITY ext SYSTEM \"file:///fixture-never-read\">]><w:document xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"><w:body><w:p><w:r><w:t>&ext;</w:t></w:r></w:p></w:body></w:document>"
+          }
+        ]
+      },
+      "name": "doctype-external-entity",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "textLimit"
+      },
+      "input": {
+        "asset": "ingestion/paragraphs.docx",
+        "kind": "docx",
+        "limits": {
+          "maxExtractedChars": 4
+        },
+        "mutations": []
+      },
+      "name": "text-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "cellsMaterialized": 2,
+        "error": "cellLimit"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {
+          "maxCells": 2
+        },
+        "mutations": []
+      },
+      "name": "cell-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "pageLimit",
+        "pageTextReads": 0
+      },
+      "input": {
+        "asset": "ingestion/pages.pdf",
+        "kind": "pdf",
+        "limits": {
+          "maxPdfPages": 1
+        },
+        "mutations": []
+      },
+      "name": "page-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Zeta\nA1: 45292 [date serial]\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"yyyy-mm-dd\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "custom-date",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Zeta\nA1: 45292 [date serial]\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"[h]:mm:ss\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "elapsed-time",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Zeta\nA1: 45292\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"0.00 &quot;days&quot;\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "quoted-date-literals",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "text": "## Zeta\nA1: 45292\n\n## Alpha\nA1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"0.00E+00\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "scientific-number",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "acceptedBytes": 0,
+        "error": "officeLimit",
+        "readCalls": 0
+      },
+      "input": {
+        "blocks": [
+          [
+            65,
+            65,
+            65
+          ],
+          [
+            66,
+            66,
+            66
+          ]
+        ],
+        "declaredBytes": [
+          3,
+          3
+        ],
+        "maxOfficeDecompressedBytes": 5
+      },
+      "name": "office-expanded-limit",
+      "operation": "bounded-stream"
+    },
+    {
+      "expected": {
+        "acceptedBytes": 2,
+        "error": "officeLimit",
+        "readCalls": 2
+      },
+      "input": {
+        "blocks": [
+          [
+            65,
+            66
+          ],
+          [
+            67
+          ]
+        ],
+        "declaredBytes": [
+          2
+        ],
+        "maxOfficeDecompressedBytes": 2
+      },
+      "name": "dishonest-zip-length",
+      "operation": "bounded-stream"
+    },
+    {
+      "expected": {
+        "acceptedBytes": 3,
+        "readCalls": 2
+      },
+      "input": {
+        "blocks": [
+          [
+            65,
+            66
+          ],
+          [
+            67
+          ]
+        ],
+        "declaredBytes": [
+          2,
+          1
+        ],
+        "maxOfficeDecompressedBytes": 3
+      },
+      "name": "expanded-exact-limit",
+      "operation": "bounded-stream"
+    }
+  ],
+  "contract": "ingestion-office",
+  "version": 1
+}

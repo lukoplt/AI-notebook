@@ -161,15 +161,16 @@ public class OpenWebUISseTests
     }
 
     [Fact]
-    public async Task ListModels_throws_ProviderException_on_server_error()
+    public async Task ListModels_throws_typed_HTTP_status_on_server_error()
     {
         // Behavior change (macOS parity, shared OpenAIStyleWire helper): the
         // old adapter-local code swallowed any non-401 non-success status to
         // an empty list. The shared helper throws on ANY failure so Test
         // connection can no longer report a false "success" with zero models.
-        await Assert.ThrowsAsync<ProviderException>(() =>
+        var error = await Assert.ThrowsAsync<ProviderHttpException>(() =>
             OpenWebUIChatAdapter.ListModelsAsync(
                 MakeClient("", HttpStatusCode.InternalServerError), "http://host:3000", "k"));
+        Assert.Equal(500, error.StatusCode);
     }
 
     [Fact]

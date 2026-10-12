@@ -1,0 +1,588 @@
+{
+  "contract": "legacy-generation",
+  "version": 1,
+  "retrievalRules": {
+    "publishedRevisionConsumers": [
+      "bm25",
+      "metadata",
+      "neighbours",
+      "map",
+      "overview"
+    ],
+    "publishedRevision": "sources.published_revision_id: latest fully chunked revision",
+    "vectorRevision": "pinned active generation manifest done revision; may be older",
+    "noActiveGeneration": "vector branch empty; published lexical revisions remain searchable",
+    "hydrationRevision": "each hit's own revisionId",
+    "sqlVerification": "WP3/WP5"
+  },
+  "cases": [
+    {
+      "name": "configured-match",
+      "configuredModelKey": "ollama:nomic-embed-text",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:nomic-embed-text",
+          "dims": 768,
+          "vectorCount": 120,
+          "malformedCount": 0
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [
+            {
+              "modelKey": "ollama:nomic-embed-text",
+              "dims": 768,
+              "vectorCount": 120,
+              "droppedMalformed": 0
+            }
+          ],
+          "activeGeneration": {
+            "modelKey": "ollama:nomic-embed-text",
+            "dims": 768
+          }
+        }
+      ]
+    },
+    {
+      "name": "no-configured-match-stays-null",
+      "configuredModelKey": "ollama:bge-m3",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:nomic-embed-text",
+          "dims": 768,
+          "vectorCount": 120,
+          "malformedCount": 0
+        },
+        {
+          "notebookId": 1,
+          "modelKey": "openai:text-embedding-3-small",
+          "dims": 1536,
+          "vectorCount": 500,
+          "malformedCount": 0
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [
+            {
+              "modelKey": "ollama:nomic-embed-text",
+              "dims": 768,
+              "vectorCount": 120,
+              "droppedMalformed": 0
+            },
+            {
+              "modelKey": "openai:text-embedding-3-small",
+              "dims": 1536,
+              "vectorCount": 500,
+              "droppedMalformed": 0
+            }
+          ],
+          "activeGeneration": null
+        }
+      ]
+    },
+    {
+      "name": "several-dims-pick-larger-count",
+      "configuredModelKey": "ollama:qwen3-embedding",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:qwen3-embedding",
+          "dims": 1024,
+          "vectorCount": 10,
+          "malformedCount": 0
+        },
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:qwen3-embedding",
+          "dims": 256,
+          "vectorCount": 90,
+          "malformedCount": 0
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [
+            {
+              "modelKey": "ollama:qwen3-embedding",
+              "dims": 256,
+              "vectorCount": 90,
+              "droppedMalformed": 0
+            },
+            {
+              "modelKey": "ollama:qwen3-embedding",
+              "dims": 1024,
+              "vectorCount": 10,
+              "droppedMalformed": 0
+            }
+          ],
+          "activeGeneration": {
+            "modelKey": "ollama:qwen3-embedding",
+            "dims": 256
+          }
+        }
+      ]
+    },
+    {
+      "name": "dims-tie-pick-smaller-dims",
+      "configuredModelKey": "ollama:qwen3-embedding",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:qwen3-embedding",
+          "dims": 1024,
+          "vectorCount": 50,
+          "malformedCount": 0
+        },
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:qwen3-embedding",
+          "dims": 256,
+          "vectorCount": 50,
+          "malformedCount": 0
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [
+            {
+              "modelKey": "ollama:qwen3-embedding",
+              "dims": 256,
+              "vectorCount": 50,
+              "droppedMalformed": 0
+            },
+            {
+              "modelKey": "ollama:qwen3-embedding",
+              "dims": 1024,
+              "vectorCount": 50,
+              "droppedMalformed": 0
+            }
+          ],
+          "activeGeneration": {
+            "modelKey": "ollama:qwen3-embedding",
+            "dims": 256
+          }
+        }
+      ]
+    },
+    {
+      "name": "malformed-dropped-and-counted",
+      "configuredModelKey": "ollama:nomic-embed-text",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:nomic-embed-text",
+          "dims": 768,
+          "vectorCount": 100,
+          "malformedCount": 7
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [
+            {
+              "modelKey": "ollama:nomic-embed-text",
+              "dims": 768,
+              "vectorCount": 93,
+              "droppedMalformed": 7
+            }
+          ],
+          "activeGeneration": {
+            "modelKey": "ollama:nomic-embed-text",
+            "dims": 768
+          }
+        }
+      ]
+    },
+    {
+      "name": "all-malformed-no-generation",
+      "configuredModelKey": "ollama:nomic-embed-text",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:nomic-embed-text",
+          "dims": 768,
+          "vectorCount": 4,
+          "malformedCount": 4
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [],
+          "activeGeneration": null
+        }
+      ]
+    },
+    {
+      "name": "two-notebooks-independent",
+      "configuredModelKey": "ollama:nomic-embed-text",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:nomic-embed-text",
+          "dims": 768,
+          "vectorCount": 10,
+          "malformedCount": 0
+        },
+        {
+          "notebookId": 2,
+          "modelKey": "ollama:mxbai-embed-large",
+          "dims": 1024,
+          "vectorCount": 10,
+          "malformedCount": 0
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [
+            {
+              "modelKey": "ollama:nomic-embed-text",
+              "dims": 768,
+              "vectorCount": 10,
+              "droppedMalformed": 0
+            }
+          ],
+          "activeGeneration": {
+            "modelKey": "ollama:nomic-embed-text",
+            "dims": 768
+          }
+        },
+        {
+          "notebookId": 2,
+          "generations": [
+            {
+              "modelKey": "ollama:mxbai-embed-large",
+              "dims": 1024,
+              "vectorCount": 10,
+              "droppedMalformed": 0
+            }
+          ],
+          "activeGeneration": null
+        }
+      ]
+    },
+    {
+      "name": "migration-no-active-generation-lexical-remains-searchable",
+      "configuredModelKey": "ollama:bge-m3",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:nomic-embed-text",
+          "dims": 768,
+          "vectorCount": 1,
+          "malformedCount": 0
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [
+            {
+              "modelKey": "ollama:nomic-embed-text",
+              "dims": 768,
+              "vectorCount": 1,
+              "droppedMalformed": 0
+            }
+          ],
+          "activeGeneration": null
+        }
+      ],
+      "retrievalInput": {
+        "notebookId": 1,
+        "scope": {
+          "kind": "selection",
+          "sourceIds": [],
+          "folderIds": [
+            10
+          ]
+        },
+        "sources": [
+          {
+            "sourceId": 1,
+            "notebookId": 1,
+            "folderId": 10,
+            "availability": "present",
+            "eligible": true,
+            "publishedRevisionId": 11,
+            "currentRevisionId": 12
+          },
+          {
+            "sourceId": 2,
+            "notebookId": 1,
+            "folderId": 10,
+            "availability": "missing",
+            "eligible": true,
+            "publishedRevisionId": 21,
+            "currentRevisionId": 21
+          },
+          {
+            "sourceId": 3,
+            "notebookId": 2,
+            "folderId": 10,
+            "availability": "present",
+            "eligible": true,
+            "publishedRevisionId": 31,
+            "currentRevisionId": 31
+          },
+          {
+            "sourceId": 4,
+            "notebookId": 1,
+            "folderId": 10,
+            "availability": "present",
+            "eligible": false,
+            "publishedRevisionId": 41,
+            "currentRevisionId": 41
+          },
+          {
+            "sourceId": 5,
+            "notebookId": 1,
+            "folderId": 20,
+            "availability": "present",
+            "eligible": true,
+            "publishedRevisionId": 51,
+            "currentRevisionId": 51
+          },
+          {
+            "sourceId": 6,
+            "notebookId": 1,
+            "folderId": 10,
+            "availability": "present",
+            "eligible": true,
+            "publishedRevisionId": null,
+            "currentRevisionId": 61
+          }
+        ],
+        "chunks": [
+          {
+            "sourceId": 1,
+            "revisionId": 10,
+            "chunkId": 100
+          },
+          {
+            "sourceId": 1,
+            "revisionId": 11,
+            "chunkId": 101
+          },
+          {
+            "sourceId": 1,
+            "revisionId": 12,
+            "chunkId": 102
+          },
+          {
+            "sourceId": 2,
+            "revisionId": 21,
+            "chunkId": 201
+          },
+          {
+            "sourceId": 3,
+            "revisionId": 31,
+            "chunkId": 301
+          },
+          {
+            "sourceId": 4,
+            "revisionId": 41,
+            "chunkId": 401
+          },
+          {
+            "sourceId": 5,
+            "revisionId": 51,
+            "chunkId": 501
+          },
+          {
+            "sourceId": 6,
+            "revisionId": 61,
+            "chunkId": 601
+          }
+        ],
+        "manifest": [
+          {
+            "sourceId": 1,
+            "revisionId": 10,
+            "state": "done"
+          }
+        ]
+      },
+      "expectedRetrieval": {
+        "lexicalChunks": [
+          {
+            "sourceId": 1,
+            "revisionId": 11,
+            "chunkId": 101
+          }
+        ],
+        "vectorChunks": []
+      }
+    },
+    {
+      "name": "active-vector-manifest-may-use-older-revision",
+      "configuredModelKey": "ollama:nomic-embed-text",
+      "input": [
+        {
+          "notebookId": 1,
+          "modelKey": "ollama:nomic-embed-text",
+          "dims": 768,
+          "vectorCount": 1,
+          "malformedCount": 0
+        }
+      ],
+      "expected": [
+        {
+          "notebookId": 1,
+          "generations": [
+            {
+              "modelKey": "ollama:nomic-embed-text",
+              "dims": 768,
+              "vectorCount": 1,
+              "droppedMalformed": 0
+            }
+          ],
+          "activeGeneration": {
+            "modelKey": "ollama:nomic-embed-text",
+            "dims": 768
+          }
+        }
+      ],
+      "retrievalInput": {
+        "notebookId": 1,
+        "scope": {
+          "kind": "selection",
+          "sourceIds": [],
+          "folderIds": [
+            10
+          ]
+        },
+        "sources": [
+          {
+            "sourceId": 1,
+            "notebookId": 1,
+            "folderId": 10,
+            "availability": "present",
+            "eligible": true,
+            "publishedRevisionId": 11,
+            "currentRevisionId": 12
+          },
+          {
+            "sourceId": 2,
+            "notebookId": 1,
+            "folderId": 10,
+            "availability": "missing",
+            "eligible": true,
+            "publishedRevisionId": 21,
+            "currentRevisionId": 21
+          },
+          {
+            "sourceId": 3,
+            "notebookId": 2,
+            "folderId": 10,
+            "availability": "present",
+            "eligible": true,
+            "publishedRevisionId": 31,
+            "currentRevisionId": 31
+          },
+          {
+            "sourceId": 4,
+            "notebookId": 1,
+            "folderId": 10,
+            "availability": "present",
+            "eligible": false,
+            "publishedRevisionId": 41,
+            "currentRevisionId": 41
+          },
+          {
+            "sourceId": 5,
+            "notebookId": 1,
+            "folderId": 20,
+            "availability": "present",
+            "eligible": true,
+            "publishedRevisionId": 51,
+            "currentRevisionId": 51
+          },
+          {
+            "sourceId": 6,
+            "notebookId": 1,
+            "folderId": 10,
+            "availability": "present",
+            "eligible": true,
+            "publishedRevisionId": null,
+            "currentRevisionId": 61
+          }
+        ],
+        "chunks": [
+          {
+            "sourceId": 1,
+            "revisionId": 10,
+            "chunkId": 100
+          },
+          {
+            "sourceId": 1,
+            "revisionId": 11,
+            "chunkId": 101
+          },
+          {
+            "sourceId": 1,
+            "revisionId": 12,
+            "chunkId": 102
+          },
+          {
+            "sourceId": 2,
+            "revisionId": 21,
+            "chunkId": 201
+          },
+          {
+            "sourceId": 3,
+            "revisionId": 31,
+            "chunkId": 301
+          },
+          {
+            "sourceId": 4,
+            "revisionId": 41,
+            "chunkId": 401
+          },
+          {
+            "sourceId": 5,
+            "revisionId": 51,
+            "chunkId": 501
+          },
+          {
+            "sourceId": 6,
+            "revisionId": 61,
+            "chunkId": 601
+          }
+        ],
+        "manifest": [
+          {
+            "sourceId": 1,
+            "revisionId": 10,
+            "state": "done"
+          }
+        ]
+      },
+      "expectedRetrieval": {
+        "lexicalChunks": [
+          {
+            "sourceId": 1,
+            "revisionId": 11,
+            "chunkId": 101
+          }
+        ],
+        "vectorChunks": [
+          {
+            "sourceId": 1,
+            "revisionId": 10,
+            "chunkId": 100
+          }
+        ]
+      }
+    }
+  ]
+}

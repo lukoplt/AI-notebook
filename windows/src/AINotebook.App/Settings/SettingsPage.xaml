@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Settings in the main area (spec §2.5), replacing SettingsDialog: a left list of sections
+  (General, Providers, Models & limits, Indexing, Tools, About) and the section content on the
+  right, max 640 wide. Every former setting is kept; the back arrow returns where Settings was
+  opened from.
+-->
+<Page
+    x:Class="AINotebook.App.Settings.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:AINotebook.App.ViewModels"
+    xmlns:settings="using:AINotebook.App.Settings"
+    Background="Transparent">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Section navigation -->
+        <Grid Width="{StaticResource SizeSidebarMin}" Padding="8,8,8,8" RowSpacing="{StaticResource Space8}"
+              BorderBrush="{ThemeResource BorderBrush}" BorderThickness="0,0,1,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button x:Name="BackButton" Style="{StaticResource SidebarButtonStyle}" Click="OnBack">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                    <FontIcon Glyph="{StaticResource IconBack}" Style="{StaticResource RowIcon}" />
+                    <TextBlock x:Name="BackText" Style="{StaticResource TextBody}" />
+                </StackPanel>
+            </Button>
+            <ListView x:Name="SectionList" Grid.Row="1" SelectionMode="Single" SelectionChanged="OnSectionChanged"
+                      ItemContainerStyle="{StaticResource FlatListItemStyle}">
+                <ListView.Resources>
+                    <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{ThemeResource Surface2}" />
+                    <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{ThemeResource Surface2}" />
+                    <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{ThemeResource Surface2}" />
+                    <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="{ThemeResource Border}" />
+                </ListView.Resources>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="settings:SettingsSectionItem">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}" Padding="8,0"
+                                    Height="{StaticResource SizeSidebarRow}">
+                            <FontIcon Glyph="{x:Bind Glyph}" Style="{StaticResource RowIcon}" />
+                            <TextBlock Text="{x:Bind Title}" Style="{StaticResource TextBody}" Foreground="{ThemeResource Text1Brush}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <ScrollViewer Grid.Column="1" Padding="32,24,32,32">
+            <StackPanel MaxWidth="{StaticResource SizeSettingsContentMax}" HorizontalAlignment="Left" Spacing="{StaticResource Space16}">
+                <TextBlock x:Name="SectionTitle" Style="{StaticResource TextTitle}" Foreground="{ThemeResource Text1Brush}" />
+                <InfoBar x:Name="ErrorBar" Severity="Error" IsClosable="True" IsOpen="False" />
+
+                <!-- General: language, web search, updates -->
+                <StackPanel x:Name="GeneralSection" Spacing="{StaticResource Space16}">
+                    <ComboBox x:Name="LanguageCombo" MinWidth="{StaticResource SizeSidebarMin}" SelectionChanged="OnLanguageChanged" />
+                    <ToggleSwitch x:Name="WebSearchToggle" Toggled="OnWebSearchToggled" />
+                    <TextBlock x:Name="UpdatesHeader" Style="{StaticResource PanelHeader}" Margin="0,8,0,0" />
+                    <ToggleSwitch x:Name="AutoUpdateToggle" Toggled="OnAutoUpdateToggled" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space12}">
+                        <Button x:Name="CheckUpdatesButton" Style="{StaticResource QuietButtonStyle}" Click="OnCheckUpdates" />
+                        <TextBlock x:Name="UpdateStatusText" Style="{StaticResource SecondaryCaption}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Providers: list, add, edit (privacy gate inside the provider dialog) -->
+                <StackPanel x:Name="ProvidersSection" Spacing="{StaticResource Space8}" Visibility="Collapsed">
+                    <Button x:Name="AddProviderButton" Style="{StaticResource PrimaryButtonStyle}" Click="OnAddProvider" />
+                    <ListView x:Name="ProvidersList" SelectionMode="None" ItemContainerStyle="{StaticResource FlatListItemStyle}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0,6" ColumnSpacing="{StaticResource Space8}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="{StaticResource IconProviders}" Style="{StaticResource RowIcon}" />
+                                    <StackPanel Grid.Column="1" Spacing="2">
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource TextBody}" FontWeight="SemiBold"
+                                                   Foreground="{ThemeResource Text1Brush}" />
+                                        <TextBlock Text="{Binding Type}" Style="{StaticResource SecondaryCaption}" />
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Tag="{Binding}" Click="OnEditProvider" Style="{StaticResource IconButtonStyle}"
+                                            Loaded="OnEditProviderLoaded">
+                                        <FontIcon Glyph="{StaticResource IconEdit}" Style="{StaticResource RowIcon}" />
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+
+                <!-- Models & limits: chat model, discovery, manual ID, limits -->
+                <StackPanel x:Name="ModelsSection" Spacing="{StaticResource Space8}" Visibility="Collapsed">
+                    <ComboBox x:Name="ChatProviderCombo" HorizontalAlignment="Stretch" SelectionChanged="OnChatProviderChanged" />
+                    <ComboBox x:Name="ChatModelCombo" HorizontalAlignment="Stretch"
+                              DisplayMemberPath="Label" SelectedValuePath="Id" SelectionChanged="OnChatModelChanged" />
+                    <Button x:Name="RefreshChatModelsButton" Style="{StaticResource QuietButtonStyle}" Click="OnRefreshChatModels" />
+                    <InfoBar x:Name="ChatListingBar" IsClosable="False" IsOpen="False" />
+                    <TextBox x:Name="ChatModelIdTextBox" Text="{Binding ChatModelDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button x:Name="ApplyChatModelIdButton" Style="{StaticResource QuietButtonStyle}" Click="OnApplyChatModelId" />
+                    <Button x:Name="ManageModelsButton" Style="{StaticResource QuietButtonStyle}" Click="OnManageModels" />
+
+                    <Border Height="{StaticResource SizeBorderWidth}" Background="{ThemeResource BorderBrush}" Margin="0,8" />
+                    <TextBlock x:Name="LimitsHeader" Style="{StaticResource PanelHeader}" />
+                    <TextBlock x:Name="ContextWindowText" Style="{StaticResource TextBody}" Foreground="{ThemeResource Text1Brush}" TextWrapping="Wrap" />
+                    <TextBlock x:Name="LimitsSourceText" Style="{StaticResource SecondaryCaption}" TextWrapping="Wrap" />
+                    <TextBox x:Name="RuntimeContextTextBox" Text="{Binding RuntimeContextDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox x:Name="MaxOutputTokensTextBox" Text="{Binding MaxOutputTokensDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                        <Button x:Name="SaveLimitsButton" Style="{StaticResource PrimaryButtonStyle}" Click="OnSaveLimits" />
+                        <Button x:Name="ResetLimitsButton" Style="{StaticResource QuietButtonStyle}" Click="OnResetLimits" />
+                    </StackPanel>
+                    <TextBlock x:Name="LimitsErrorText" Style="{StaticResource TextCaption}" TextWrapping="Wrap"
+                               Foreground="{ThemeResource DangerBrush}" />
+                </StackPanel>
+
+                <!-- Indexing: embedding provider/model, non-destructive re-index and its progress -->
+                <StackPanel x:Name="IndexingSection" Spacing="{StaticResource Space8}" Visibility="Collapsed">
+                    <InfoBar x:Name="EmbeddingConversionNotice" Severity="Informational" IsClosable="True"
+                             Closed="OnEmbeddingConversionNoticeClosed" IsOpen="False" />
+                    <ComboBox x:Name="EmbedProviderCombo" HorizontalAlignment="Stretch" SelectionChanged="OnEmbedProviderChanged" />
+                    <ComboBox x:Name="EmbedModelCombo" HorizontalAlignment="Stretch"
+                              DisplayMemberPath="Label" SelectedValuePath="Id" SelectionChanged="OnEmbedModelChanged" />
+                    <Button x:Name="RefreshEmbeddingModelsButton" Style="{StaticResource QuietButtonStyle}" Click="OnRefreshEmbeddingModels" />
+                    <InfoBar x:Name="EmbeddingListingBar" IsClosable="False" IsOpen="False" />
+                    <TextBox x:Name="EmbeddingModelIdTextBox" Text="{Binding EmbeddingModelDraft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button x:Name="ApplyEmbeddingModelIdButton" Style="{StaticResource QuietButtonStyle}" Click="OnApplyEmbeddingModelId" />
+
+                    <Border Height="{StaticResource SizeBorderWidth}" Background="{ThemeResource BorderBrush}" Margin="0,8" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="CurrentModelLabel" Style="{StaticResource TextBody}" Foreground="{ThemeResource Text1Brush}" />
+                        <TextBlock x:Name="CurrentModelValue" Grid.Column="1" HorizontalAlignment="Right"
+                                   Style="{StaticResource TextMono}" Foreground="{ThemeResource Text2Brush}" />
+                    </Grid>
+                    <!-- WP6: non-destructive re-index; the active index answers until the new one activates -->
+                    <Button x:Name="ReindexButton" Style="{StaticResource PrimaryButtonStyle}" Click="OnReindex" />
+                    <TextBlock x:Name="ReindexDualSpaceNote" Style="{StaticResource TextCaption}" TextWrapping="Wrap"
+                               Foreground="{ThemeResource Text2Brush}" />
+                    <TextBlock x:Name="ReindexProgressTitle" Style="{StaticResource TextCaption}" FontWeight="SemiBold"
+                               Foreground="{ThemeResource Text1Brush}" />
+                    <ItemsControl x:Name="IndexBuildsList" ItemsSource="{x:Bind ViewModel.IndexBuilds, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:GenerationProgressRow">
+                                <StackPanel Spacing="2" Margin="0,4">
+                                    <TextBlock Text="{x:Bind NotebookName}" Style="{StaticResource TextCaption}" FontWeight="SemiBold"
+                                               Foreground="{ThemeResource Text1Brush}" />
+                                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                                        <TextBlock Text="{x:Bind StatusText}" Style="{StaticResource TextCaption}" Foreground="{ThemeResource Text1Brush}" />
+                                        <TextBlock Text="{x:Bind ProgressText}" Style="{StaticResource TextCaption}" Foreground="{ThemeResource Text1Brush}" />
+                                        <TextBlock Text="{x:Bind ExcludedLabel}" Style="{StaticResource SecondaryCaption}" />
+                                        <TextBlock Text="{x:Bind ExcludedText}" Style="{StaticResource TextCaption}" Foreground="{ThemeResource Text1Brush}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                                        <Button Content="{x:Bind RetryLabel}" Tag="{x:Bind NotebookId}" Click="OnRetryIndex"
+                                                Style="{StaticResource QuietButtonStyle}"
+                                                Visibility="{x:Bind CanRetry, Converter={StaticResource BoolToVisibility}}" />
+                                        <Button Content="{x:Bind DiscardLabel}" Tag="{x:Bind JobId}" Click="OnDiscardIndex"
+                                                Style="{StaticResource QuietButtonStyle}"
+                                                Visibility="{x:Bind CanDiscard, Converter={StaticResource BoolToVisibility}}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <!-- Tools: transformation template editor inline -->
+                <StackPanel x:Name="ToolsSection" Spacing="{StaticResource Space8}" Visibility="Collapsed">
+                    <TextBlock x:Name="ToolsHint" Style="{StaticResource SecondaryCaption}" TextWrapping="Wrap" />
+                    <settings:TransformationEditorView />
+                </StackPanel>
+
+                <!-- About: version, licence, notices, credits -->
+                <StackPanel x:Name="AboutSection" Spacing="{StaticResource Space8}" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="VersionLabel" Style="{StaticResource TextBody}" Foreground="{ThemeResource Text2Brush}" />
+                        <TextBlock x:Name="VersionValue" Grid.Column="1" HorizontalAlignment="Right"
+                                   Style="{StaticResource TextMono}" Foreground="{ThemeResource Text1Brush}" />
+                    </Grid>
+                    <HyperlinkButton x:Name="LicenseLink" Padding="0" Foreground="{ThemeResource FocusBrush}"
+                                     NavigateUri="https://github.com/lukoplt/AI-notebook/blob/main/LICENSE" />
+                    <HyperlinkButton x:Name="NoticesLink" Padding="0" Foreground="{ThemeResource FocusBrush}"
+                                     NavigateUri="https://github.com/lukoplt/AI-notebook/blob/main/NOTICE" />
+                    <HyperlinkButton x:Name="SourceCodeLink" Padding="0" Foreground="{ThemeResource FocusBrush}"
+                                     NavigateUri="https://github.com/lukoplt/AI-notebook" />
+                    <TextBlock x:Name="CreditsText" Style="{StaticResource SecondaryCaption}" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

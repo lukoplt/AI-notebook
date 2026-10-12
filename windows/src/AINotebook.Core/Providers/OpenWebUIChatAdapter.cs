@@ -13,9 +13,6 @@ namespace AINotebook.Core.Providers;
 /// </summary>
 public sealed class OpenWebUIChatAdapter : IChatStreaming
 {
-    private const string ChatPath = "/api/chat/completions";
-    private const string ModelsPath = "/api/models";
-
     private readonly HttpClient _http;
     private readonly string _baseUrl;
     private readonly string? _apiKey;
@@ -23,7 +20,7 @@ public sealed class OpenWebUIChatAdapter : IChatStreaming
     public OpenWebUIChatAdapter(HttpClient http, string baseUrl, string? apiKey = null)
     {
         _http = http;
-        _baseUrl = baseUrl.TrimEnd('/');
+        _baseUrl = baseUrl;
         _apiKey = apiKey;
     }
 
@@ -31,8 +28,16 @@ public sealed class OpenWebUIChatAdapter : IChatStreaming
         string model,
         IReadOnlyList<ChatTurn> messages,
         CancellationToken ct = default)
+        => StreamAsync(model, messages, ChatRequestOptions.Defaults, ct);
+
+    public IAsyncEnumerable<string> StreamAsync(
+        string model,
+        IReadOnlyList<ChatTurn> messages,
+        ChatRequestOptions options,
+        CancellationToken ct = default)
     {
-        var req = OpenAIStyleWire.BuildChatRequest(_baseUrl, ChatPath, _apiKey, model, messages);
+        options.Validate();
+        var req = OpenAIStyleWire.BuildChatRequest(_baseUrl, ProviderType.OpenWebUI, _apiKey, model, messages, options);
         return OpenAIStyleWire.StreamAsync(_http, req, ct);
     }
 
@@ -46,5 +51,5 @@ public sealed class OpenWebUIChatAdapter : IChatStreaming
     /// </summary>
     public static Task<IReadOnlyList<ProviderModelInfo>> ListModelsAsync(
         HttpClient http, string baseUrl, string? apiKey, CancellationToken ct = default)
-        => OpenAIStyleWire.ListModelsAsync(http, baseUrl, ModelsPath, apiKey, ct);
+        => OpenAIStyleWire.ListModelsAsync(http, baseUrl, ProviderType.OpenWebUI, apiKey, ct);
 }

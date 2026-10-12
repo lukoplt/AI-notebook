@@ -6,20 +6,19 @@ struct WelcomeStepView: View {
     var onContinue: () -> Void
 
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "sparkles")
-                .font(.system(size: 56))
-                .foregroundStyle(.tint)
+        VStack(spacing: DesignTokens.spacing(16)) {
+            OnboardingIcon(systemName: "sparkles", color: .text1)
             Text(settings.text.string(.welcome))
-                .font(.largeTitle).bold()
+                .tokenFont(.title)
+                .tokenForeground(.text1)
             Text(settings.text.string(.welcomeBody))
+                .tokenFont(.body)
+                .tokenForeground(.text2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-                .padding(.horizontal, 40)
             Button(settings.text.string(.continueLabel), action: onContinue)
+                .buttonStyle(.primary)
                 .keyboardShortcut(.defaultAction)
-                .controlSize(.large)
+                .padding(.top, DesignTokens.spacing(8))
         }
-        .padding(40)
     }
 }

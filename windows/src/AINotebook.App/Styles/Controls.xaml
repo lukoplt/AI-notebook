@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Control styles for the Codex-style redesign (spec §3). Built only from Styles/Tokens.xaml:
+  colours via ThemeResource brushes, metrics via StaticResource. Every icon-only control that
+  uses these styles must set AutomationProperties.Name (spec §3 accessibility).
+-->
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- StaticResource lookups inside a merged dictionary do not see sibling dictionaries. -->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///Styles/Tokens.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- Main area card on the Mica sidebar: RadiusMd (10) on the top-left corner only. -->
+    <CornerRadius x:Key="RadiusMainSurface">10,0,0,0</CornerRadius>
+
+    <!-- Quiet button template: transparent at rest, surface-2 on hover, 40 % opacity disabled. -->
+    <ControlTemplate x:Key="QuietButtonTemplate" TargetType="Button">
+        <Grid x:Name="RootGrid"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Target="RootGrid.Background" Value="{ThemeResource Surface2Brush}" />
+                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource Text1Brush}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Target="RootGrid.Background" Value="{ThemeResource BorderBrush}" />
+                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource Text1Brush}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Target="ContentPresenter.Opacity" Value="0.4" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <ContentPresenter x:Name="ContentPresenter"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              ContentTransitions="{TemplateBinding ContentTransitions}"
+                              Padding="{TemplateBinding Padding}"
+                              Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              AutomationProperties.AccessibilityView="Raw" />
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Chip template: surface-2 pill at rest, border colour on hover. -->
+    <ControlTemplate x:Key="ChipButtonTemplate" TargetType="Button">
+        <Grid x:Name="RootGrid"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Target="RootGrid.Background" Value="{ThemeResource BorderBrush}" />
+                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource Text1Brush}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Target="RootGrid.Background" Value="{ThemeResource BorderBrush}" />
+                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource Text1Brush}" />
+                            <Setter Target="ContentPresenter.Opacity" Value="0.8" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Target="ContentPresenter.Opacity" Value="0.4" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <ContentPresenter x:Name="ContentPresenter"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Padding="{TemplateBinding Padding}"
+                              Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              AutomationProperties.AccessibilityView="Raw" />
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Primary template: monochrome accent fill (spec §3 accent / on-accent). -->
+    <ControlTemplate x:Key="PrimaryButtonTemplate" TargetType="Button">
+        <Grid x:Name="RootGrid"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding CornerRadius}">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Target="RootGrid.Opacity" Value="0.85" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Target="RootGrid.Opacity" Value="0.7" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Target="RootGrid.Background" Value="{ThemeResource Surface2Brush}" />
+                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource Text3Brush}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <ContentPresenter x:Name="ContentPresenter"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Padding="{TemplateBinding Padding}"
+                              Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                              AutomationProperties.AccessibilityView="Raw" />
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="BaseRedesignButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource FontText}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource FocusBrush}" />
+        <Setter Property="FocusVisualPrimaryThickness" Value="2" />
+        <Setter Property="FocusVisualSecondaryThickness" Value="0" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- Icon-only button (28 epx hit target, tokens-v1 hitMin). Set AutomationProperties.Name. -->
+    <Style x:Key="IconButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseRedesignButtonStyle}">
+        <Setter Property="Template" Value="{StaticResource QuietButtonTemplate}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{ThemeResource Text2Brush}" />
+        <Setter Property="MinWidth" Value="{StaticResource SizeHitMin}" />
+        <Setter Property="MinHeight" Value="{StaticResource SizeHitMin}" />
+        <Setter Property="Padding" Value="6" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- Sidebar row button (New chat, Search, Settings, + New notebook). -->
+    <Style x:Key="SidebarButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseRedesignButtonStyle}">
+        <Setter Property="Template" Value="{StaticResource QuietButtonTemplate}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{ThemeResource Text1Brush}" />
+        <Setter Property="MinHeight" Value="{StaticResource SizeSidebarRow}" />
+        <Setter Property="Padding" Value="8,0" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+
+    <!-- Quiet text action (empty states, "+ New notebook", "Show more"). -->
+    <Style x:Key="QuietButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseRedesignButtonStyle}">
+        <Setter Property="Template" Value="{StaticResource QuietButtonTemplate}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{ThemeResource Text2Brush}" />
+        <Setter Property="MinHeight" Value="{StaticResource SizeHitMin}" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}" />
+    </Style>
+
+    <!-- Composer / message chip (pill, surface-2, caption). -->
+    <Style x:Key="ChipButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseRedesignButtonStyle}">
+        <Setter Property="Template" Value="{StaticResource ChipButtonTemplate}" />
+        <Setter Property="Background" Value="{ThemeResource Surface2Brush}" />
+        <Setter Property="Foreground" Value="{ThemeResource Text2Brush}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeCaption}" />
+        <Setter Property="MinHeight" Value="{StaticResource SizeHitMin}" />
+        <Setter Property="Padding" Value="10,2" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusPill}" />
+    </Style>
+
+    <!-- Inline citation pill inside an answer ([N]). -->
+    <Style x:Key="CitationChipStyle" TargetType="Button" BasedOn="{StaticResource ChipButtonStyle}">
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Padding" Value="6,0" />
+        <Setter Property="FontFamily" Value="{StaticResource FontMono}" />
+    </Style>
+
+    <!-- Monochrome primary action (dialogs, empty states, onboarding). -->
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseRedesignButtonStyle}">
+        <Setter Property="Template" Value="{StaticResource PrimaryButtonTemplate}" />
+        <Setter Property="Background" Value="{ThemeResource AccentBrush}" />
+        <Setter Property="Foreground" Value="{ThemeResource OnAccentBrush}" />
+        <Setter Property="MinHeight" Value="{StaticResource SizePrimaryHitMin}" />
+        <Setter Property="Padding" Value="16,4" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- Composer send: round monochrome button (32 epx, tokens-v1 primaryHitMin). -->
+    <Style x:Key="SendButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+        <Setter Property="Width" Value="{StaticResource SizePrimaryHitMin}" />
+        <Setter Property="Height" Value="{StaticResource SizePrimaryHitMin}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusPill}" />
+    </Style>
+
+    <!-- Text roles with token colours. -->
+    <Style x:Key="SecondaryCaption" TargetType="TextBlock" BasedOn="{StaticResource TextCaption}">
+        <Setter Property="Foreground" Value="{ThemeResource Text3Brush}" />
+    </Style>
+    <Style x:Key="PanelHeader" TargetType="TextBlock" BasedOn="{StaticResource TextHeadline}">
+        <Setter Property="Foreground" Value="{ThemeResource Text1Brush}" />
+    </Style>
+
+    <!-- Row glyph (16 epx Segoe Fluent Icons, tokens-v1 iconRow). -->
+    <Style x:Key="RowIcon" TargetType="FontIcon">
+        <Setter Property="FontFamily" Value="{StaticResource FontIcons}" />
+        <Setter Property="FontSize" Value="{StaticResource SizeIconRow}" />
+        <Setter Property="Foreground" Value="{ThemeResource Text2Brush}" />
+    </Style>
+    <!-- Top bar glyph (18 epx, tokens-v1 iconTopBar). -->
+    <Style x:Key="TopBarIcon" TargetType="FontIcon">
+        <Setter Property="FontFamily" Value="{StaticResource FontIcons}" />
+        <Setter Property="FontSize" Value="{StaticResource SizeIconTopBar}" />
+    </Style>
+
+    <!-- Sidebar / panel list rows: no selection chrome, hover = surface-2 (lightweight resources in the list). -->
+    <Style x:Key="FlatListItemStyle" TargetType="ListViewItem">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="MinHeight" Value="{StaticResource SizeSidebarRow}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusSm}" />
+        <Setter Property="FocusVisualPrimaryBrush" Value="{ThemeResource FocusBrush}" />
+    </Style>
+</ResourceDictionary>

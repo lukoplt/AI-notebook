@@ -1,0 +1,141 @@
+{
+  "cases": [
+    {
+      "count": 8,
+      "dims": 4,
+      "expectedVectorBytesSha256": "ab5135cde9171231b07167d618c0d9f90dba19f8be0f8e6bd2147e0ad1421ede",
+      "name": "small",
+      "rows": [
+        {
+          "chunkId": 1,
+          "ord": 0,
+          "sourceId": 1,
+          "text": "synthetic 0 needle0",
+          "vector": [
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "ord": 1,
+          "sourceId": 1,
+          "text": "synthetic 1 needle1",
+          "vector": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 3,
+          "ord": 2,
+          "sourceId": 1,
+          "text": "synthetic 2 needle2",
+          "vector": [
+            0,
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 4,
+          "ord": 3,
+          "sourceId": 1,
+          "text": "synthetic 3 needle3",
+          "vector": [
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 5,
+          "ord": 4,
+          "sourceId": 1,
+          "text": "synthetic 4 needle4",
+          "vector": [
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 6,
+          "ord": 5,
+          "sourceId": 1,
+          "text": "synthetic 5 needle5",
+          "vector": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 7,
+          "ord": 6,
+          "sourceId": 1,
+          "text": "synthetic 6 needle6",
+          "vector": [
+            0,
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 8,
+          "ord": 7,
+          "sourceId": 1,
+          "text": "synthetic 7 needle7",
+          "vector": [
+            1,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "seed": 17
+    },
+    {
+      "count": 100000,
+      "dims": 256,
+      "name": "large100k",
+      "seed": 17
+    },
+    {
+      "count": 200000,
+      "dims": 256,
+      "name": "large200k",
+      "seed": 17
+    },
+    {
+      "clockTicks": [
+        100,
+        130,
+        180,
+        230
+      ],
+      "frequency": 1000,
+      "hydrationMs": 50,
+      "name": "timing",
+      "queryEmbeddingMs": 30,
+      "warmRetrievalMs": 50
+    }
+  ],
+  "contract": "retrieval-perf",
+  "scenarios": [
+    "concurrent-ingestion",
+    "streaming-budget",
+    "warm-cache"
+  ],
+  "version": 1
+}

@@ -1,0 +1,54 @@
+Subject: =?utf-8?Q?P=C5=99=C3=ADlohy?=
+From: Tester <t@example.com>
+To: x@example.com
+Content-Type: multipart/mixed; boundary="MIX"
+
+--MIX
+Content-Type: multipart/related; boundary="REL"
+
+--REL
+Content-Type: multipart/alternative; boundary="ALT"
+
+--ALT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Viz p=C5=99=C3=ADlohy.
+--ALT
+Content-Type: text/html; charset=utf-8
+
+<p>Viz <i>přílohy</i>.</p>
+--ALT--
+--REL
+Content-Type: image/png; name="image001.png"
+Content-Disposition: inline; filename="image001.png"
+Content-ID: <image001>
+Content-Transfer-Encoding: base64
+
+iVBORw0KGgo=
+--REL--
+--MIX
+Content-Type: application/pdf; name="ignored.pdf"
+Content-Disposition: attachment;
+ filename*=UTF-8''Smlouva%20%C4%8D.%201.pdf
+Content-Transfer-Encoding: base64
+
+JVBERi0xLjQgZmFrZSBhdHRhY2htZW50IGJ5dGVz
+--MIX
+Content-Type: application/octet-stream;
+ name="=?utf-8?B?w5rEjWV0Lnhsc3g=?="
+Content-Transfer-Encoding: base64
+
+AAAA
+--MIX
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment;
+ filename*0*=utf-8''pozn%C3%A1mky;
+ filename*1=".txt"
+
+attachment text is never indexed
+--MIX
+Content-Type: text/plain; charset=utf-8
+
+Druhý inline text.
+--MIX--

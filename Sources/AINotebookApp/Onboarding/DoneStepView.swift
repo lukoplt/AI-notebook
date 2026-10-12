@@ -6,22 +6,21 @@ struct DoneStepView: View {
     @ObservedObject var viewModel: OnboardingViewModel
 
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: "checkmark.seal.fill")
-                .font(.system(size: 56))
-                .foregroundStyle(.green)
+        VStack(spacing: DesignTokens.spacing(16)) {
+            OnboardingIcon(systemName: DesignTokens.icon(.success), color: .success)
             Text(settings.text.string(.onboardingDoneTitle))
-                .font(.largeTitle).bold()
+                .tokenFont(.title)
+                .tokenForeground(.text1)
             Text(settings.text.string(.onboardingDoneBody))
+                .tokenFont(.body)
+                .tokenForeground(.text2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-                .padding(.horizontal, 40)
             Button(settings.text.string(.startUsingApp)) {
                 viewModel.markCompleted()
             }
+            .buttonStyle(.primary)
             .keyboardShortcut(.defaultAction)
-            .controlSize(.large)
+            .padding(.top, DesignTokens.spacing(8))
         }
-        .padding(40)
     }
 }

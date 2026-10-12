@@ -6,11 +6,13 @@ struct PullModelsStepView: View {
     @ObservedObject var viewModel: OnboardingViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: DesignTokens.spacing(16)) {
             Text(settings.text.string(.onboardingPullTitle))
-                .font(.title).bold()
+                .tokenFont(.title)
+                .tokenForeground(.text1)
             Text(settings.text.string(.onboardingPullBody))
-                .foregroundStyle(.secondary)
+                .tokenFont(.body)
+                .tokenForeground(.text2)
 
             modelProgress(
                 title: settings.text.string(.onboardingPullingChat),
@@ -24,26 +26,23 @@ struct PullModelsStepView: View {
             )
 
             if let error = viewModel.pullError {
-                Text(error)
-                    .foregroundStyle(.red)
-                    .font(.callout)
+                Label(error, systemImage: DesignTokens.icon(.warning))
+                    .tokenFont(.body)
+                    .tokenForeground(.danger)
             }
-
-            Spacer()
         }
-        .padding(40)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .task { await viewModel.runModelPulls() }
     }
 
     private func modelProgress(title: String, fraction: Double?, status: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title).font(.headline)
+        VStack(alignment: .leading, spacing: DesignTokens.spacing(4)) {
+            Text(title).tokenFont(.headline).tokenForeground(.text1)
             ProgressView(value: fraction ?? 0)
                 .progressViewStyle(.linear)
+                .tint(DesignTokens.color(.accent))
             Text(status)
-                .font(.caption)
-                .foregroundStyle(.tertiary)
+                .tokenFont(.caption)
+                .tokenForeground(.text3)
         }
     }
 }

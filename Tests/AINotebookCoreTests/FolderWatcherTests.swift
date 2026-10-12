@@ -1,3 +1,4 @@
+import CoreServices
 import XCTest
 @testable import AINotebookCore
 
@@ -146,5 +147,32 @@ final class FolderWatcherTests: XCTestCase {
 
         RunLoop.current.run(until: Date().addingTimeInterval(3.5))
         XCTAssertEqual(counter.count, 0, "a debounced change survived stop()")
+    }
+    /// Runtime mode forwards raw classified kinds with no native debounce.
+    func testRuntimeModeForwardsRawEventKinds() throws {
+        let kinds = Kinds()
+        let watcher = FolderWatcher(folder: dir) { kinds.append($0) }
+        try watcher.start()
+        defer { watcher.stop() }
+        try "hello".write(to: dir.appendingPathComponent("raw.txt"), atomically: false, encoding: .utf8)
+        XCTAssertTrue(eventually { !kinds.values.isEmpty }, "runtime-mode watcher never reported an event")
+        XCTAssertTrue(kinds.values.allSatisfy { ["created", "changed", "renamed", "deleted", "overflow"].contains($0) })
+    }
+
+    func testEventFlagClassification() {
+        XCTAssertEqual(FolderWatcher.kind(flags: FSEventStreamEventFlags(kFSEventStreamEventFlagItemCreated)), "created")
+        XCTAssertEqual(FolderWatcher.kind(flags: FSEventStreamEventFlags(kFSEventStreamEventFlagItemCreated | kFSEventStreamEventFlagItemModified)), "changed")
+        XCTAssertEqual(FolderWatcher.kind(flags: FSEventStreamEventFlags(kFSEventStreamEventFlagItemRenamed)), "renamed")
+        XCTAssertEqual(FolderWatcher.kind(flags: FSEventStreamEventFlags(kFSEventStreamEventFlagItemRemoved)), "deleted")
+        XCTAssertEqual(FolderWatcher.kind(flags: FSEventStreamEventFlags(kFSEventStreamEventFlagMustScanSubDirs)), "overflow")
+        XCTAssertEqual(FolderWatcher.kind(flags: FSEventStreamEventFlags(kFSEventStreamEventFlagKernelDropped)), "overflow")
+        XCTAssertEqual(FolderWatcher.kind(flags: FSEventStreamEventFlags(kFSEventStreamEventFlagRootChanged)), "overflow")
+    }
+
+    private final class Kinds: @unchecked Sendable {
+        private let lock = NSLock()
+        private var stored: [String] = []
+        func append(_ value: String) { lock.lock(); stored.append(value); lock.unlock() }
+        var values: [String] { lock.lock(); defer { lock.unlock() }; return stored }
     }
 }

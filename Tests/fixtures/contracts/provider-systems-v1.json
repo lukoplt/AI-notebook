@@ -1,0 +1,233 @@
+{
+  "contract": "provider-systems",
+  "version": 1,
+  "cases": [
+    {
+      "name": "ollama",
+      "type": "ollama",
+      "input": [
+        {
+          "role": "system",
+          "content": "RULES"
+        },
+        {
+          "role": "system",
+          "content": "I"
+        },
+        {
+          "role": "user",
+          "content": "q1"
+        },
+        {
+          "role": "assistant",
+          "content": "a1"
+        },
+        {
+          "role": "user",
+          "content": "Q2"
+        }
+      ],
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nI"
+          },
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "Q2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "anthropic",
+      "type": "anthropic",
+      "input": [
+        {
+          "role": "system",
+          "content": "RULES"
+        },
+        {
+          "role": "system",
+          "content": "I"
+        },
+        {
+          "role": "user",
+          "content": "q1"
+        },
+        {
+          "role": "assistant",
+          "content": "a1"
+        },
+        {
+          "role": "user",
+          "content": "Q2"
+        }
+      ],
+      "expected": {
+        "system": "RULES\n\nI",
+        "messages": [
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "Q2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "openai",
+      "type": "openai",
+      "input": [
+        {
+          "role": "system",
+          "content": "RULES"
+        },
+        {
+          "role": "system",
+          "content": "I"
+        },
+        {
+          "role": "user",
+          "content": "q1"
+        },
+        {
+          "role": "assistant",
+          "content": "a1"
+        },
+        {
+          "role": "user",
+          "content": "Q2"
+        }
+      ],
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nI"
+          },
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "Q2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "openai_compatible",
+      "type": "openai_compatible",
+      "input": [
+        {
+          "role": "system",
+          "content": "RULES"
+        },
+        {
+          "role": "system",
+          "content": "I"
+        },
+        {
+          "role": "user",
+          "content": "q1"
+        },
+        {
+          "role": "assistant",
+          "content": "a1"
+        },
+        {
+          "role": "user",
+          "content": "Q2"
+        }
+      ],
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nI"
+          },
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "Q2"
+          }
+        ]
+      }
+    },
+    {
+      "name": "openwebui",
+      "type": "openwebui",
+      "input": [
+        {
+          "role": "system",
+          "content": "RULES"
+        },
+        {
+          "role": "system",
+          "content": "I"
+        },
+        {
+          "role": "user",
+          "content": "q1"
+        },
+        {
+          "role": "assistant",
+          "content": "a1"
+        },
+        {
+          "role": "user",
+          "content": "Q2"
+        }
+      ],
+      "expected": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "RULES\n\nI"
+          },
+          {
+            "role": "user",
+            "content": "q1"
+          },
+          {
+            "role": "assistant",
+            "content": "a1"
+          },
+          {
+            "role": "user",
+            "content": "Q2"
+          }
+        ]
+      }
+    }
+  ]
+}

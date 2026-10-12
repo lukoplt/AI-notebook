@@ -28,7 +28,7 @@ public class OpenAiSseTests
             """{"choices":[{"delta":{"content":", world"},"index":0}]}""",
             "[DONE]");
 
-        var adapter = new OpenAIChatAdapter(MakeClient(sse), "https://api.openai.com", "sk-key");
+        var adapter = new OpenAIChatAdapter(MakeClient(sse), "https://api.openai.com/v1", "sk-key");
         var tokens = new List<string>();
         await foreach (var t in adapter.StreamAsync("gpt-4o", [new ChatTurn(ChatRole.User, "hi")]))
             tokens.Add(t);
@@ -44,7 +44,7 @@ public class OpenAiSseTests
             "data: [DONE]\n" +
             """data: {"choices":[{"delta":{"content":"SHOULD_NOT_APPEAR"},"index":0}]}""" + "\n";
 
-        var adapter = new OpenAIChatAdapter(MakeClient(sse), "https://api.openai.com", "sk-key");
+        var adapter = new OpenAIChatAdapter(MakeClient(sse), "https://api.openai.com/v1", "sk-key");
         var tokens = new List<string>();
         await foreach (var t in adapter.StreamAsync("gpt-4o", [new ChatTurn(ChatRole.User, "hi")]))
             tokens.Add(t);
@@ -60,7 +60,7 @@ public class OpenAiSseTests
             "data: [DONE]\n",
             b => capturedBody = b);
 
-        var adapter = new OpenAIChatAdapter(new HttpClient(handler), "https://api.openai.com", "key");
+        var adapter = new OpenAIChatAdapter(new HttpClient(handler), "https://api.openai.com/v1", "key");
         var turns = new[]
         {
             new ChatTurn(ChatRole.System, "Be concise."),
@@ -81,7 +81,7 @@ public class OpenAiSseTests
             """{"choices":[{"delta":{"content":"A"},"index":0},{"delta":{"content":"B"},"index":1}]}""",
             "[DONE]");
 
-        var adapter = new OpenAIChatAdapter(MakeClient(sse), "https://api.openai.com", "key");
+        var adapter = new OpenAIChatAdapter(MakeClient(sse), "https://api.openai.com/v1", "key");
         var tokens = new List<string>();
         await foreach (var t in adapter.StreamAsync("m", [new ChatTurn(ChatRole.User, "hi")]))
             tokens.Add(t);
@@ -95,7 +95,7 @@ public class OpenAiSseTests
     public async Task Throws_ProviderAuthException_on_401()
     {
         var adapter = new OpenAIChatAdapter(MakeClient("", HttpStatusCode.Unauthorized),
-            "https://api.openai.com", "bad-key");
+            "https://api.openai.com/v1", "bad-key");
         await Assert.ThrowsAsync<ProviderAuthException>(async () =>
         {
             await foreach (var _ in adapter.StreamAsync("m", [new ChatTurn(ChatRole.User, "hi")])) { }
@@ -106,7 +106,7 @@ public class OpenAiSseTests
     public async Task Throws_ProviderRateLimitException_on_429()
     {
         var adapter = new OpenAIChatAdapter(MakeClient("", (HttpStatusCode)429),
-            "https://api.openai.com", "key");
+            "https://api.openai.com/v1", "key");
         await Assert.ThrowsAsync<ProviderRateLimitException>(async () =>
         {
             await foreach (var _ in adapter.StreamAsync("m", [new ChatTurn(ChatRole.User, "hi")])) { }
@@ -121,7 +121,7 @@ public class OpenAiSseTests
             """data: {"choices":[{"delta":{"content":"ok"},"index":0}]}""" + "\n" +
             "data: [DONE]\n";
 
-        var adapter = new OpenAIChatAdapter(MakeClient(sse), "https://api.openai.com", "key");
+        var adapter = new OpenAIChatAdapter(MakeClient(sse), "https://api.openai.com/v1", "key");
         var tokens = new List<string>();
         await foreach (var t in adapter.StreamAsync("m", [new ChatTurn(ChatRole.User, "hi")]))
             tokens.Add(t);
@@ -138,7 +138,7 @@ public class OpenAiSseTests
     {
         var models = await OpenAIChatAdapter.ListModelsAsync(
             MakeClient("""{"data":[{"id":"gpt-4o","name":"GPT-4o"},{"id":"gpt-4o-mini"}]}"""),
-            "https://api.openai.com", "sk-key");
+            "https://api.openai.com/v1", "sk-key");
         Assert.Equal(2, models.Count);
         Assert.Contains(models, m => m.Id == "gpt-4o" && m.DisplayName == "GPT-4o");
         Assert.Contains(models, m => m.Id == "gpt-4o-mini" && m.DisplayName == null);
@@ -149,15 +149,16 @@ public class OpenAiSseTests
     {
         await Assert.ThrowsAsync<ProviderAuthException>(() =>
             OpenAIChatAdapter.ListModelsAsync(
-                MakeClient("", HttpStatusCode.Unauthorized), "https://api.openai.com", "bad-key"));
+                MakeClient("", HttpStatusCode.Unauthorized), "https://api.openai.com/v1", "bad-key"));
     }
 
     [Fact]
-    public async Task ListModels_throws_ProviderException_on_other_non_success()
+    public async Task ListModels_throws_typed_HTTP_status_on_other_non_success()
     {
-        await Assert.ThrowsAsync<ProviderException>(() =>
+        var error = await Assert.ThrowsAsync<ProviderHttpException>(() =>
             OpenAIChatAdapter.ListModelsAsync(
-                MakeClient("", HttpStatusCode.InternalServerError), "https://api.openai.com", "key"));
+                MakeClient("", HttpStatusCode.InternalServerError), "https://api.openai.com/v1", "key"));
+        Assert.Equal(500, error.StatusCode);
     }
 
     [Fact]
@@ -165,7 +166,7 @@ public class OpenAiSseTests
     {
         var http = new HttpClient(new ThrowingHandler());
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            OpenAIChatAdapter.ListModelsAsync(http, "https://api.openai.com", "key"));
+            OpenAIChatAdapter.ListModelsAsync(http, "https://api.openai.com/v1", "key"));
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────

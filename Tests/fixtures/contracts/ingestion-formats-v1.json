@@ -1,0 +1,409 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "kind": "pdf"
+      },
+      "input": {
+        "filename": "a.pdf"
+      },
+      "name": "detect-a.pdf",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "text"
+      },
+      "input": {
+        "filename": "b.TXT"
+      },
+      "name": "detect-b.TXT",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "markdown"
+      },
+      "input": {
+        "filename": "c.md"
+      },
+      "name": "detect-c.md",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "markdown"
+      },
+      "input": {
+        "filename": "d.markdown"
+      },
+      "name": "detect-d.markdown",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "docx"
+      },
+      "input": {
+        "filename": "e.docx"
+      },
+      "name": "detect-e.docx",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "docx"
+      },
+      "input": {
+        "filename": "f.DOCM"
+      },
+      "name": "detect-f.DOCM",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "pptx"
+      },
+      "input": {
+        "filename": "g.pptx"
+      },
+      "name": "detect-g.pptx",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "pptx"
+      },
+      "input": {
+        "filename": "h.pptm"
+      },
+      "name": "detect-h.pptm",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "xlsx"
+      },
+      "input": {
+        "filename": "i.xlsx"
+      },
+      "name": "detect-i.xlsx",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "xlsx"
+      },
+      "input": {
+        "filename": "j.xlsm"
+      },
+      "name": "detect-j.xlsm",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "email"
+      },
+      "input": {
+        "filename": "k.eml"
+      },
+      "name": "detect-k.eml",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "email"
+      },
+      "input": {
+        "filename": "l.MSG"
+      },
+      "name": "detect-l.MSG",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": null
+      },
+      "input": {
+        "filename": "m.xls"
+      },
+      "name": "detect-m.xls",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": null
+      },
+      "input": {
+        "filename": "n.doc"
+      },
+      "name": "detect-n.doc",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": null
+      },
+      "input": {
+        "filename": "o.xlsb"
+      },
+      "name": "detect-o.xlsb",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": null
+      },
+      "input": {
+        "filename": "p.dotm"
+      },
+      "name": "detect-p.dotm",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": null
+      },
+      "input": {
+        "filename": "noext"
+      },
+      "name": "detect-noext",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": null
+      },
+      "input": {
+        "filename": ".eml"
+      },
+      "name": "detect-.eml",
+      "operation": "detect"
+    },
+    {
+      "expected": {
+        "kind": "docx",
+        "text": "Makro dokument\nDruhý odstavec"
+      },
+      "input": {
+        "asset": "ingestion/formats/macro.docm"
+      },
+      "name": "extract-docm",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "kind": "pptx",
+        "text": "## Slide 1\nSnímek s makrem"
+      },
+      "input": {
+        "asset": "ingestion/formats/macro.pptm"
+      },
+      "name": "extract-pptm",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "kind": "xlsx",
+        "text": "## Data\nA1: Položka\tB1: 12"
+      },
+      "input": {
+        "asset": "ingestion/formats/macro.xlsm"
+      },
+      "name": "extract-xlsm",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx",
+          "xlsx",
+          "docm",
+          "pptm",
+          "xlsm",
+          "eml",
+          "msg"
+        ]
+      },
+      "input": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx",
+          "xlsx"
+        ]
+      },
+      "name": "upgrade-old-default",
+      "operation": "upgrade"
+    },
+    {
+      "expected": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx",
+          "xlsx",
+          "docm",
+          "pptm",
+          "xlsm",
+          "eml",
+          "msg"
+        ]
+      },
+      "input": {
+        "includeExts": [
+          "xlsx",
+          "pptx",
+          "docx",
+          "markdown",
+          "md",
+          "txt",
+          "pdf"
+        ]
+      },
+      "name": "upgrade-old-default-reordered",
+      "operation": "upgrade"
+    },
+    {
+      "expected": {
+        "includeExts": [
+          "pdf",
+          "docx"
+        ]
+      },
+      "input": {
+        "includeExts": [
+          "pdf",
+          "docx"
+        ]
+      },
+      "name": "upgrade-customized-subset",
+      "operation": "upgrade"
+    },
+    {
+      "expected": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx",
+          "xlsx",
+          "docm",
+          "pptm",
+          "xlsm",
+          "eml",
+          "msg"
+        ]
+      },
+      "input": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx",
+          "xlsx",
+          "docm",
+          "pptm",
+          "xlsm",
+          "eml",
+          "msg"
+        ]
+      },
+      "name": "upgrade-customized-superset",
+      "operation": "upgrade"
+    },
+    {
+      "expected": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx",
+          "xlsx",
+          "pdf"
+        ]
+      },
+      "input": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx",
+          "xlsx",
+          "pdf"
+        ]
+      },
+      "name": "upgrade-old-default-with-duplicate",
+      "operation": "upgrade"
+    },
+    {
+      "expected": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx"
+        ]
+      },
+      "input": {
+        "includeExts": [
+          "pdf",
+          "txt",
+          "md",
+          "markdown",
+          "docx",
+          "pptx"
+        ]
+      },
+      "name": "upgrade-old-default-minus-one",
+      "operation": "upgrade"
+    }
+  ],
+  "contract": "ingestion-formats",
+  "defaultIncludeExts": [
+    "pdf",
+    "txt",
+    "md",
+    "markdown",
+    "docx",
+    "pptx",
+    "xlsx",
+    "docm",
+    "pptm",
+    "xlsm",
+    "eml",
+    "msg"
+  ],
+  "oldDefaultIncludeExts": [
+    "pdf",
+    "txt",
+    "md",
+    "markdown",
+    "docx",
+    "pptx",
+    "xlsx"
+  ],
+  "upgradeMarker": "data_folder_include_exts_v2",
+  "version": 1
+}

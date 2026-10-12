@@ -22,6 +22,8 @@ public enum ExtractorError: Error, Equatable {
     case emptyContent
     case pdfOpenFailed(URL)
     case officeArchiveCorrupt(URL)
+    /// A valid package without a main document part (`missingMainPart`).
+    case officeMainPartMissing(URL)
     case webFetchFailed(URL, status: Int)
     case webResponseNotHTML(URL, mime: String?)
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AINotebook.App.Services;
 using AINotebook.Core.Models;
-using AINotebook.Core.Providers;
+using AINotebook.Core.Rag;
 using AINotebook.Core.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -51,7 +51,7 @@ public partial class NotesChatPanelViewModel : ObservableObject
                 ?? _store.CreateChatSession(notebookId, _t.Get("chatNewSessionTitle")).Id;
             ReloadMessages();
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ChatFailureText.Format(ex, _t.Get); }
         await Task.CompletedTask;
     }
 
@@ -63,6 +63,12 @@ public partial class NotesChatPanelViewModel : ObservableObject
         ShowEmptyState = Messages.Count == 0 && string.IsNullOrEmpty(StreamingDraft);
     }
 
+    /// <summary>
+    /// One WP8 turn over the whole notebook (typed <see cref="RetrievalScope.All"/>), like
+    /// the macOS notes panel. The open note travels only as the turn's labelled NOTE
+    /// section (outside-folder context), never in the system message. A contextTooSmall
+    /// preparation failure writes no row, so the draft is restored.
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanSend))]
     private async Task SendAsync()
     {
@@ -73,20 +79,17 @@ public partial class NotesChatPanelViewModel : ObservableObject
         var noteCtx = CurrentNoteProvider?.Invoke()?.BodyMd;
         try
         {
-            await _chatHolder.Engine.SendAsync(sid, _notebookId, text,
+            await _chatHolder.Engine.SendAsync(sid, _notebookId, text, new RetrievalScope.All(),
                 currentNoteContent: noteCtx,
-                onToken: tok => _dispatcher.TryEnqueue(() => StreamingDraft += tok));
+                onToken: tok => _dispatcher.TryEnqueue(() => StreamingDraft += tok),
+                // A retry restarts the answer, so drop what the failed attempt streamed.
+                onRetry: () => _dispatcher.TryEnqueue(() => StreamingDraft = ""));
             ReloadMessages();
         }
         catch (Exception ex)
         {
-            // FR-A8: mirrors ChatViewModel.SendAsync's catch — see the
-            // comment there for why ProviderConsentException specifically
-            // gets a localized message while everything else keeps the
-            // existing raw ex.ToString() behavior.
-            ErrorMessage = ex is ProviderConsentException
-                ? _t.Get(StringKey.ErrorConsentRequired)
-                : ex.ToString();
+            ErrorMessage = ChatFailureText.Format(ex, _t.Get);
+            if (ChatFailureText.KeepsDraft(ex) && Input.Length == 0) Input = text;
             ReloadMessages();
         }
         finally { Sending = false; StreamingDraft = ""; }
@@ -104,6 +107,6 @@ public partial class NotesChatPanelViewModel : ObservableObject
             var when = msg.CreatedAt.ToLocalTime().ToString("d MMM yyyy, h:mm tt");
             _store.CreateNote(_notebookId, $"Chat reply — {when}", msg.Content, NoteOrigin.Chat, msg.Id);
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ChatFailureText.Format(ex, _t.Get); }
     }
 }

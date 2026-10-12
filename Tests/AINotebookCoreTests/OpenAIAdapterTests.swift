@@ -36,7 +36,7 @@ final class OpenAIAdapterTests: XCTestCase {
                 #"{"choices":[{"delta":{"content":"IGNORED"},"index":0}]}"#
             ]))
         }
-        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com", apiKey: "sk-k", session: makeMockSession())
+        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com/v1", apiKey: "sk-k", session: makeMockSession())
         let tokens = try await collect(adapter.stream(model: "gpt-4o", messages: [ChatTurn(role: .user, content: "hi")]))
         XCTAssertEqual(tokens, ["Hello", ", world"])
     }
@@ -47,7 +47,7 @@ final class OpenAIAdapterTests: XCTestCase {
             captured = req
             return (httpResponse(req.url!, status: 200), Self.sseBody(["[DONE]"]))
         }
-        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com/", apiKey: "sk-abc", session: makeMockSession())
+        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com/v1/", apiKey: "sk-abc", session: makeMockSession())
         _ = try await collect(adapter.stream(model: "gpt-4o", messages: [
             ChatTurn(role: .system, content: "Be concise."),
             ChatTurn(role: .user, content: "Hello")
@@ -77,7 +77,7 @@ final class OpenAIAdapterTests: XCTestCase {
         MockURLProtocol.handler = { req in
             (httpResponse(req.url!, status: 401), Data())
         }
-        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com", apiKey: "bad", session: makeMockSession())
+        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com/v1", apiKey: "bad", session: makeMockSession())
         do {
             _ = try await collect(adapter.stream(model: "m", messages: [ChatTurn(role: .user, content: "hi")]))
             XCTFail("expected throw")
@@ -90,7 +90,7 @@ final class OpenAIAdapterTests: XCTestCase {
         MockURLProtocol.handler = { req in
             (httpResponse(req.url!, status: 429, headers: ["Retry-After": "7"]), Data())
         }
-        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com", apiKey: "k", session: makeMockSession())
+        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com/v1", apiKey: "k", session: makeMockSession())
         do {
             _ = try await collect(adapter.stream(model: "m", messages: [ChatTurn(role: .user, content: "hi")]))
             XCTFail("expected throw")
@@ -103,7 +103,7 @@ final class OpenAIAdapterTests: XCTestCase {
         MockURLProtocol.handler = { req in
             (httpResponse(req.url!, status: 500), Data())
         }
-        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com", apiKey: "k", session: makeMockSession())
+        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com/v1", apiKey: "k", session: makeMockSession())
         do {
             _ = try await collect(adapter.stream(model: "m", messages: [ChatTurn(role: .user, content: "hi")]))
             XCTFail("expected throw")
@@ -120,19 +120,19 @@ final class OpenAIAdapterTests: XCTestCase {
                        "data: [DONE]\n"
             return (httpResponse(req.url!, status: 200), Data(body.utf8))
         }
-        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com", apiKey: "k", session: makeMockSession())
+        let adapter = OpenAIChatAdapter(baseURL: "https://api.openai.com/v1", apiKey: "k", session: makeMockSession())
         let tokens = try await collect(adapter.stream(model: "m", messages: [ChatTurn(role: .user, content: "hi")]))
         XCTAssertEqual(tokens, ["ok"])
     }
 
-    func testEmptyBaseURLThrowsDecodingNotCrash() async {
+    func testEmptyBaseURLThrowsInvalidBaseURLNotCrash() async {
         let adapter = OpenAIChatAdapter(baseURL: "", apiKey: "k", session: makeMockSession())
         do {
             _ = try await collect(adapter.stream(model: "m", messages: [ChatTurn(role: .user, content: "hi")]))
             XCTFail("expected throw")
-        } catch let e as ProviderError {
-            guard case .decoding = e else { return XCTFail("expected .decoding, got \(e)") }
-        } catch { XCTFail("expected ProviderError, got \(error)") }
+        } catch let e as ProviderConfigurationError {
+            XCTAssertEqual(e, .invalidBaseURL)
+        } catch { XCTFail("expected ProviderConfigurationError, got \(error)") }
     }
 
     // ── model listing ────────────────────────────────────────────────────
@@ -144,7 +144,7 @@ final class OpenAIAdapterTests: XCTestCase {
             let json = #"{"object":"list","data":[{"id":"gpt-4o"},{"id":"babbage-002"}]}"#
             return (httpResponse(req.url!, status: 200), Data(json.utf8))
         }
-        let models = try await OpenAIChatAdapter.listModels(baseURL: "https://api.openai.com", apiKey: "k", session: makeMockSession())
+        let models = try await OpenAIChatAdapter.listModels(baseURL: "https://api.openai.com/v1", apiKey: "k", session: makeMockSession())
         XCTAssertEqual(captured?.url?.absoluteString, "https://api.openai.com/v1/models")
         XCTAssertEqual(models.map(\.id), ["babbage-002", "gpt-4o"])
     }
@@ -154,7 +154,7 @@ final class OpenAIAdapterTests: XCTestCase {
             (httpResponse(req.url!, status: 401), Data())
         }
         do {
-            _ = try await OpenAIChatAdapter.listModels(baseURL: "https://api.openai.com", apiKey: "bad", session: makeMockSession())
+            _ = try await OpenAIChatAdapter.listModels(baseURL: "https://api.openai.com/v1", apiKey: "bad", session: makeMockSession())
             XCTFail("expected throw")
         } catch let e as ProviderError {
             guard case .auth = e else { return XCTFail("expected .auth, got \(e)") }
@@ -178,7 +178,7 @@ final class OpenAIAdapterTests: XCTestCase {
             let json = #"{"object":"list","data":[{"embedding":[0.1,0.2]},{"embedding":[0.3,0.4]}]}"#
             return (httpResponse(req.url!, status: 200), Data(json.utf8))
         }
-        let adapter = OpenAIEmbeddingAdapter(baseURL: "https://api.openai.com", apiKey: "sk-k", session: makeMockSession())
+        let adapter = OpenAIEmbeddingAdapter(baseURL: "https://api.openai.com/v1", apiKey: "sk-k", session: makeMockSession())
         let vectors = try await adapter.embed(model: "text-embedding-3-small", inputs: ["a", "b"])
         let req = try XCTUnwrap(captured)
         XCTAssertEqual(req.url?.absoluteString, "https://api.openai.com/v1/embeddings")
@@ -195,7 +195,7 @@ final class OpenAIAdapterTests: XCTestCase {
         MockURLProtocol.handler = { req in
             (httpResponse(req.url!, status: 401), Data())
         }
-        let adapter = OpenAIEmbeddingAdapter(baseURL: "https://api.openai.com", apiKey: "bad", session: makeMockSession())
+        let adapter = OpenAIEmbeddingAdapter(baseURL: "https://api.openai.com/v1", apiKey: "bad", session: makeMockSession())
         do {
             _ = try await adapter.embed(model: "m", inputs: ["a"])
             XCTFail("expected throw")

@@ -1,0 +1,377 @@
+{
+  "contract": "glob",
+  "version": 1,
+  "cases": [
+    {
+      "name": "glob-00",
+      "pattern": "node_modules",
+      "path": "node_modules/x/index.js",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-01",
+      "pattern": "node_modules",
+      "path": "src/node_modules/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-02",
+      "pattern": "node_modules",
+      "path": "src/my_node_modules/a.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-03",
+      "pattern": "*.tmp",
+      "path": "a/b/c.tmp",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-04",
+      "pattern": "*.tmp",
+      "path": "a/b.tmp/c.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-05",
+      "pattern": "*.tmp",
+      "path": "a/b/c.tmpx",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-06",
+      "pattern": ".*",
+      "path": ".git/config",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-07",
+      "pattern": ".*",
+      "path": "docs/.hidden.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-08",
+      "pattern": ".*",
+      "path": "docs/visible.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-09",
+      "pattern": "~$*",
+      "path": "smlouvy/~$návrh.docx",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-10",
+      "pattern": "?.md",
+      "path": "a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-11",
+      "pattern": "?.md",
+      "path": "ab.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-12",
+      "pattern": "?.md",
+      "path": "č.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-13",
+      "pattern": "build",
+      "path": "build",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-14",
+      "pattern": "build",
+      "path": "builder/a.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-15",
+      "pattern": "docs/*.md",
+      "path": "docs/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-16",
+      "pattern": "docs/*.md",
+      "path": "docs/sub/a.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-17",
+      "pattern": "docs/*.md",
+      "path": "other/docs/a.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-18",
+      "pattern": "/docs/*.md",
+      "path": "docs/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-19",
+      "pattern": "docs/**/*.md",
+      "path": "docs/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-20",
+      "pattern": "docs/**/*.md",
+      "path": "docs/x/y/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-21",
+      "pattern": "**/drafts",
+      "path": "a/b/drafts/c.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-22",
+      "pattern": "**/drafts",
+      "path": "drafts/c.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-23",
+      "pattern": "docs/**",
+      "path": "docs/x/y.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-24",
+      "pattern": "docs/**",
+      "path": "docsx/y.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-25",
+      "pattern": "a/*/c",
+      "path": "a/b/c/d.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-26",
+      "pattern": "a/*/c",
+      "path": "a/b/x/c/d.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-27",
+      "pattern": "Smlouvy",
+      "path": "smlouvy/a.pdf",
+      "caseSensitive": false,
+      "matches": true
+    },
+    {
+      "name": "glob-28",
+      "pattern": "Smlouvy",
+      "path": "smlouvy/a.pdf",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-29",
+      "pattern": "ČÁST*",
+      "path": "část1/a.md",
+      "caseSensitive": false,
+      "matches": true
+    },
+    {
+      "name": "glob-30",
+      "pattern": "ÄRGER.md",
+      "path": "ärger.md",
+      "caseSensitive": false,
+      "matches": true
+    },
+    {
+      "name": "glob-31",
+      "pattern": "ÄRGER.md",
+      "path": "ärger.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-32",
+      "pattern": "!keep.md",
+      "path": "keep.md",
+      "caseSensitive": true,
+      "expectedError": "unsupportedSyntax"
+    },
+    {
+      "name": "glob-33",
+      "pattern": "[ab].md",
+      "path": "a.md",
+      "caseSensitive": true,
+      "expectedError": "unsupportedSyntax"
+    },
+    {
+      "name": "glob-34",
+      "pattern": "{a,b}.md",
+      "path": "a.md",
+      "caseSensitive": true,
+      "expectedError": "unsupportedSyntax"
+    },
+    {
+      "name": "glob-35",
+      "pattern": "a\\*.md",
+      "path": "a*.md",
+      "caseSensitive": true,
+      "expectedError": "unsupportedSyntax"
+    },
+    {
+      "name": "glob-36",
+      "pattern": "",
+      "path": "a.md",
+      "caseSensitive": true,
+      "expectedError": "unsupportedSyntax"
+    },
+    {
+      "name": "glob-37",
+      "pattern": "build/",
+      "path": "build/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-38",
+      "pattern": "build/",
+      "path": "src/build/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-39",
+      "pattern": "/build/",
+      "path": "src/build/a.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-40",
+      "pattern": "/build/",
+      "path": "build/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-41",
+      "pattern": "/",
+      "path": "a.md",
+      "caseSensitive": true,
+      "expectedError": "unsupportedSyntax"
+    },
+    {
+      "name": "glob-42",
+      "pattern": "///",
+      "path": "a.md",
+      "caseSensitive": true,
+      "expectedError": "unsupportedSyntax"
+    },
+    {
+      "name": "glob-43",
+      "pattern": "build//",
+      "path": "src/build/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-44",
+      "pattern": "docs//build///",
+      "path": "docs/build/a.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-45",
+      "pattern": "docs//build///",
+      "path": "src/docs/build/a.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-46",
+      "pattern": "//docs///**//drafts/",
+      "path": "docs/a/b/drafts/c.md",
+      "caseSensitive": true,
+      "matches": true
+    },
+    {
+      "name": "glob-47",
+      "pattern": "İ.md",
+      "path": "i.md",
+      "caseSensitive": false,
+      "matches": true
+    },
+    {
+      "name": "glob-48",
+      "pattern": "İ.md",
+      "path": "i.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-49",
+      "pattern": "I.md",
+      "path": "ı.md",
+      "caseSensitive": false,
+      "matches": false
+    },
+    {
+      "name": "glob-50",
+      "pattern": "𐐀.md",
+      "path": "𐐨.md",
+      "caseSensitive": false,
+      "matches": true
+    },
+    {
+      "name": "glob-51",
+      "pattern": "𐐀.md",
+      "path": "𐐨.md",
+      "caseSensitive": true,
+      "matches": false
+    },
+    {
+      "name": "glob-52",
+      "pattern": "?.md",
+      "path": "𐐨.md",
+      "caseSensitive": true,
+      "matches": true
+    }
+  ]
+}

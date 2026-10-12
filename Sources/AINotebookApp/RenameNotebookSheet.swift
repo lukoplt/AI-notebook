@@ -18,7 +18,7 @@ struct RenameNotebookSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(settings.text.string(.renameNotebook))
-                .font(.title3)
+                .tokenFont(.headline)
                 .bold()
 
             TextField(settings.text.string(.notebookName), text: $name)
@@ -26,8 +26,8 @@ struct RenameNotebookSheet: View {
 
             if let errorMessage {
                 Text(errorMessage)
-                    .foregroundStyle(.red)
-                    .font(.caption)
+                    .tokenForeground(.danger)
+                    .tokenFont(.caption)
             }
 
             HStack {

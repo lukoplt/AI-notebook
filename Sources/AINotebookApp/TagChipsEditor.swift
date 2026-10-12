@@ -25,7 +25,7 @@ struct TagChipsEditor: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(t.string(.tagsLabel)).font(.caption).foregroundStyle(.secondary)
+            Text(t.string(.tagsLabel)).tokenFont(.caption).tokenForeground(.text2)
             FlowChips(tags: assigned, onRemove: onRemove)
             HStack(spacing: 8) {
                 if !addable.isEmpty {
@@ -62,21 +62,20 @@ private struct FlowChips: View {
         if tags.isEmpty {
             EmptyView()
         } else {
-            // A LazyVGrid with adaptive columns approximates a flow layout and
-            // avoids a custom Layout for a small chip count.
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 60, maximum: 200), spacing: 6, alignment: .leading)],
-                      alignment: .leading, spacing: 6) {
+            FlowLayout(spacing: DesignTokens.spacing(4)) {
                 ForEach(tags) { tag in
-                    HStack(spacing: 4) {
-                        Text(tag.name).font(.caption)
+                    HStack(spacing: DesignTokens.spacing(4)) {
+                        Text(tag.name).tokenFont(.caption).tokenForeground(.text1)
                         Button { onRemove(tag.id) } label: {
-                            Image(systemName: "xmark.circle.fill").font(.caption2)
+                            Image(systemName: "xmark.circle.fill").tokenFont(.caption)
                         }
                         .buttonStyle(.plain)
-                        .foregroundStyle(.secondary)
+                        .tokenForeground(.text3)
+                        .accessibilityLabel("\(tag.name) ×")
                     }
-                    .padding(.horizontal, 8).padding(.vertical, 3)
-                    .background(Capsule().fill(Color.secondary.opacity(0.15)))
+                    .padding(.horizontal, DesignTokens.spacing(8))
+                    .padding(.vertical, DesignTokens.spacing(4) / 2)
+                    .background(Capsule().fill(DesignTokens.color(.surface2)))
                 }
             }
         }

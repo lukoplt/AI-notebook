@@ -69,25 +69,32 @@ public class RetrieverTests
     [Fact]
     public async Task RrfRanksFusedAboveSingleSourceMatch()
     {
-        var store = new NotebookStore(StorePath.InMemory);
+        using var store = new NotebookStore(StorePath.InMemory);
         var nb = store.CreateNotebook("N", "");
-        var src = store.CreateSource(nb.Id!.Value, SourceType.Text, "S", null, null);
-        store.ReplaceChunks(src.Id!.Value, new[]
-        {
-            new ChunkDraft("the quick brown fox", 1, null), // A: vector + text
-            new ChunkDraft("a fox in the henhouse", 1, null), // B: text only
-            new ChunkDraft("unrelated text", 1, null),        // C: vector only
-        });
-        var chunks = store.Chunks(src.Id!.Value);
-        var aId = chunks[0].Id!.Value;
-        store.StoreEmbedding(aId, "m", new EmbeddingVector(new[] { 1f, 0f }));
-        store.StoreEmbedding(chunks[2].Id!.Value, "m", new EmbeddingVector(new[] { 0.9f, 0.1f }));
+        var a = store.CreateSource(nb.Id!.Value, SourceType.Text, "A", null, null);
+        var b = store.CreateSource(nb.Id!.Value, SourceType.Text, "B", null, null);
+        var c = store.CreateSource(nb.Id!.Value, SourceType.Text, "C", null, null);
+        store.ReplaceChunks(a.Id!.Value, [new("the quick brown fox", 1)]);
+        store.ReplaceChunks(b.Id!.Value, [new("a fox in the henhouse", 1)]);
+        store.ReplaceChunks(c.Id!.Value, [new("unrelated text", 1)]);
+        var aChunk = Assert.Single(store.Chunks(a.Id!.Value));
+        var bChunk = Assert.Single(store.Chunks(b.Id!.Value));
+        var cChunk = Assert.Single(store.Chunks(c.Id!.Value));
+        var aId = aChunk.Id!.Value;
+        var generation = store.CreateGeneration(nb.Id!.Value, new("legacy", "legacy", "m", null, 2, "legacy", "legacy", "legacy", "legacy"), 0);
+        store.StoreGenerationEmbedding(generation.Id, aId, new([1f, 0f]));
+        store.StoreGenerationEmbedding(generation.Id, cChunk.Id!.Value, new([0.9f, 0.1f]));
+        store.SetManifest(generation.Id, [new(a.Id.Value, aChunk.RevisionId!.Value, "done", null),
+            new(b.Id.Value, bChunk.RevisionId!.Value, "excluded", "test-lexical-only"), new(c.Id.Value, cChunk.RevisionId!.Value, "done", null)]);
+        store.ActivateGeneration(generation.Id, 1);
 
         var client = new MockEmbeddingClient(_ => new[] { 1f, 0f });
         var retriever = new Retriever(store, client, "m");
         var hits = await retriever.SearchAsync(nb.Id!.Value, "fox", topK: 3);
 
         Assert.Equal(aId, hits[0].ChunkId);
+        Assert.Contains(hits, hit => hit.ChunkId == cChunk.Id);
+        Assert.Single(client.Calls);
     }
 
     // RetrieverTests.testSourceIdsFilterRestrictsToSelectedSources

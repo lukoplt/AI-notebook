@@ -27,11 +27,11 @@ struct TransformationHistorySheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(t.string(.aiToolsHistoryTitle)).font(.title2).bold()
+            Text(t.string(.aiToolsHistoryTitle)).tokenFont(.title)
             if rows.isEmpty {
                 VStack {
                     Spacer()
-                    Text(t.string(.aiToolsHistoryEmpty)).foregroundStyle(.secondary)
+                    Text(t.string(.aiToolsHistoryEmpty)).tokenForeground(.text2)
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, minHeight: 240)
@@ -43,16 +43,16 @@ struct TransformationHistorySheet: View {
                         } label: {
                             HStack(alignment: .top) {
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text(r.templateName).font(.headline)
-                                    Text(r.sourceTitle).font(.callout).foregroundStyle(.secondary)
+                                    Text(r.templateName).tokenFont(.headline)
+                                    Text(r.sourceTitle).tokenFont(.body).tokenForeground(.text2)
                                     Text(r.ranAt.formatted(date: .abbreviated, time: .shortened))
-                                        .font(.caption).foregroundStyle(.tertiary)
+                                        .tokenFont(.caption).tokenForeground(.text3)
                                 }
                                 Spacer()
                                 if r.noteId == nil {
-                                    Text("(deleted)").font(.caption).foregroundStyle(.red)
+                                    Text(t.string(.toolHistoryDeleted)).tokenFont(.caption).tokenForeground(.danger)
                                 } else {
-                                    Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+                                    Image(systemName: "chevron.right").tokenForeground(.text3)
                                 }
                             }
                         }
@@ -64,7 +64,7 @@ struct TransformationHistorySheet: View {
                 .frame(minHeight: 360)
             }
             if let errorMessage {
-                Text(errorMessage).font(.caption).foregroundStyle(.red)
+                Text(errorMessage).tokenFont(.caption).tokenForeground(.danger)
             }
             HStack {
                 Spacer()
@@ -106,15 +106,15 @@ struct TransformationHistorySheet: View {
                 let belongsToNotebook = (note?.notebookId == notebook.id) ||
                     (source?.notebookId == notebook.id)
                 guard belongsToNotebook else { return nil }
-                let txName = txByID[run.transformationId]?.name ?? "(unknown)"
+                let txName = txByID[run.transformationId]?.name ?? t.string(.toolHistoryUnknown)
                 let srcTitle = source?.title
-                    ?? (run.sourceId == nil ? "(notebook scope)" : "(deleted)")
+                    ?? (run.sourceId == nil ? t.string(.toolHistoryNotebookScope) : t.string(.toolHistoryDeleted))
                 return Row(
                     id: runId,
                     templateName: txName,
                     sourceTitle: srcTitle,
                     noteId: note?.id,
-                    noteTitle: note?.title ?? "(deleted)",
+                    noteTitle: note?.title ?? t.string(.toolHistoryDeleted),
                     ranAt: run.ranAt
                 )
             }

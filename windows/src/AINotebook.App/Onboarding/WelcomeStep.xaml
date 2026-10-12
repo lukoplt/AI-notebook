@@ -2,13 +2,14 @@
     x:Class="AINotebook.App.Onboarding.WelcomeStep"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="24" Padding="40" MaxWidth="520">
-        <FontIcon Glyph="&#xE945;" FontSize="56" HorizontalAlignment="Center"
-                  Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
-        <TextBlock x:Name="TitleText" FontSize="34" FontWeight="Bold" HorizontalAlignment="Center" />
-        <TextBlock x:Name="BodyText" TextWrapping="Wrap" TextAlignment="Center"
-                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-        <Button x:Name="ContinueButton" HorizontalAlignment="Center" Style="{ThemeResource AccentButtonStyle}"
+    <StackPanel HorizontalAlignment="Center" Spacing="{StaticResource Space16}">
+        <FontIcon Glyph="{StaticResource IconNotebook}" FontFamily="{StaticResource FontIcons}" FontSize="{StaticResource Space32}"
+                  HorizontalAlignment="Center" Foreground="{ThemeResource Text1Brush}" />
+        <TextBlock x:Name="TitleText" Style="{StaticResource TextTitle}" Foreground="{ThemeResource Text1Brush}"
+                   HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
+        <TextBlock x:Name="BodyText" Style="{StaticResource TextBody}" TextWrapping="Wrap" TextAlignment="Center"
+                   Foreground="{ThemeResource Text2Brush}" />
+        <Button x:Name="ContinueButton" HorizontalAlignment="Center" Style="{StaticResource PrimaryButtonStyle}"
                 Click="OnContinue">
             <Button.KeyboardAccelerators>
                 <KeyboardAccelerator Key="Enter" />

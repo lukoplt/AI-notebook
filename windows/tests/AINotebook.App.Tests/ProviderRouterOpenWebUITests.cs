@@ -13,7 +13,7 @@ namespace AINotebook.App.Tests;
 public class ProviderRouterOpenWebUITests
 {
     [Fact]
-    public async Task TestConnection_openwebui_hits_api_models_and_succeeds()
+    public async Task Probe_openwebui_verifies_only_model_listing()
     {
         Uri? uri = null;
         var http = new HttpClient(new CapturingHandler(HttpStatusCode.OK,
@@ -22,22 +22,24 @@ public class ProviderRouterOpenWebUITests
         using var store = new NotebookStore(StorePath.InMemory);
         var router = MakeRouter(store, http);
 
-        var error = await router.TestConnectionAsync(ProviderType.OpenWebUI, "http://host:3000", "sk-k");
+        var result = await router.ProbeAsync(ProviderType.OpenWebUI, "http://host:3000", "sk-k");
 
-        Assert.Null(error);
+        Assert.Equal(ProviderProbeStatus.Verified, result.Status);
+        Assert.False(result.GenerationVerified);
         Assert.Equal("http://host:3000/api/models", uri!.ToString());
     }
 
     [Fact]
-    public async Task TestConnection_openwebui_reports_error_on_401()
+    public async Task Probe_openwebui_reports_authentication_failure()
     {
         var http = new HttpClient(new CapturingHandler(HttpStatusCode.Unauthorized, "", _ => { }));
         using var store = new NotebookStore(StorePath.InMemory);
         var router = MakeRouter(store, http);
 
-        var error = await router.TestConnectionAsync(ProviderType.OpenWebUI, "http://host:3000", "bad");
+        var result = await router.ProbeAsync(ProviderType.OpenWebUI, "http://host:3000", "bad");
 
-        Assert.NotNull(error);
+        Assert.Equal(ProviderProbeStatus.Failed, result.Status);
+        Assert.Equal("auth", result.ErrorCode);
     }
 
     [Fact]
@@ -132,6 +134,58 @@ public class ProviderRouterOpenWebUITests
         Assert.Equal(["tok"], tokens);
     }
 
+    [Theory]
+    [InlineData(404)]
+    [InlineData(405)]
+    [InlineData(501)]
+    public async Task Probe_unsupported_listing_is_neutral(int status)
+    {
+        using var http = new HttpClient(new CapturingHandler((HttpStatusCode)status, "{}", _ => { }));
+        using var store = new NotebookStore(StorePath.InMemory);
+        var result = await MakeRouter(store, http).ProbeAsync(ProviderType.OpenWebUI, "http://host:3000", null);
+        Assert.Equal(ProviderProbeStatus.ListingUnsupported, result.Status);
+        Assert.False(result.GenerationVerified);
+    }
+
+    [Fact]
+    public async Task Bridge_exposes_preparation_discovery_and_explicit_options()
+    {
+        string? body = null;
+        using var http = new HttpClient(new BodyHandler(requestBody => body = requestBody));
+        using var store = new NotebookStore(StorePath.InMemory);
+        var config = new ProviderConfig("p", ProviderType.OpenWebUI, "P", "http://host:3000", true, true, DateTime.UtcNow);
+        store.SaveProvider(config);
+        var settings = new FakeSettings { SelectedChatProviderId = "p", SelectedChatModel = "vendor/m:tag" };
+        var router = MakeRouter(store, http, settings);
+        var preparing = Assert.IsAssignableFrom<IChatSessionPreparing>(router);
+        var prepared = await preparing.PrepareChatAsync();
+        Assert.Equal(settings.SelectedChatProviderId, prepared.ProviderId);
+        Assert.Equal(settings.SelectedChatModel, prepared.Model);
+        Assert.Equal(8192, (await router.ResolveLimitsAsync("p", settings.SelectedChatModel)).RuntimeContext);
+        await foreach (var _ in router.StreamAsync("ignored", [new(ChatRole.User, "hi")], new ChatRequestOptions(4096, 333))) { }
+        using var captured = System.Text.Json.JsonDocument.Parse(body!);
+        Assert.Equal(333, captured.RootElement.GetProperty("max_tokens").GetInt32());
+        Assert.Equal("vendor/m:tag", captured.RootElement.GetProperty("model").GetString());
+    }
+
+    [Fact]
+    public async Task Discovery_propagates_errors()
+    {
+        using var http = new HttpClient(new CapturingHandler(HttpStatusCode.Unauthorized, "{}", _ => { }));
+        using var store = new NotebookStore(StorePath.InMemory);
+        store.SaveProvider(new("p", ProviderType.OpenWebUI, "P", "http://host:3000", true, true, DateTime.UtcNow));
+        await Assert.ThrowsAsync<ProviderAuthException>(() => MakeRouter(store, http).DiscoverModelsAsync("p"));
+    }
+
+    private sealed class BodyHandler(Action<string> capture) : HttpMessageHandler
+    {
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+        {
+            capture(await request.Content!.ReadAsStringAsync(ct));
+            return new(HttpStatusCode.OK) { Content = new StringContent("data: [DONE]\n") };
+        }
+    }
+
     // ── Helpers ──────────────────────────────────────────────────────────────
 
     private static ProviderRouter MakeRouter(
@@ -150,6 +204,9 @@ public class ProviderRouterOpenWebUITests
         public string SelectedEmbeddingProviderId { get; set; } = ProviderConfig.OllamaId;
         public bool AutoCheckUpdates { get; set; } = true;
         public DateTimeOffset? LastUpdateCheckUtc { get; set; }
+        public bool WebSearchEnabled { get; set; }
+        public string RightPanel { get; set; } = "";
+        public double RightPanelWidth { get; set; } = 360;
     }
 
     private sealed class FakeSecrets : ISecretStore

@@ -1,0 +1,96 @@
+{
+  "contract": "lang-json-validation",
+  "version": 1,
+  "cases": [
+    {
+      "name": "json-empty-object",
+      "rawJson": "{}\n",
+      "valid": true
+    },
+    {
+      "name": "json-integer-extremes",
+      "rawJson": "{\"a\":-9223372036854775808,\"b\":9223372036854775807}\n",
+      "valid": true
+    },
+    {
+      "name": "json-literals-and-surrogate-pair",
+      "rawJson": "{\"a\":true,\"b\":false,\"c\":null,\"d\":\"\\uD801\\uDC00\"}\n",
+      "valid": true
+    },
+    {
+      "name": "json-positive-integer-overflow",
+      "rawJson": "{\"a\":9223372036854775808}\n",
+      "valid": false
+    },
+    {
+      "name": "json-negative-integer-overflow",
+      "rawJson": "{\"a\":-9223372036854775809}\n",
+      "valid": false
+    },
+    {
+      "name": "json-leading-zero",
+      "rawJson": "{\"a\":01}\n",
+      "valid": false
+    },
+    {
+      "name": "json-exponent",
+      "rawJson": "{\"a\":1e0}\n",
+      "valid": false
+    },
+    {
+      "name": "json-fraction",
+      "rawJson": "{\"a\":1.0}\n",
+      "valid": false
+    },
+    {
+      "name": "json-escaped-duplicate-nested-key",
+      "rawJson": "{\"a\":{\"x\":1,\"\\u0078\":2}}\n",
+      "valid": false
+    },
+    {
+      "name": "json-unpaired-high-surrogate",
+      "rawJson": "{\"a\":\"\\ud800\"}\n",
+      "valid": false
+    },
+    {
+      "name": "json-unpaired-low-surrogate",
+      "rawJson": "{\"a\":\"\\udc00\"}\n",
+      "valid": false
+    },
+    {
+      "name": "json-unpaired-surrogate-before-letter",
+      "rawJson": "{\"a\":\"\\ud800A\"}\n",
+      "valid": false
+    },
+    {
+      "name": "json-two-root-values",
+      "rawJson": "{}{}\n",
+      "valid": false
+    },
+    {
+      "name": "json-nonobject-root",
+      "rawJson": "[]\n",
+      "valid": false
+    },
+    {
+      "name": "json-object-trailing-comma",
+      "rawJson": "{\"a\":1,}\n",
+      "valid": false
+    },
+    {
+      "name": "json-array-trailing-comma",
+      "rawJson": "{\"a\":[1,]}\n",
+      "valid": false
+    },
+    {
+      "name": "json-unescaped-control",
+      "rawJson": "{\"a\":\"\u001f\"}\n",
+      "valid": false
+    },
+    {
+      "name": "json-depth-overflow",
+      "rawJson": "{\"a\":[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[0]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}\n",
+      "valid": false
+    }
+  ]
+}

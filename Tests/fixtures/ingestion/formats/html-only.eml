@@ -1,0 +1,10 @@
+Subject: HTML only
+From: news@example.com
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html><html><head><title>T</title><style>p{color:red}</style></head>=
+<body><h1>Nadpis</h1><p>Prvn=C3=AD&nbsp;odstavec &amp; dal=C5=A1=C3=AD</p>
+<script>alert(1)</script><div>A<br>B<br/><br>C</div><!-- comment -->
+<table><tr><td>x</td><td>y</td></tr></table>&#269;&#x10D;&bogus; 1 &lt; 2 <unknown>
+<a href="x>y">link</a></body></html>

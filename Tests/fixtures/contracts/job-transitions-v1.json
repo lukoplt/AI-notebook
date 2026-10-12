@@ -1,0 +1,637 @@
+{
+  "contract": "job-transitions",
+  "version": 1,
+  "leaseSeconds": 300,
+  "renewEverySeconds": 60,
+  "maxAttempts": 5,
+  "cases": [
+    {
+      "name": "first-start-increments-attempts",
+      "input": {
+        "job": {
+          "state": "queued",
+          "attempts": 0,
+          "nextRetryAt": 0,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "start",
+          "now": 0,
+          "leaseToken": "lease-a"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "second-start-increments-once",
+      "input": {
+        "job": {
+          "state": "queued",
+          "attempts": 1,
+          "nextRetryAt": 70,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "start",
+          "now": 70,
+          "leaseToken": "lease-b"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 370,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "fifth-attempt-may-start",
+      "input": {
+        "job": {
+          "state": "queued",
+          "attempts": 4,
+          "nextRetryAt": 1000,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "start",
+          "now": 1000,
+          "leaseToken": "lease-e"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 5,
+          "nextRetryAt": null,
+          "leaseUntil": 1300,
+          "leaseToken": "lease-e",
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "failure-backoff-from-started-count",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "fail",
+          "now": 10,
+          "leaseToken": "lease-a"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "failed",
+          "attempts": 1,
+          "nextRetryAt": 70,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "fourth-failure-backoff-480-seconds",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 4,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-d",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "fail",
+          "now": 10,
+          "leaseToken": "lease-d"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "failed",
+          "attempts": 4,
+          "nextRetryAt": 490,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "fifth-failure-terminal",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 5,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-e",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "fail",
+          "now": 10,
+          "leaseToken": "lease-e"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "failed",
+          "attempts": 5,
+          "nextRetryAt": null,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "failed-retry-before-backoff-rejected",
+      "input": {
+        "job": {
+          "state": "failed",
+          "attempts": 1,
+          "nextRetryAt": 70,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "retry",
+          "now": 69
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "failed",
+          "attempts": 1,
+          "nextRetryAt": 70,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    },
+    {
+      "name": "failed-retry-at-backoff-no-increment",
+      "input": {
+        "job": {
+          "state": "failed",
+          "attempts": 1,
+          "nextRetryAt": 70,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "retry",
+          "now": 70
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "queued",
+          "attempts": 1,
+          "nextRetryAt": 70,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "exhausted-failure-cannot-retry",
+      "input": {
+        "job": {
+          "state": "failed",
+          "attempts": 5,
+          "nextRetryAt": null,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "retry",
+          "now": 99999
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "failed",
+          "attempts": 5,
+          "nextRetryAt": null,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    },
+    {
+      "name": "expiry-backoff-without-increment",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "expire",
+          "now": 300
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "queued",
+          "attempts": 2,
+          "nextRetryAt": 420,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "fifth-expiry-terminal",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 5,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-e",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "expire",
+          "now": 300
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "failed",
+          "attempts": 5,
+          "nextRetryAt": null,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "live-lease-cannot-expire",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "expire",
+          "now": 299
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    },
+    {
+      "name": "renew-after-60-seconds-no-increment",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "renew",
+          "now": 60,
+          "leaseToken": "lease-a"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 360,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "expired-worker-cannot-renew",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "renew",
+          "now": 300,
+          "leaseToken": "lease-a"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    },
+    {
+      "name": "replaced-worker-cannot-renew",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 660,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "renew",
+          "now": 361,
+          "leaseToken": "lease-a"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 660,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    },
+    {
+      "name": "replaced-worker-cannot-publish",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 660,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "publish",
+          "now": 361,
+          "leaseToken": "lease-a",
+          "requestedRevision": 11
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 660,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    },
+    {
+      "name": "replaced-worker-cannot-fail-replacement",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 660,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "fail",
+          "now": 361,
+          "leaseToken": "lease-a"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 660,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    },
+    {
+      "name": "expired-worker-cannot-publish",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "publish",
+          "now": 300,
+          "leaseToken": "lease-a",
+          "requestedRevision": 11
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "running",
+          "attempts": 1,
+          "nextRetryAt": null,
+          "leaseUntil": 300,
+          "leaseToken": "lease-a",
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    },
+    {
+      "name": "replacement-publishes-with-current-token",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 660,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "publish",
+          "now": 361,
+          "leaseToken": "lease-b",
+          "requestedRevision": 11
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "done",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": true
+      }
+    },
+    {
+      "name": "superseded-revision-cancels-current-worker",
+      "input": {
+        "job": {
+          "state": "running",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": 660,
+          "leaseToken": "lease-b",
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "publish",
+          "now": 361,
+          "leaseToken": "lease-b",
+          "requestedRevision": 12
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "cancelled",
+          "attempts": 2,
+          "nextRetryAt": null,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": true,
+        "published": false
+      }
+    },
+    {
+      "name": "queued-cannot-start-before-backoff",
+      "input": {
+        "job": {
+          "state": "queued",
+          "attempts": 2,
+          "nextRetryAt": 420,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "event": {
+          "kind": "start",
+          "now": 419,
+          "leaseToken": "lease-c"
+        }
+      },
+      "expected": {
+        "job": {
+          "state": "queued",
+          "attempts": 2,
+          "nextRetryAt": 420,
+          "leaseUntil": null,
+          "leaseToken": null,
+          "targetRevision": 11
+        },
+        "accepted": false,
+        "published": false
+      }
+    }
+  ]
+}

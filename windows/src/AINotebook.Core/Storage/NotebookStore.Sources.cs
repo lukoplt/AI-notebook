@@ -1,6 +1,8 @@
 using AINotebook.Core.Models;
 using Dapper;
 using Microsoft.Data.Sqlite;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace AINotebook.Core.Storage;
 
@@ -15,7 +17,10 @@ public sealed partial class NotebookStore
         r.error is null ? null : (string)r.error,
         SqliteDate.FromDb((string)r.ingested_at),
         r.last_synced_at is null ? (DateTime?)null : SqliteDate.FromDb((string)r.last_synced_at),
-        r.content_hash is null ? null : (string)r.content_hash);
+        r.content_hash is null ? null : (string)r.content_hash,
+        (long?)r.folder_id, (string?)r.rel_path, (long?)r.mtime, (long?)r.size_bytes,
+        (string)r.availability, (long)r.eligible != 0, (string?)r.lang, (string?)r.lang_coverage,
+        (string?)r.descriptor, (long?)r.current_revision, (long?)r.published_revision_id, (string?)r.encoding);
 
     public Source CreateSource(long notebookId, SourceType type, string title, string? uri, string? rawPath)
     {
@@ -40,7 +45,8 @@ public sealed partial class NotebookStore
     }
 
     private const string SourceCols =
-        "id, notebook_id, type, title, uri, raw_path, status, error, ingested_at, last_synced_at, content_hash";
+        "id, notebook_id, type, title, uri, raw_path, status, error, ingested_at, last_synced_at, content_hash, " +
+        "folder_id, rel_path, mtime, size_bytes, availability, eligible, lang, lang_coverage, descriptor, current_revision, published_revision_id, encoding";
 
     public IReadOnlyList<Source> Sources(long notebookId)
     {
@@ -117,19 +123,11 @@ public sealed partial class NotebookStore
         lock (_gate)
         {
             using var tx = Connection.BeginTransaction();
-            Connection.Execute("DELETE FROM source_chunks WHERE source_id=$sid", new { sid = sourceId }, tx);
-            int ord = 0;
-            foreach (var draft in chunks)
-            {
-                Connection.Execute(
-                    """
-                    INSERT INTO source_chunks(source_id, ord, text, token_count, page_hint)
-                    VALUES($sid, $ord, $text, $tc, $ph)
-                    """,
-                    new { sid = sourceId, ord, text = draft.Text, tc = draft.TokenCount, ph = draft.PageHint },
-                    tx);
-                ord++;
-            }
+            string text = string.Join("\n\n", chunks.Select(chunk => chunk.Text));
+            string hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(text))).ToLowerInvariant();
+            RevisionJobSQL.CommitForegroundRevision(Connection, tx, sourceId, new(hash, text, 1, 1),
+                chunks.Select(chunk => new RevisionChunkDraft(chunk.Text, chunk.TokenCount, chunk.PageHint, null, null, null, false)).ToArray(),
+                DateTimeOffset.UtcNow.ToUnixTimeSeconds(), Guid.NewGuid().ToString("N"));
             tx.Commit();
         }
     }
@@ -138,15 +136,17 @@ public sealed partial class NotebookStore
     {
         lock (_gate)
             return Connection.Query(
-                "SELECT id, source_id, ord, text, token_count, page_hint, context FROM source_chunks WHERE source_id=$sid ORDER BY ord ASC",
+                $"SELECT {ChunkColumns} FROM source_chunks sc JOIN sources s ON s.published_revision_id=sc.revision_id WHERE s.id=$sid ORDER BY sc.ord ASC",
                 new { sid = sourceId })
-                .Select(r => new SourceChunk(
-                    (long)r.id, (long)r.source_id, (int)(long)r.ord, (string)r.text,
-                    (int)(long)r.token_count,
-                    r.page_hint is null ? (int?)null : (int)(long)r.page_hint,
-                    r.context is null ? null : (string)r.context))
+                .Select(r => (SourceChunk)MapChunk(r))
                 .ToList();
     }
+
+    private const string ChunkColumns = "sc.id,sc.source_id,sc.ord,sc.text,sc.token_count,sc.page_hint,sc.context,sc.revision_id,sc.char_start,sc.char_end,sc.lang,sc.lang_inherited";
+
+    private static SourceChunk MapChunk(dynamic r) => new((long)r.id, (long)r.source_id, (int)r.ord,
+        (string)r.text, (int)r.token_count, (int?)(long?)r.page_hint, (string?)r.context,
+        (long?)r.revision_id, (int?)(long?)r.char_start, (int?)(long?)r.char_end, (string?)r.lang, (long)r.lang_inherited != 0);
 
     public void SetChunkContext(long sourceId, long? chunkId, string context)
     {

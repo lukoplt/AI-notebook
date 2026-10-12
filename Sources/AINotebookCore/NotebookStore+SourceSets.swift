@@ -9,12 +9,12 @@ extension NotebookStore {
     // MARK: Per-notebook instructions (FR-C1)
 
     public func notebookInstructions(id: Int64) throws -> String {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try String.fetchOne(db, sql: "SELECT instructions FROM notebooks WHERE id=?", arguments: [id]) ?? ""
         }
     }
 
-    public func updateNotebookInstructions(id: Int64, instructions: String) throws {
+    @MainActor public func updateNotebookInstructions(id: Int64, instructions: String) throws {
         try runOnDatabase { db in
             try db.execute(
                 sql: "UPDATE notebooks SET instructions=?, updated_at=? WHERE id=?",
@@ -27,7 +27,7 @@ extension NotebookStore {
     // MARK: Source sets (FR-C2)
 
     public func sourceSets(notebookId: Int64) throws -> [SourceSet] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Row.fetchAll(
                 db,
                 sql: "SELECT id, notebook_id, name, created_at FROM source_sets WHERE notebook_id=? ORDER BY name ASC",
@@ -66,6 +66,15 @@ extension NotebookStore {
 
     public func setSourceSetMembers(setId: Int64, sourceIds: [Int64]) throws {
         try runOnDatabase { db in
+            guard let notebook = try Int64.fetchOne(db, sql: "SELECT notebook_id FROM source_sets WHERE id=?", arguments: [setId]) else {
+                throw StorageV19Error.notFound
+            }
+            for sourceId in sourceIds {
+                guard let owner = try Int64.fetchOne(db, sql: "SELECT notebook_id FROM sources WHERE id=?", arguments: [sourceId]) else {
+                    throw StorageV19Error.notFound
+                }
+                guard owner == notebook else { throw StorageV19Error.notebookMismatch }
+            }
             try db.execute(sql: "DELETE FROM source_set_members WHERE set_id=?", arguments: [setId])
             for src in sourceIds {
                 try db.execute(
@@ -77,7 +86,7 @@ extension NotebookStore {
     }
 
     public func sourceSetMembers(setId: Int64) throws -> [Int64] {
-        try runOnDatabase { db in
+        try dbQueue.read { db in
             try Int64.fetchAll(db, sql: "SELECT source_id FROM source_set_members WHERE set_id=?", arguments: [setId])
         }
     }

@@ -1,0 +1,135 @@
+{
+  "contract": "provider-routing",
+  "version": 1,
+  "cases": [
+    {
+      "name": "capture-and-rotate",
+      "operation": "snapshot",
+      "type": "openai_compatible",
+      "providerId": "p",
+      "oldRoot": "https://old.example/proxy/v1",
+      "newRoot": "https://new.example/gw/v1",
+      "oldKey": "key-A",
+      "newKey": "key-B",
+      "oldModel": "model:old",
+      "newModel": "model:new",
+      "oldContext": 4096,
+      "newContext": 8192,
+      "oldOutput": 333,
+      "newOutput": 777,
+      "expectedAttempts": [
+        "old",
+        "old",
+        "new"
+      ]
+    },
+    {
+      "name": "privacy-anthropic-chat",
+      "operation": "chat",
+      "type": "anthropic",
+      "acknowledged": false,
+      "expectedError": "consentRequired",
+      "expectedRequests": 0
+    },
+    {
+      "name": "privacy-anthropic-backgroundEmbed",
+      "operation": "backgroundEmbed",
+      "type": "anthropic",
+      "acknowledged": false,
+      "expectedError": "consentRequired",
+      "expectedRequests": 0
+    },
+    {
+      "name": "privacy-openai-chat",
+      "operation": "chat",
+      "type": "openai",
+      "acknowledged": false,
+      "expectedError": "consentRequired",
+      "expectedRequests": 0
+    },
+    {
+      "name": "privacy-openai-backgroundEmbed",
+      "operation": "backgroundEmbed",
+      "type": "openai",
+      "acknowledged": false,
+      "expectedError": "consentRequired",
+      "expectedRequests": 0
+    },
+    {
+      "name": "privacy-openai_compatible-chat",
+      "operation": "chat",
+      "type": "openai_compatible",
+      "acknowledged": false,
+      "expectedError": "consentRequired",
+      "expectedRequests": 0
+    },
+    {
+      "name": "privacy-openai_compatible-backgroundEmbed",
+      "operation": "backgroundEmbed",
+      "type": "openai_compatible",
+      "acknowledged": false,
+      "expectedError": "consentRequired",
+      "expectedRequests": 0
+    },
+    {
+      "name": "privacy-openwebui-chat",
+      "operation": "chat",
+      "type": "openwebui",
+      "acknowledged": false,
+      "expectedError": "consentRequired",
+      "expectedRequests": 0
+    },
+    {
+      "name": "privacy-openwebui-backgroundEmbed",
+      "operation": "backgroundEmbed",
+      "type": "openwebui",
+      "acknowledged": false,
+      "expectedError": "consentRequired",
+      "expectedRequests": 0
+    },
+    {
+      "name": "unsupported-embed-anthropic",
+      "operation": "embed",
+      "type": "anthropic",
+      "acknowledged": true,
+      "expectedError": "unsupportedEndpoint",
+      "expectedRequests": 0
+    },
+    {
+      "name": "unsupported-embed-openwebui",
+      "operation": "embed",
+      "type": "openwebui",
+      "acknowledged": true,
+      "expectedError": "unsupportedEndpoint",
+      "expectedRequests": 0
+    },
+    {
+      "name": "missing",
+      "operation": "chat",
+      "type": "openai",
+      "missing": true,
+      "expectedError": "missingProvider",
+      "expectedRequests": 0
+    },
+    {
+      "name": "disabled",
+      "operation": "chat",
+      "type": "openai",
+      "enabled": false,
+      "expectedError": "disabledProvider",
+      "expectedRequests": 0
+    },
+    {
+      "name": "custom-ollama",
+      "operation": "ollamaEndpoints",
+      "type": "ollama",
+      "root": "http://gpu-box:11434/proxy/ollama",
+      "paths": [
+        "api/chat",
+        "api/embed",
+        "api/tags",
+        "api/show"
+      ]
+    }
+  ]
+}

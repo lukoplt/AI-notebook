@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using AINotebook.App.Services;
 using AINotebook.App.ViewModels;
 using AINotebook.Core.Providers;
@@ -15,6 +16,8 @@ public sealed partial class AddProviderDialog : ContentDialog
 {
     public AddProviderViewModel ViewModel { get; }
     private readonly LocalizedStrings _strings;
+    private bool _initializing = true;
+    private bool _syncingFields;
 
     public AddProviderDialog(LocalizedStrings strings, ProviderConfig? existing = null)
     {
@@ -26,7 +29,8 @@ public sealed partial class AddProviderDialog : ContentDialog
             sp.GetRequiredService<ProviderRouter>(),
             sp.GetRequiredService<NotebookStore>(),
             sp.GetRequiredService<ISecretStore>(),
-            existing);
+            existing, _ => _strings.Get(StringKey.ProviderPresetCustom),
+            sp.GetRequiredService<ISettingsService>());
 
         var isEdit = existing is not null;
         Title = _strings.Get(isEdit ? StringKey.EditProviderTitle : StringKey.AddProviderTitle);
@@ -36,8 +40,8 @@ public sealed partial class AddProviderDialog : ContentDialog
 
         // Type picker — Ollama can't be changed when editing
         TypeCombo.Header = _strings.Get(StringKey.ProviderTypeLabel);
-        TypeCombo.ItemsSource = AddProviderViewModel.AllTypes.Select(TypeDisplayName).ToList();
-        TypeCombo.SelectedIndex = Array.IndexOf(AddProviderViewModel.AllTypes, ViewModel.SelectedType);
+        TypeCombo.ItemsSource = ViewModel.SelectableTypes.Select(TypeDisplayName).ToList();
+        TypeCombo.SelectedIndex = Array.IndexOf(ViewModel.SelectableTypes, ViewModel.SelectedType);
         TypeCombo.IsEnabled = !ViewModel.IsOllamaProvider;
 
         NameBox.Header = _strings.Get(StringKey.ProviderNameLabel);
@@ -52,6 +56,7 @@ public sealed partial class AddProviderDialog : ContentDialog
             : _strings.Get(StringKey.ProviderApiKeyPlaceholder);
 
         TestButton.Content = _strings.Get(StringKey.ProviderTestButton);
+        PresetComboBox.Header = _strings.Get(StringKey.ProviderPresetLabel);
 
         if (isEdit && !ViewModel.IsOllamaProvider)
         {
@@ -61,6 +66,9 @@ public sealed partial class AddProviderDialog : ContentDialog
 
         ApplyTypeVisibility(ViewModel.SelectedType);
         UpdatePrimaryButton();
+        UpdatePresetHelp();
+        ViewModel.PropertyChanged += OnViewModelChanged;
+        _initializing = false;
 
         Closing += OnClosing;
     }
@@ -78,6 +86,8 @@ public sealed partial class AddProviderDialog : ContentDialog
     {
         var isCloud = t != ProviderType.Ollama;
         KeyBox.Visibility = isCloud ? Visibility.Visible : Visibility.Collapsed;
+        PresetComboBox.Visibility = t == ProviderType.OpenAICompatible ? Visibility.Visible : Visibility.Collapsed;
+        PresetHelpText.Visibility = PresetComboBox.Visibility;
     }
 
     private void UpdatePrimaryButton()
@@ -85,9 +95,10 @@ public sealed partial class AddProviderDialog : ContentDialog
 
     private void OnTypeChanged(object sender, SelectionChangedEventArgs e)
     {
+        if (_initializing) return;
         var idx = TypeCombo.SelectedIndex;
         if (idx < 0) return;
-        var t = AddProviderViewModel.AllTypes[idx];
+        var t = ViewModel.SelectableTypes[idx];
         ViewModel.SelectedType = t;
         UrlBox.Text = ViewModel.BaseUrl;
         ApplyTypeVisibility(t);
@@ -96,6 +107,7 @@ public sealed partial class AddProviderDialog : ContentDialog
 
     private void OnFieldChanged(object sender, object e)
     {
+        if (_initializing || _syncingFields) return;
         ViewModel.Name = NameBox.Text;
         ViewModel.BaseUrl = UrlBox.Text;
         ViewModel.ApiKey = KeyBox.Password;
@@ -106,23 +118,57 @@ public sealed partial class AddProviderDialog : ContentDialog
     {
         // Sync to VM before testing
         ViewModel.ApiKey = KeyBox.Password;
-        ViewModel.BaseUrl = UrlBox.Text.Trim();
-        TestSpinner.IsActive = true;
-        TestButton.IsEnabled = false;
+        ViewModel.BaseUrl = UrlBox.Text;
         await ViewModel.TestAsync();
-        TestSpinner.IsActive = false;
-        TestButton.IsEnabled = true;
+        UpdateProbeState();
+    }
 
-        if (ViewModel.TestSucceeded)
+    private void OnViewModelChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(AddProviderViewModel.BaseUrl))
         {
-            TestSuccessBar.Message = _strings.Get(StringKey.ProviderTestSuccess);
-            TestSuccessBar.IsOpen = true;
-            TestStatusText.Text = "";
+            _syncingFields = true;
+            UrlBox.Text = ViewModel.BaseUrl;
+            _syncingFields = false;
         }
-        else
+        if (e.PropertyName is nameof(AddProviderViewModel.PresetHelp) or nameof(AddProviderViewModel.SelectedPresetId))
+            UpdatePresetHelp();
+        if (e.PropertyName is nameof(AddProviderViewModel.ProbeResult) or nameof(AddProviderViewModel.IsTesting))
+            UpdateProbeState();
+        UpdatePrimaryButton();
+    }
+
+    private void UpdatePresetHelp() => PresetHelpText.Text = _strings.Get(ViewModel.PresetHelp switch
+    {
+        "providerPresetLocalHelp" => StringKey.ProviderPresetLocalHelp,
+        "providerPresetRemoteHelp" => StringKey.ProviderPresetRemoteHelp,
+        _ => StringKey.ProviderPresetCustomHelp
+    });
+
+    private void UpdateProbeState()
+    {
+        TestSpinner.IsActive = ViewModel.IsTesting;
+        TestButton.IsEnabled = !ViewModel.IsTesting;
+        TestStatusText.Text = "";
+        var result = ViewModel.ProbeResult;
+        TestSuccessBar.IsOpen = result is not null;
+        if (result is null) return;
+        switch (result.Status)
         {
-            TestSuccessBar.IsOpen = false;
-            TestStatusText.Text = ViewModel.TestStatus ?? "";
+            case ProviderProbeStatus.Verified:
+                TestSuccessBar.Severity = InfoBarSeverity.Success;
+                TestSuccessBar.Message = _strings.Get(StringKey.ProviderListingVerified);
+                break;
+            case ProviderProbeStatus.ListingUnsupported:
+                TestSuccessBar.Severity = InfoBarSeverity.Informational;
+                TestSuccessBar.Message = _strings.Get(StringKey.ProviderListingUnsupported);
+                break;
+            default:
+                TestSuccessBar.Severity = InfoBarSeverity.Error;
+                TestSuccessBar.Message = ProviderErrorText.Format(
+                    result.ErrorCode == "http" ? result.Detail ?? "requestFailed" : result.ErrorCode ?? "requestFailed",
+                    _strings.Get);
+                break;
         }
     }
 
@@ -156,8 +202,13 @@ public sealed partial class AddProviderDialog : ContentDialog
 
         // Sync VM fields from UI controls
         ViewModel.Name = NameBox.Text.Trim();
-        ViewModel.BaseUrl = UrlBox.Text.Trim();
+        ViewModel.BaseUrl = UrlBox.Text;
         ViewModel.ApiKey = KeyBox.Password;
+        if (!ViewModel.CanSave)
+        {
+            args.Cancel = true;
+            return;
+        }
 
         // Privacy gate (FR-A8): fires for a NEW cloud/network provider AND for
         // an edit that changes an existing provider's type to a (possibly

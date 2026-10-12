@@ -1,0 +1,200 @@
+{
+  "contract": "diversity",
+  "version": 1,
+  "cases": [
+    {
+      "name": "one-file-dominates",
+      "diversityPenaltyBp": 9000,
+      "singleSourceScope": false,
+      "rrfK": 60,
+      "candidates": [
+        {
+          "chunkId": 1,
+          "sourceId": 10,
+          "vectorRank": 1,
+          "ftsRank": 1,
+          "rrfMicro": 32786
+        },
+        {
+          "chunkId": 2,
+          "sourceId": 10,
+          "vectorRank": 2,
+          "ftsRank": 2,
+          "rrfMicro": 32258
+        },
+        {
+          "chunkId": 3,
+          "sourceId": 10,
+          "vectorRank": 3,
+          "ftsRank": 3,
+          "rrfMicro": 31746
+        },
+        {
+          "chunkId": 4,
+          "sourceId": 20,
+          "vectorRank": 4,
+          "ftsRank": null,
+          "rrfMicro": 15625
+        },
+        {
+          "chunkId": 5,
+          "sourceId": 30,
+          "vectorRank": 5,
+          "ftsRank": null,
+          "rrfMicro": 15384
+        }
+      ],
+      "expectedOrder": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "single-source-scope-no-penalty",
+      "diversityPenaltyBp": 9000,
+      "singleSourceScope": true,
+      "rrfK": 60,
+      "candidates": [
+        {
+          "chunkId": 1,
+          "sourceId": 10,
+          "vectorRank": 1,
+          "ftsRank": 1,
+          "rrfMicro": 32786
+        },
+        {
+          "chunkId": 2,
+          "sourceId": 10,
+          "vectorRank": 2,
+          "ftsRank": 2,
+          "rrfMicro": 32258
+        },
+        {
+          "chunkId": 3,
+          "sourceId": 10,
+          "vectorRank": 3,
+          "ftsRank": 3,
+          "rrfMicro": 31746
+        },
+        {
+          "chunkId": 4,
+          "sourceId": 20,
+          "vectorRank": 4,
+          "ftsRank": null,
+          "rrfMicro": 15625
+        }
+      ],
+      "expectedOrder": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "name": "tie-breaks-by-chunk-id",
+      "diversityPenaltyBp": 9000,
+      "singleSourceScope": false,
+      "rrfK": 60,
+      "candidates": [
+        {
+          "chunkId": 9,
+          "sourceId": 10,
+          "vectorRank": 1,
+          "ftsRank": null,
+          "rrfMicro": 16393
+        },
+        {
+          "chunkId": 4,
+          "sourceId": 20,
+          "vectorRank": null,
+          "ftsRank": 1,
+          "rrfMicro": 16393
+        },
+        {
+          "chunkId": 7,
+          "sourceId": 30,
+          "vectorRank": 2,
+          "ftsRank": null,
+          "rrfMicro": 16129
+        }
+      ],
+      "expectedOrder": [
+        4,
+        9,
+        7
+      ]
+    },
+    {
+      "name": "fts-only-hits",
+      "diversityPenaltyBp": 9000,
+      "singleSourceScope": false,
+      "rrfK": 60,
+      "candidates": [
+        {
+          "chunkId": 11,
+          "sourceId": 1,
+          "vectorRank": null,
+          "ftsRank": 1,
+          "rrfMicro": 16393
+        },
+        {
+          "chunkId": 12,
+          "sourceId": 1,
+          "vectorRank": null,
+          "ftsRank": 2,
+          "rrfMicro": 16129
+        },
+        {
+          "chunkId": 13,
+          "sourceId": 2,
+          "vectorRank": null,
+          "ftsRank": 3,
+          "rrfMicro": 15873
+        }
+      ],
+      "expectedOrder": [
+        11,
+        13,
+        12
+      ]
+    },
+    {
+      "name": "strong-second-passage-survives-penalty",
+      "diversityPenaltyBp": 9000,
+      "singleSourceScope": false,
+      "rrfK": 60,
+      "candidates": [
+        {
+          "chunkId": 1,
+          "sourceId": 10,
+          "vectorRank": 1,
+          "ftsRank": 1,
+          "rrfMicro": 32786
+        },
+        {
+          "chunkId": 2,
+          "sourceId": 10,
+          "vectorRank": 2,
+          "ftsRank": 2,
+          "rrfMicro": 32258
+        },
+        {
+          "chunkId": 3,
+          "sourceId": 20,
+          "vectorRank": 30,
+          "ftsRank": null,
+          "rrfMicro": 11111
+        }
+      ],
+      "expectedOrder": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

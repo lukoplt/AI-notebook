@@ -58,8 +58,8 @@ final class EpicC3RegenerateTests: XCTestCase {
 
         let systemTurn = chat.captured.first?.first { $0.role == .system }
         XCTAssertNotNil(systemTurn)
-        XCTAssertTrue(systemTurn!.content.contains("NOTEBOOK INSTRUCTIONS:\nAlways answer in haiku."),
-                      "system prompt should carry notebook instructions")
+        XCTAssertEqual(systemTurn!.content, ContextPackRendering.rules + "\n\nAlways answer in haiku.",
+                       "system = fixed English rules, then the notebook instructions section")
     }
 
     func testRegenerateWithoutUserMessageThrows() async throws {

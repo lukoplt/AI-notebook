@@ -1,0 +1,326 @@
+{
+  "contract": "provider-limits",
+  "version": 1,
+  "cases": [
+    {
+      "name": "unknown",
+      "type": "openai_compatible",
+      "model": "unlisted",
+      "window": null,
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "known-openai",
+      "type": "openai",
+      "model": "gpt-4o-mini",
+      "window": null,
+      "expected": {
+        "contextWindow": 128000,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": false
+      }
+    },
+    {
+      "name": "known-snapshot",
+      "type": "openai",
+      "model": "gpt-4o-mini-2024-07-18",
+      "window": null,
+      "expected": {
+        "contextWindow": 128000,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": false
+      }
+    },
+    {
+      "name": "no-prefix-guess",
+      "type": "openai",
+      "model": "gpt-4o-mini-custom",
+      "window": null,
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "no-compatible-guess",
+      "type": "openai_compatible",
+      "model": "gpt-4o-mini",
+      "window": null,
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "ollama-large",
+      "type": "ollama",
+      "model": "m:tag",
+      "window": 32768,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "llama.context_length": 32768
+        }
+      },
+      "expected": {
+        "contextWindow": 32768,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": false
+      }
+    },
+    {
+      "name": "ollama-small",
+      "type": "ollama",
+      "model": "m",
+      "window": 4096,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "llama.context_length": 4096
+        }
+      },
+      "expected": {
+        "contextWindow": 4096,
+        "runtimeContext": 4096,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": false
+      }
+    },
+    {
+      "name": "ollama-tiny",
+      "type": "ollama",
+      "model": "m",
+      "window": 512,
+      "expected": {
+        "contextWindow": 512,
+        "runtimeContext": 512,
+        "maxOutputTokens": 511,
+        "source": "auto",
+        "isAssumed": false
+      }
+    },
+    {
+      "name": "ollama-no-metadata",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "show": {
+        "model_info": {}
+      },
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "zero-runtime",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "user": {
+        "runtimeContext": 0,
+        "maxOutputTokens": 1
+      },
+      "expectedError": "invalidLimits"
+    },
+    {
+      "name": "zero-output",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "user": {
+        "runtimeContext": 4096,
+        "maxOutputTokens": 0
+      },
+      "expectedError": "invalidLimits"
+    },
+    {
+      "name": "no-input-budget",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "user": {
+        "runtimeContext": 1024,
+        "maxOutputTokens": 1024
+      },
+      "expectedError": "invalidLimits"
+    },
+    {
+      "name": "above-window",
+      "type": "ollama",
+      "model": "m",
+      "window": 4096,
+      "user": {
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024
+      },
+      "expectedError": "invalidLimits"
+    },
+    {
+      "name": "negative-window",
+      "type": "ollama",
+      "model": "m",
+      "window": -1,
+      "user": {
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024
+      },
+      "expectedError": "invalidLimits"
+    },
+    {
+      "name": "show-invalid-one",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "llama.context_length": 1
+        }
+      },
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "show-invalid-zero",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "llama.context_length": 0
+        }
+      },
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "show-invalid-negative",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "llama.context_length": -1
+        }
+      },
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "show-invalid-fraction",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "llama.context_length": 1.5
+        }
+      },
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "show-invalid-boolean",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "llama.context_length": true
+        }
+      },
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "show-invalid-overflow",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "llama.context_length": 2147483648
+        }
+      },
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    },
+    {
+      "name": "show-other-architecture",
+      "type": "ollama",
+      "model": "m",
+      "window": null,
+      "show": {
+        "model_info": {
+          "general.architecture": "llama",
+          "bert.context_length": 32768
+        }
+      },
+      "expected": {
+        "contextWindow": null,
+        "runtimeContext": 8192,
+        "maxOutputTokens": 1024,
+        "source": "auto",
+        "isAssumed": true
+      }
+    }
+  ]
+}

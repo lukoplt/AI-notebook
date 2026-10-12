@@ -20,6 +20,7 @@ public sealed partial class SourcePreviewDialog : ContentDialog
         InitializeComponent();
 
         Title = _t.Get(StringKey.SourcePreviewTitle);
+        CloseButtonText = _t.Get(StringKey.Close);
 
         ViewModel.PropertyChanged += (_, e) =>
         {

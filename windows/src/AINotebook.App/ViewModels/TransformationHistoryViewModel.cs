@@ -53,7 +53,7 @@ public partial class TransformationHistoryViewModel : ObservableObject
             foreach (var r in Rows.OrderByDescending(r => r.RanAt).ToList())
             { Rows.Remove(r); Rows.Add(r); }   // stable newest-first
         }
-        catch (Exception ex) { ErrorMessage = ex.ToString(); }
+        catch (Exception ex) { ErrorMessage = ex.Message; }
     }
 
     public async System.Threading.Tasks.Task JumpAsync(TransformationRunRow row)

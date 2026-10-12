@@ -6,7 +6,7 @@
     DefaultButton="Close">
     <Grid Width="640" Height="460">
         <ScrollViewer>
-            <TextBlock x:Name="PreviewText" FontFamily="Consolas"
+            <TextBlock x:Name="PreviewText" FontFamily="{StaticResource FontMono}"
                        TextWrapping="Wrap" IsTextSelectionEnabled="True"/>
         </ScrollViewer>
     </Grid>

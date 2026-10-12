@@ -1,12 +1,18 @@
+<!-- Onboarding (spec §2.6): the same steps in a centred card (max 520) on the window's Mica/Bg. -->
 <Page
     x:Class="AINotebook.App.Onboarding.OnboardingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Padding="24" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <ContentControl x:Name="StepHost"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch" />
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="{ThemeResource BgBrush}">
+    <Grid Padding="{StaticResource Pad24}">
+        <Border MaxWidth="{StaticResource SizeOnboardingCardMax}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Background="{ThemeResource Surface1Brush}" BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1"
+                CornerRadius="{StaticResource RadiusMd}" Padding="{StaticResource Pad32}">
+            <ContentControl x:Name="StepHost"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch" />
+        </Border>
     </Grid>
 </Page>

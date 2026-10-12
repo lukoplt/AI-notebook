@@ -1,0 +1,1784 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-no-generation",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": 1
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-building-same-space",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": 2
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          },
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-building-beats-active",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": 2
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          },
+          {
+            "id": 3,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-building-beats-newer-active",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": 4
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          },
+          {
+            "id": 4,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          },
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "other",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-newest-building",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": 1
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-active-same-space",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "failed"
+          },
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "retired"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-failed-and-retired-ignored",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-known-dims-unchanged",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": false,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-reindex-unchanged",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "lmstudio",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-other-provider",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e2",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-other-endpoint",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "mxbai-embed-large",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-other-model",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": "sha256:b",
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": "sha256:a",
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-other-digest",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": 1
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": "sha256:a",
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": "sha256:a",
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-same-digest",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "none",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-other-normalization",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "1",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "1"
+            },
+            "state": "active"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-other-raw-format",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": null
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "1",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-other-chunker",
+      "operation": "resolve"
+    },
+    {
+      "expected": {
+        "generationId": 1
+      },
+      "input": {
+        "copyExisting": true,
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          },
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "other",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "selection": {
+          "chunkerVersion": "2",
+          "dims": null,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        }
+      },
+      "name": "resolve-other-space-building-same-space-active",
+      "operation": "resolve"
+    },
+    {
+      "expected": [
+        778
+      ],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 0,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-queued-bootstrap",
+      "operation": "supersede"
+    },
+    {
+      "expected": [],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 1,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "running",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-running-bootstrap-kept",
+      "operation": "supersede"
+    },
+    {
+      "expected": [
+        778
+      ],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 0,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "paused",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-paused-bootstrap",
+      "operation": "supersede"
+    },
+    {
+      "expected": [
+        778
+      ],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 2,
+            "id": 778,
+            "nextRetryAt": 1120,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "failed",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-waiting-bootstrap",
+      "operation": "supersede"
+    },
+    {
+      "expected": [],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 5,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "failed",
+            "target": "notebook:1"
+          },
+          {
+            "attempts": 5,
+            "id": 779,
+            "nextRetryAt": 1200,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "failed",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-terminal-bootstrap-kept",
+      "operation": "supersede"
+    },
+    {
+      "expected": [],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 0,
+            "id": 770,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "done",
+            "target": "notebook:1"
+          },
+          {
+            "attempts": 0,
+            "id": 771,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "cancelled",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-finished-bootstraps-kept",
+      "operation": "supersede"
+    },
+    {
+      "expected": [],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 0,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": false,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-reindex-bootstrap-kept",
+      "operation": "supersede"
+    },
+    {
+      "expected": [],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 0,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": null,
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-undecodable-bootstrap-kept",
+      "operation": "supersede"
+    },
+    {
+      "expected": [],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 0,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "other",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          },
+          {
+            "attempts": 0,
+            "id": 779,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 1024,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-other-space-kept",
+      "operation": "supersede"
+    },
+    {
+      "expected": [],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 0,
+            "id": 165,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "generation:1"
+          }
+        ]
+      },
+      "name": "supersede-generation-jobs-kept",
+      "operation": "supersede"
+    },
+    {
+      "expected": [
+        778,
+        850,
+        901
+      ],
+      "input": {
+        "identity": {
+          "chunkerVersion": "2",
+          "dims": 768,
+          "docFormatVersion": "2",
+          "endpointRevision": "e1",
+          "model": "nomic-embed-text",
+          "modelDigest": null,
+          "normalization": "l2",
+          "providerId": "ollama",
+          "queryFormatVersion": "2"
+        },
+        "jobs": [
+          {
+            "attempts": 0,
+            "id": 901,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          },
+          {
+            "attempts": 0,
+            "id": 778,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "paused",
+            "target": "notebook:1"
+          },
+          {
+            "attempts": 1,
+            "id": 800,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": null,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "running",
+            "target": "notebook:1"
+          },
+          {
+            "attempts": 0,
+            "id": 850,
+            "nextRetryAt": null,
+            "options": {
+              "copyExisting": true,
+              "selection": {
+                "chunkerVersion": "2",
+                "dims": 768,
+                "docFormatVersion": "2",
+                "endpointRevision": "e1",
+                "model": "nomic-embed-text",
+                "modelDigest": null,
+                "normalization": "l2",
+                "providerId": "ollama",
+                "queryFormatVersion": "2"
+              }
+            },
+            "state": "queued",
+            "target": "notebook:1"
+          }
+        ]
+      },
+      "name": "supersede-several-in-id-order",
+      "operation": "supersede"
+    },
+    {
+      "expected": "merge",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "job": {
+          "attempts": 0,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": {
+            "copyExisting": true,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "queued",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": true
+      },
+      "name": "startup-bootstrap-behind-building-generation",
+      "operation": "startup"
+    },
+    {
+      "expected": "merge",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "job": {
+          "attempts": 0,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": {
+            "copyExisting": true,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "queued",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": false
+      },
+      "name": "startup-bootstrap-behind-building-generation-current",
+      "operation": "startup"
+    },
+    {
+      "expected": "merge",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          }
+        ],
+        "job": {
+          "attempts": 0,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": {
+            "copyExisting": true,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "queued",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": true
+      },
+      "name": "startup-bootstrap-active-needs-build",
+      "operation": "startup"
+    },
+    {
+      "expected": "noop",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "active"
+          }
+        ],
+        "job": {
+          "attempts": 0,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": {
+            "copyExisting": true,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "queued",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": false
+      },
+      "name": "startup-bootstrap-active-current",
+      "operation": "startup"
+    },
+    {
+      "expected": "keep",
+      "input": {
+        "generations": [],
+        "job": {
+          "attempts": 0,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": {
+            "copyExisting": true,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "queued",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": true
+      },
+      "name": "startup-bootstrap-without-generation",
+      "operation": "startup"
+    },
+    {
+      "expected": "keep",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "other",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          },
+          {
+            "id": 2,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "1",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "1"
+            },
+            "state": "active"
+          }
+        ],
+        "job": {
+          "attempts": 0,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": {
+            "copyExisting": true,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "queued",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": true
+      },
+      "name": "startup-bootstrap-other-space",
+      "operation": "startup"
+    },
+    {
+      "expected": "keep",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "job": {
+          "attempts": 0,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": {
+            "copyExisting": false,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "queued",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": true
+      },
+      "name": "startup-reindex-bootstrap-kept",
+      "operation": "startup"
+    },
+    {
+      "expected": "keep",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "job": {
+          "attempts": 1,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": {
+            "copyExisting": true,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "running",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": true
+      },
+      "name": "startup-running-bootstrap-kept",
+      "operation": "startup"
+    },
+    {
+      "expected": "merge",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "job": {
+          "attempts": 1,
+          "id": 778,
+          "nextRetryAt": 1060,
+          "options": {
+            "copyExisting": true,
+            "selection": {
+              "chunkerVersion": "2",
+              "dims": null,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            }
+          },
+          "state": "failed",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": true
+      },
+      "name": "startup-waiting-bootstrap-merges",
+      "operation": "startup"
+    },
+    {
+      "expected": "keep",
+      "input": {
+        "generations": [
+          {
+            "id": 1,
+            "identity": {
+              "chunkerVersion": "2",
+              "dims": 768,
+              "docFormatVersion": "2",
+              "endpointRevision": "e1",
+              "model": "nomic-embed-text",
+              "modelDigest": null,
+              "normalization": "l2",
+              "providerId": "ollama",
+              "queryFormatVersion": "2"
+            },
+            "state": "building"
+          }
+        ],
+        "job": {
+          "attempts": 0,
+          "id": 778,
+          "nextRetryAt": null,
+          "options": null,
+          "state": "queued",
+          "target": "notebook:1"
+        },
+        "needsEmbedding": true
+      },
+      "name": "startup-undecodable-bootstrap-kept",
+      "operation": "startup"
+    }
+  ],
+  "contract": "ingestion-build-merge",
+  "version": 1
+}

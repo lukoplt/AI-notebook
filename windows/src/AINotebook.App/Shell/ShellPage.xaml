@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Codex-style shell (spec §2): sidebar (notebooks → chats) on Mica, main area, optional right
+  panel with segments. Colours, metrics and glyphs come from Styles/Tokens.xaml only.
+-->
+<Page
+    x:Class="AINotebook.App.Shell.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:shell="using:AINotebook.App.Shell"
+    Background="Transparent">
+
+    <Page.Resources>
+        <DataTemplate x:Key="NotebookRowTemplate" x:DataType="shell:SidebarNotebookRow">
+            <Grid Height="{StaticResource SizeSidebarRow}" Padding="8,0,4,0" ColumnSpacing="8"
+                  Tag="{x:Bind}" RightTapped="OnNotebookRowRightTapped">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="4" Margin="-8,0,-4,0" CornerRadius="{StaticResource RadiusSm}"
+                        Background="{ThemeResource Surface2Brush}"
+                        Visibility="{x:Bind IsActive, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
+                <FontIcon Glyph="{x:Bind ExpandGlyph, Mode=OneWay}" FontSize="{StaticResource FontSizeCaption}"
+                          FontFamily="{StaticResource FontIcons}" Foreground="{ThemeResource Text3Brush}" />
+                <FontIcon Grid.Column="1" Glyph="{StaticResource IconNotebook}" Style="{StaticResource RowIcon}" />
+                <TextBlock Grid.Column="2" Text="{x:Bind Title}" Style="{StaticResource TextBody}"
+                           FontWeight="SemiBold" Foreground="{ThemeResource Text1Brush}"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                <Button Grid.Column="3" Style="{StaticResource IconButtonStyle}" Padding="4"
+                        Tag="{x:Bind}" Click="OnNotebookMoreClick"
+                        AutomationProperties.Name="{x:Bind ActionsLabel}"
+                        ToolTipService.ToolTip="{x:Bind ActionsLabel}">
+                    <FontIcon Glyph="{StaticResource IconMore}" Style="{StaticResource RowIcon}" />
+                </Button>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ChatRowTemplate" x:DataType="shell:SidebarChatRow">
+            <Grid Height="{StaticResource SizeSidebarRow}" Padding="36,0,8,0"
+                  Tag="{x:Bind}" RightTapped="OnChatRowRightTapped">
+                <Border Margin="-36,0,-8,0" CornerRadius="{StaticResource RadiusSm}"
+                        Background="{ThemeResource Surface2Brush}"
+                        Visibility="{x:Bind IsActive, Mode=OneWay, Converter={StaticResource BoolToVisibility}}" />
+                <TextBlock Text="{x:Bind Title}" Style="{StaticResource TextBody}"
+                           Foreground="{ThemeResource Text1Brush}" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="MoreRowTemplate" x:DataType="shell:SidebarMoreRow">
+            <Grid Height="{StaticResource SizeSidebarRow}" Padding="36,0,8,0">
+                <TextBlock Text="{x:Bind Label}" Style="{StaticResource SecondaryCaption}" VerticalAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+
+        <shell:SidebarRowTemplateSelector x:Key="SidebarRowSelector"
+                                          NotebookTemplate="{StaticResource NotebookRowTemplate}"
+                                          ChatTemplate="{StaticResource ChatRowTemplate}"
+                                          MoreTemplate="{StaticResource MoreRowTemplate}" />
+    </Page.Resources>
+
+    <Page.KeyboardAccelerators>
+        <KeyboardAccelerator Modifiers="Control" Key="N" Invoked="OnNewChatAccelerator" />
+        <KeyboardAccelerator Modifiers="Control" Key="K" Invoked="OnSearchAccelerator" />
+        <KeyboardAccelerator Modifiers="Control,Shift" Key="N" Invoked="OnNewNotebookAccelerator" />
+        <KeyboardAccelerator Modifiers="Control,Menu" Key="Number0" Invoked="OnTogglePanelAccelerator" />
+        <KeyboardAccelerator Modifiers="Menu" Key="Left" Invoked="OnBackAccelerator" />
+    </Page.KeyboardAccelerators>
+
+    <Grid x:Name="Root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="SidebarColumn" Width="260"
+                              MinWidth="{StaticResource SizeSidebarMin}" MaxWidth="{StaticResource SizeSidebarMax}" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar: transparent so the window's Mica shows through (BgSidebar when Mica is unavailable). -->
+        <Grid x:Name="Sidebar" Grid.Column="0" Padding="8,8,8,12" RowSpacing="{StaticResource Space4}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="NewChatButton" Grid.Row="0" Style="{StaticResource SidebarButtonStyle}" Click="OnNewChat">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                    <FontIcon Glyph="{StaticResource IconNewChat}" Style="{StaticResource RowIcon}" />
+                    <TextBlock x:Name="NewChatText" Style="{StaticResource TextBody}" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="SearchButton" Grid.Row="1" Style="{StaticResource SidebarButtonStyle}" Click="OnSearch">
+                <Grid ColumnSpacing="{StaticResource Space8}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="{StaticResource IconSearch}" Style="{StaticResource RowIcon}" />
+                    <TextBlock x:Name="SearchText" Grid.Column="1" Style="{StaticResource TextBody}" />
+                    <TextBlock Grid.Column="2" Text="Ctrl+K" Style="{StaticResource SecondaryCaption}" VerticalAlignment="Center" />
+                </Grid>
+            </Button>
+
+            <ListView x:Name="SidebarList" Grid.Row="2" Margin="0,8,0,0"
+                      ItemsSource="{x:Bind ViewModel.Sidebar.Rows, Mode=OneWay}"
+                      ItemTemplateSelector="{StaticResource SidebarRowSelector}"
+                      ItemContainerStyle="{StaticResource FlatListItemStyle}"
+                      SelectionMode="None" IsItemClickEnabled="True" ItemClick="OnSidebarItemClick">
+                <ListView.Resources>
+                    <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{ThemeResource Surface2}" />
+                    <SolidColorBrush x:Key="ListViewItemBackgroundPressed" Color="{ThemeResource Border}" />
+                </ListView.Resources>
+                <ListView.Footer>
+                    <Button x:Name="NewNotebookButton" Style="{StaticResource QuietButtonStyle}" Margin="0,4,0,0"
+                            Click="OnNewNotebook">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                            <FontIcon Glyph="{StaticResource IconAdd}" Style="{StaticResource RowIcon}" />
+                            <TextBlock x:Name="NewNotebookText" Style="{StaticResource TextCaption}" />
+                        </StackPanel>
+                    </Button>
+                </ListView.Footer>
+            </ListView>
+
+            <!-- Replaces the update InfoBar: a quiet dot + text at the bottom of the sidebar. -->
+            <Button x:Name="UpdateIndicator" Grid.Row="3" Style="{StaticResource SidebarButtonStyle}"
+                    Visibility="Collapsed" Click="OnUpdateIndicator">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                    <FontIcon Glyph="{StaticResource IconUpdateDot}" FontFamily="{StaticResource FontIcons}"
+                              FontSize="{StaticResource FontSizeCaption}" Foreground="{ThemeResource FocusBrush}" />
+                    <TextBlock x:Name="UpdateIndicatorText" Style="{StaticResource TextCaption}"
+                               Foreground="{ThemeResource Text2Brush}" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="SettingsButton" Grid.Row="4" Style="{StaticResource SidebarButtonStyle}" Click="OnSettings">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}">
+                    <FontIcon Glyph="{StaticResource IconSettings}" Style="{StaticResource RowIcon}" />
+                    <TextBlock x:Name="SettingsText" Style="{StaticResource TextBody}" />
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- Main area -->
+        <Border x:Name="MainSurface" Grid.Column="1" Background="{ThemeResource BgBrush}"
+                BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1,1,0,0"
+                CornerRadius="{StaticResource RadiusMainSurface}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Top bar for chat threads: title (double-click renames) · notebook label · panel toggle · … -->
+                <Grid x:Name="TopBar" Grid.Row="0" Height="{StaticResource SizeTopBar}" Padding="16,0,8,0"
+                      ColumnSpacing="{StaticResource Space8}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="ThreadTitle" Style="{StaticResource PanelHeader}" VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis" DoubleTapped="OnThreadTitleDoubleTapped" />
+                    <Border x:Name="NotebookLabel" Grid.Column="1" VerticalAlignment="Center"
+                            Background="{ThemeResource Surface2Brush}" CornerRadius="{StaticResource RadiusPill}" Padding="8,2">
+                        <TextBlock x:Name="NotebookLabelText" Style="{StaticResource SecondaryCaption}" />
+                    </Border>
+                    <Button x:Name="TogglePanelButton" Grid.Column="3" Style="{StaticResource IconButtonStyle}"
+                            Click="OnTogglePanel">
+                        <Grid>
+                            <FontIcon Glyph="{StaticResource IconTogglePanel}" Style="{StaticResource TopBarIcon}" />
+                            <!-- Indexing of this notebook is running (accent) or blocked (warning) while the panel is closed -->
+                            <Ellipse x:Name="PanelActivityDot" Width="{StaticResource Space8}" Height="{StaticResource Space8}"
+                                     Fill="{ThemeResource FocusBrush}" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                     Margin="0,-2,-2,0" Visibility="Collapsed" />
+                            <Ellipse x:Name="PanelBlockedDot" Width="{StaticResource Space8}" Height="{StaticResource Space8}"
+                                     Fill="{ThemeResource WarningBrush}" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                     Margin="0,-2,-2,0" Visibility="Collapsed" />
+                        </Grid>
+                    </Button>
+                    <Button x:Name="ThreadMoreButton" Grid.Column="4" Style="{StaticResource IconButtonStyle}"
+                            Click="OnThreadMore">
+                        <FontIcon Glyph="{StaticResource IconMore}" Style="{StaticResource TopBarIcon}" />
+                    </Button>
+                </Grid>
+
+                <Grid x:Name="MainHost" Grid.Row="1" />
+
+                <!-- App empty state: no notebook yet. -->
+                <StackPanel x:Name="AppEmptyState" Grid.Row="0" Grid.RowSpan="2" Visibility="Collapsed"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Spacing="{StaticResource Space16}" MaxWidth="{StaticResource SizeOnboardingCardMax}">
+                    <TextBlock x:Name="AppEmptyTitle" Style="{StaticResource TextTitle}" Foreground="{ThemeResource Text1Brush}"
+                               TextAlignment="Center" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="{StaticResource Space8}" HorizontalAlignment="Center">
+                        <Button x:Name="EmptyAddFolderButton" Style="{StaticResource PrimaryButtonStyle}" Click="OnOpenFolderAsNotebook" />
+                        <Button x:Name="EmptyNewNotebookButton" Style="{StaticResource QuietButtonStyle}" Click="OnNewNotebook" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Right panel: Sources | Notes | Context | Citations (+ Note chat in document mode). -->
+        <Grid x:Name="RightPanel" Grid.Column="2" Visibility="Collapsed" Background="{ThemeResource Surface1Brush}"
+              BorderBrush="{ThemeResource BorderBrush}" BorderThickness="1,1,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!-- Resize grip (drag horizontally). -->
+            <Border x:Name="PanelGrip" Width="{StaticResource Space4}" Background="Transparent"
+                    ManipulationMode="TranslateX" ManipulationDelta="OnPanelGripDelta" />
+            <Grid x:Name="PanelBody" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Height="{StaticResource SizeTopBar}" Padding="8,0,8,0" ColumnSpacing="{StaticResource Space4}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <SelectorBar x:Name="PanelTabs" SelectionChanged="OnPanelTabChanged">
+                        <SelectorBarItem x:Name="TabSources" />
+                        <SelectorBarItem x:Name="TabNotes" />
+                        <SelectorBarItem x:Name="TabContext" />
+                        <SelectorBarItem x:Name="TabNoteChat" Visibility="Collapsed" />
+                        <SelectorBarItem x:Name="TabCitations" />
+                    </SelectorBar>
+                    <Button x:Name="ClosePanelButton" Grid.Column="1" Style="{StaticResource IconButtonStyle}"
+                            Click="OnClosePanel" VerticalAlignment="Center">
+                        <FontIcon Glyph="{StaticResource IconClose}" Style="{StaticResource RowIcon}" />
+                    </Button>
+                </Grid>
+                <Grid x:Name="PanelHost" Grid.Row="1" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

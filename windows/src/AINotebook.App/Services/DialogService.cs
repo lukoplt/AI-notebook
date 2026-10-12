@@ -18,7 +18,7 @@ public sealed class DialogService : IDialogService
             DefaultButton = ContentDialogButton.Close
         };
         if (destructive)
-            dialog.PrimaryButtonStyle = (Style)Application.Current.Resources["AccentButtonStyle"];
+            dialog.PrimaryButtonStyle = (Style)Application.Current.Resources["PrimaryButtonStyle"];
         return await dialog.ShowAsync() == ContentDialogResult.Primary;
     }
 

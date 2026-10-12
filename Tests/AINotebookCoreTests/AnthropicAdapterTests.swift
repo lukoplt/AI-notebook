@@ -61,7 +61,7 @@ final class AnthropicAdapterTests: XCTestCase {
         let body = String(decoding: try XCTUnwrap(req.bodyData), as: UTF8.self)
         XCTAssertTrue(body.contains(#""system":"Be concise.""#), body)
         XCTAssertFalse(body.contains(#""role":"system""#), "system must NOT appear in messages: \(body)")
-        XCTAssertTrue(body.contains(#""max_tokens":8192"#), body)
+        XCTAssertTrue(body.contains(#""max_tokens":1024"#), body)
         XCTAssertTrue(body.contains(#""stream":true"#), body)
         XCTAssertTrue(body.contains(#""role":"assistant""#), body)
     }

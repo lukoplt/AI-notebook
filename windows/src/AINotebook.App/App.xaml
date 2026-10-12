@@ -9,6 +9,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <ResourceDictionary Source="ms-appx:///Styles/Tokens.xaml" />
+                <ResourceDictionary Source="ms-appx:///Styles/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <local:NullOrEmptyToCollapsedConverter x:Key="NullToCollapsed" />
             <conv:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibility" />

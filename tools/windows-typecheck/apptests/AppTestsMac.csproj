@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Runs windows/tests/AINotebook.App.Tests on macOS: the App's view models and services (everything
+    that does not need a WinUI window) compiled against small stand-ins in Stubs/ for the few WinUI
+    types they touch (DispatcherQueue, Thickness, Launcher, ResourceManager-backed LocalizedStrings).
+    Run through ../run.sh; it writes $(WtcWork)apptests-exclude.props and extracts pure types first.
+  -->
+  <PropertyGroup>
+    <WtcRepo>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)../../../'))</WtcRepo>
+    <WtcWork Condition="'$(WtcWork)' == ''">$(MSBuildThisFileDirectory)../.work/</WtcWork>
+    <WtcApp>$(WtcRepo)windows/src/AINotebook.App/</WtcApp>
+    <WtcAppTests>$(WtcRepo)windows/tests/AINotebook.App.Tests/</WtcAppTests>
+  </PropertyGroup>
+  <Import Project="$(WtcWork)Versions.props" />
+  <Import Project="$(WtcWork)apptests-exclude.props" Condition="Exists('$(WtcWork)apptests-exclude.props')" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <!-- Same assembly name as the real test project: the App grants it InternalsVisibleTo. -->
+    <AssemblyName>AINotebook.App.Tests</AssemblyName>
+    <RootNamespace>AINotebook.App</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <NoWarn>$(NoWarn);CS0067;CS1998;CS0169;CS0414;CS8618</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="$(WtcMvvmVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(WtcDependencyInjectionVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(WtcTestSdkVersion)" />
+    <PackageReference Include="xunit" Version="$(WtcXunitVersion)" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="$(WtcXunitRunnerVersion)" />
+    <ProjectReference Include="$(WtcRepo)windows/src/AINotebook.Core/AINotebook.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Stubs/*.cs;$(WtcWork)apptests-extracted/*.cs" />
+    <!-- Code-behind, the real App/LocalizedStrings/secret store and WinUI-bound helpers stay out (listed in apptests-exclude.props). -->
+    <Compile Include="$(WtcApp)**/*.cs"
+             Exclude="$(WtcApp)**/*.xaml.cs;$(WtcApp)obj/**;$(WtcApp)bin/**;$(WtcApp)Services/LocalizedStrings.cs;$(WtcApp)Services/WindowsPasswordVaultSecretStore.cs;@(WtcExclude)" />
+    <Compile Include="$(WtcAppTests)**/*.cs" Exclude="$(WtcAppTests)obj/**;$(WtcAppTests)bin/**" />
+    <None Include="$(WtcApp)Strings/en-US/Resources.resw" CopyToOutputDirectory="PreserveNewest" Link="en.resw" />
+    <None Include="$(WtcApp)Strings/cs-CZ/Resources.resw" CopyToOutputDirectory="PreserveNewest" Link="cs.resw" />
+    <None Include="$(WtcRepo)Tests/fixtures/**/*" CopyToOutputDirectory="PreserveNewest" Link="SharedFixtures/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

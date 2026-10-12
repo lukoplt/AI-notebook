@@ -8,19 +8,24 @@ public actor NoteIndexer {
 
     private let store: NotebookStore
     private let onChunksWritten: (@Sendable () async -> Void)?
+    private let leaseClock: any IngestLeaseClock
 
     public init(
         store: NotebookStore,
-        onChunksWritten: (@Sendable () async -> Void)? = nil
+        onChunksWritten: (@Sendable () async -> Void)? = nil,
+        leaseClock: any IngestLeaseClock = SystemIngestLeaseClock()
     ) {
         self.store = store
         self.onChunksWritten = onChunksWritten
+        self.leaseClock = leaseClock
     }
 
     public func index(noteId: Int64) async throws {
         let storeRef = store
 
-        let prep: (Note, Int64) = try await MainActor.run {
+        let clock = leaseClock
+        let prep: (Note, Int64, JobFence) = try await MainActor.run {
+            try Task.checkCancellation()
             guard let note = try storeRef.note(id: noteId) else {
                 throw IndexError.noteNotFound(noteId)
             }
@@ -44,19 +49,39 @@ public actor NoteIndexer {
                 sourceId = created.id!
                 try storeRef.linkNoteToShadowSource(noteId: noteId, sourceId: sourceId)
             }
-            return (note, sourceId)
+            let fence = try storeRef.beginExtraction(sourceId: sourceId, now: clock.now(), leaseToken: UUID().uuidString)
+            return (note, sourceId, fence)
         }
-        let (note, sourceId) = prep
+        let (note, sourceId, fence) = prep
+        let renewal = ExtractionLeaseRenewal.start(store: storeRef, fence: fence, clock: clock)
 
-        let drafts: [ChunkDraft] = note.bodyMd.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            ? []
-            : Chunker.chunk(note.bodyMd)
-
-        try await MainActor.run {
-            try storeRef.replaceChunks(sourceId: sourceId, chunks: drafts)
-            try storeRef.updateSourceStatus(id: sourceId, status: .ready, error: nil)
+        try await withTaskCancellationHandler {
+            do {
+                try Task.checkCancellation()
+                let assembled = ExtractedRevisionAssembly.make(
+                    extracted: ExtractedText(title: note.title, text: note.bodyMd), kind: .note)
+                renewal.cancel()
+                await renewal.value
+                let committed = try await MainActor.run {
+                    try Task.checkCancellation()
+                    return try storeRef.commitExtraction(sourceId: sourceId, draft: assembled.draft,
+                        chunks: assembled.chunks, fence: fence, now: clock.now()) != nil
+                }
+                if committed { await onChunksWritten?() }
+            } catch {
+                renewal.cancel()
+                await renewal.value
+                let cancelled = error is CancellationError || Task.isCancelled
+                _ = try? await MainActor.run {
+                    if cancelled {
+                        return try storeRef.cancelJob(fence: fence, now: clock.now())
+                    }
+                    return try storeRef.failJob(fence: fence, error: String(describing: error), now: clock.now())
+                }
+                throw error
+            }
+        } onCancel: {
+            renewal.cancel()
         }
-
-        await onChunksWritten?()
     }
 }

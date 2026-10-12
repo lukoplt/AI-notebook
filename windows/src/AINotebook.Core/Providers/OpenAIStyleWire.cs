@@ -25,21 +25,32 @@ internal static class OpenAIStyleWire
         _ => "user"
     };
 
-    /// Builds the POST {baseUrl}{path} request: JSON body {model, messages, stream:true},
+    internal static IReadOnlyList<ChatTurn> CanonicalMessages(IReadOnlyList<ChatTurn> turns)
+    {
+        var systems = turns.Where(x => x.Role == ChatRole.System).Select(x => x.Content).ToArray();
+        var rest = turns.Where(x => x.Role != ChatRole.System).ToList();
+        if (systems.Length != 0) rest.Insert(0, new(ChatRole.System, string.Join("\n\n", systems)));
+        return rest;
+    }
+
+    /// Builds the chat request with canonical messages and an output limit,
     /// optional Bearer auth, Accept: text/event-stream.
     internal static HttpRequestMessage BuildChatRequest(
-        string baseUrl, string path, string? apiKey, string model, IReadOnlyList<ChatTurn> messages)
+        string baseUrl, ProviderType type, string? apiKey, string model,
+        IReadOnlyList<ChatTurn> messages, ChatRequestOptions options)
     {
-        var wireMessages = messages.Select(m => new
+        options.Validate();
+        var url = ProviderApiRoot.Build(type, baseUrl, ProviderEndpoint.Chat);
+        var wireMessages = CanonicalMessages(messages).Select(m => new
         {
             role = WireRole(m.Role),
             content = m.Content
         }).ToList();
 
-        var body = new { model, messages = wireMessages, stream = true };
+        var body = new { model, messages = wireMessages, stream = true, max_tokens = options.MaxOutputTokens };
         var json = JsonSerializer.Serialize(body);
 
-        var req = new HttpRequestMessage(HttpMethod.Post, $"{baseUrl.TrimEnd('/')}{path}")
+        var req = new HttpRequestMessage(HttpMethod.Post, url)
         {
             Content = new StringContent(json, Encoding.UTF8, "application/json")
         };
@@ -49,16 +60,62 @@ internal static class OpenAIStyleWire
         return req;
     }
 
-    /// No-op for 2xx; otherwise the FR-A10 mapping: 401 → auth, 429 → rate
-    /// limit, any other non-success → generic ProviderException.
+    /// No-op for 2xx; 401/403 map to auth, 429 to rate limit, others to typed HTTP status.
     internal static void ThrowForStatus(HttpResponseMessage resp)
     {
-        if (resp.StatusCode == HttpStatusCode.Unauthorized)
-            throw new ProviderAuthException("Invalid API key (401).");
+        if (resp.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
+            throw new ProviderAuthException($"Authentication failed ({(int)resp.StatusCode}).");
         if (resp.StatusCode == (HttpStatusCode)429)
             throw new ProviderRateLimitException("Rate limit exceeded (429).", RetryAfter(resp));
         if (!resp.IsSuccessStatusCode)
-            throw new ProviderException($"HTTP {(int)resp.StatusCode}.");
+            throw new ProviderHttpException((int)resp.StatusCode);
+    }
+
+    // Error content is untrusted and may be arbitrarily large. Never buffer a
+    // successful stream or include provider response text in an exception.
+    internal static async Task ThrowForChatStatusAsync(
+        HttpResponseMessage resp, ProviderType type, CancellationToken ct)
+    {
+        if (resp.IsSuccessStatusCode) return;
+        if ((int)resp.StatusCode == 413) throw new ProviderContextTooLongException();
+
+        await using var stream = await resp.Content.ReadAsStreamAsync(ct);
+        var bytes = new byte[65_536];
+        var total = 0;
+        while (total < bytes.Length)
+        {
+            var count = await stream.ReadAsync(bytes.AsMemory(total, bytes.Length - total), ct);
+            if (count == 0) break;
+            total += count;
+        }
+
+        if (IsContextTooLong(bytes.AsMemory(0, total), type))
+            throw new ProviderContextTooLongException();
+        ThrowForStatus(resp);
+    }
+
+    private static bool IsContextTooLong(ReadOnlyMemory<byte> bytes, ProviderType type)
+    {
+        try
+        {
+            using var json = JsonDocument.Parse(bytes);
+            if (json.RootElement.ValueKind != JsonValueKind.Object ||
+                !json.RootElement.TryGetProperty("error", out var error) ||
+                error.ValueKind != JsonValueKind.Object) return false;
+
+            if (error.TryGetProperty("code", out var code) && code.ValueKind == JsonValueKind.String &&
+                code.GetString() is "context_length_exceeded" or "prompt_too_long") return true;
+
+            return type == ProviderType.Anthropic &&
+                error.TryGetProperty("type", out var errorType) && errorType.ValueKind == JsonValueKind.String &&
+                errorType.GetString() == "invalid_request_error" &&
+                error.TryGetProperty("message", out var message) && message.ValueKind == JsonValueKind.String &&
+                message.GetString()!.StartsWith("prompt is too long", StringComparison.Ordinal);
+        }
+        catch (Exception error) when (error is JsonException or InvalidOperationException)
+        {
+            return false;
+        }
     }
 
     /// <summary>
@@ -88,8 +145,9 @@ internal static class OpenAIStyleWire
     internal static async IAsyncEnumerable<string> StreamAsync(
         HttpClient http, HttpRequestMessage req, [EnumeratorCancellation] CancellationToken ct = default)
     {
+        using var request = req;
         using var resp = await http.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct);
-        ThrowForStatus(resp);
+        await ThrowForChatStatusAsync(resp, ProviderType.OpenAICompatible, ct);
 
         using var stream = await resp.Content.ReadAsStreamAsync(ct);
         using var reader = new StreamReader(stream);
@@ -118,33 +176,59 @@ internal static class OpenAIStyleWire
         }
     }
 
-    /// GET {baseUrl}{path} → {"data":[{"id","name"?}]}. Throws on ANY
+    /// GET the exact root's models endpoint → {"data":[{"id","name"?}]}. Throws on ANY
     /// failure — 401 → ProviderAuthException, other non-success →
     /// ProviderException, network errors / cancellation propagate as-is
     /// (macOS parity: listOpenAIStyleModels never silently swallows).
     /// Sorted by Label, ordinal case-insensitive.
-    internal static async Task<IReadOnlyList<ProviderModelInfo>> ListModelsAsync(
-        HttpClient http, string baseUrl, string path, string? apiKey, CancellationToken ct = default)
+    /// <summary>The raw model listing body after status mapping (discovery and limit refresh share it).</summary>
+    internal static async Task<string> ListingJsonAsync(
+        HttpClient http, string baseUrl, ProviderType type, string? apiKey, CancellationToken ct = default)
     {
-        using var req = new HttpRequestMessage(HttpMethod.Get, $"{baseUrl.TrimEnd('/')}{path}");
+        using var req = new HttpRequestMessage(HttpMethod.Get,
+            ProviderApiRoot.Build(type, baseUrl, ProviderEndpoint.Models));
         if (!string.IsNullOrEmpty(apiKey))
             req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
 
         using var resp = await http.SendAsync(req, ct);
         ThrowForStatus(resp);
+        return await resp.Content.ReadAsStringAsync(ct);
+    }
 
-        var json = await resp.Content.ReadAsStringAsync(ct);
+    internal static async Task<IReadOnlyList<ProviderModelInfo>> ListModelsAsync(
+        HttpClient http, string baseUrl, ProviderType type, string? apiKey, CancellationToken ct = default)
+    {
+        var json = await ListingJsonAsync(http, baseUrl, type, apiKey, ct);
         var root = JsonSerializer.Deserialize<JsonElement>(json);
-        if (!root.TryGetProperty("data", out var data)) return [];
+        if (root.ValueKind != JsonValueKind.Object || !root.TryGetProperty("data", out var data) ||
+            data.ValueKind != JsonValueKind.Array)
+            throw new JsonException("Expected a data array.");
 
         var result = new List<ProviderModelInfo>();
         foreach (var item in data.EnumerateArray())
         {
-            var id = item.TryGetProperty("id", out var idp) ? idp.GetString() : null;
-            if (id is null) continue;
-            var name = item.TryGetProperty("name", out var np) ? np.GetString() : null;
-            result.Add(new ProviderModelInfo(id, name));
+            if (item.ValueKind != JsonValueKind.Object || !item.TryGetProperty("id", out var id) ||
+                id.ValueKind != JsonValueKind.String)
+                throw new JsonException("Expected a model ID string.");
+            string? name = null;
+            if (item.TryGetProperty("name", out var np) && np.ValueKind != JsonValueKind.Null)
+            {
+                if (np.ValueKind != JsonValueKind.String) throw new JsonException("Expected a model name string.");
+                name = ModelString(np);
+            }
+            // provider-listing-limits-v1; ProviderDiscovery keeps it only for OpenWebUI / OpenAI-compatible.
+            result.Add(new ProviderModelInfo(ModelString(id), name, ProviderLimitPolicy.ContextWindowFromListingItem(item)));
         }
         return result.OrderBy(m => m.Label, StringComparer.OrdinalIgnoreCase).ToList();
+    }
+
+    private static string ModelString(JsonElement value)
+    {
+        try { return value.GetString()!; }
+        catch (InvalidOperationException)
+        {
+            // JsonDocument accepts unpaired surrogate escapes until GetString.
+            throw new JsonException("Invalid model listing string.");
+        }
     }
 }

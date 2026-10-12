@@ -16,87 +16,59 @@ struct NotesChatPanel: View {
     @State private var sending = false
     @State private var errorMessage: String?
     @State private var popoverCitation: Citation?
-    @State private var popoverSourceTitle: String = ""
-    @State private var popoverPageHint: Int?
-    @State private var popoverPDFURL: URL?
-    @State private var popoverNoteId: Int64?
 
     private var t: AppText { settings.text }
 
     var body: some View {
         VStack(spacing: 0) {
-            header
-            Divider()
+            if currentNote != nil {
+                Label(t.string(.notesChatCurrentNoteHint), systemImage: DesignTokens.icon(.note))
+                    .tokenFont(.caption)
+                    .tokenForeground(.text3)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, DesignTokens.spacing(12))
+                    .padding(.vertical, DesignTokens.spacing(8))
+                Hairline()
+            }
             messagesList
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-            Divider()
             inputBar
+                .padding(DesignTokens.spacing(12))
         }
-        .padding(12)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .task(id: notebook.id) { await ensureSession() }
         .popover(item: $popoverCitation) { c in
-            CitationPopover(
-                citation: c,
-                sourceTitle: popoverSourceTitle,
-                pageHint: popoverPageHint,
-                pdfFileURL: popoverPDFURL,
-                noteIdToOpen: popoverNoteId
-            )
+            // Same snapshot card and native resolver as the Citations panel; no rawPath launch.
+            CitationCard(citation: c, notebookId: notebook.id!)
+                .frame(width: DesignTokens.size(.panelMax))
+                .padding(DesignTokens.spacing(8))
         }
-    }
-
-    private var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(t.string(.notesChatPanelTitle)).font(.headline)
-            if currentNote != nil {
-                Text(t.string(.notesChatCurrentNoteHint))
-                    .font(.caption).foregroundStyle(.secondary)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.bottom, 4)
     }
 
     @ViewBuilder
     private var messagesList: some View {
-        if messages.isEmpty && streamingDraft.isEmpty {
-            VStack {
-                Spacer()
-                Text(t.string(.notesChatPanelEmpty))
-                    .foregroundStyle(.secondary)
-                Spacer()
-            }
-            .frame(maxWidth: .infinity)
+        if messages.isEmpty && streamingDraft.isEmpty && errorMessage == nil {
+            PanelHint(icon: .chat, text: t.string(.notesChatPanelEmpty))
         } else {
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 6) {
+                LazyVStack(alignment: .leading, spacing: DesignTokens.spacing(16)) {
                     ForEach(messages) { m in
-                        MessageBubble(
-                            message: m,
-                            language: settings.language,
-                            onCitationTapped: { c in showCitation(c) },
-                            onSaveAsNote: { Task { await saveAsNote(m) } }
-                        )
+                        MessageRow(message: m, compact: true, actions: MessageRowActions(
+                            onCite: { marker in
+                                if let c = m.citations.first(where: { $0.marker == marker }) { showCitation(c) }
+                            },
+                            onSaveAsNote: m.role == .assistant ? { Task { await saveAsNote(m) } } : nil))
                     }
                     if !streamingDraft.isEmpty {
-                        MessageBubble(
-                            message: ChatMessage(
-                                sessionId: sessionId ?? 0,
-                                role: .assistant,
-                                content: streamingDraft
-                            ),
-                            language: settings.language,
-                            onCitationTapped: { _ in },
-                            onSaveAsNote: nil
-                        )
+                        MessageRow(
+                            message: ChatMessage(sessionId: sessionId ?? 0, role: .assistant, content: streamingDraft),
+                            isStreaming: true, compact: true)
                     }
                     if let errorMessage {
-                        Text(t.string(.chatErrorPrefix) + errorMessage)
-                            .font(.caption).foregroundStyle(.red)
+                        ChatErrorRow(message: errorMessage, retryTitle: t.string(.chatRetry))
                     }
                 }
-                .padding(.horizontal, 2)
+                .padding(DesignTokens.spacing(12))
                 .frame(maxWidth: .infinity, alignment: .topLeading)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -104,18 +76,16 @@ struct NotesChatPanel: View {
     }
 
     private var inputBar: some View {
-        HStack(alignment: .bottom, spacing: 6) {
-            TextField(t.string(.chatInputPlaceholder), text: $input, axis: .vertical)
-                .lineLimit(1...5)
-                .textFieldStyle(.roundedBorder)
-                .disabled(sending)
-            Button(t.string(.chatSendButton)) {
+        ComposerView(text: $input, placeholder: t.string(.notesChatPanelEmpty), isSending: sending,
+                     onSubmit: { Task { await send() } }) {
+            EmptyView()
+        } trailing: {
+            SendButton(isSending: sending,
+                       isEnabled: !sending && !input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                       label: t.string(.chatSendButton)) {
                 Task { await send() }
             }
-            .keyboardShortcut(.return, modifiers: [.command])
-            .disabled(sending || input.trimmingCharacters(in: .whitespaces).isEmpty)
         }
-        .padding(.top, 6)
     }
 
     @MainActor
@@ -142,7 +112,7 @@ struct NotesChatPanel: View {
     }
 
     private func send() async {
-        guard let sid = sessionId else { return }
+        guard let sid = sessionId, !sending else { return }
         let text = input.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
         input = ""
@@ -162,7 +132,13 @@ struct NotesChatPanel: View {
             }
             await reloadMessages()
         } catch {
-            errorMessage = providerErrorText(error, text: settings.text)
+            if (error as? ContextPackError) == .contextTooSmall {
+                // Preparation failed before any row was written: keep the draft.
+                errorMessage = t.string(.contextTooSmall)
+                if input.isEmpty { input = text }
+            } else {
+                errorMessage = providerErrorText(error, text: settings.text)
+            }
             await reloadMessages()
         }
     }
@@ -172,7 +148,8 @@ struct NotesChatPanel: View {
         do {
             _ = try store.createNote(
                 notebookId: notebook.id!,
-                title: "Chat reply — \(msg.createdAt.formatted(date: .abbreviated, time: .shortened))",
+                title: String(format: t.string(.chatReplyNoteTitle),
+                              msg.createdAt.formatted(date: .abbreviated, time: .shortened)),
                 bodyMd: msg.content,
                 origin: .chat,
                 originRef: msg.id
@@ -181,24 +158,6 @@ struct NotesChatPanel: View {
     }
 
     private func showCitation(_ c: Citation) {
-        Task { @MainActor in
-            let source = try? store.source(id: c.sourceId)
-            let chunks = (try? store.chunks(sourceId: c.sourceId)) ?? []
-            let hint = chunks.first(where: { $0.id == c.chunkId })?.pageHint
-            let isPDF = (source?.type == .pdf)
-            let url: URL? = (isPDF && (source?.rawPath != nil))
-                ? URL(fileURLWithPath: source!.rawPath!)
-                : nil
-            var noteId: Int64? = nil
-            if source?.type == .note, let s = source {
-                let allNotes = (try? store.notes(notebookId: s.notebookId)) ?? []
-                noteId = allNotes.first(where: { $0.autoSourceId == s.id })?.id
-            }
-            popoverSourceTitle = source?.title ?? ""
-            popoverPageHint = hint
-            popoverPDFURL = url
-            popoverNoteId = noteId
-            popoverCitation = c
-        }
+        popoverCitation = c
     }
 }

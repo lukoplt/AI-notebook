@@ -1,0 +1,920 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "error": 1,
+        "filesInScope": 8,
+        "missing": 0,
+        "partial": false,
+        "pending": 2,
+        "refreshError": 1,
+        "refreshPending": 3,
+        "searchable": 5,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "pinnedFiles": 5,
+        "snapshot": {
+          "error": 1,
+          "isLowerBound": false,
+          "missing": 0,
+          "pending": 2,
+          "refreshError": 1,
+          "refreshPending": 3,
+          "searchable": 5,
+          "skipped": 0,
+          "unavailable": 0
+        }
+      },
+      "name": "consistent",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "error": 0,
+        "filesInScope": 5,
+        "missing": 0,
+        "partial": false,
+        "pending": 1,
+        "refreshError": 0,
+        "refreshPending": 1,
+        "searchable": 4,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "pinnedFiles": 5,
+        "snapshot": {
+          "error": 0,
+          "isLowerBound": false,
+          "missing": 0,
+          "pending": 1,
+          "refreshError": 0,
+          "refreshPending": 1,
+          "searchable": 2,
+          "skipped": 0,
+          "unavailable": 0
+        }
+      },
+      "name": "pinned-exceeds-counted",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "error": 0,
+        "filesInScope": 3,
+        "missing": 0,
+        "partial": true,
+        "pending": 1,
+        "refreshError": 0,
+        "refreshPending": 3,
+        "searchable": 2,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "pinnedFiles": 0,
+        "snapshot": {
+          "error": 0,
+          "isLowerBound": true,
+          "missing": 0,
+          "pending": 1,
+          "refreshError": 7,
+          "refreshPending": 9,
+          "searchable": 2,
+          "skipped": 0,
+          "unavailable": 0
+        }
+      },
+      "name": "refresh-exceeds-files",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "error": 0,
+        "filesInScope": 3,
+        "missing": 0,
+        "partial": false,
+        "pending": 0,
+        "refreshError": 1,
+        "refreshPending": 2,
+        "searchable": 3,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "pinnedFiles": 3,
+        "snapshot": {
+          "error": 0,
+          "isLowerBound": false,
+          "missing": 0,
+          "pending": 0,
+          "refreshError": 4,
+          "refreshPending": 2,
+          "searchable": 3,
+          "skipped": 0,
+          "unavailable": 0
+        }
+      },
+      "name": "refresh-error-clamped-after-pending",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "error": 1,
+        "filesInScope": 1,
+        "missing": 0,
+        "partial": false,
+        "pending": 0,
+        "refreshError": 1,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "pinnedFiles": 1,
+        "snapshot": {
+          "error": 1,
+          "isLowerBound": false,
+          "missing": 0,
+          "pending": -2,
+          "refreshError": 4,
+          "refreshPending": -1,
+          "searchable": -1,
+          "skipped": -3,
+          "unavailable": 0
+        }
+      },
+      "name": "negative-counts",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "error": 0,
+        "filesInScope": 0,
+        "missing": 0,
+        "partial": false,
+        "pending": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 0,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "pinnedFiles": 0,
+        "snapshot": {
+          "error": 0,
+          "isLowerBound": false,
+          "missing": 0,
+          "pending": 0,
+          "refreshError": 0,
+          "refreshPending": 0,
+          "searchable": 0,
+          "skipped": 0,
+          "unavailable": 0
+        }
+      },
+      "name": "empty",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "error": 0,
+        "filesInScope": 2,
+        "missing": 2,
+        "partial": false,
+        "pending": 0,
+        "refreshError": 0,
+        "refreshPending": 0,
+        "searchable": 2,
+        "skipped": 0,
+        "unavailable": 0
+      },
+      "input": {
+        "pinnedFiles": 2,
+        "snapshot": {
+          "error": 0,
+          "isLowerBound": false,
+          "missing": 2,
+          "pending": 0,
+          "refreshError": 0,
+          "refreshPending": 0,
+          "searchable": 0,
+          "skipped": 0,
+          "unavailable": 0
+        }
+      },
+      "name": "empty-with-pins",
+      "operation": "coverage"
+    },
+    {
+      "expected": {
+        "stale": false
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "unchanged",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": false
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 4,
+              "published": false
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "new-file-discovered",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": false
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": true
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "first-publication",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": true
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "missing",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "present-becomes-missing",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": true
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "missing",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "unpublished-becomes-missing",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": true
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": false,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "rule-makes-ineligible",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": true
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "unavailable",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "unavailable",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "unavailable",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "root-unavailable",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": true
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "missing",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            }
+          ]
+        }
+      },
+      "name": "missing-reappears",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": true
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            },
+            {
+              "availability": "missing",
+              "eligible": true,
+              "folderId": 1,
+              "id": 5,
+              "published": true
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "new-missing-file",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": true
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1,
+            2
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 3,
+              "published": false
+            }
+          ]
+        }
+      },
+      "name": "folder-added",
+      "operation": "scope-stale"
+    },
+    {
+      "expected": {
+        "stale": true
+      },
+      "input": {
+        "after": {
+          "folders": [
+            1
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            }
+          ]
+        },
+        "before": {
+          "folders": [
+            1,
+            2
+          ],
+          "sources": [
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 1,
+              "published": true
+            },
+            {
+              "availability": "present",
+              "eligible": true,
+              "folderId": 1,
+              "id": 2,
+              "published": true
+            }
+          ]
+        }
+      },
+      "name": "folder-removed",
+      "operation": "scope-stale"
+    }
+  ],
+  "contract": "chat-during-scan",
+  "staleRepreparations": 3,
+  "version": 1
+}

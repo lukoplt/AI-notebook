@@ -17,21 +17,21 @@ struct TransformationPromptPreviewSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(t.string(.aiToolsPromptPreviewTitle)).font(.title2).bold()
-            Text(transformation.name).font(.headline)
+            Text(t.string(.aiToolsPromptPreviewTitle)).tokenFont(.title)
+            Text(transformation.name).tokenFont(.headline)
             if !transformation.description.isEmpty {
                 Text(transformation.description)
-                    .font(.callout).foregroundStyle(.secondary)
+                    .tokenFont(.body).tokenForeground(.text2)
             }
             ScrollView {
                 Text(rendered.isEmpty ? transformation.promptTemplate : rendered)
-                    .font(.system(.body, design: .monospaced))
+                    .font(DesignTokens.font(.mono))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .textSelection(.enabled)
             }
             .frame(maxHeight: 360)
             if let errorMessage {
-                Text(errorMessage).font(.caption).foregroundStyle(.red)
+                Text(errorMessage).tokenFont(.caption).tokenForeground(.danger)
             }
             HStack {
                 Spacer()

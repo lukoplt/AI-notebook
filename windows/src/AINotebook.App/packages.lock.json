@@ -214,7 +214,8 @@
           "Dapper": "[2.1.79, )",
           "Microsoft.Data.Sqlite": "[9.0.16, )",
           "PdfPig": "[0.1.14, )",
-          "SQLitePCLRaw.bundle_e_sqlite3": "[3.0.3, )"
+          "SQLitePCLRaw.bundle_e_sqlite3": "[3.0.3, )",
+          "System.Numerics.Tensors": "[9.0.0, )"
         }
       }
     },

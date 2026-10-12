@@ -1,0 +1,2901 @@
+{
+  "bindings": [],
+  "cases": [
+    {
+      "expected": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 6667
+        }
+      ],
+      "kind": "fit",
+      "name": "ceil-rate",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 3,
+          "split": "train",
+          "tokens": 2
+        },
+        {
+          "family": "fixture-only",
+          "id": "b",
+          "language": "cs",
+          "scalars": 10,
+          "split": "train",
+          "tokens": 3
+        }
+      ]
+    },
+    {
+      "expected": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 6667
+        },
+        {
+          "family": "fixture-only",
+          "language": "de",
+          "tokensPerScalarBp": 4445
+        },
+        {
+          "family": "fixture-only",
+          "language": "en",
+          "tokensPerScalarBp": 2500
+        },
+        {
+          "family": "fixture-only",
+          "language": "mixed",
+          "tokensPerScalarBp": 7143
+        },
+        {
+          "family": "fixture-other",
+          "language": "en",
+          "tokensPerScalarBp": 4000
+        }
+      ],
+      "kind": "fit",
+      "name": "training-multi",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 3,
+          "split": "train",
+          "tokens": 2
+        },
+        {
+          "family": "fixture-only",
+          "id": "b",
+          "language": "cs",
+          "scalars": 10,
+          "split": "train",
+          "tokens": 3
+        },
+        {
+          "family": "fixture-only",
+          "id": "c",
+          "language": "en",
+          "scalars": 4,
+          "split": "train",
+          "tokens": 1
+        },
+        {
+          "family": "fixture-only",
+          "id": "d",
+          "language": "mixed",
+          "scalars": 7,
+          "split": "train",
+          "tokens": 5
+        },
+        {
+          "family": "fixture-only",
+          "id": "e",
+          "language": "de",
+          "scalars": 9,
+          "split": "train",
+          "tokens": 4
+        },
+        {
+          "family": "fixture-other",
+          "id": "f",
+          "language": "en",
+          "scalars": 5,
+          "split": "train",
+          "tokens": 2
+        }
+      ]
+    },
+    {
+      "expected": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 6667
+        },
+        {
+          "family": "fixture-only",
+          "language": "de",
+          "tokensPerScalarBp": 4445
+        },
+        {
+          "family": "fixture-only",
+          "language": "en",
+          "tokensPerScalarBp": 2500
+        },
+        {
+          "family": "fixture-only",
+          "language": "mixed",
+          "tokensPerScalarBp": 7143
+        },
+        {
+          "family": "fixture-other",
+          "language": "en",
+          "tokensPerScalarBp": 4000
+        }
+      ],
+      "kind": "fit",
+      "name": "training-order",
+      "note": "permutation of training-multi",
+      "samples": [
+        {
+          "family": "fixture-other",
+          "id": "f",
+          "language": "en",
+          "scalars": 5,
+          "split": "train",
+          "tokens": 2
+        },
+        {
+          "family": "fixture-only",
+          "id": "d",
+          "language": "mixed",
+          "scalars": 7,
+          "split": "train",
+          "tokens": 5
+        },
+        {
+          "family": "fixture-only",
+          "id": "b",
+          "language": "cs",
+          "scalars": 10,
+          "split": "train",
+          "tokens": 3
+        },
+        {
+          "family": "fixture-only",
+          "id": "e",
+          "language": "de",
+          "scalars": 9,
+          "split": "train",
+          "tokens": 4
+        },
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 3,
+          "split": "train",
+          "tokens": 2
+        },
+        {
+          "family": "fixture-only",
+          "id": "c",
+          "language": "en",
+          "scalars": 4,
+          "split": "train",
+          "tokens": 1
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "invalid-zero-scalars",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 0,
+          "split": "train",
+          "tokens": 2
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "fit-negative-tokens",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 3,
+          "split": "train",
+          "tokens": -1
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "fit-holdout-rejected",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 3,
+          "split": "holdout",
+          "tokens": 2
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "fit-duplicate-id",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 3,
+          "split": "train",
+          "tokens": 2
+        },
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "en",
+          "scalars": 3,
+          "split": "train",
+          "tokens": 2
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "fit-unsupported-language",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "fr",
+          "scalars": 3,
+          "split": "train",
+          "tokens": 2
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "fit-family-whitespace",
+      "samples": [
+        {
+          "family": "fixture only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 3,
+          "split": "train",
+          "tokens": 2
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "fit-rate-overflow",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 1,
+          "split": "train",
+          "tokens": 101
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "fit-scalar-ceiling",
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "a",
+          "language": "cs",
+          "scalars": 5000001,
+          "split": "train",
+          "tokens": 1
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "kind": "fit",
+      "name": "fit-empty",
+      "samples": []
+    },
+    {
+      "expected": 4,
+      "kind": "estimate",
+      "language": "cs",
+      "name": "ceil-headroom",
+      "rateBp": 6667,
+      "scalars": 3,
+      "text": "abc"
+    },
+    {
+      "expected": 0,
+      "kind": "estimate",
+      "language": "cs",
+      "name": "empty",
+      "rateBp": 6667,
+      "scalars": 0,
+      "text": ""
+    },
+    {
+      "expected": 4,
+      "kind": "estimate",
+      "language": "cs",
+      "name": "astral",
+      "rateBp": 10000,
+      "scalars": 3,
+      "text": "a😀b"
+    },
+    {
+      "expected": 3,
+      "kind": "estimate",
+      "language": "cs",
+      "name": "rate5000-astral",
+      "rateBp": 5000,
+      "scalars": 3,
+      "text": "a😀b"
+    },
+    {
+      "expected": 7,
+      "kind": "estimate",
+      "language": "en",
+      "name": "english-rate",
+      "rateBp": 2500,
+      "scalars": 21,
+      "text": "The warranty applies."
+    },
+    {
+      "expected": 0,
+      "kind": "estimate",
+      "language": "de",
+      "name": "zero-rate",
+      "rateBp": 0,
+      "scalars": 3,
+      "text": "abc"
+    },
+    {
+      "expected": 4,
+      "family": "fixture-only",
+      "kind": "estimator",
+      "language": "sk",
+      "name": "unknown-language",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 3000
+        },
+        {
+          "family": "fixture-only",
+          "language": "en",
+          "tokensPerScalarBp": 6667
+        }
+      ],
+      "text": "abc"
+    },
+    {
+      "expected": 4,
+      "family": "fixture-only",
+      "kind": "estimator",
+      "language": "und",
+      "name": "und-runtime",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 3000
+        },
+        {
+          "family": "fixture-only",
+          "language": "en",
+          "tokensPerScalarBp": 6667
+        }
+      ],
+      "text": "abc"
+    },
+    {
+      "expected": 2,
+      "family": "fixture-only",
+      "kind": "estimator",
+      "language": "cs",
+      "name": "known-language",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 3000
+        },
+        {
+          "family": "fixture-only",
+          "language": "en",
+          "tokensPerScalarBp": 6667
+        }
+      ],
+      "text": "abc"
+    },
+    {
+      "expected": 7,
+      "family": "unverified",
+      "kind": "estimator",
+      "language": "cs",
+      "name": "unknown-family",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 3000
+        },
+        {
+          "family": "fixture-only",
+          "language": "en",
+          "tokensPerScalarBp": 6667
+        }
+      ],
+      "text": "a😀b"
+    },
+    {
+      "expected": 9,
+      "family": "unverified",
+      "kind": "estimator",
+      "language": "en",
+      "name": "unknown-family-empty-rates",
+      "rates": [],
+      "text": "Záruka"
+    },
+    {
+      "expected": 2147483647,
+      "family": "fixture-only",
+      "kind": "estimatorBound",
+      "language": "cs",
+      "name": "saturate-scalars",
+      "note": "harness builds a string of this many \"a\" scalars; estimate saturates, never traps",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 10000
+        }
+      ],
+      "scalars": 5000001
+    },
+    {
+      "kind": "undercount",
+      "name": "holdout-under",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 6667
+        }
+      ],
+      "rows": [
+        {
+          "actual": 5,
+          "estimated": 4,
+          "id": "h1",
+          "undercount": 1
+        },
+        {
+          "actual": 4,
+          "estimated": 4,
+          "id": "h2",
+          "undercount": 0
+        }
+      ],
+      "samples": [
+        {
+          "family": "fixture-only",
+          "id": "h1",
+          "language": "cs",
+          "scalars": 3,
+          "split": "holdout",
+          "tokens": 5
+        },
+        {
+          "family": "fixture-only",
+          "id": "h2",
+          "language": "cs",
+          "scalars": 3,
+          "split": "holdout",
+          "tokens": 4
+        }
+      ],
+      "undercounts": 1
+    },
+    {
+      "error": "uncalibratedFamily",
+      "kind": "undercount",
+      "name": "holdout-unknown-family",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 6667
+        }
+      ],
+      "samples": [
+        {
+          "family": "other",
+          "id": "h1",
+          "language": "cs",
+          "scalars": 3,
+          "split": "holdout",
+          "tokens": 5
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "family": "fixture-only",
+      "kind": "constructor",
+      "name": "constructor-negative",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": -1
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "family": "fixture-only",
+      "kind": "constructor",
+      "name": "constructor-duplicate",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 1
+        },
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 2
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "family": "fixture-only",
+      "kind": "constructor",
+      "name": "constructor-rate-overflow",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 1000001
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "family": "fixture-only",
+      "kind": "constructor",
+      "name": "constructor-language",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "pl",
+          "tokensPerScalarBp": 1
+        }
+      ]
+    },
+    {
+      "error": "invalidCalibration",
+      "family": "fixture-only",
+      "kind": "constructor",
+      "name": "constructor-empty-family",
+      "rates": [
+        {
+          "family": "",
+          "language": "cs",
+          "tokensPerScalarBp": 1
+        }
+      ]
+    },
+    {
+      "error": null,
+      "family": "fixture-only",
+      "kind": "constructor",
+      "name": "constructor-ok",
+      "rates": [
+        {
+          "family": "fixture-only",
+          "language": "und",
+          "tokensPerScalarBp": 5000
+        },
+        {
+          "family": "fixture-only",
+          "language": "cs",
+          "tokensPerScalarBp": 1000000
+        }
+      ]
+    },
+    {
+      "bindings": [
+        {
+          "family": "fixture-only",
+          "model": "llama3.2:3b",
+          "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expected": "fixture-only",
+      "kind": "binding",
+      "model": "llama3.2:3b",
+      "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "name": "binding-exact"
+    },
+    {
+      "bindings": [
+        {
+          "family": "fixture-only",
+          "model": "llama3.2:3b",
+          "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expected": null,
+      "kind": "binding",
+      "model": "llama3.2:3b",
+      "modelDigest": null,
+      "name": "binding-missing-digest"
+    },
+    {
+      "bindings": [
+        {
+          "family": "fixture-only",
+          "model": "llama3.2:3b",
+          "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expected": null,
+      "kind": "binding",
+      "model": "llama3.2:3b",
+      "modelDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "name": "binding-changed-digest"
+    },
+    {
+      "bindings": [
+        {
+          "family": "fixture-only",
+          "model": "llama3.2:3b",
+          "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expected": null,
+      "kind": "binding",
+      "model": "llama3.2:1b",
+      "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "name": "binding-other-model"
+    },
+    {
+      "bindings": [
+        {
+          "family": "fixture-only",
+          "model": "llama3.2:3b",
+          "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "expected": null,
+      "kind": "binding",
+      "model": "llama3.2",
+      "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "name": "binding-alias-not-substring"
+    },
+    {
+      "expected": {
+        "rates": [
+          {
+            "family": "fixture-only",
+            "language": "cs",
+            "tokensPerScalarBp": 6667
+          }
+        ],
+        "trainingIds": [
+          "cs-a:0:3"
+        ]
+      },
+      "kind": "calibration-observations",
+      "name": "calibration-observations",
+      "note": "embedding and full-prompt counts never enter chat body rates",
+      "observations": [
+        {
+          "kind": "body",
+          "method": "ollama-raw-prompt",
+          "sample": {
+            "family": "fixture-only",
+            "id": "cs-a:0:3",
+            "language": "cs",
+            "scalars": 3,
+            "split": "train",
+            "tokens": 2
+          }
+        },
+        {
+          "kind": "embedding",
+          "method": "ollama-embed-prompt",
+          "profileId": "nomic-v2-256",
+          "sample": {
+            "family": "fixture-only",
+            "id": "cs-a:0:3#embed",
+            "language": "cs",
+            "scalars": 3,
+            "split": "train",
+            "tokens": 9
+          }
+        },
+        {
+          "kind": "prompt",
+          "method": "ollama-chat-prompt",
+          "sample": {
+            "family": "fixture-only",
+            "id": "prompt:q1",
+            "language": "cs",
+            "scalars": 3,
+            "split": "train",
+            "tokens": 40
+          }
+        }
+      ]
+    },
+    {
+      "documents": [
+        {
+          "document_id": "cs-a",
+          "language": "cs",
+          "text": "Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. Záruka platí dva roky. "
+        },
+        {
+          "document_id": "cs-b",
+          "language": "cs",
+          "text": "Kdo ručí za škodu?"
+        },
+        {
+          "document_id": "cs-c",
+          "language": "cs",
+          "text": "Smlouva"
+        },
+        {
+          "document_id": "cs-d",
+          "language": "cs",
+          "text": "Reklamace se podává písemně."
+        },
+        {
+          "document_id": "de-a",
+          "language": "de",
+          "text": "Die Garantie gilt."
+        },
+        {
+          "document_id": "de-b",
+          "language": "de",
+          "text": ""
+        },
+        {
+          "document_id": "en-a",
+          "language": "en",
+          "text": "The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. The warranty applies. "
+        },
+        {
+          "document_id": "sk-a",
+          "language": "sk",
+          "text": "Záruka platí."
+        },
+        {
+          "document_id": "sk-b",
+          "language": "sk",
+          "text": "Kto ručí?"
+        }
+      ],
+      "expected": [
+        {
+          "documentId": "cs-a",
+          "end": 256,
+          "id": "cs-a:0:256",
+          "kind": "body",
+          "language": "cs",
+          "scalars": 256,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 279
+        },
+        {
+          "documentId": null,
+          "end": null,
+          "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+          "kind": "mixed",
+          "language": "mixed",
+          "scalars": 546,
+          "sources": [
+            "cs-a:0:256",
+            "sk-a:0:13",
+            "en-a:0:256",
+            "de-a:0:18"
+          ],
+          "split": "train",
+          "start": null,
+          "utf8Bytes": 571
+        },
+        {
+          "documentId": "cs-a",
+          "end": 276,
+          "id": "cs-a:0:276",
+          "kind": "body",
+          "language": "cs",
+          "scalars": 276,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 300
+        },
+        {
+          "documentId": "cs-a",
+          "end": 276,
+          "id": "cs-a:256:276",
+          "kind": "body",
+          "language": "cs",
+          "scalars": 20,
+          "sources": null,
+          "split": "train",
+          "start": 256,
+          "utf8Bytes": 21
+        },
+        {
+          "documentId": "cs-b",
+          "end": 18,
+          "id": "cs-b:0:18",
+          "kind": "body",
+          "language": "cs",
+          "scalars": 18,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 21
+        },
+        {
+          "documentId": "cs-c",
+          "end": 7,
+          "id": "cs-c:0:7",
+          "kind": "body",
+          "language": "cs",
+          "scalars": 7,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 7
+        },
+        {
+          "documentId": "cs-d",
+          "end": 28,
+          "id": "cs-d:0:28",
+          "kind": "body",
+          "language": "cs",
+          "scalars": 28,
+          "sources": null,
+          "split": "holdout",
+          "start": 0,
+          "utf8Bytes": 32
+        },
+        {
+          "documentId": "de-a",
+          "end": 18,
+          "id": "de-a:0:18",
+          "kind": "body",
+          "language": "de",
+          "scalars": 18,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 18
+        },
+        {
+          "documentId": "en-a",
+          "end": 256,
+          "id": "en-a:0:256",
+          "kind": "body",
+          "language": "en",
+          "scalars": 256,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 256
+        },
+        {
+          "documentId": "en-a",
+          "end": 1280,
+          "id": "en-a:1024:1280",
+          "kind": "body",
+          "language": "en",
+          "scalars": 256,
+          "sources": null,
+          "split": "train",
+          "start": 1024,
+          "utf8Bytes": 256
+        },
+        {
+          "documentId": "en-a",
+          "end": 1320,
+          "id": "en-a:1280:1320",
+          "kind": "body",
+          "language": "en",
+          "scalars": 40,
+          "sources": null,
+          "split": "train",
+          "start": 1280,
+          "utf8Bytes": 40
+        },
+        {
+          "documentId": "en-a",
+          "end": 512,
+          "id": "en-a:256:512",
+          "kind": "body",
+          "language": "en",
+          "scalars": 256,
+          "sources": null,
+          "split": "train",
+          "start": 256,
+          "utf8Bytes": 256
+        },
+        {
+          "documentId": "en-a",
+          "end": 768,
+          "id": "en-a:512:768",
+          "kind": "body",
+          "language": "en",
+          "scalars": 256,
+          "sources": null,
+          "split": "train",
+          "start": 512,
+          "utf8Bytes": 256
+        },
+        {
+          "documentId": "en-a",
+          "end": 1024,
+          "id": "en-a:768:1024",
+          "kind": "body",
+          "language": "en",
+          "scalars": 256,
+          "sources": null,
+          "split": "train",
+          "start": 768,
+          "utf8Bytes": 256
+        },
+        {
+          "documentId": "query:q-cs-1",
+          "end": 24,
+          "id": "query:q-cs-1:0:24",
+          "kind": "query",
+          "language": "cs",
+          "scalars": 24,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 26
+        },
+        {
+          "documentId": "query:q-cs-2",
+          "end": 20,
+          "id": "query:q-cs-2:0:20",
+          "kind": "query",
+          "language": "cs",
+          "scalars": 20,
+          "sources": null,
+          "split": "holdout",
+          "start": 0,
+          "utf8Bytes": 20
+        },
+        {
+          "documentId": "query:q-mixed-gold",
+          "end": 16,
+          "id": "query:q-mixed-gold:0:16",
+          "kind": "query",
+          "language": "sk",
+          "scalars": 16,
+          "sources": null,
+          "split": "holdout",
+          "start": 0,
+          "utf8Bytes": 18
+        },
+        {
+          "documentId": "sk-a",
+          "end": 13,
+          "id": "sk-a:0:13",
+          "kind": "body",
+          "language": "sk",
+          "scalars": 13,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 15
+        },
+        {
+          "documentId": "sk-b",
+          "end": 9,
+          "id": "sk-b:0:9",
+          "kind": "body",
+          "language": "sk",
+          "scalars": 9,
+          "sources": null,
+          "split": "train",
+          "start": 0,
+          "utf8Bytes": 11
+        }
+      ],
+      "kind": "sample-plan",
+      "name": "sample-plan",
+      "queries": [
+        {
+          "case_type": "answer",
+          "gold_document_ids": [
+            "cs-a"
+          ],
+          "language": "cs",
+          "query_id": "q-cs-1",
+          "text": "Jak dlouho platí záruka?"
+        },
+        {
+          "case_type": "answer",
+          "gold_document_ids": [
+            "cs-d"
+          ],
+          "language": "cs",
+          "query_id": "q-cs-2",
+          "text": "Kdy podat reklamaci?"
+        },
+        {
+          "case_type": "answer",
+          "gold_document_ids": [
+            "sk-a",
+            "cs-d"
+          ],
+          "language": "sk",
+          "query_id": "q-mixed-gold",
+          "text": "Záruka a ručenie"
+        },
+        {
+          "case_type": "scope",
+          "gold_document_ids": [
+            "en-a"
+          ],
+          "language": "en",
+          "query_id": "q-scope",
+          "text": "Only the warranty folder"
+        },
+        {
+          "case_type": "absent",
+          "gold_document_ids": [],
+          "language": "de",
+          "query_id": "q-absent",
+          "text": "Wer zahlt?"
+        },
+        {
+          "case_type": "overview",
+          "gold_document_ids": [],
+          "language": "en",
+          "query_id": "q-overview",
+          "text": "Summarize"
+        }
+      ]
+    },
+    {
+      "expectedJson": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": true,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 52,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 650,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 0,
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "expectedMarkdown": "# Token calibration report v1\n\nStatus: complete\nPlatform: macos\nModel: llama3.2:3b (sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)\nOllama: 0.0.0-fixture\nTemplate: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\nFamily: ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nMethod: ollama-raw-prompt\nTokenizer: none\nCorpus: 8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9\nHeadroom: 1500 bp\nCalibrated: yes\nError: none\n\n| sample | language | split | scalars | utf8 bytes | tokens |\n|---|---|---|---:|---:|---:|\n| cs-a:0:256 | cs | train | 256 | 279 | 77 |\n| cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18 | mixed | train | 546 | 571 | 164 |\n| cs-a:0:276 | cs | train | 276 | 300 | 83 |\n| cs-a:256:276 | cs | train | 20 | 21 | 6 |\n| cs-b:0:18 | cs | train | 18 | 21 | 6 |\n| cs-c:0:7 | cs | train | 7 | 7 | 3 |\n| cs-d:0:28 | cs | holdout | 28 | 32 | 9 |\n| de-a:0:18 | de | train | 18 | 18 | 6 |\n\n| family | language | tokens per scalar bp |\n|---|---|---:|\n| ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | cs | 4286 |\n| ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | de | 3334 |\n| ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | mixed | 3004 |\n\n| query | split | prepared | wire | actual | estimated |\n|---|---|---|---|---:|---:|\n| q-cs-1 | train | 1111111111111111111111111111111111111111111111111111111111111111 | 2222222222222222222222222222222222222222222222222222222222222222 | 700 | 760 |\n| q-cs-2 | holdout | 3333333333333333333333333333333333333333333333333333333333333333 | 4444444444444444444444444444444444444444444444444444444444444444 | 650 | 702 |\n\nBody holdout undercounts: 0\nPrompt holdout undercounts: 0\nMax overestimate tokens: 52\n",
+      "input": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": true,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 52,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 650,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 0,
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "kind": "calibration-report",
+      "name": "calibration-complete"
+    },
+    {
+      "expectedJson": {
+        "bodyHoldoutUndercounts": null,
+        "calibrated": false,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": "tokenCountUnavailable",
+        "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": null,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": null,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": null,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": null,
+        "rates": [],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": null,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "incomplete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "expectedMarkdown": "# Token calibration report v1\n\nStatus: incomplete\nPlatform: macos\nModel: llama3.2:3b (sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)\nOllama: 0.0.0-fixture\nTemplate: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\nFamily: ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nMethod: ollama-raw-prompt\nTokenizer: none\nCorpus: 8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9\nHeadroom: 1500 bp\nCalibrated: no\nError: tokenCountUnavailable\n\n| sample | language | split | scalars | utf8 bytes | tokens |\n|---|---|---|---:|---:|---:|\n| cs-a:0:256 | cs | train | 256 | 279 | 77 |\n| cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18 | mixed | train | 546 | 571 | not measured |\n| cs-a:0:276 | cs | train | 276 | 300 | 83 |\n| cs-a:256:276 | cs | train | 20 | 21 | 6 |\n| cs-b:0:18 | cs | train | 18 | 21 | 6 |\n| cs-c:0:7 | cs | train | 7 | 7 | 3 |\n| cs-d:0:28 | cs | holdout | 28 | 32 | 9 |\n| de-a:0:18 | de | train | 18 | 18 | 6 |\n\n| family | language | tokens per scalar bp |\n|---|---|---:|\n\n| query | split | prepared | wire | actual | estimated |\n|---|---|---|---|---:|---:|\n| q-cs-1 | train | 1111111111111111111111111111111111111111111111111111111111111111 | 2222222222222222222222222222222222222222222222222222222222222222 | not measured | 760 |\n| q-cs-2 | holdout | 3333333333333333333333333333333333333333333333333333333333333333 | 4444444444444444444444444444444444444444444444444444444444444444 | not measured | 702 |\n\nBody holdout undercounts: not measured\nPrompt holdout undercounts: not measured\nMax overestimate tokens: not measured\n",
+      "input": {
+        "bodyHoldoutUndercounts": null,
+        "calibrated": false,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": "tokenCountUnavailable",
+        "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": null,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": null,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": null,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": null,
+        "rates": [],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": null,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "incomplete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "kind": "calibration-report",
+      "name": "calibration-incomplete-missing-count"
+    },
+    {
+      "expectedJson": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": true,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 52,
+        "method": "documented-tokenizer",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 650,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 0,
+        "rates": [
+          {
+            "family": "hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "tokenizerId": "fixture-chat-tokenizer",
+        "tokenizerRevision": "fixture-revision",
+        "version": 1
+      },
+      "expectedMarkdown": "# Token calibration report v1\n\nStatus: complete\nPlatform: macos\nModel: llama3.2:3b (sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)\nOllama: 0.0.0-fixture\nTemplate: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\nFamily: hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nMethod: documented-tokenizer\nTokenizer: fixture-chat-tokenizer @ fixture-revision (cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc)\nCorpus: 8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9\nHeadroom: 1500 bp\nCalibrated: yes\nError: none\n\n| sample | language | split | scalars | utf8 bytes | tokens |\n|---|---|---|---:|---:|---:|\n| cs-a:0:256 | cs | train | 256 | 279 | 77 |\n| cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18 | mixed | train | 546 | 571 | 164 |\n| cs-a:0:276 | cs | train | 276 | 300 | 83 |\n| cs-a:256:276 | cs | train | 20 | 21 | 6 |\n| cs-b:0:18 | cs | train | 18 | 21 | 6 |\n| cs-c:0:7 | cs | train | 7 | 7 | 3 |\n| cs-d:0:28 | cs | holdout | 28 | 32 | 9 |\n| de-a:0:18 | de | train | 18 | 18 | 6 |\n\n| family | language | tokens per scalar bp |\n|---|---|---:|\n| hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc | cs | 4286 |\n| hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc | de | 3334 |\n| hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc | mixed | 3004 |\n\n| query | split | prepared | wire | actual | estimated |\n|---|---|---|---|---:|---:|\n| q-cs-1 | train | 1111111111111111111111111111111111111111111111111111111111111111 | 2222222222222222222222222222222222222222222222222222222222222222 | 700 | 760 |\n| q-cs-2 | holdout | 3333333333333333333333333333333333333333333333333333333333333333 | 4444444444444444444444444444444444444444444444444444444444444444 | 650 | 702 |\n\nBody holdout undercounts: 0\nPrompt holdout undercounts: 0\nMax overestimate tokens: 52\n",
+      "input": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": true,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 52,
+        "method": "documented-tokenizer",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 650,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 0,
+        "rates": [
+          {
+            "family": "hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "hf:fixture-chat-tokenizer@fixture-revision:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "tokenizerId": "fixture-chat-tokenizer",
+        "tokenizerRevision": "fixture-revision",
+        "version": 1
+      },
+      "kind": "calibration-report",
+      "name": "calibration-documented-tokenizer"
+    },
+    {
+      "expectedJson": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": false,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 6,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 703,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 1,
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "expectedMarkdown": "# Token calibration report v1\n\nStatus: complete\nPlatform: macos\nModel: llama3.2:3b (sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)\nOllama: 0.0.0-fixture\nTemplate: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\nFamily: ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nMethod: ollama-raw-prompt\nTokenizer: none\nCorpus: 8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9\nHeadroom: 1500 bp\nCalibrated: no\nError: none\n\n| sample | language | split | scalars | utf8 bytes | tokens |\n|---|---|---|---:|---:|---:|\n| cs-a:0:256 | cs | train | 256 | 279 | 77 |\n| cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18 | mixed | train | 546 | 571 | 164 |\n| cs-a:0:276 | cs | train | 276 | 300 | 83 |\n| cs-a:256:276 | cs | train | 20 | 21 | 6 |\n| cs-b:0:18 | cs | train | 18 | 21 | 6 |\n| cs-c:0:7 | cs | train | 7 | 7 | 3 |\n| cs-d:0:28 | cs | holdout | 28 | 32 | 9 |\n| de-a:0:18 | de | train | 18 | 18 | 6 |\n\n| family | language | tokens per scalar bp |\n|---|---|---:|\n| ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | cs | 4286 |\n| ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | de | 3334 |\n| ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | mixed | 3004 |\n\n| query | split | prepared | wire | actual | estimated |\n|---|---|---|---|---:|---:|\n| q-cs-1 | train | 1111111111111111111111111111111111111111111111111111111111111111 | 2222222222222222222222222222222222222222222222222222222222222222 | 700 | 760 |\n| q-cs-2 | holdout | 3333333333333333333333333333333333333333333333333333333333333333 | 4444444444444444444444444444444444444444444444444444444444444444 | 703 | 702 |\n\nBody holdout undercounts: 0\nPrompt holdout undercounts: 1\nMax overestimate tokens: 6\n",
+      "input": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": false,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 6,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 703,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 1,
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "kind": "calibration-report",
+      "name": "calibration-holdout-undercount"
+    },
+    {
+      "error": "invalidCalibration",
+      "input": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": true,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "fixture-only",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 52,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 650,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 0,
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "kind": "calibration-report",
+      "name": "calibration-family-mismatch"
+    },
+    {
+      "error": "invalidCalibration",
+      "input": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": true,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 6,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 703,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 1,
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "kind": "calibration-report",
+      "name": "calibration-claims-calibrated-with-undercount"
+    },
+    {
+      "error": "invalidCalibration",
+      "input": {
+        "bodyHoldoutUndercounts": 0,
+        "calibrated": true,
+        "contract": "token-calibration-report",
+        "corpusHash": "8ae3ce4f181e05d24b1b9ea67bff6d1cd775af867617d785c182492b9289eec9",
+        "errorCode": null,
+        "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "headroomBp": 1500,
+        "maxOverestimateTokens": 52,
+        "method": "ollama-raw-prompt",
+        "model": "llama3.2:3b",
+        "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ollamaVersion": "0.0.0-fixture",
+        "platform": "macos",
+        "promptChecks": [
+          {
+            "actualTokens": 700,
+            "estimatedTokens": 760,
+            "preparedHash": "1111111111111111111111111111111111111111111111111111111111111111",
+            "queryId": "q-cs-1",
+            "split": "train",
+            "wireMessagesHash": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          {
+            "actualTokens": 650,
+            "estimatedTokens": 702,
+            "preparedHash": "3333333333333333333333333333333333333333333333333333333333333333",
+            "queryId": "q-cs-2",
+            "split": "holdout",
+            "wireMessagesHash": "4444444444444444444444444444444444444444444444444444444444444444"
+          }
+        ],
+        "promptHoldoutUndercounts": 0,
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4287
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "samples": [
+          {
+            "documentId": "cs-a",
+            "end": 256,
+            "id": "cs-a:0:256",
+            "language": "cs",
+            "scalars": 256,
+            "split": "train",
+            "start": 0,
+            "tokens": 77,
+            "utf8Bytes": 279
+          },
+          {
+            "documentId": null,
+            "end": null,
+            "id": "cs-a:0:256+sk-a:0:13+en-a:0:256+de-a:0:18",
+            "language": "mixed",
+            "scalars": 546,
+            "split": "train",
+            "start": null,
+            "tokens": 164,
+            "utf8Bytes": 571
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:0:276",
+            "language": "cs",
+            "scalars": 276,
+            "split": "train",
+            "start": 0,
+            "tokens": 83,
+            "utf8Bytes": 300
+          },
+          {
+            "documentId": "cs-a",
+            "end": 276,
+            "id": "cs-a:256:276",
+            "language": "cs",
+            "scalars": 20,
+            "split": "train",
+            "start": 256,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-b",
+            "end": 18,
+            "id": "cs-b:0:18",
+            "language": "cs",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 21
+          },
+          {
+            "documentId": "cs-c",
+            "end": 7,
+            "id": "cs-c:0:7",
+            "language": "cs",
+            "scalars": 7,
+            "split": "train",
+            "start": 0,
+            "tokens": 3,
+            "utf8Bytes": 7
+          },
+          {
+            "documentId": "cs-d",
+            "end": 28,
+            "id": "cs-d:0:28",
+            "language": "cs",
+            "scalars": 28,
+            "split": "holdout",
+            "start": 0,
+            "tokens": 9,
+            "utf8Bytes": 32
+          },
+          {
+            "documentId": "de-a",
+            "end": 18,
+            "id": "de-a:0:18",
+            "language": "de",
+            "scalars": 18,
+            "split": "train",
+            "start": 0,
+            "tokens": 6,
+            "utf8Bytes": 18
+          }
+        ],
+        "showTemplateSha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "status": "complete",
+        "tokenizerAssetsSha256": null,
+        "tokenizerId": null,
+        "tokenizerRevision": null,
+        "version": 1
+      },
+      "kind": "calibration-report",
+      "name": "calibration-rates-not-from-training"
+    },
+    {
+      "expected": {
+        "payloadHash": "f6dda383aab1f9093dee905e5256a448cfdaa130b5c76d128b1f25b5f0105ee0",
+        "status": "pending"
+      },
+      "input": {
+        "bindings": [],
+        "contract": "token-estimate",
+        "payloadHash": "f6dda383aab1f9093dee905e5256a448cfdaa130b5c76d128b1f25b5f0105ee0",
+        "provenance": [],
+        "rates": [],
+        "status": "pending",
+        "version": 2
+      },
+      "kind": "resource",
+      "name": "resource-pending",
+      "production": true
+    },
+    {
+      "error": "invalidCalibration",
+      "input": {
+        "bindings": [],
+        "contract": "token-estimate",
+        "payloadHash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "provenance": [],
+        "rates": [],
+        "status": "pending",
+        "version": 2
+      },
+      "kind": "resource",
+      "name": "resource-hash-mismatch",
+      "production": true
+    },
+    {
+      "error": "invalidCalibration",
+      "input": {
+        "bindings": [
+          {
+            "family": "fixture-only",
+            "model": "llama3.2:3b",
+            "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "contract": "token-estimate",
+        "payloadHash": "4b91664584eccdfe3f1658927fc20de1b242b0f59389a82d7fee834b9355ece8",
+        "provenance": [],
+        "rates": [
+          {
+            "family": "fixture-only",
+            "language": "cs",
+            "tokensPerScalarBp": 5000
+          }
+        ],
+        "status": "calibrated",
+        "version": 2
+      },
+      "kind": "resource",
+      "name": "resource-fixture-family",
+      "production": true
+    },
+    {
+      "expected": {
+        "payloadHash": "4b91664584eccdfe3f1658927fc20de1b242b0f59389a82d7fee834b9355ece8",
+        "status": "calibrated"
+      },
+      "input": {
+        "bindings": [
+          {
+            "family": "fixture-only",
+            "model": "llama3.2:3b",
+            "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "contract": "token-estimate",
+        "payloadHash": "4b91664584eccdfe3f1658927fc20de1b242b0f59389a82d7fee834b9355ece8",
+        "provenance": [],
+        "rates": [
+          {
+            "family": "fixture-only",
+            "language": "cs",
+            "tokensPerScalarBp": 5000
+          }
+        ],
+        "status": "calibrated",
+        "version": 2
+      },
+      "kind": "resource",
+      "name": "resource-fixture-family-test-mode",
+      "production": false
+    },
+    {
+      "expected": {
+        "payloadHash": "d5cb5f91185cc5ad0d93cd2452ef5e3761b06e8e2cd59e66ae70fc8fbac6f633",
+        "status": "calibrated"
+      },
+      "input": {
+        "bindings": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "model": "llama3.2:3b",
+            "modelDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "contract": "token-estimate",
+        "payloadHash": "d5cb5f91185cc5ad0d93cd2452ef5e3761b06e8e2cd59e66ae70fc8fbac6f633",
+        "provenance": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "note": "synthetic provenance shape"
+          }
+        ],
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "status": "calibrated",
+        "version": 2
+      },
+      "kind": "resource",
+      "name": "resource-calibrated-shape",
+      "production": true
+    },
+    {
+      "error": "invalidCalibration",
+      "input": {
+        "bindings": [],
+        "contract": "token-estimate",
+        "payloadHash": "70b6e35ec0b26f008b334b4c73cdd010bfee23b0c266dc7eb5734cf1b7bde412",
+        "provenance": [],
+        "rates": [
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "cs",
+            "tokensPerScalarBp": 4286
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "de",
+            "tokensPerScalarBp": 3334
+          },
+          {
+            "family": "ollama:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "language": "mixed",
+            "tokensPerScalarBp": 3004
+          }
+        ],
+        "status": "pending",
+        "version": 2
+      },
+      "kind": "resource",
+      "name": "resource-pending-with-rates",
+      "production": true
+    }
+  ],
+  "contract": "token-estimate",
+  "payloadHash": "f6dda383aab1f9093dee905e5256a448cfdaa130b5c76d128b1f25b5f0105ee0",
+  "provenance": [],
+  "rates": [],
+  "status": "pending",
+  "version": 2
+}

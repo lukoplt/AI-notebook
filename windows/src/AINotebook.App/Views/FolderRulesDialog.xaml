@@ -1,0 +1,25 @@
+<ContentDialog
+    x:Class="AINotebook.App.Views.FolderRulesDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    PrimaryButtonClick="OnPrimaryClick"
+    DefaultButton="Primary">
+    <ScrollViewer MaxHeight="560" VerticalScrollBarVisibility="Auto">
+        <StackPanel Width="440" Spacing="10">
+            <TextBox x:Name="IncludeExtensionsBox" TextChanged="OnFieldChanged" />
+            <TextBox x:Name="IgnoreGlobsBox" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="96"
+                     TextChanged="OnFieldChanged" />
+            <TextBox x:Name="FileBytesBox" InputScope="Number" TextChanged="OnFieldChanged" />
+            <TextBox x:Name="OfficeBytesBox" InputScope="Number" TextChanged="OnFieldChanged" />
+            <TextBox x:Name="TextScalarsBox" InputScope="Number" TextChanged="OnFieldChanged" />
+            <TextBox x:Name="PdfPagesBox" InputScope="Number" TextChanged="OnFieldChanged" />
+            <TextBox x:Name="ChunksBox" InputScope="Number" TextChanged="OnFieldChanged" />
+            <TextBox x:Name="CellsBox" InputScope="Number" TextChanged="OnFieldChanged" />
+            <ComboBox x:Name="EncodingBox" HorizontalAlignment="Stretch" SelectionChanged="OnEncodingChanged">
+                <ComboBoxItem x:Name="EncodingCp1250Item" Tag="cp1250" />
+                <ComboBoxItem x:Name="EncodingNoneItem" Tag="none" />
+            </ComboBox>
+            <TextBlock x:Name="ValidationText" TextWrapping="Wrap" Visibility="Collapsed" />
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>

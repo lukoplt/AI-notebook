@@ -19,7 +19,7 @@ struct SourcePreviewSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(t.string(.sourcePreviewTitle)).font(.headline)
+                Text(t.string(.sourcePreviewTitle)).tokenFont(.headline)
                 Spacer()
                 Button(t.string(.cancel)) { isPresented = false }
             }
@@ -38,19 +38,19 @@ struct SourcePreviewSheet: View {
             .environmentObject(settings)
             Divider()
             Text(t.string(.sourcePreviewChunksHeader) + " (\(chunks.count))")
-                .font(.subheadline).bold()
+                .tokenFont(.headline)
             if chunks.isEmpty {
-                Text(t.string(.sourcePreviewNoChunks)).foregroundStyle(.secondary)
+                Text(t.string(.sourcePreviewNoChunks)).tokenForeground(.text2)
             } else {
                 List(chunks) { chunk in
                     VStack(alignment: .leading, spacing: 2) {
                         HStack {
-                            Text("#\(chunk.ord + 1)").font(.caption2).foregroundStyle(.tertiary)
+                            Text("#\(chunk.ord + 1)").tokenFont(.caption).tokenForeground(.text3)
                             if let page = chunk.pageHint {
-                                Text("p.\(page)").font(.caption2).foregroundStyle(.tertiary)
+                                Text(String(format: t.string(.citationPage), "\(page)")).tokenFont(.caption).tokenForeground(.text3)
                             }
                         }
-                        Text(chunk.text).font(.callout).textSelection(.enabled)
+                        Text(chunk.text).tokenFont(.body).textSelection(.enabled)
                     }
                     .padding(.vertical, 2)
                 }
@@ -74,29 +74,41 @@ struct SourcePreviewSheet: View {
         reloadTags()
     }
 
+    private func statusText(_ status: SourceStatus) -> String {
+        switch status {
+        case .pending: t.string(.sourceStatusPending)
+        case .chunking: t.string(.sourceStatusChunking)
+        case .ready: t.string(.sourceStatusReady)
+        case .error: t.string(.sourceStatusError)
+        }
+    }
+
     private var metadata: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(source.title).font(.title3).bold()
+            Text(source.title).tokenFont(.title)
             Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 2) {
-                GridRow { Text("type").foregroundStyle(.secondary); Text(source.type.rawValue) }
-                GridRow { Text("status").foregroundStyle(.secondary); Text(source.status.rawValue) }
+                GridRow { Text(t.string(.sourceMetaType)).tokenForeground(.text2); Text(source.type.rawValue) }
+                GridRow { Text(t.string(.sourceMetaStatus)).tokenForeground(.text2); Text(statusText(source.status)) }
+                if source.status == .error, let detail = IngestionErrorText.key(for: source.error).map(t.string) {
+                    GridRow { Color.clear.frame(width: 0, height: 0); Text(detail).tokenForeground(.danger) }
+                }
                 if let uri = source.uri {
-                    GridRow { Text("uri").foregroundStyle(.secondary); Text(uri).lineLimit(1) }
+                    GridRow { Text(t.string(.sourceMetaUri)).tokenForeground(.text2); Text(uri).lineLimit(1) }
                 }
                 GridRow {
-                    Text("ingested").foregroundStyle(.secondary)
+                    Text(t.string(.sourceMetaIngested)).tokenForeground(.text2)
                     Text(source.ingestedAt.formatted(date: .abbreviated, time: .shortened))
                 }
             }
-            .font(.caption)
+            .tokenFont(.caption)
             if let path = source.rawPath, !path.isEmpty {
                 Button(t.string(.sourcePreviewOpenOriginal)) {
                     NSWorkspace.shared.open(URL(fileURLWithPath: path))
                 }
-                .font(.caption)
+                .tokenFont(.caption)
             } else if let uri = source.uri, let url = URL(string: uri) {
                 Button(t.string(.sourcePreviewOpenOriginal)) { NSWorkspace.shared.open(url) }
-                    .font(.caption)
+                    .tokenFont(.caption)
             }
         }
     }

@@ -47,7 +47,7 @@ public sealed partial class NotebookStore : IDisposable
     /// <summary>Fires after a note is deleted, with the note's UUID.</summary>
     public Func<string, Task>? OnNoteDeleted { get; set; }
 
-    public NotebookStore(StorePath path, AppLanguage language = AppLanguage.English)
+    public NotebookStore(StorePath path, AppLanguage language = AppLanguage.English, string? configuredEmbeddingModelKey = null)
     {
         _language = language;
         // In-memory uses a connection-private DB (no shared cache) so each store
@@ -63,11 +63,20 @@ public sealed partial class NotebookStore : IDisposable
         var connStr = path.IsInMemory
             ? $"Data Source=InMemoryAINotebook-{Guid.NewGuid():N};Mode=Memory;Cache=Private"
             : $"Data Source={path.FilePath};Pooling=False";
-        _conn = new SqliteConnection(connStr);
-        _conn.Open();
-        Execute("PRAGMA foreign_keys=ON");
-        Migrator.Migrate(_conn);
-        BuiltinTransformations.SeedIfNeeded(_conn, _language);
+        lock (_gate)
+        {
+            _conn = new SqliteConnection(connStr);
+            try
+            {
+                _conn.Open();
+                Execute("PRAGMA foreign_keys=ON");
+                Migrator.Migrate(_conn, configuredEmbeddingModelKey);
+                BuiltinTransformations.SeedIfNeeded(_conn, _language);
+                FolderDefaultsUpgrade.Apply(_conn, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+                InstallRetrievalInvalidation();
+            }
+            catch { _conn.Dispose(); throw; }
+        }
     }
 
     /// <summary>Test/internal affordance: access the open connection.</summary>
@@ -165,11 +174,12 @@ public sealed partial class NotebookStore : IDisposable
         lock (_gate)
         {
             return _conn.Query(
-                "SELECT id, name, description, created_at, updated_at, instructions FROM notebooks ORDER BY updated_at DESC")
+                "SELECT id, name, description, created_at, updated_at, instructions, evidence_budget_cap FROM notebooks ORDER BY updated_at DESC")
                 .Select(r => new Notebook(
                     (long)r.id, (string)r.name, (string)r.description,
                     SqliteDate.FromDb((string)r.created_at), SqliteDate.FromDb((string)r.updated_at),
-                    r.instructions is null ? "" : (string)r.instructions))
+                    r.instructions is null ? "" : (string)r.instructions,
+                    (int?)(long?)r.evidence_budget_cap))
                 .ToList();
         }
     }
@@ -186,10 +196,10 @@ public sealed partial class NotebookStore : IDisposable
                 new { name = trimmed, updated = SqliteDate.ToDb(now), id });
             if (rows == 0) throw new StoreException.NotebookNotFound(id);
             var row = _conn.QuerySingle(
-                "SELECT id, name, description, created_at, updated_at, instructions FROM notebooks WHERE id=$id", new { id });
+                "SELECT id, name, description, created_at, updated_at, instructions, evidence_budget_cap FROM notebooks WHERE id=$id", new { id });
             return new Notebook((long)row.id, (string)row.name, (string)row.description,
                 SqliteDate.FromDb((string)row.created_at), SqliteDate.FromDb((string)row.updated_at),
-                row.instructions is null ? "" : (string)row.instructions);
+                row.instructions is null ? "" : (string)row.instructions, (int?)(long?)row.evidence_budget_cap);
         }
     }
 

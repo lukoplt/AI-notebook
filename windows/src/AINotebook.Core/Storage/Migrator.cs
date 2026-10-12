@@ -1,9 +1,10 @@
 using Microsoft.Data.Sqlite;
+using AINotebook.Core.Providers;
 
 namespace AINotebook.Core.Storage;
 
 /// <summary>
-/// Runs the 10 versioned migrations, tracked by identifier string in
+/// Runs versioned migrations, tracked by identifier string in
 /// grdb_migrations(identifier TEXT PK) — faithful to GRDB DatabaseMigrator.
 /// DDL is verbatim from the live production DB schema.
 /// </summary>
@@ -29,13 +30,29 @@ public static class Migrator
         ("v16_requalify_embedding_keys", V16),
         ("v17_fix_provider_timestamps", V17),
         ("v18_personas", V18),
+        ("v19_folder_rag", ""),
+        ("v20_embedding_dedup", MigrationV20.Ddl),
+        ("v21_extract_retry_budget", MigrationV21.Ddl),
     };
 
-    public static void Migrate(SqliteConnection conn)
+    public static void Migrate(SqliteConnection conn, string? configuredEmbeddingModelKey = null)
+        => MigrateThrough(conn, Migrations[^1].Id, configuredEmbeddingModelKey);
+
+    /// <summary>Applies through the requested version; caller holds its connection gate.</summary>
+    public static void Migrate(SqliteConnection conn, int throughVersion)
     {
+        if (throughVersion < 1 || throughVersion > Migrations.Length)
+            throw new ArgumentOutOfRangeException(nameof(throughVersion));
+        MigrateThrough(conn, Migrations[throughVersion - 1].Id);
+    }
+
+    internal static void MigrateThrough(SqliteConnection conn, string finalIdentifier, string? configuredEmbeddingModelKey = null)
+    {
+        int finalIndex = Array.FindIndex(Migrations, migration => migration.Id == finalIdentifier);
+        if (finalIndex < 0) throw new ArgumentException("Unknown migration identifier.", nameof(finalIdentifier));
         EnsureTrackingTable(conn);
         var applied = AppliedIdentifiers(conn);
-        foreach (var (id, sql) in Migrations)
+        foreach (var (id, sql) in Migrations.Take(finalIndex + 1))
         {
             if (applied.Contains(id)) continue;
             using var tx = conn.BeginTransaction();
@@ -47,6 +64,11 @@ public static class Migrator
                 cmd.ExecuteNonQuery();
             }
             RunCustom(conn, tx, id);
+            if (id == "v19_folder_rag")
+            {
+                var embeddingKey = ConvertProviderConfiguration(conn, tx, configuredEmbeddingModelKey);
+                MigrationV19.Apply(conn, tx, embeddingKey);
+            }
             using (var ins = conn.CreateCommand())
             {
                 ins.Transaction = tx;
@@ -56,6 +78,57 @@ public static class Migrator
             }
             tx.Commit();
         }
+    }
+
+    // v19 owns this one-time conversion. Materialize before updating and never
+    // catch database failures: the roots, handoff and schema commit atomically.
+    private static string? ConvertProviderConfiguration(SqliteConnection conn, SqliteTransaction tx, string? embeddingKey)
+    {
+        var providers = new List<(string Id, ProviderType Type, string Root)>();
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.Transaction = tx;
+            cmd.CommandText = "SELECT id,type,base_url FROM providers";
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read()) providers.Add((reader.GetString(0), ProviderTypeExtensions.FromStorageString(reader.GetString(1)), reader.GetString(2)));
+        }
+        foreach (var provider in providers)
+        {
+            string root;
+            try { root = ProviderApiRoot.ConvertLegacy(provider.Type, provider.Root); }
+            catch (ProviderConfigurationException ex) when (ex.Code == "invalidBaseURL") { continue; }
+            using var update = conn.CreateCommand();
+            update.Transaction = tx;
+            update.CommandText = "UPDATE providers SET base_url=$root WHERE id=$id";
+            update.Parameters.AddWithValue("$root", root);
+            update.Parameters.AddWithValue("$id", provider.Id);
+            update.ExecuteNonQuery();
+        }
+        // Settings live outside SQLite. A durable handoff lets App apply the
+        // replacement on restart and acknowledge the notice independently.
+        using var state = conn.CreateCommand();
+        state.Transaction = tx;
+        state.CommandText = """
+            CREATE TABLE provider_configuration_conversion (
+                id INTEGER PRIMARY KEY CHECK(id=1),
+                embedding_provider_id TEXT NOT NULL,
+                embedding_model TEXT NOT NULL,
+                selection_pending INTEGER NOT NULL CHECK(selection_pending IN (0,1)),
+                notice_pending INTEGER NOT NULL CHECK(notice_pending IN (0,1))
+            )
+            """;
+        state.ExecuteNonQuery();
+        var separator = embeddingKey?.IndexOf(':') ?? -1;
+        var selectedId = separator > 0 ? embeddingKey![..separator] : null;
+        if (providers.Any(p => p.Id == selectedId && !p.Type.SupportsEmbeddings()))
+        {
+            state.CommandText = "INSERT INTO provider_configuration_conversion VALUES(1,$provider,$model,1,1)";
+            state.Parameters.AddWithValue("$provider", ProviderConfig.OllamaId);
+            state.Parameters.AddWithValue("$model", "nomic-embed-text");
+            state.ExecuteNonQuery();
+            return ProviderConfig.OllamaId + ":nomic-embed-text";
+        }
+        return embeddingKey;
     }
 
     private static void EnsureTrackingTable(SqliteConnection conn)

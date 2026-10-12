@@ -1,0 +1,1828 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "embedding_calls": 1,
+        "fused": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          },
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ],
+        "lexical": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          }
+        ],
+        "vector": [
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ]
+      },
+      "input": {
+        "documents": [
+          {
+            "chunks": [
+              {
+                "text": "fox on shelf",
+                "vector": [
+                  0,
+                  1
+                ]
+              }
+            ],
+            "document_id": "d1",
+            "folder_id": 10,
+            "notebook_id": 1,
+            "source_id": 1
+          },
+          {
+            "chunks": [
+              {
+                "text": "vector target",
+                "vector": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "document_id": "d2",
+            "folder_id": 20,
+            "notebook_id": 1,
+            "source_id": 2
+          }
+        ],
+        "fetch_k": 1,
+        "include_vectors": true,
+        "notebook_id": 1,
+        "query": "fox",
+        "query_vector": [
+          1,
+          0
+        ],
+        "rrf_k": 60,
+        "scope": {
+          "kind": "all"
+        },
+        "top_k": 1
+      },
+      "kind": "retrieval",
+      "name": "disjoint-branches",
+      "subcases": [
+        {
+          "expected": {
+            "embedding_calls": 0,
+            "error": "invalid_fetch_k"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 0,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              1,
+              0
+            ],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "zero-fetch-k"
+        },
+        {
+          "expected": {
+            "embedding_calls": 0,
+            "error": "invalid_fetch_k"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              1,
+              0
+            ],
+            "rrf_k": 0,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "zero-rrf-k"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              1,
+              0
+            ],
+            "query_vectors": [],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "missing-query-vector"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              1,
+              0
+            ],
+            "query_vectors": [
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "extra-query-vector"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              "nan",
+              0
+            ],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "nonfinite-query-vector"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              1,
+              0,
+              0
+            ],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "mismatched-query-dimension"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "empty-query-vector"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              0,
+              0
+            ],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "zero-query-vector"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              1,
+              0
+            ],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "mismatched-stored-dimension"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      "nan"
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              1,
+              0
+            ],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "nonfinite-stored-vector"
+        },
+        {
+          "expected": {
+            "embedding_calls": 1,
+            "error": "invalid_embedding"
+          },
+          "input": {
+            "documents": [
+              {
+                "chunks": [
+                  {
+                    "text": "fox on shelf",
+                    "vector": [
+                      0,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d1",
+                "folder_id": 10,
+                "notebook_id": 1,
+                "source_id": 1
+              },
+              {
+                "chunks": [
+                  {
+                    "text": "vector target",
+                    "vector": [
+                      1,
+                      0
+                    ]
+                  }
+                ],
+                "document_id": "d2",
+                "folder_id": 20,
+                "notebook_id": 1,
+                "source_id": 2
+              }
+            ],
+            "fetch_k": 1,
+            "include_vectors": true,
+            "notebook_id": 1,
+            "query": "fox",
+            "query_vector": [
+              1,
+              0
+            ],
+            "rrf_k": 60,
+            "scope": {
+              "kind": "all"
+            },
+            "top_k": 1
+          },
+          "kind": "retrieval",
+          "name": "zero-stored-vector"
+        },
+        {
+          "expected": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "input": {
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 12,
+                "start": 0
+              },
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d2",
+                "end": 13,
+                "start": 0
+              }
+            ],
+            "gold": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d2",
+                "end": 6,
+                "start": 0
+              }
+            ],
+            "include_vectors": true,
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 12,
+                "start": 0
+              }
+            ],
+            "packed": null,
+            "top_k": 1
+          },
+          "kind": "metrics",
+          "name": "full-union-recall"
+        }
+      ]
+    },
+    {
+      "expected": {
+        "embedding_calls": 1,
+        "fused": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          }
+        ],
+        "lexical": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          }
+        ],
+        "vector": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          }
+        ]
+      },
+      "input": {
+        "documents": [
+          {
+            "chunks": [
+              {
+                "text": "fox on shelf",
+                "vector": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "document_id": "d1",
+            "folder_id": 10,
+            "notebook_id": 1,
+            "source_id": 1
+          },
+          {
+            "chunks": [
+              {
+                "text": "vector target",
+                "vector": [
+                  0,
+                  1
+                ]
+              }
+            ],
+            "document_id": "d2",
+            "folder_id": 20,
+            "notebook_id": 1,
+            "source_id": 2
+          }
+        ],
+        "fetch_k": 1,
+        "include_vectors": true,
+        "notebook_id": 1,
+        "query": "fox",
+        "query_vector": [
+          1,
+          0
+        ],
+        "rrf_k": 60,
+        "scope": {
+          "kind": "all"
+        },
+        "top_k": 1
+      },
+      "kind": "retrieval",
+      "name": "same-hit-dedup"
+    },
+    {
+      "expected": {
+        "embedding_calls": 1,
+        "fused": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          },
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ],
+        "lexical": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          },
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ],
+        "vector": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          },
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ]
+      },
+      "input": {
+        "documents": [
+          {
+            "chunks": [
+              {
+                "text": "fox on shelf",
+                "vector": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "document_id": "d1",
+            "folder_id": 10,
+            "notebook_id": 1,
+            "source_id": 1
+          },
+          {
+            "chunks": [
+              {
+                "text": "fox on shelf",
+                "vector": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "document_id": "d2",
+            "folder_id": 20,
+            "notebook_id": 1,
+            "source_id": 2
+          }
+        ],
+        "fetch_k": 2,
+        "include_vectors": true,
+        "notebook_id": 1,
+        "query": "fox",
+        "query_vector": [
+          1,
+          0
+        ],
+        "rrf_k": 60,
+        "scope": {
+          "kind": "all"
+        },
+        "top_k": 1
+      },
+      "kind": "retrieval",
+      "name": "equal-score-stable-id"
+    },
+    {
+      "expected": {
+        "embedding_calls": 1,
+        "fused": [
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ],
+        "lexical": [
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ],
+        "vector": [
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ]
+      },
+      "input": {
+        "documents": [
+          {
+            "chunks": [
+              {
+                "text": "fox",
+                "vector": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "document_id": "d1",
+            "folder_id": 10,
+            "notebook_id": 1,
+            "source_id": 1
+          },
+          {
+            "chunks": [
+              {
+                "text": "fox on shelf",
+                "vector": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "document_id": "d2",
+            "folder_id": 20,
+            "notebook_id": 1,
+            "source_id": 2
+          }
+        ],
+        "fetch_k": 1,
+        "include_vectors": true,
+        "notebook_id": 1,
+        "query": "fox",
+        "query_vector": [
+          1,
+          0
+        ],
+        "rrf_k": 60,
+        "scope": {
+          "folderIds": [
+            20
+          ],
+          "kind": "selection",
+          "sourceIds": []
+        },
+        "top_k": 1
+      },
+      "kind": "retrieval",
+      "name": "folder-before-limit"
+    },
+    {
+      "expected": {
+        "embedding_calls": 1,
+        "fused": [
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ],
+        "lexical": [
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ],
+        "vector": [
+          {
+            "document_id": "d2",
+            "ordinal": 0
+          }
+        ]
+      },
+      "input": {
+        "documents": [
+          {
+            "chunks": [
+              {
+                "text": "fox",
+                "vector": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "document_id": "d1",
+            "folder_id": 10,
+            "notebook_id": 2,
+            "source_id": 1
+          },
+          {
+            "chunks": [
+              {
+                "text": "fox on shelf",
+                "vector": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "document_id": "d2",
+            "folder_id": 20,
+            "notebook_id": 1,
+            "source_id": 2
+          }
+        ],
+        "fetch_k": 1,
+        "include_vectors": true,
+        "notebook_id": 1,
+        "query": "fox",
+        "query_vector": [
+          1,
+          0
+        ],
+        "rrf_k": 60,
+        "scope": {
+          "kind": "all"
+        },
+        "top_k": 1
+      },
+      "kind": "retrieval",
+      "name": "other-notebook-exclusion"
+    },
+    {
+      "expected": {
+        "embedding_calls": 0,
+        "fused": [],
+        "lexical": [],
+        "vector": []
+      },
+      "input": {
+        "documents": [
+          {
+            "chunks": [
+              {
+                "text": "fox on shelf",
+                "vector": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "document_id": "d1",
+            "folder_id": 10,
+            "notebook_id": 1,
+            "source_id": 1
+          }
+        ],
+        "fetch_k": 1,
+        "include_vectors": true,
+        "notebook_id": 1,
+        "query": "fox",
+        "query_vector": [
+          1,
+          0
+        ],
+        "rrf_k": 60,
+        "scope": {
+          "folderIds": [],
+          "kind": "selection",
+          "sourceIds": []
+        },
+        "top_k": 1
+      },
+      "kind": "retrieval",
+      "name": "empty-selection"
+    },
+    {
+      "expected": {
+        "embedding_calls": 0,
+        "fused": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          }
+        ],
+        "lexical": [
+          {
+            "document_id": "d1",
+            "ordinal": 0
+          }
+        ],
+        "vector": []
+      },
+      "input": {
+        "documents": [
+          {
+            "chunks": [
+              {
+                "text": "fox on shelf",
+                "vector": [
+                  0,
+                  1
+                ]
+              }
+            ],
+            "document_id": "d1",
+            "folder_id": 10,
+            "notebook_id": 1,
+            "source_id": 1
+          },
+          {
+            "chunks": [
+              {
+                "text": "vector target",
+                "vector": [
+                  1,
+                  0
+                ]
+              }
+            ],
+            "document_id": "d2",
+            "folder_id": 20,
+            "notebook_id": 1,
+            "source_id": 2
+          }
+        ],
+        "fetch_k": 1,
+        "include_vectors": false,
+        "notebook_id": 1,
+        "query": "fox",
+        "query_vector": [
+          1,
+          0
+        ],
+        "rrf_k": 60,
+        "scope": {
+          "kind": "all"
+        },
+        "top_k": 1
+      },
+      "kind": "retrieval",
+      "name": "lexical-only",
+      "subcases": [
+        {
+          "expected": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "input": {
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 12,
+                "start": 0
+              }
+            ],
+            "gold": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 3,
+                "start": 0
+              }
+            ],
+            "include_vectors": false,
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 12,
+                "start": 0
+              }
+            ],
+            "packed": null,
+            "top_k": 1
+          },
+          "kind": "metrics",
+          "name": "lexical-only-metrics"
+        }
+      ]
+    },
+    {
+      "expected": {
+        "candidate_recall_at_fetch_k": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        },
+        "hybrid_recall_at_top_k": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_fetch_k": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_top_k": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        },
+        "packed_evidence_recall": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        }
+      },
+      "input": {
+        "fused": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 3,
+            "start": 0
+          }
+        ],
+        "gold": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 7,
+            "start": 4
+          }
+        ],
+        "include_vectors": true,
+        "lexical": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 3,
+            "start": 0
+          }
+        ],
+        "packed": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 3,
+            "start": 0
+          }
+        ],
+        "top_k": 1
+      },
+      "kind": "metrics",
+      "name": "second-occurrence-only"
+    },
+    {
+      "expected": {
+        "candidate_recall_at_fetch_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "hybrid_recall_at_top_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_fetch_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_top_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "packed_evidence_recall": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        }
+      },
+      "input": {
+        "fused": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 7,
+            "start": 0
+          },
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 9,
+            "start": 3
+          }
+        ],
+        "gold": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 6,
+            "start": 4
+          }
+        ],
+        "include_vectors": true,
+        "lexical": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 7,
+            "start": 0
+          },
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 9,
+            "start": 3
+          }
+        ],
+        "packed": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 7,
+            "start": 0
+          },
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 9,
+            "start": 3
+          }
+        ],
+        "top_k": 1
+      },
+      "kind": "metrics",
+      "name": "overlap-earns-once"
+    },
+    {
+      "expected": {
+        "candidate_recall_at_fetch_k": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        },
+        "hybrid_recall_at_top_k": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_fetch_k": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_top_k": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        },
+        "packed_evidence_recall": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        }
+      },
+      "input": {
+        "fused": [
+          {
+            "content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "document_id": "d1",
+            "end": 8,
+            "start": 0
+          }
+        ],
+        "gold": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 7,
+            "start": 4
+          }
+        ],
+        "include_vectors": true,
+        "lexical": [
+          {
+            "content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "document_id": "d1",
+            "end": 8,
+            "start": 0
+          }
+        ],
+        "packed": [
+          {
+            "content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "document_id": "d1",
+            "end": 8,
+            "start": 0
+          }
+        ],
+        "top_k": 1
+      },
+      "kind": "metrics",
+      "name": "wrong-hash"
+    },
+    {
+      "expected": {
+        "candidate_recall_at_fetch_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "hybrid_recall_at_top_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_fetch_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_top_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "packed_evidence_recall": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        }
+      },
+      "input": {
+        "fused": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 8,
+            "start": 0
+          }
+        ],
+        "gold": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 7,
+            "start": 4
+          }
+        ],
+        "include_vectors": true,
+        "lexical": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 8,
+            "start": 0
+          }
+        ],
+        "packed": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 3,
+            "start": 0
+          }
+        ],
+        "top_k": 1
+      },
+      "kind": "metrics",
+      "name": "packed-suffix-omitted",
+      "subcases": [
+        {
+          "expected": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "input": {
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 8,
+                "start": 0
+              }
+            ],
+            "gold": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 6,
+                "start": 2
+              }
+            ],
+            "include_vectors": true,
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 8,
+                "start": 0
+              }
+            ],
+            "packed": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 3,
+                "start": 0
+              },
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 8,
+                "start": 5
+              }
+            ],
+            "top_k": 1
+          },
+          "kind": "metrics",
+          "name": "disjoint-packed-gap"
+        }
+      ]
+    },
+    {
+      "expected": {
+        "candidate_recall_at_fetch_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "hybrid_recall_at_top_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_fetch_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "lexical_recall_at_top_k": {
+          "found": 1,
+          "recall_bp": 10000,
+          "status": "measured",
+          "total": 1
+        },
+        "packed_evidence_recall": {
+          "found": 0,
+          "recall_bp": 0,
+          "status": "measured",
+          "total": 1
+        }
+      },
+      "input": {
+        "fused": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 8,
+            "start": 0
+          }
+        ],
+        "gold": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 7,
+            "start": 4
+          }
+        ],
+        "include_vectors": true,
+        "lexical": [
+          {
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "document_id": "d1",
+            "end": 8,
+            "start": 0
+          }
+        ],
+        "packed": [],
+        "top_k": 1
+      },
+      "kind": "metrics",
+      "name": "measured-empty-pack",
+      "subcases": [
+        {
+          "expected": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "input": {
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 8,
+                "start": 0
+              }
+            ],
+            "gold": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 7,
+                "start": 4
+              }
+            ],
+            "include_vectors": true,
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 8,
+                "start": 0
+              }
+            ],
+            "packed": null,
+            "top_k": 1
+          },
+          "kind": "metrics",
+          "name": "absent-packing-hook"
+        },
+        {
+          "expected": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "input": {
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 8,
+                "start": 0
+              }
+            ],
+            "gold": [],
+            "include_vectors": true,
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "d1",
+                "end": 8,
+                "start": 0
+              }
+            ],
+            "packed": [],
+            "top_k": 1
+          },
+          "kind": "metrics",
+          "name": "empty-gold-not-applicable"
+        }
+      ]
+    }
+  ],
+  "contract": "eval-retrieval",
+  "version": 1
+}

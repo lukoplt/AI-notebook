@@ -21,7 +21,7 @@ final class ProviderTypeTests: XCTestCase {
     func testDefaultBaseURLs() {
         XCTAssertEqual(ProviderType.ollama.defaultBaseURL, "http://127.0.0.1:11434")
         XCTAssertEqual(ProviderType.anthropic.defaultBaseURL, "https://api.anthropic.com")
-        XCTAssertEqual(ProviderType.openai.defaultBaseURL, "https://api.openai.com")
+        XCTAssertEqual(ProviderType.openai.defaultBaseURL, "https://api.openai.com/v1")
         XCTAssertEqual(ProviderType.openaiCompatible.defaultBaseURL, "")
         XCTAssertEqual(ProviderType.openwebui.defaultBaseURL, "")
     }

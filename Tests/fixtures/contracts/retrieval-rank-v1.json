@@ -1,0 +1,721 @@
+{
+  "cases": [
+    {
+      "expected": [
+        {
+          "chunkId": 20,
+          "rrfMicro": 32522
+        },
+        {
+          "chunkId": 10,
+          "rrfMicro": 16393
+        },
+        {
+          "chunkId": 30,
+          "rrfMicro": 16129
+        }
+      ],
+      "lexical": [
+        20,
+        30
+      ],
+      "name": "union",
+      "vector": [
+        10,
+        20
+      ]
+    },
+    {
+      "expected": [
+        {
+          "chunkId": 3,
+          "rrfMicro": 16393
+        },
+        {
+          "chunkId": 9,
+          "rrfMicro": 16393
+        }
+      ],
+      "lexical": [
+        9
+      ],
+      "name": "tie",
+      "vector": [
+        3
+      ]
+    },
+    {
+      "expected": [
+        {
+          "chunkId": 20,
+          "rrfMicro": 32786
+        },
+        {
+          "chunkId": 30,
+          "rrfMicro": 16129
+        }
+      ],
+      "lexical": [
+        20,
+        20,
+        30
+      ],
+      "name": "dedupe",
+      "vector": [
+        20
+      ]
+    },
+    {
+      "expected": [],
+      "lexical": [],
+      "name": "empty",
+      "vector": []
+    },
+    {
+      "expected": [
+        {
+          "chunkId": 1,
+          "rrfMicro": 16393
+        },
+        {
+          "chunkId": 3,
+          "rrfMicro": 16393
+        },
+        {
+          "chunkId": 2,
+          "rrfMicro": 16129
+        },
+        {
+          "chunkId": 4,
+          "rrfMicro": 16129
+        }
+      ],
+      "lexical": [
+        1,
+        2
+      ],
+      "name": "full-pool",
+      "vector": [
+        3,
+        4
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [
+        2,
+        3
+      ],
+      "expectedScoreMicros": [
+        0,
+        -1000000
+      ],
+      "k": 2,
+      "name": "mask-before-heap",
+      "query": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 0,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [
+        3
+      ],
+      "expectedScoreMicros": [
+        1000000
+      ],
+      "k": 1,
+      "name": "tie-id",
+      "query": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 9,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 901,
+          "sourceId": 9,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [
+        1,
+        2
+      ],
+      "expectedScoreMicros": [
+        0,
+        -1000000
+      ],
+      "k": 2,
+      "name": "zero-legacy",
+      "query": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            0,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2,
+          "vector": [
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [
+        4
+      ],
+      "expectedScoreMicros": [
+        1000000
+      ],
+      "invalidVectorCount": 3,
+      "k": 2,
+      "name": "nonfinite",
+      "query": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "float32Bits": [
+            2143289344,
+            0
+          ],
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "float32Bits": [
+            2139095040,
+            0
+          ],
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2
+        },
+        {
+          "blobHex": "0000803f",
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3
+        },
+        {
+          "chunkId": 4,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 401,
+          "sourceId": 4,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [],
+      "expectedScoreMicros": [],
+      "k": 0,
+      "name": "k0",
+      "query": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [
+        1,
+        2,
+        3
+      ],
+      "expectedScoreMicros": [
+        1000000,
+        0,
+        -1000000
+      ],
+      "k": 9,
+      "name": "k9",
+      "query": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [
+        3,
+        6
+      ],
+      "expectedScoreMicros": [
+        1000000,
+        1000000
+      ],
+      "k": 2,
+      "name": "tied-forward",
+      "query": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 9,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 901,
+          "sourceId": 9,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 6,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 601,
+          "sourceId": 6,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [
+        3,
+        6
+      ],
+      "expectedScoreMicros": [
+        1000000,
+        1000000
+      ],
+      "k": 2,
+      "name": "tied-reversed",
+      "query": [
+        1,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 6,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 601,
+          "sourceId": 6,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 9,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 901,
+          "sourceId": 9,
+          "vector": [
+            1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [
+        1
+      ],
+      "expectedScoreMicros": [
+        960000
+      ],
+      "k": 1,
+      "name": "normalized-dot",
+      "query": [
+        3,
+        4
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            4,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [],
+      "expectedScoreMicros": [],
+      "expectedStatus": "invalidQueryVector",
+      "k": 2,
+      "name": "query-empty",
+      "query": [],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [],
+      "expectedScoreMicros": [],
+      "expectedStatus": "invalidQueryVector",
+      "k": 2,
+      "name": "query-zero",
+      "query": [
+        0,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [],
+      "expectedScoreMicros": [],
+      "expectedStatus": "invalidQueryVector",
+      "k": 2,
+      "name": "query-wrong-dims",
+      "query": [
+        1
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2,
+      "expectedIds": [],
+      "expectedScoreMicros": [],
+      "expectedStatus": "invalidQueryVector",
+      "k": 2,
+      "name": "query-nonfinite",
+      "queryFloat32Bits": [
+        2143289344,
+        0
+      ],
+      "rows": [
+        {
+          "chunkId": 1,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 101,
+          "sourceId": 1,
+          "vector": [
+            1,
+            0
+          ]
+        },
+        {
+          "chunkId": 2,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 201,
+          "sourceId": 2,
+          "vector": [
+            0,
+            1
+          ]
+        },
+        {
+          "chunkId": 3,
+          "eligible": 1,
+          "ord": 0,
+          "revisionId": 301,
+          "sourceId": 3,
+          "vector": [
+            -1,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "dims": 2097153,
+      "expectedBlobReads": 0,
+      "expectedEmbeddingCalls": 0,
+      "expectedStatus": "oversizedVector",
+      "name": "oversized-generation"
+    }
+  ],
+  "contract": "retrieval-rank",
+  "rrfK": 60,
+  "version": 1
+}

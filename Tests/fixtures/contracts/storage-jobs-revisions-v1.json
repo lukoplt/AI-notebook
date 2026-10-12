@@ -1,0 +1,1973 @@
+{
+  "contract": "storage-jobs-revisions",
+  "version": 1,
+  "contractDecisions": [
+    "folder-rag-v1 section 1b overrides the older WP3 job SQL and DTO: nextRetryAt is nullable and cleared on start and completion.",
+    "Normal failure is failed with a retry deadline; a separate due retry moves it to queued. Fifth failure or expiry is failed with no deadline.",
+    "Pause accepts queued jobs only; resume preserves the existing retry deadline. Running pause is invalidValue.",
+    "wrong-source maps revision ownership mismatch to the existing staleRevision code; direct SQL trigger text remains revision mismatch."
+  ],
+  "snapshotResult": "Boolean acceptance; recovery count is normalized to count > 0; thrown errors are false with expectedError.",
+  "nullableNextRetryAt": true,
+  "cases": [
+    {
+      "name": "scalar-spans",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "canonicalText": "A😀éZ",
+      "chunkText": "😀é",
+      "start": 1,
+      "end": 4,
+      "draft": {
+        "contentHash": "scalar-hash",
+        "canonicalText": "A😀éZ",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "😀é",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 1,
+          "charEnd": 4,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "expected": {
+        "scalarCount": 5,
+        "chunkCount": 1,
+        "jobState": "done",
+        "revisionId": 102
+      }
+    },
+    {
+      "name": "immutable",
+      "operation": "revision-update",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sql": "UPDATE source_revisions SET canonical_text='changed' WHERE id=101",
+      "expectedError": "immutableRevision",
+      "expectedSqlError": "immutable revision",
+      "expected": {
+        "revisionId": 101,
+        "canonicalText": "old"
+      }
+    },
+    {
+      "name": "empty-publication",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "empty-hash",
+        "canonicalText": "",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [],
+      "now": 0,
+      "leaseToken": "owner",
+      "expected": {
+        "currentRevision": 102,
+        "publishedRevisionId": 102,
+        "visibleChunkIds": [],
+        "retainedChunkIds": [
+          1001
+        ],
+        "jobState": "done"
+      }
+    },
+    {
+      "name": "old-chunks-retained",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "new",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "new",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 0,
+          "charEnd": 3,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "expected": {
+        "currentRevision": 102,
+        "publishedRevisionId": 102,
+        "visibleTexts": [
+          "new"
+        ],
+        "retainedChunkIds": [
+          1001
+        ],
+        "chunkCount": 1,
+        "jobState": "done"
+      }
+    },
+    {
+      "name": "wrong-source",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(2,1,'text','source two','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(102,1,2,'new-hash','new',1,2,'2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(201,2,1,'other-hash','other',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=102 WHERE id=1",
+        "UPDATE sources SET current_revision=201,published_revision_id=201 WHERE id=2"
+      ],
+      "sourceId": 2,
+      "revisionId": 102,
+      "chunks": [
+        {
+          "text": "new",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 0,
+          "charEnd": 3,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "jobSourceId": 1,
+      "target": "source:1",
+      "targetRevision": 102,
+      "now": 0,
+      "leaseToken": "owner",
+      "expectedError": "staleRevision",
+      "expectedSqlError": "revision mismatch",
+      "expected": {
+        "publishedRevisionId": 101,
+        "observedSourceId": 1,
+        "revisionId": 102,
+        "chunkCount": 0
+      }
+    },
+    {
+      "name": "stale-revision-publication",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "new",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "new",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 0,
+          "charEnd": 3,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "revisionDrafts": [
+        {
+          "contentHash": "new-hash",
+          "canonicalText": "new",
+          "textFormatVersion": 1,
+          "chunkerVersion": 2
+        },
+        {
+          "contentHash": "newer-hash",
+          "canonicalText": "newer",
+          "textFormatVersion": 1,
+          "chunkerVersion": 2
+        }
+      ],
+      "publishRevisionId": 102,
+      "targetRevision": 102,
+      "expected": {
+        "result": false,
+        "currentRevision": 103,
+        "publishedRevisionId": 101,
+        "revisionId": 102,
+        "chunkCount": 0,
+        "jobState": "cancelled"
+      }
+    },
+    {
+      "name": "revision-not-current",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "new",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "new",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 0,
+          "charEnd": 3,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "revisionDrafts": [
+        {
+          "contentHash": "new-hash",
+          "canonicalText": "new",
+          "textFormatVersion": 1,
+          "chunkerVersion": 2
+        },
+        {
+          "contentHash": "newer-hash",
+          "canonicalText": "newer",
+          "textFormatVersion": 1,
+          "chunkerVersion": 2
+        }
+      ],
+      "publishRevisionId": 102,
+      "targetRevision": 102,
+      "expected": {
+        "result": false,
+        "currentRevision": 103,
+        "publishedRevisionId": 101,
+        "revisionId": 102,
+        "chunkCount": 0,
+        "jobState": "cancelled"
+      }
+    },
+    {
+      "name": "publish-rollback",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "new",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "n",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 0,
+          "charEnd": 1,
+          "lang": null,
+          "langInherited": false
+        },
+        {
+          "text": "wrong",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 1,
+          "charEnd": 3,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "expectedError": "invalidSpan",
+      "expected": {
+        "revisionId": 102,
+        "chunkCount": 0,
+        "publishedRevisionId": 101,
+        "jobState": "running"
+      }
+    },
+    {
+      "name": "double-publish",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "new",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "new",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 0,
+          "charEnd": 3,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "publishTimes": [
+        1,
+        2
+      ],
+      "expected": {
+        "results": [
+          true,
+          false
+        ],
+        "revisionId": 102,
+        "chunkCount": 1,
+        "publishedRevisionId": 102,
+        "jobState": "done"
+      }
+    },
+    {
+      "name": "invalid-span-range",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "A😀éZ",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "😀é",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 1,
+          "charEnd": 6,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "expectedError": "invalidSpan",
+      "canonicalText": "A😀éZ",
+      "chunkText": "😀é",
+      "start": 1,
+      "end": 6,
+      "expected": {
+        "revisionId": 102,
+        "chunkCount": 0,
+        "publishedRevisionId": 101,
+        "jobState": "running"
+      }
+    },
+    {
+      "name": "invalid-span-order",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "A😀éZ",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "😀é",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 4,
+          "charEnd": 1,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "expectedError": "invalidSpan",
+      "canonicalText": "A😀éZ",
+      "chunkText": "😀é",
+      "start": 4,
+      "end": 1,
+      "expected": {
+        "revisionId": 102,
+        "chunkCount": 0,
+        "publishedRevisionId": 101,
+        "jobState": "running"
+      }
+    },
+    {
+      "name": "invalid-span-null",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "A😀éZ",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "😀é",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 1,
+          "charEnd": null,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "expectedError": "invalidSpan",
+      "canonicalText": "A😀éZ",
+      "chunkText": "😀é",
+      "start": 1,
+      "end": null,
+      "expected": {
+        "revisionId": 102,
+        "chunkCount": 0,
+        "publishedRevisionId": 101,
+        "jobState": "running"
+      }
+    },
+    {
+      "name": "invalid-span-text",
+      "operation": "publish",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "draft": {
+        "contentHash": "new-hash",
+        "canonicalText": "é",
+        "textFormatVersion": 1,
+        "chunkerVersion": 2
+      },
+      "chunks": [
+        {
+          "text": "é",
+          "tokenCount": 1,
+          "pageHint": null,
+          "charStart": 0,
+          "charEnd": 1,
+          "lang": null,
+          "langInherited": false
+        }
+      ],
+      "now": 0,
+      "leaseToken": "owner",
+      "expectedError": "invalidSpan",
+      "canonicalText": "é",
+      "chunkText": "é",
+      "start": 0,
+      "end": 1,
+      "expected": {
+        "revisionId": 102,
+        "chunkCount": 0,
+        "publishedRevisionId": 101,
+        "jobState": "running"
+      }
+    },
+    {
+      "name": "superseded-extraction",
+      "operation": "extraction",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "events": [
+        {
+          "op": "begin",
+          "at": 0,
+          "token": "A"
+        },
+        {
+          "op": "begin",
+          "at": 1,
+          "token": "B"
+        },
+        {
+          "op": "commit",
+          "at": 2,
+          "token": "B",
+          "draft": {
+            "contentHash": "new-hash",
+            "canonicalText": "new",
+            "textFormatVersion": 1,
+            "chunkerVersion": 2
+          },
+          "chunks": [
+            {
+              "text": "new",
+              "tokenCount": 1,
+              "pageHint": null,
+              "charStart": 0,
+              "charEnd": 3,
+              "lang": null,
+              "langInherited": false
+            }
+          ]
+        },
+        {
+          "op": "commit",
+          "at": 3,
+          "token": "A",
+          "draft": {
+            "contentHash": "new-hash",
+            "canonicalText": "old",
+            "textFormatVersion": 1,
+            "chunkerVersion": 2
+          },
+          "chunks": [
+            {
+              "text": "old",
+              "tokenCount": 1,
+              "pageHint": null,
+              "charStart": 0,
+              "charEnd": 3,
+              "lang": null,
+              "langInherited": false
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "resultA": null,
+        "resultB": 102,
+        "publishedText": "new",
+        "publishedRevisionId": 102,
+        "currentRevision": 102,
+        "newRevisionCount": 1,
+        "jobStates": {
+          "A": "cancelled",
+          "B": "done"
+        },
+        "snapshots": [
+          {
+            "currentRevision": 101,
+            "publishedRevisionId": 101,
+            "jobStates": {
+              "A": "running"
+            }
+          },
+          {
+            "currentRevision": 101,
+            "publishedRevisionId": 101,
+            "jobStates": {
+              "A": "cancelled",
+              "B": "running"
+            }
+          },
+          {
+            "currentRevision": 102,
+            "publishedRevisionId": 102,
+            "jobStates": {
+              "A": "cancelled",
+              "B": "done"
+            },
+            "result": 102
+          },
+          {
+            "currentRevision": 102,
+            "publishedRevisionId": 102,
+            "jobStates": {
+              "A": "cancelled",
+              "B": "done"
+            },
+            "result": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "renew-running-extraction",
+      "operation": "extraction",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "sourceId": 1,
+      "events": [
+        {
+          "op": "begin",
+          "at": 0,
+          "token": "A"
+        },
+        {
+          "op": "renew",
+          "at": 60,
+          "token": "A"
+        },
+        {
+          "op": "commit",
+          "at": 301,
+          "token": "A",
+          "draft": {
+            "contentHash": "new-hash",
+            "canonicalText": "new",
+            "textFormatVersion": 1,
+            "chunkerVersion": 2
+          },
+          "chunks": [
+            {
+              "text": "new",
+              "tokenCount": 1,
+              "pageHint": null,
+              "charStart": 0,
+              "charEnd": 3,
+              "lang": null,
+              "langInherited": false
+            }
+          ]
+        }
+      ],
+      "withoutRenewal": {
+        "commitAt": 300,
+        "result": null,
+        "newRevisionCount": 0,
+        "publishedRevisionId": 101
+      },
+      "expected": {
+        "leaseUntilBeforeCommit": 360,
+        "attempts": 1,
+        "revisionId": 102,
+        "currentRevision": 102,
+        "publishedRevisionId": 102,
+        "jobState": "done",
+        "returnedSource": {
+          "currentRevision": 102,
+          "publishedRevisionId": 102
+        },
+        "snapshots": [
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": true
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 360,
+            "leaseToken": "A",
+            "result": true
+          },
+          {
+            "state": "done",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": 102
+          }
+        ]
+      }
+    },
+    {
+      "name": "lease-timeline",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "kind": "extract",
+      "target": "source:1",
+      "targetRevision": 101,
+      "enqueueAt": 0,
+      "events": [
+        {
+          "op": "claim",
+          "at": 0,
+          "token": "A"
+        },
+        {
+          "op": "renew",
+          "at": 60,
+          "token": "A"
+        },
+        {
+          "op": "fail",
+          "at": 61,
+          "token": "A",
+          "error": "io"
+        },
+        {
+          "op": "claim",
+          "at": 120,
+          "token": "B"
+        },
+        {
+          "op": "retry",
+          "at": 121,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 121,
+          "token": "C"
+        },
+        {
+          "op": "recover",
+          "at": 421,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 541,
+          "token": "D"
+        }
+      ],
+      "expected": {
+        "snapshots": [
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 360,
+            "leaseToken": "A",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 1,
+            "nextRetryAt": 121,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "failed",
+            "attempts": 1,
+            "nextRetryAt": 121,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 1,
+            "nextRetryAt": 121,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 2,
+            "nextRetryAt": null,
+            "leaseUntil": 421,
+            "leaseToken": "C",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "queued",
+            "attempts": 2,
+            "nextRetryAt": 541,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "leaseExpired"
+          },
+          {
+            "state": "running",
+            "attempts": 3,
+            "nextRetryAt": null,
+            "leaseUntil": 841,
+            "leaseToken": "D",
+            "result": true,
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "token-fence",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "kind": "extract",
+      "target": "source:1",
+      "targetRevision": 101,
+      "enqueueAt": 0,
+      "events": [
+        {
+          "op": "claim",
+          "at": 0,
+          "token": "A"
+        },
+        {
+          "op": "renew",
+          "at": 1,
+          "token": "B"
+        },
+        {
+          "op": "complete",
+          "at": 1,
+          "token": "B"
+        },
+        {
+          "op": "fail",
+          "at": 1,
+          "token": "B",
+          "error": "io"
+        },
+        {
+          "op": "publish",
+          "at": 1,
+          "token": "B"
+        }
+      ],
+      "publishedRevisionIdBefore": 101,
+      "expectedPublishedRevisionId": 101,
+      "expected": {
+        "snapshots": [
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": false,
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "expiry-fence",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "kind": "extract",
+      "target": "source:1",
+      "targetRevision": 101,
+      "enqueueAt": 0,
+      "events": [
+        {
+          "op": "claim",
+          "at": 0,
+          "token": "A"
+        },
+        {
+          "op": "renew",
+          "at": 300,
+          "token": "A"
+        },
+        {
+          "op": "complete",
+          "at": 300,
+          "token": "A"
+        },
+        {
+          "op": "fail",
+          "at": 300,
+          "token": "A",
+          "error": "io"
+        },
+        {
+          "op": "publish",
+          "at": 300,
+          "token": "A"
+        }
+      ],
+      "publishedRevisionIdBefore": 101,
+      "expectedPublishedRevisionId": 101,
+      "expected": {
+        "snapshots": [
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": false,
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "exhaustion",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "kind": "extract",
+      "target": "source:1",
+      "targetRevision": 101,
+      "enqueueAt": 0,
+      "events": [
+        {
+          "op": "claim",
+          "at": 0,
+          "token": "attempt-1"
+        },
+        {
+          "op": "fail",
+          "at": 0,
+          "token": "attempt-1",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 60,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 60,
+          "token": "attempt-2"
+        },
+        {
+          "op": "fail",
+          "at": 60,
+          "token": "attempt-2",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 180,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 180,
+          "token": "attempt-3"
+        },
+        {
+          "op": "fail",
+          "at": 180,
+          "token": "attempt-3",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 420,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 420,
+          "token": "attempt-4"
+        },
+        {
+          "op": "fail",
+          "at": 420,
+          "token": "attempt-4",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 900,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 900,
+          "token": "attempt-5"
+        },
+        {
+          "op": "fail",
+          "at": 900,
+          "token": "attempt-5",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 1860,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 1860,
+          "token": "attempt-6"
+        }
+      ],
+      "startTimes": [
+        0,
+        60,
+        180,
+        420,
+        900
+      ],
+      "retryTimes": [
+        60,
+        180,
+        420,
+        900,
+        null
+      ],
+      "expectedClaims": 5,
+      "expected": {
+        "snapshots": [
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "attempt-1",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 1,
+            "nextRetryAt": 60,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 1,
+            "nextRetryAt": 60,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 2,
+            "nextRetryAt": null,
+            "leaseUntil": 360,
+            "leaseToken": "attempt-2",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 2,
+            "nextRetryAt": 180,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 2,
+            "nextRetryAt": 180,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 3,
+            "nextRetryAt": null,
+            "leaseUntil": 480,
+            "leaseToken": "attempt-3",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 3,
+            "nextRetryAt": 420,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 3,
+            "nextRetryAt": 420,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 4,
+            "nextRetryAt": null,
+            "leaseUntil": 720,
+            "leaseToken": "attempt-4",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 4,
+            "nextRetryAt": 900,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 4,
+            "nextRetryAt": 900,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 5,
+            "nextRetryAt": null,
+            "leaseUntil": 1200,
+            "leaseToken": "attempt-5",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 5,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "failed",
+            "attempts": 5,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": "io"
+          },
+          {
+            "state": "failed",
+            "attempts": 5,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": "io"
+          }
+        ]
+      }
+    },
+    {
+      "name": "expired-fifth",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "kind": "extract",
+      "target": "source:1",
+      "targetRevision": 101,
+      "enqueueAt": 0,
+      "events": [
+        {
+          "op": "claim",
+          "at": 0,
+          "token": "attempt-1"
+        },
+        {
+          "op": "fail",
+          "at": 0,
+          "token": "attempt-1",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 60,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 60,
+          "token": "attempt-2"
+        },
+        {
+          "op": "fail",
+          "at": 60,
+          "token": "attempt-2",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 180,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 180,
+          "token": "attempt-3"
+        },
+        {
+          "op": "fail",
+          "at": 180,
+          "token": "attempt-3",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 420,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 420,
+          "token": "attempt-4"
+        },
+        {
+          "op": "fail",
+          "at": 420,
+          "token": "attempt-4",
+          "error": "io"
+        },
+        {
+          "op": "retry",
+          "at": 900,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 900,
+          "token": "attempt-5"
+        },
+        {
+          "op": "recover",
+          "at": 1200,
+          "token": null
+        },
+        {
+          "op": "retry",
+          "at": 2160,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 2160,
+          "token": "attempt-6"
+        }
+      ],
+      "expectedClaims": 5,
+      "expected": {
+        "snapshots": [
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "attempt-1",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 1,
+            "nextRetryAt": 60,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 1,
+            "nextRetryAt": 60,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 2,
+            "nextRetryAt": null,
+            "leaseUntil": 360,
+            "leaseToken": "attempt-2",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 2,
+            "nextRetryAt": 180,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 2,
+            "nextRetryAt": 180,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 3,
+            "nextRetryAt": null,
+            "leaseUntil": 480,
+            "leaseToken": "attempt-3",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 3,
+            "nextRetryAt": 420,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 3,
+            "nextRetryAt": 420,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 4,
+            "nextRetryAt": null,
+            "leaseUntil": 720,
+            "leaseToken": "attempt-4",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 4,
+            "nextRetryAt": 900,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "queued",
+            "attempts": 4,
+            "nextRetryAt": 900,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "io"
+          },
+          {
+            "state": "running",
+            "attempts": 5,
+            "nextRetryAt": null,
+            "leaseUntil": 1200,
+            "leaseToken": "attempt-5",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "failed",
+            "attempts": 5,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "leaseExpired"
+          },
+          {
+            "state": "failed",
+            "attempts": 5,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": "leaseExpired"
+          },
+          {
+            "state": "failed",
+            "attempts": 5,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": "leaseExpired"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pause-resume-cancel",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "kind": "extract",
+      "target": "source:1",
+      "targetRevision": 101,
+      "enqueueAt": 0,
+      "events": [
+        {
+          "op": "pause",
+          "at": 1,
+          "token": null
+        },
+        {
+          "op": "resume",
+          "at": 2,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 2,
+          "token": "A"
+        },
+        {
+          "op": "pause",
+          "at": 3,
+          "token": null,
+          "expectedError": "invalidValue"
+        },
+        {
+          "op": "cancel",
+          "at": 4,
+          "token": null
+        },
+        {
+          "op": "renew",
+          "at": 5,
+          "token": "A"
+        },
+        {
+          "op": "complete",
+          "at": 5,
+          "token": "A"
+        },
+        {
+          "op": "fail",
+          "at": 5,
+          "token": "A",
+          "error": "io"
+        },
+        {
+          "op": "publish",
+          "at": 5,
+          "token": "A"
+        },
+        {
+          "op": "resume",
+          "at": 6,
+          "token": null,
+          "expectedError": "invalidValue"
+        }
+      ],
+      "expected": {
+        "snapshots": [
+          {
+            "state": "paused",
+            "attempts": 0,
+            "nextRetryAt": 0,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "queued",
+            "attempts": 0,
+            "nextRetryAt": 0,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 302,
+            "leaseToken": "A",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 302,
+            "leaseToken": "A",
+            "result": false,
+            "error": null,
+            "expectedError": "invalidValue"
+          },
+          {
+            "state": "cancelled",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "cancelled",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "cancelled",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "cancelled",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "cancelled",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": null
+          },
+          {
+            "state": "cancelled",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": false,
+            "error": null,
+            "expectedError": "invalidValue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "claim-order",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "jobs": [
+        {
+          "id": 1,
+          "kind": "extract",
+          "target": "source:1",
+          "targetRevision": 101,
+          "nextRetryAt": 20
+        },
+        {
+          "id": 2,
+          "kind": "extract",
+          "target": "source:1",
+          "targetRevision": 101,
+          "nextRetryAt": 10
+        },
+        {
+          "id": 3,
+          "kind": "extract",
+          "target": "source:1",
+          "targetRevision": 101,
+          "nextRetryAt": 10
+        }
+      ],
+      "events": [
+        {
+          "op": "claim",
+          "at": 10,
+          "token": "A"
+        },
+        {
+          "op": "claim",
+          "at": 10,
+          "token": "B"
+        }
+      ],
+      "expected": {
+        "claimedJobIds": [
+          2,
+          3
+        ],
+        "snapshots": [
+          {
+            "jobId": 2,
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 310,
+            "leaseToken": "A",
+            "result": true,
+            "error": null
+          },
+          {
+            "jobId": 3,
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 310,
+            "leaseToken": "B",
+            "result": true,
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "restart-reclaim",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "kind": "extract",
+      "target": "source:1",
+      "targetRevision": 101,
+      "enqueueAt": 0,
+      "events": [
+        {
+          "op": "claim",
+          "at": 0,
+          "token": "A"
+        },
+        {
+          "op": "reopen",
+          "at": 1,
+          "token": null
+        },
+        {
+          "op": "recover",
+          "at": 300,
+          "token": null
+        },
+        {
+          "op": "claim",
+          "at": 360,
+          "token": "B"
+        },
+        {
+          "op": "publish",
+          "at": 361,
+          "token": "A"
+        }
+      ],
+      "expectedPublishedRevisionId": 101,
+      "expected": {
+        "snapshots": [
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 1,
+            "nextRetryAt": null,
+            "leaseUntil": 300,
+            "leaseToken": "A",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "queued",
+            "attempts": 1,
+            "nextRetryAt": 360,
+            "leaseUntil": null,
+            "leaseToken": null,
+            "result": true,
+            "error": "leaseExpired"
+          },
+          {
+            "state": "running",
+            "attempts": 2,
+            "nextRetryAt": null,
+            "leaseUntil": 660,
+            "leaseToken": "B",
+            "result": true,
+            "error": null
+          },
+          {
+            "state": "running",
+            "attempts": 2,
+            "nextRetryAt": null,
+            "leaseUntil": 660,
+            "leaseToken": "B",
+            "result": false,
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "two-connections-single-claim",
+      "operation": "jobs",
+      "setupSql": [
+        "INSERT INTO notebooks(id,name,created_at,updated_at) VALUES(1,'revisions','2026-01-02 03:04:05.000','2026-01-02 03:04:05.000')",
+        "INSERT INTO sources(id,notebook_id,type,title,status,ingested_at) VALUES(1,1,'text','source one','ready','2026-01-02 03:04:05.000')",
+        "INSERT INTO source_revisions(id,source_id,revision,content_hash,canonical_text,text_format_version,chunker_version,created_at) VALUES(101,1,1,'old-hash','old',1,2,'2026-01-02 03:04:05.000')",
+        "UPDATE sources SET current_revision=101,published_revision_id=101 WHERE id=1",
+        "INSERT INTO source_chunks(id,source_id,ord,text,token_count,revision_id,char_start,char_end) VALUES(1001,1,0,'old',1,101,0,3)"
+      ],
+      "kind": "extract",
+      "target": "source:1",
+      "targetRevision": 101,
+      "enqueueAt": 0,
+      "events": [
+        {
+          "op": "claim",
+          "at": 0,
+          "token": "A",
+          "connection": 1
+        },
+        {
+          "op": "claim",
+          "at": 0,
+          "token": "B",
+          "connection": 2
+        }
+      ],
+      "synchronization": "release-both-connections-before-claim",
+      "expected": {
+        "successfulClaims": 1,
+        "attempts": 1,
+        "state": "running",
+        "nextRetryAt": null,
+        "leaseUntil": 300,
+        "winningTokens": [
+          "A",
+          "B"
+        ]
+      }
+    }
+  ]
+}

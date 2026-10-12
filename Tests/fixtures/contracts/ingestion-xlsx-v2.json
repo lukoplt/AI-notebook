@@ -1,0 +1,1431 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "text": "45292"
+      },
+      "input": {
+        "raw": "45292"
+      },
+      "name": "number-integer",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "0"
+      },
+      "input": {
+        "raw": "-0"
+      },
+      "name": "number-negative-zero",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "0"
+      },
+      "input": {
+        "raw": "0.000"
+      },
+      "name": "number-zero-fraction",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "42"
+      },
+      "input": {
+        "raw": "42.0"
+      },
+      "name": "number-trailing-dot-zero",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "5"
+      },
+      "input": {
+        "raw": "+5"
+      },
+      "name": "number-plus-sign",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "7.5"
+      },
+      "input": {
+        "raw": "007.50"
+      },
+      "name": "number-leading-zeros",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "0.5"
+      },
+      "input": {
+        "raw": ".5"
+      },
+      "name": "number-bare-fraction",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "5"
+      },
+      "input": {
+        "raw": "5."
+      },
+      "name": "number-bare-point",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "0.3"
+      },
+      "input": {
+        "raw": "0.30000000000000004"
+      },
+      "name": "number-float-noise-up",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1234.56"
+      },
+      "input": {
+        "raw": "1234.5600000000002"
+      },
+      "name": "number-float-noise-down",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "3"
+      },
+      "input": {
+        "raw": "2.9999999999999996"
+      },
+      "name": "number-nines-carry",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1000000000000000"
+      },
+      "input": {
+        "raw": "999999999999999.7"
+      },
+      "name": "number-carry-new-digit",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1"
+      },
+      "input": {
+        "raw": "1.0000000000000005"
+      },
+      "name": "number-half-up-sixteenth",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1"
+      },
+      "input": {
+        "raw": "1.0000000000000004"
+      },
+      "name": "number-below-half",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1234567890123460"
+      },
+      "input": {
+        "raw": "1234567890123456"
+      },
+      "name": "number-sixteen-digit-integer",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "123456789012346000"
+      },
+      "input": {
+        "raw": "123456789012345678"
+      },
+      "name": "number-eighteen-digit-integer",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "-12.5"
+      },
+      "input": {
+        "raw": "-12.5"
+      },
+      "name": "number-negative",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "100000"
+      },
+      "input": {
+        "raw": "1e5"
+      },
+      "name": "number-exponent-plain",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "0.0015"
+      },
+      "input": {
+        "raw": "1.5E-3"
+      },
+      "name": "number-exponent-fraction",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "100000000000000000000"
+      },
+      "input": {
+        "raw": "1E+20"
+      },
+      "name": "number-plain-limit-21",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1E+21"
+      },
+      "input": {
+        "raw": "1E+21"
+      },
+      "name": "number-scientific-21",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "-1.25E+22"
+      },
+      "input": {
+        "raw": "-1.25E+22"
+      },
+      "name": "number-scientific-mantissa",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "0.000001"
+      },
+      "input": {
+        "raw": "0.000001"
+      },
+      "name": "number-small-plain",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1.5E-7"
+      },
+      "input": {
+        "raw": "1.5E-7"
+      },
+      "name": "number-small-scientific",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "42"
+      },
+      "input": {
+        "raw": " \t42\r\n"
+      },
+      "name": "number-ascii-whitespace",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "100000"
+      },
+      "input": {
+        "raw": "1E+00005"
+      },
+      "name": "number-exponent-leading-zeros",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "raw": "1E+123456"
+      },
+      "name": "number-too-many-exponent-digits",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1E+399"
+      },
+      "input": {
+        "raw": "1E+399"
+      },
+      "name": "number-decimal-exponent-limit",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "raw": "1E+400"
+      },
+      "name": "number-beyond-exponent-limit",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1E-401"
+      },
+      "input": {
+        "raw": "1E-401"
+      },
+      "name": "number-tiny-at-limit",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "raw": "1E-402"
+      },
+      "name": "number-tiny-beyond-limit",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "raw": "1,5"
+      },
+      "name": "number-not-numeric-comma",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "raw": "NaN"
+      },
+      "name": "number-not-numeric-text",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "raw": "0x10"
+      },
+      "name": "number-not-numeric-hex",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "raw": ""
+      },
+      "name": "number-empty",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "raw": " 42"
+      },
+      "name": "number-unicode-space-not-trimmed",
+      "operation": "number"
+    },
+    {
+      "expected": {
+        "text": "1900-01-01"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "1"
+      },
+      "name": "date-epoch-1900",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "1900-02-28"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "59"
+      },
+      "name": "date-before-leap-bug",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "1900-02-29"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "60"
+      },
+      "name": "date-fictional-leap-day",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "1900-03-01"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "61"
+      },
+      "name": "date-after-leap-bug",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "2024-01-01"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "45292"
+      },
+      "name": "date-new-year-2024",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "2024-01-01 12:00"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "45292.5"
+      },
+      "name": "date-noon",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "2024-01-01 00:00:01"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "45292.000011574"
+      },
+      "name": "date-seconds",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "2024-01-02"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "45292.999999999"
+      },
+      "name": "date-round-to-next-day",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "18:00"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "0.75"
+      },
+      "name": "date-time-only",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "00:00"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "0.000001"
+      },
+      "name": "date-tiny-time",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "07:00"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "0.29166666666666669"
+      },
+      "name": "date-float-noise-time",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "9999-12-31"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "2958465"
+      },
+      "name": "date-last-day",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "date1904": false,
+        "raw": "2958466"
+      },
+      "name": "date-beyond-9999",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "date1904": false,
+        "raw": "0"
+      },
+      "name": "date-zero",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "date1904": false,
+        "raw": "-1"
+      },
+      "name": "date-negative",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "date1904": false,
+        "raw": "abc"
+      },
+      "name": "date-not-numeric",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "12:00"
+      },
+      "input": {
+        "date1904": true,
+        "raw": "0.5"
+      },
+      "name": "date-epoch-1904",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "1904-01-02"
+      },
+      "input": {
+        "date1904": true,
+        "raw": "1"
+      },
+      "name": "date-first-day-1904",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "2028-01-02"
+      },
+      "input": {
+        "date1904": true,
+        "raw": "45292"
+      },
+      "name": "date-same-serial-1904",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "9999-12-31"
+      },
+      "input": {
+        "date1904": true,
+        "raw": "2957003"
+      },
+      "name": "date-last-day-1904",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "date1904": true,
+        "raw": "2957004"
+      },
+      "name": "date-beyond-1904",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "2024-01-01"
+      },
+      "input": {
+        "date1904": false,
+        "raw": "4.5292E+4"
+      },
+      "name": "date-scientific-serial",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": null
+      },
+      "input": {
+        "date1904": false,
+        "raw": "1E+20"
+      },
+      "name": "date-huge-serial",
+      "operation": "date"
+    },
+    {
+      "expected": {
+        "text": "Příliš"
+      },
+      "input": {
+        "raw": "Příliš"
+      },
+      "name": "value-plain",
+      "operation": "value"
+    },
+    {
+      "expected": {
+        "text": "A B"
+      },
+      "input": {
+        "raw": "A \t\r\n  B"
+      },
+      "name": "value-inner-runs",
+      "operation": "value"
+    },
+    {
+      "expected": {
+        "text": "A"
+      },
+      "input": {
+        "raw": "  A  "
+      },
+      "name": "value-trim",
+      "operation": "value"
+    },
+    {
+      "expected": {
+        "text": ""
+      },
+      "input": {
+        "raw": " \n\t "
+      },
+      "name": "value-only-space",
+      "operation": "value"
+    },
+    {
+      "expected": {
+        "text": " A "
+      },
+      "input": {
+        "raw": " A "
+      },
+      "name": "value-nbsp-kept",
+      "operation": "value"
+    },
+    {
+      "expected": {
+        "text": "A😀B"
+      },
+      "input": {
+        "raw": "A😀B"
+      },
+      "name": "value-emoji",
+      "operation": "value"
+    },
+    {
+      "expected": {
+        "text": "a | b"
+      },
+      "input": {
+        "raw": "a | b"
+      },
+      "name": "value-pipe-kept",
+      "operation": "value"
+    },
+    {
+      "expected": {
+        "text": ""
+      },
+      "input": {
+        "raw": ""
+      },
+      "name": "value-empty",
+      "operation": "value"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: Příliš | C=A😀B\nR2: 42 | TRUE\nR3: 2 | C=2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "workbook-order",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: B=3\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\"><f>1+1</f></c><c r=\"B1\"><v>3</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "formula-no-cache-omitted",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR2: B=x\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" t=\"str\"><f>\"\"</f><v></v></c></row><row r=\"2\"><c r=\"B2\" t=\"str\"><f>\"x\"</f><v>  x  </v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "cached-empty-string-omitted",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><f>1+1</f><v>45292</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "cached-formula-date",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR2: ok\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" t=\"e\"><v>#N/A</v></c><c r=\"B1\" t=\"e\"><f>1/0</f><v>#DIV/0!</v></c></row><row r=\"2\"><c r=\"A2\" t=\"inlineStr\"><is><t>ok</t></is></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "error-values-omitted",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\n\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "empty-sheet-keeps-heading",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR2: Z=FALSE\nR3: B=1 | 2 | F=3\nR10: 0 | AA=7\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"10\"><c r=\"AA10\"><v>7</v></c><c r=\"B10\"/><c r=\"A10\"><v>0</v></c></row><row r=\"2\"><c r=\"Z2\" t=\"b\"><v>0</v></c></row><row r=\"3\"><c r=\"B3\"><v>1</v></c><c r=\"C3\"><v>2</v></c><c r=\"F3\"><v>3</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "blank-cells-and-column-gaps",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: Řádek 1 Řádek 2 | C=x\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" t=\"inlineStr\"><is><t xml:space=\"preserve\">  Řádek 1\nŘádek\t2  </t></is></c><c r=\"B1\" t=\"inlineStr\"><is><t xml:space=\"preserve\"> \n </t></is></c><c r=\"C1\" t=\"inlineStr\"><is><t>x</t></is></c></row><row r=\"2\"><c r=\"A2\" t=\"inlineStr\"><is><t> </t></is></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "whitespace-normalized",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 0.3 | 42 | -1.5E-7 | 1E+21 | 1,5 | 0\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\"><v>0.30000000000000004</v></c><c r=\"B1\"><v>42.0</v></c><c r=\"C1\"><v>-1.5E-7</v></c><c r=\"D1\"><v>1E+21</v></c><c r=\"E1\"><v>1,5</v></c><c r=\"F1\"><v>-0</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "number-formatting",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: TRUE | 2024-01-01T00:00:00\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" t=\"b\"><v>1</v></c><c r=\"B1\" t=\"d\"><v>2024-01-01T00:00:00</v></c><c r=\"C1\" t=\"b\"/></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "boolean-and-iso-date-type",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"yyyy-mm-dd\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "custom-date",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 1900-01-01 12:00\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>1.5</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"[h]:mm:ss\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "elapsed-time-format",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 06:00\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>0.25</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"[HHH]:mm\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "bracket-run-elapsed",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 45292\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"[Red]0.00\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "color-bracket-not-date",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 45292\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"0.00 &quot;days&quot;\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "quoted-date-literals",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 45292\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><numFmts count=\"1\"><numFmt numFmtId=\"164\" formatCode=\"0.00E+00\"/></numFmts><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"164\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "scientific-number",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 45292\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\" t=\"inlineStr\"><is><t>45292</t></is></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "date-style-on-text-cell-ignored",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: -3 | 0 | 3000000\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>-3</v></c><c r=\"B1\" s=\"1\"><v>0</v></c><c r=\"C1\" s=\"1\"><v>3000000</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "date-serial-out-of-range-is-number",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidCell"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"7\"><v>1</v></c></row></sheetData></worksheet>"
+          }
+        ]
+      },
+      "name": "missing-style-index",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "invalidCell"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\" s=\"1\"><v>1</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><cellXfs count=\"2\"><xf numFmtId=\"0\"/><xf numFmtId=\"170\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "missing-custom-format",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: 2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/worksheets/sheet2.xml",
+            "operation": "replace-entry",
+            "text": "<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetData><row r=\"1\"><c r=\"A1\"><v>45292</v></c></row></sheetData></worksheet>"
+          },
+          {
+            "entry": "xl/styles.xml",
+            "operation": "replace-entry",
+            "text": "<styleSheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><cellXfs count=\"1\"><xf numFmtId=\"14\"/></cellXfs></styleSheet>"
+          }
+        ]
+      },
+      "name": "default-style-zero-is-date",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: Příliš | C=A😀B\nR2: 42 | TRUE\nR3: 2 | C=2028-01-02\n\n## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/workbook.xml",
+            "operation": "replace-entry",
+            "text": "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><workbookPr date1904=\"true\"/><sheets><sheet name=\"Zeta\" sheetId=\"2\" r:id=\"rIdB\"/><sheet name=\"Alpha\" sheetId=\"1\" r:id=\"rIdA\"/></sheets></workbook>"
+          }
+        ]
+      },
+      "name": "date1904-workbook",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Alpha"
+        ],
+        "text": "## Alpha\nR1: last"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/workbook.xml",
+            "operation": "replace-entry",
+            "text": "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><sheets><sheet name=\"Zeta\" sheetId=\"2\" state=\"hidden\" r:id=\"rIdB\"/><sheet name=\"Alpha\" sheetId=\"1\" state=\"visible\" r:id=\"rIdA\"/></sheets></workbook>"
+          }
+        ]
+      },
+      "name": "hidden-and-very-hidden-sheets-skipped",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Zeta"
+        ],
+        "text": "## Zeta\nR1: Příliš | C=A😀B\nR2: 42 | TRUE\nR3: 2 | C=2024-01-01"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/workbook.xml",
+            "operation": "replace-entry",
+            "text": "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><sheets><sheet name=\"Zeta\" sheetId=\"2\" r:id=\"rIdB\"/><sheet name=\"Alpha\" sheetId=\"1\" state=\"veryHidden\" r:id=\"rIdA\"/></sheets></workbook>"
+          }
+        ]
+      },
+      "name": "very-hidden-skipped",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [],
+        "text": ""
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": [
+          {
+            "entry": "xl/workbook.xml",
+            "operation": "replace-entry",
+            "text": "<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><sheets><sheet name=\"Zeta\" sheetId=\"2\" state=\"hidden\" r:id=\"rIdB\"/><sheet name=\"Alpha\" sheetId=\"1\" state=\"veryHidden\" r:id=\"rIdA\"/></sheets></workbook>"
+          }
+        ]
+      },
+      "name": "all-sheets-hidden",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "cellsMaterialized": 2,
+        "error": "cellLimit"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {
+          "maxCells": 2
+        },
+        "mutations": []
+      },
+      "name": "cell-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "error": "textLimit"
+      },
+      "input": {
+        "asset": "ingestion/workbook.xlsx",
+        "kind": "xlsx",
+        "limits": {
+          "maxExtractedChars": 20
+        },
+        "mutations": []
+      },
+      "name": "text-limit",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Formulář",
+          "Rozpočet"
+        ],
+        "text": "## Formulář\nR3: B=Název akce: | D=Oprava střechy ZŠ Komenského\nR5: B=Investor: | D=Město Kolín\nR7: B=Zhotovitel:\nR9: B=IČO:\nR11: B=Místo stavby: | D=Kolín, Komenského 395\nR13: B=Termín zahájení: | D=2024-04-01\nR15: B=Termín dokončení:\nR17: B=Rozpočet celkem: | D=1250000\nR19: B=Odpovědná osoba:\nR21: B=Telefon:\nR23: B=E-mail:\nR25: B=Poznámka:\n\n## Rozpočet\nR1: Datum | Položka | MJ | Množství | Cena/MJ | Celkem | DPH | S DPH | Kontrola | Středisko | Pozn. | Index\nR2: 2024-01-03 | F=0 | 0 | 0\nR3: 2024-01-04 | Lešení | m2 | 9 | 0.1 | 0.9 | 0 | 0\nR4: 2024-01-05 | F=0 | 0 | 0\nR5: 2024-01-06 | F=0 | 0 | 0\nR6: 2024-01-07 | Krytina plechová | m2 | 18 | 249.9 | 4498.2 | 0 | 0\nR7: 2024-01-08 | F=0 | 0 | 0\nR8: 2024-01-09 | F=0 | 0 | 0\nR9: 2024-01-10 | Lešení | m2 | 27 | 0.1 | 2.7 | 0 | 0\nR10: 2024-01-11 | F=0 | 0 | 0\nR11: 2024-01-12 | F=0 | 0 | 0\nR12: 2024-01-13 | Krytina plechová | m2 | 36 | 249.9 | 8996.4 | 0 | 0\nR13: 2024-01-14 | F=0 | 0 | 0\nR14: 2024-01-15 | F=0 | 0 | 0\nR15: 2024-01-16 | Lešení | m2 | 45 | 0.1 | 4.5 | 0 | 0\nR16: 2024-01-17 | F=0 | 0 | 0\nR17: 2024-01-18 | F=0 | 0 | 0\nR18: 2024-01-19 | Krytina plechová | m2 | 54 | 249.9 | 13494.6 | 0 | 0\nR19: 2024-01-20 | F=0 | 0 | 0\nR20: 2024-01-21 | F=0 | 0 | 0\nR21: 2024-01-22 | Lešení | m2 | 63 | 0.1 | 6.3 | 0 | 0\nR22: 2024-01-23 | F=0 | 0 | 0\nR23: 2024-01-24 | F=0 | 0 | 0\nR24: 2024-01-25 | Krytina plechová | m2 | 72 | 249.9 | 17992.8 | 0 | 0\nR25: 2024-01-26 | F=0 | 0 | 0"
+      },
+      "input": {
+        "asset": "ingestion/xlsx/template.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "template-asset",
+      "operation": "extract"
+    },
+    {
+      "expected": {
+        "sheetNames": [
+          "Data"
+        ],
+        "text": "## Data\nR1: Datum | Čas\nR2: 0 | 12:00\nR3: 2024-01-01 | 2024-01-01 18:00"
+      },
+      "input": {
+        "asset": "ingestion/xlsx/data-1904.xlsx",
+        "kind": "xlsx",
+        "limits": {},
+        "mutations": []
+      },
+      "name": "date1904-asset",
+      "operation": "extract"
+    }
+  ],
+  "cellSeparator": " | ",
+  "contract": "ingestion-xlsx",
+  "significantDigits": 15,
+  "supersedes": {
+    "ingestion-formats-v1.json": {
+      "extract-xlsm": {
+        "kind": "xlsx",
+        "text": "## Data\nR1: Položka | 12"
+      }
+    },
+    "ingestion-office-v1.json": {
+      "blank-cells-and-sparse-coordinates": {
+        "text": "## Zeta\nR2: Z=FALSE\nR10: 0 | AA=7\n\n## Alpha\nR1: last"
+      },
+      "cached-formula-date": {
+        "text": "## Zeta\nR1: 2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "custom-date": {
+        "text": "## Zeta\nR1: 2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "elapsed-time": {
+        "text": "## Zeta\nR1: 2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "empty-sheet": {
+        "text": "## Zeta\n\n\n## Alpha\nR1: last"
+      },
+      "formula-no-cache": {
+        "text": "## Zeta\n\n\n## Alpha\nR1: last"
+      },
+      "quoted-date-literals": {
+        "text": "## Zeta\nR1: 45292\n\n## Alpha\nR1: last"
+      },
+      "scientific-number": {
+        "text": "## Zeta\nR1: 45292\n\n## Alpha\nR1: last"
+      },
+      "workbook-order": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: Příliš | C=A😀B\nR2: 42 | TRUE\nR3: 2 | C=2024-01-01\n\n## Alpha\nR1: last"
+      }
+    },
+    "ingestion-ooxml-v1.json": {
+      "workbook-absolute-and-external-targets": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: Příliš | C=A😀B\nR2: 42 | TRUE\nR3: 2 | C=2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "workbook-chartsheet-skipped": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: Příliš | C=A😀B\nR2: 42 | TRUE\nR3: 2 | C=2024-01-01\n\n## Alpha\nR1: last"
+      },
+      "workbook-shared-strings-conventional": {
+        "sheetNames": [
+          "Zeta",
+          "Alpha"
+        ],
+        "text": "## Zeta\nR1: Příliš | C=A😀B\nR2: 42 | TRUE\nR3: 2 | C=2024-01-01\n\n## Alpha\nR1: last"
+      }
+    },
+    "release-integration-v1.json": {
+      "sheets/workbook.xlsx": {
+        "canonicalText": "## Zeta\nR1: Příliš | C=A😀B\nR2: 42 | TRUE\nR3: 2 | C=2024-01-01\n\n## Alpha\nR1: last"
+      }
+    }
+  },
+  "textFormatVersion": 2,
+  "version": 2
+}

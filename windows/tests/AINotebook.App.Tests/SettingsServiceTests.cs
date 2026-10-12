@@ -101,4 +101,24 @@ public class SettingsServiceTests : IDisposable
         var second = new SettingsService(path);
         Assert.Equal(value, second.LastUpdateCheckUtc);
     }
+
+    [Fact]
+    public void Redesign_ui_settings_default_and_roundtrip()
+    {
+        var fresh = new SettingsService(PathFor("fresh-ui"));
+        Assert.False(fresh.WebSearchEnabled);      // macOS parity: web search is opt-in
+        Assert.Equal("", fresh.RightPanel);         // panel collapsed on first launch
+        Assert.Equal(360, fresh.RightPanelWidth);
+
+        var path = PathFor("roundtrip-ui");
+        var first = new SettingsService(path);
+        first.WebSearchEnabled = true;
+        first.RightPanel = "Sources";
+        first.RightPanelWidth = 400;
+
+        var second = new SettingsService(path);
+        Assert.True(second.WebSearchEnabled);
+        Assert.Equal("Sources", second.RightPanel);
+        Assert.Equal(400, second.RightPanelWidth);
+    }
 }

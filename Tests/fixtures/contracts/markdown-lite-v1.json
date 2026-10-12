@@ -1,0 +1,2414 @@
+{
+  "contract": "markdown-lite",
+  "version": 1,
+  "cases": [
+    {
+      "name": "empty",
+      "input": "",
+      "expected": []
+    },
+    {
+      "name": "whitespace-only",
+      "input": "   \n\t\n  ",
+      "expected": []
+    },
+    {
+      "name": "plain-czech",
+      "input": "Příliš žluťoučký kůň úpěl ďábelské ódy.",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Příliš žluťoučký kůň úpěl ďábelské ódy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "plain-slovak",
+      "input": "Ľúbostná báseň: ôsmy kôň, ťava a ďateľ.",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Ľúbostná báseň: ôsmy kôň, ťava a ďateľ."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "soft-wrap-joins-with-space",
+      "input": "první řádek\ndruhý řádek\r\ntřetí\rčtvrtý",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "první řádek druhý řádek třetí čtvrtý"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "blank-line-splits-paragraphs",
+      "input": "Odstavec jedna.\n\n\nOdstavec dvě.",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Odstavec jedna."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Odstavec dvě."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "trailing-spaces-trimmed",
+      "input": "  odsazený text   \n  pokračuje\t",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "odsazený text pokračuje"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "headings-1-to-3",
+      "input": "# Jedna\n## Dvě\n### Tři",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 1,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Jedna"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Dvě"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Tři"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "heading-4-is-text",
+      "input": "#### Čtyři",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "#### Čtyři"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "heading-needs-space",
+      "input": "#hashtag a # uprostřed",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "#hashtag a # uprostřed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "heading-interrupts-paragraph",
+      "input": "text odstavce\n## Nadpis\ndalší",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "text odstavce"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Nadpis"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "další"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "strong-em-basic",
+      "input": "**tučné**, *kurzíva* a _podtržítko_.",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "tučné"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": ", "
+            },
+            {
+              "t": "em",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "kurzíva"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " a "
+            },
+            {
+              "t": "em",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "podtržítko"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "strong-with-diacritics",
+      "input": "Výsledek: **čtyřiadvacet žlutých**.",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Výsledek: "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "čtyřiadvacet žlutých"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "intraword-underscore",
+      "input": "proměnná snake_case_name a __init__",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "proměnná snake_case_name a __init__"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "intraword-star-em",
+      "input": "a*b*c",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "a"
+            },
+            {
+              "t": "em",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "b"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "c"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "strong-wraps-em",
+      "input": "**tučné s *kurzívou* uvnitř**",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "tučné s "
+                },
+                {
+                  "t": "em",
+                  "c": [
+                    {
+                      "t": "text",
+                      "v": "kurzívou"
+                    }
+                  ]
+                },
+                {
+                  "t": "text",
+                  "v": " uvnitř"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "triple-star",
+      "input": "***obojí*** a *x **y***",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "em",
+                  "c": [
+                    {
+                      "t": "text",
+                      "v": "obojí"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " a "
+            },
+            {
+              "t": "em",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "x "
+                },
+                {
+                  "t": "strong",
+                  "c": [
+                    {
+                      "t": "text",
+                      "v": "y"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unterminated-strong",
+      "input": "Toto je **neukončené tučné",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Toto je **neukončené tučné"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unterminated-em",
+      "input": "hvězdička * samotná a *otevřená",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "hvězdička * samotná a *otevřená"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "strong-needs-nonspace",
+      "input": "** mezera ** a **ok**",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "** mezera ** a "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "ok"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "inline-code",
+      "input": "Spusť `swift test` a `dotnet test`.",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Spusť "
+            },
+            {
+              "t": "code",
+              "v": "swift test"
+            },
+            {
+              "t": "text",
+              "v": " a "
+            },
+            {
+              "t": "code",
+              "v": "dotnet test"
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "code-span-protects-markers",
+      "input": "`**ne**` a `[1]` a `[x](https://a.b)`",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "code",
+              "v": "**ne**"
+            },
+            {
+              "t": "text",
+              "v": " a "
+            },
+            {
+              "t": "code",
+              "v": "[1]"
+            },
+            {
+              "t": "text",
+              "v": " a "
+            },
+            {
+              "t": "code",
+              "v": "[x](https://a.b)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "double-backtick-code",
+      "input": "`` `kód` `` a ``a`b``",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "code",
+              "v": "`kód`"
+            },
+            {
+              "t": "text",
+              "v": " a "
+            },
+            {
+              "t": "code",
+              "v": "a`b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unterminated-code",
+      "input": "`otevřený kód **tučně**",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "`otevřený kód "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "tučně"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cite-single",
+      "input": "Tvrzení [3].",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Tvrzení "
+            },
+            {
+              "t": "cite",
+              "n": 3
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cite-adjacent",
+      "input": "Zdroje [1][2][123].",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Zdroje "
+            },
+            {
+              "t": "cite",
+              "n": 1
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "cite",
+              "n": 123
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cite-invalid",
+      "input": "[0] [1234] [ab] [ 1]",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "[0] [1234] [ab] [ 1]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cite-vs-link",
+      "input": "[12] a [12](https://x.cz/a) a [12](ftp://x)",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "cite",
+              "n": 12
+            },
+            {
+              "t": "text",
+              "v": " a "
+            },
+            {
+              "t": "link",
+              "href": "https://x.cz/a",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "12"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " a [12](ftp://x)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "link-http-https-mailto",
+      "input": "[web](http://a.cz), [bezpečně](HTTPS://b.cz) a [mail](mailto:a@b.cz)",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "link",
+              "href": "http://a.cz",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "web"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": ", "
+            },
+            {
+              "t": "link",
+              "href": "HTTPS://b.cz",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "bezpečně"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " a "
+            },
+            {
+              "t": "link",
+              "href": "mailto:a@b.cz",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "mail"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "link-javascript-is-text",
+      "input": "[klikni](javascript:alert(1)) prosím",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "[klikni](javascript:alert(1)) prosím"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "link-data-is-text",
+      "input": "[obr](data:text/html,<b>x</b>)",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "[obr](data:text/html,<b>x</b>)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "link-balanced-parens",
+      "input": "[wiki](https://cs.wikipedia.org/wiki/Praha_(město))",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "link",
+              "href": "https://cs.wikipedia.org/wiki/Praha_(město)",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "wiki"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "link-with-space-is-text",
+      "input": "[a](https://x.cz \"titulek\")",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "[a](https://x.cz \"titulek\")"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "link-text-formatting",
+      "input": "[**tučný** odkaz](https://x.cz)",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "link",
+              "href": "https://x.cz",
+              "c": [
+                {
+                  "t": "strong",
+                  "c": [
+                    {
+                      "t": "text",
+                      "v": "tučný"
+                    }
+                  ]
+                },
+                {
+                  "t": "text",
+                  "v": " odkaz"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "link-bare-scheme-is-text",
+      "input": "[x](https://) [y](mailto:)",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "[x](https://) [y](mailto:)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "link-scheme-ascii-case-only",
+      "input": "[a](HTTPſ://x) [b](maılto:x) [c](MAILTO:x)",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "[a](HTTPſ://x) [b](maılto:x) "
+            },
+            {
+              "t": "link",
+              "href": "MAILTO:x",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "c"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unterminated-link",
+      "input": "[text](https://x.cz/neukoncene",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "[text](https://x.cz/neukoncene"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "html-stays-text",
+      "input": "<b>tučně</b> <script>alert(1)</script>",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "<b>tučně</b> <script>alert(1)</script>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "escapes",
+      "input": "\\*není kurzíva\\* a \\[1] a \\\\ a \\ž",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "*není kurzíva* a [1] a \\ a \\ž"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "quote-multiline",
+      "input": "> První řádek citace\n>druhý\n>\n> **třetí**",
+      "expected": [
+        {
+          "type": "quote",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "První řádek citace druhý "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "třetí"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "quote-then-paragraph",
+      "input": "> citace\nobyčejný text",
+      "expected": [
+        {
+          "type": "quote",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "citace"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "obyčejný text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rules",
+      "input": "nad\n---\n***\n___\npod",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "nad"
+            }
+          ]
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "rule"
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "pod"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rule-needs-same-char",
+      "input": "-*-",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "-*-"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bullet-list-markers",
+      "input": "- pomlčka\n* hvězdička\n+ plus",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "pomlčka"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "hvězdička"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "plus"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ordered-list-start",
+      "input": "3. tři\n4. čtyři\n10. deset",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": true,
+          "start": 3,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "tři"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "čtyři"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "deset"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ordered-needs-dot-space",
+      "input": "1.5 kg a 2) ne",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "1.5 kg a 2) ne"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nested-list",
+      "input": "- ovoce\n  - jablko\n  - hruška\n- zelenina\n    - mrkev",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "ovoce"
+                }
+              ],
+              "sublist": {
+                "ordered": false,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "jablko"
+                      }
+                    ]
+                  },
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "hruška"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "zelenina"
+                }
+              ],
+              "sublist": {
+                "ordered": false,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "mrkev"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nested-ordered-in-bullet",
+      "input": "- kroky\n  1. první\n  2. druhý",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "kroky"
+                }
+              ],
+              "sublist": {
+                "ordered": true,
+                "start": 1,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "první"
+                      }
+                    ]
+                  },
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "druhý"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nested-without-parent-is-top",
+      "input": "  - odsazená položka\n- další",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "odsazená položka"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "další"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "list-continuation-line",
+      "input": "1. **Název**\n   popis položky\n2. Další",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": true,
+          "start": 1,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "strong",
+                  "c": [
+                    {
+                      "t": "text",
+                      "v": "Název"
+                    }
+                  ]
+                },
+                {
+                  "t": "text",
+                  "v": " popis položky"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "Další"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "loose-list-survives-blank",
+      "input": "1. a\n\n2. b\n\n3. c",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": true,
+          "start": 1,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "a"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "b"
+                }
+              ]
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "c"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "list-then-paragraph",
+      "input": "- položka\n\nOdstavec za seznamem.",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "položka"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Odstavec za seznamem."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "list-kind-switch",
+      "input": "- odrážka\n1. číslo",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "odrážka"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "start": 1,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "číslo"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "list-interrupts-paragraph",
+      "input": "Úvod:\n- bod",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Úvod:"
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "bod"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "list-item-inline-markup",
+      "input": "- **tučně** a [1] a `kód`",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "strong",
+                  "c": [
+                    {
+                      "t": "text",
+                      "v": "tučně"
+                    }
+                  ]
+                },
+                {
+                  "t": "text",
+                  "v": " a "
+                },
+                {
+                  "t": "cite",
+                  "n": 1
+                },
+                {
+                  "t": "text",
+                  "v": " a "
+                },
+                {
+                  "t": "code",
+                  "v": "kód"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fence-basic",
+      "input": "```swift\nlet ž = \"ř\"\n\n    odsazeno\n```",
+      "expected": [
+        {
+          "type": "code",
+          "text": "let ž = \"ř\"\n\n    odsazeno"
+        }
+      ]
+    },
+    {
+      "name": "fence-unterminated",
+      "input": "Kód:\n```\nřádek 1\nřádek 2",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Kód:"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "řádek 1\nřádek 2"
+        }
+      ]
+    },
+    {
+      "name": "fence-longer-closer-run",
+      "input": "````\n```\nvnitřní\n```\n````",
+      "expected": [
+        {
+          "type": "code",
+          "text": "```\nvnitřní\n```"
+        }
+      ]
+    },
+    {
+      "name": "fence-info-with-backtick-is-text",
+      "input": "```a`b```",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "code",
+              "v": "a`b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fence-closes-list",
+      "input": "- bod\n```\nkód\n```",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "bod"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "kód"
+        }
+      ]
+    },
+    {
+      "name": "table-as-paragraphs",
+      "input": "| Jméno | Věk |\n|:---|---:|\n| Žofie | 30 |",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "| Jméno | Věk |"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "| Žofie | 30 |"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "tabs-indent-nested",
+      "input": "- a\n\t- b",
+      "expected": [
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "a"
+                }
+              ],
+              "sublist": {
+                "ordered": false,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "b"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "emoji-and-astral",
+      "input": "**😀 smajlík** a 𝔘 [1]",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "😀 smajlík"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " a 𝔘 "
+            },
+            {
+              "t": "cite",
+              "n": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-00-cut-3",
+      "input": "## ",
+      "expected": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "##"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-01-cut-37",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výp",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy **platí výp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-02-cut-63",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce [2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-03-cut-79",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2]. Viz také [zák",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce "
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "text",
+              "v": ". Viz také [zák"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-04-cut-102",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2]. Viz také [zákoník](https://www.zakon",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce "
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "text",
+              "v": ". Viz také [zákoník](https://www.zakon"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-05-cut-146",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2]. Viz také [zákoník](https://www.zakonyprolidi.cz/cs/2006-262).\n\n- první bod s `kó",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce "
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "text",
+              "v": ". Viz také "
+            },
+            {
+              "t": "link",
+              "href": "https://www.zakonyprolidi.cz/cs/2006-262",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "zákoník"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "první bod s `kó"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-06-cut-167",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2]. Viz také [zákoník](https://www.zakonyprolidi.cz/cs/2006-262).\n\n- první bod s `kódem`\n  - vnořený *det",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce "
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "text",
+              "v": ". Viz také "
+            },
+            {
+              "t": "link",
+              "href": "https://www.zakonyprolidi.cz/cs/2006-262",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "zákoník"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "první bod s "
+                },
+                {
+                  "t": "code",
+                  "v": "kódem"
+                }
+              ],
+              "sublist": {
+                "ordered": false,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "vnořený *det"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-07-cut-175",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2]. Viz také [zákoník](https://www.zakonyprolidi.cz/cs/2006-262).\n\n- první bod s `kódem`\n  - vnořený *detail* [12",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce "
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "text",
+              "v": ". Viz také "
+            },
+            {
+              "t": "link",
+              "href": "https://www.zakonyprolidi.cz/cs/2006-262",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "zákoník"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "první bod s "
+                },
+                {
+                  "t": "code",
+                  "v": "kódem"
+                }
+              ],
+              "sublist": {
+                "ordered": false,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "vnořený "
+                      },
+                      {
+                        "t": "em",
+                        "c": [
+                          {
+                            "t": "text",
+                            "v": "detail"
+                          }
+                        ]
+                      },
+                      {
+                        "t": "text",
+                        "v": " [12"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-08-cut-205",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2]. Viz také [zákoník](https://www.zakonyprolidi.cz/cs/2006-262).\n\n- první bod s `kódem`\n  - vnořený *detail* [12]\n- druhý bod\n\n```python\nprint",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce "
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "text",
+              "v": ". Viz také "
+            },
+            {
+              "t": "link",
+              "href": "https://www.zakonyprolidi.cz/cs/2006-262",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "zákoník"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "první bod s "
+                },
+                {
+                  "t": "code",
+                  "v": "kódem"
+                }
+              ],
+              "sublist": {
+                "ordered": false,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "vnořený "
+                      },
+                      {
+                        "t": "em",
+                        "c": [
+                          {
+                            "t": "text",
+                            "v": "detail"
+                          }
+                        ]
+                      },
+                      {
+                        "t": "text",
+                        "v": " "
+                      },
+                      {
+                        "t": "cite",
+                        "n": 12
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "druhý bod"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "print"
+        }
+      ]
+    },
+    {
+      "name": "stream-09-cut-243",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2]. Viz také [zákoník](https://www.zakonyprolidi.cz/cs/2006-262).\n\n- první bod s `kódem`\n  - vnořený *detail* [12]\n- druhý bod\n\n```python\nprint(\"ahoj\")\n```\n\n> Poznámka: ověřte _aktu",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce "
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "text",
+              "v": ". Viz také "
+            },
+            {
+              "t": "link",
+              "href": "https://www.zakonyprolidi.cz/cs/2006-262",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "zákoník"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "první bod s "
+                },
+                {
+                  "t": "code",
+                  "v": "kódem"
+                }
+              ],
+              "sublist": {
+                "ordered": false,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "vnořený "
+                      },
+                      {
+                        "t": "em",
+                        "c": [
+                          {
+                            "t": "text",
+                            "v": "detail"
+                          }
+                        ]
+                      },
+                      {
+                        "t": "text",
+                        "v": " "
+                      },
+                      {
+                        "t": "cite",
+                        "n": 12
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "druhý bod"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "print(\"ahoj\")"
+        },
+        {
+          "type": "quote",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Poznámka: ověřte _aktu"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stream-10-cut-255",
+      "input": "## Shrnutí\n\nPodle smlouvy **platí výpovědní lhůta** 3 měsíce [2]. Viz také [zákoník](https://www.zakonyprolidi.cz/cs/2006-262).\n\n- první bod s `kódem`\n  - vnořený *detail* [12]\n- druhý bod\n\n```python\nprint(\"ahoj\")\n```\n\n> Poznámka: ověřte _aktuální_ znění.",
+      "expected": [
+        {
+          "type": "heading",
+          "level": 2,
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Shrnutí"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Podle smlouvy "
+            },
+            {
+              "t": "strong",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "platí výpovědní lhůta"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " 3 měsíce "
+            },
+            {
+              "t": "cite",
+              "n": 2
+            },
+            {
+              "t": "text",
+              "v": ". Viz také "
+            },
+            {
+              "t": "link",
+              "href": "https://www.zakonyprolidi.cz/cs/2006-262",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "zákoník"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": "."
+            }
+          ]
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "items": [
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "první bod s "
+                },
+                {
+                  "t": "code",
+                  "v": "kódem"
+                }
+              ],
+              "sublist": {
+                "ordered": false,
+                "items": [
+                  {
+                    "inlines": [
+                      {
+                        "t": "text",
+                        "v": "vnořený "
+                      },
+                      {
+                        "t": "em",
+                        "c": [
+                          {
+                            "t": "text",
+                            "v": "detail"
+                          }
+                        ]
+                      },
+                      {
+                        "t": "text",
+                        "v": " "
+                      },
+                      {
+                        "t": "cite",
+                        "n": 12
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "inlines": [
+                {
+                  "t": "text",
+                  "v": "druhý bod"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "text": "print(\"ahoj\")"
+        },
+        {
+          "type": "quote",
+          "inlines": [
+            {
+              "t": "text",
+              "v": "Poznámka: ověřte "
+            },
+            {
+              "t": "em",
+              "c": [
+                {
+                  "t": "text",
+                  "v": "aktuální"
+                }
+              ]
+            },
+            {
+              "t": "text",
+              "v": " znění."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

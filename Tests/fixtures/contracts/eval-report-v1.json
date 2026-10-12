@@ -1,0 +1,2516 @@
+{
+  "cases": [
+    {
+      "expected_json": {
+        "absent_queries": 1,
+        "by_case_type": {
+          "absent": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "answer": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "empty_selection": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "exact_identifier": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "overview": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          }
+        },
+        "by_language": {
+          "cs": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "de": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "en": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "sk": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          }
+        },
+        "capabilities": {
+          "overview": "not_available",
+          "packed_evidence": "measured"
+        },
+        "chunker_version": "eval-scalars-v1",
+        "corpus_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "corpus_id": "fixture-report-v1",
+        "dimensions": 2,
+        "documents": 2,
+        "empty_selection_queries": 1,
+        "fetch_k": 2,
+        "metrics": {
+          "candidate_recall_at_fetch_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "hybrid_recall_at_top_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "lexical_recall_at_fetch_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "lexical_recall_at_top_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "packed_evidence_recall": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          }
+        },
+        "mode": "ollama",
+        "model": "fixture-vectors-v1",
+        "overview_queries": 1,
+        "platform": "macos",
+        "queries": [
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "answer",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "cs",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_top_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "packed_evidence_recall": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              }
+            },
+            "query_id": "found",
+            "status": "measured",
+            "text": "Evidence | café\nfolder\\note",
+            "vector": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ]
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "exact_identifier",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "en",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              }
+            },
+            "query_id": "missing",
+            "status": "measured",
+            "text": "Find the second document.",
+            "vector": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ]
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "absent",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "en",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              }
+            },
+            "query_id": "absent",
+            "status": "measured",
+            "text": "Which insurance policy applies?",
+            "vector": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ]
+          },
+          {
+            "candidates_with_chunks": 0,
+            "case_type": "empty_selection",
+            "files_in_scope": 0,
+            "fused": [],
+            "language": "sk",
+            "lexical": [],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              }
+            },
+            "query_id": "empty",
+            "status": "measured",
+            "text": "Kto zodpovedá za kontrolu?",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "overview",
+            "files_in_scope": 2,
+            "fused": [],
+            "language": "de",
+            "lexical": [],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              }
+            },
+            "query_id": "overview",
+            "status": "deferred_overview_wp8",
+            "text": "Gib einen Überblick.",
+            "vector": []
+          }
+        ],
+        "queries_total": 5,
+        "retrieval_version": "legacy-fts-eval-rrf-v1",
+        "schema_version": 1,
+        "timing": {
+          "cold_cache_ms": null,
+          "end_to_end_ms": null,
+          "warm_retrieval_ms": null
+        },
+        "top_k": 1
+      },
+      "expected_markdown": "# Multilingual retrieval eval v1\n\nCorpus: fixture-report-v1 (2 documents, 5 queries)\nBackend: legacy-fts-eval-rrf-v1; chunker: eval-scalars-v1; mode: ollama\ntopK: 1; fetchK per branch: 2\nRecall aggregation: micro (pooled gold evidence items).\n\n| metric | found | total | recall bp | status |\n|---|---:|---:|---:|---|\n| lexical_recall_at_top_k | 1 | 2 | 5000 | measured |\n| lexical_recall_at_fetch_k | 1 | 2 | 5000 | measured |\n| hybrid_recall_at_top_k | 1 | 2 | 5000 | measured |\n| candidate_recall_at_fetch_k | 1 | 2 | 5000 | measured |\n| packed_evidence_recall | 1 | 2 | 5000 | measured |\n\n| query | text | status | lexical bp | hybrid bp | candidate bp | packed bp |\n|---|---|---|---:|---:|---:|---:|\n| found | Evidence \\| café folder\\\\note | measured | 10000 | 10000 | 10000 | 10000 |\n| missing | Find the second document. | measured | 0 | 0 | 0 | 0 |\n| absent | Which insurance policy applies? | measured | — | — | — | — |\n| empty | Kto zodpovedá za kontrolu? | measured | — | — | — | — |\n| overview | Gib einen Überblick. | deferred_overview_wp8 | — | — | — | — |\n\nCandidate recall uses the full union of the per-branch fetchK lists.\nUnavailable packing/overview measurements are not scores; WP8 supplies those adapters.\n",
+      "input": {
+        "absent_queries": 1,
+        "by_case_type": {
+          "absent": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "answer": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "empty_selection": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "exact_identifier": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "overview": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          }
+        },
+        "by_language": {
+          "cs": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "de": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "en": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            }
+          },
+          "sk": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          }
+        },
+        "capabilities": {
+          "overview": "not_available",
+          "packed_evidence": "measured"
+        },
+        "chunker_version": "eval-scalars-v1",
+        "corpus_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "corpus_id": "fixture-report-v1",
+        "dimensions": 2,
+        "documents": 2,
+        "empty_selection_queries": 1,
+        "fetch_k": 2,
+        "metrics": {
+          "candidate_recall_at_fetch_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "hybrid_recall_at_top_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "lexical_recall_at_fetch_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "lexical_recall_at_top_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "packed_evidence_recall": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          }
+        },
+        "mode": "ollama",
+        "model": "fixture-vectors-v1",
+        "overview_queries": 1,
+        "platform": "macos",
+        "queries": [
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "answer",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "cs",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_top_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "packed_evidence_recall": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              }
+            },
+            "query_id": "found",
+            "status": "measured",
+            "text": "Evidence | café\nfolder\\note",
+            "vector": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ]
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "exact_identifier",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "en",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              }
+            },
+            "query_id": "missing",
+            "status": "measured",
+            "text": "Find the second document.",
+            "vector": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ]
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "absent",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "en",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              }
+            },
+            "query_id": "absent",
+            "status": "measured",
+            "text": "Which insurance policy applies?",
+            "vector": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ]
+          },
+          {
+            "candidates_with_chunks": 0,
+            "case_type": "empty_selection",
+            "files_in_scope": 0,
+            "fused": [],
+            "language": "sk",
+            "lexical": [],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              }
+            },
+            "query_id": "empty",
+            "status": "measured",
+            "text": "Kto zodpovedá za kontrolu?",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "overview",
+            "files_in_scope": 2,
+            "fused": [],
+            "language": "de",
+            "lexical": [],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              }
+            },
+            "query_id": "overview",
+            "status": "deferred_overview_wp8",
+            "text": "Gib einen Überblick.",
+            "vector": []
+          }
+        ],
+        "queries_total": 5,
+        "retrieval_version": "legacy-fts-eval-rrf-v1",
+        "schema_version": 1,
+        "timing": {
+          "cold_cache_ms": null,
+          "end_to_end_ms": null,
+          "warm_retrieval_ms": null
+        },
+        "top_k": 1
+      },
+      "name": "measured"
+    },
+    {
+      "expected_json": {
+        "absent_queries": 1,
+        "by_case_type": {
+          "absent": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "answer": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "empty_selection": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "exact_identifier": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "overview": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          }
+        },
+        "by_language": {
+          "cs": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "de": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "en": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "sk": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          }
+        },
+        "capabilities": {
+          "overview": "not_available",
+          "packed_evidence": "not_available"
+        },
+        "chunker_version": "eval-scalars-v1",
+        "corpus_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "corpus_id": "fixture-report-v1",
+        "dimensions": null,
+        "documents": 2,
+        "empty_selection_queries": 1,
+        "fetch_k": 2,
+        "metrics": {
+          "candidate_recall_at_fetch_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "hybrid_recall_at_top_k": {
+            "found": null,
+            "recall_bp": null,
+            "status": "not_available",
+            "total": null
+          },
+          "lexical_recall_at_fetch_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "lexical_recall_at_top_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "packed_evidence_recall": {
+            "found": null,
+            "recall_bp": null,
+            "status": "not_available",
+            "total": null
+          }
+        },
+        "mode": "lexical",
+        "model": null,
+        "overview_queries": 1,
+        "platform": "macos",
+        "queries": [
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "answer",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "cs",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "hybrid_recall_at_top_k": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_top_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "packed_evidence_recall": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              }
+            },
+            "query_id": "found",
+            "status": "measured",
+            "text": "Evidence | café\nfolder\\note",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "exact_identifier",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "en",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "hybrid_recall_at_top_k": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "packed_evidence_recall": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              }
+            },
+            "query_id": "missing",
+            "status": "measured",
+            "text": "Find the second document.",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "absent",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "en",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              }
+            },
+            "query_id": "absent",
+            "status": "measured",
+            "text": "Which insurance policy applies?",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 0,
+            "case_type": "empty_selection",
+            "files_in_scope": 0,
+            "fused": [],
+            "language": "sk",
+            "lexical": [],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              }
+            },
+            "query_id": "empty",
+            "status": "measured",
+            "text": "Kto zodpovedá za kontrolu?",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "overview",
+            "files_in_scope": 2,
+            "fused": [],
+            "language": "de",
+            "lexical": [],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              }
+            },
+            "query_id": "overview",
+            "status": "deferred_overview_wp8",
+            "text": "Gib einen Überblick.",
+            "vector": []
+          }
+        ],
+        "queries_total": 5,
+        "retrieval_version": "legacy-fts-eval-rrf-v1",
+        "schema_version": 1,
+        "timing": {
+          "cold_cache_ms": null,
+          "end_to_end_ms": null,
+          "warm_retrieval_ms": null
+        },
+        "top_k": 1
+      },
+      "expected_markdown": "# Multilingual retrieval eval v1\n\nCorpus: fixture-report-v1 (2 documents, 5 queries)\nBackend: legacy-fts-eval-rrf-v1; chunker: eval-scalars-v1; mode: lexical\ntopK: 1; fetchK per branch: 2\nRecall aggregation: micro (pooled gold evidence items).\n\n| metric | found | total | recall bp | status |\n|---|---:|---:|---:|---|\n| lexical_recall_at_top_k | 1 | 2 | 5000 | measured |\n| lexical_recall_at_fetch_k | 1 | 2 | 5000 | measured |\n| hybrid_recall_at_top_k | — | — | — | not_available |\n| candidate_recall_at_fetch_k | 1 | 2 | 5000 | measured |\n| packed_evidence_recall | — | — | — | not_available |\n\n| query | text | status | lexical bp | hybrid bp | candidate bp | packed bp |\n|---|---|---|---:|---:|---:|---:|\n| found | Evidence \\| café folder\\\\note | measured | 10000 | — | 10000 | — |\n| missing | Find the second document. | measured | 0 | — | 0 | — |\n| absent | Which insurance policy applies? | measured | — | — | — | — |\n| empty | Kto zodpovedá za kontrolu? | measured | — | — | — | — |\n| overview | Gib einen Überblick. | deferred_overview_wp8 | — | — | — | — |\n\nCandidate recall uses the full union of the per-branch fetchK lists.\nUnavailable packing/overview measurements are not scores; WP8 supplies those adapters.\n",
+      "input": {
+        "absent_queries": 1,
+        "by_case_type": {
+          "absent": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "answer": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "empty_selection": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "exact_identifier": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "overview": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          }
+        },
+        "by_language": {
+          "cs": {
+            "candidate_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 1,
+              "recall_bp": 10000,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "de": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            }
+          },
+          "en": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": 0,
+              "status": "measured",
+              "total": 1
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          },
+          "sk": {
+            "candidate_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "hybrid_recall_at_top_k": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            },
+            "lexical_recall_at_fetch_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "lexical_recall_at_top_k": {
+              "found": 0,
+              "recall_bp": null,
+              "status": "not_applicable",
+              "total": 0
+            },
+            "packed_evidence_recall": {
+              "found": null,
+              "recall_bp": null,
+              "status": "not_available",
+              "total": null
+            }
+          }
+        },
+        "capabilities": {
+          "overview": "not_available",
+          "packed_evidence": "not_available"
+        },
+        "chunker_version": "eval-scalars-v1",
+        "corpus_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "corpus_id": "fixture-report-v1",
+        "dimensions": null,
+        "documents": 2,
+        "empty_selection_queries": 1,
+        "fetch_k": 2,
+        "metrics": {
+          "candidate_recall_at_fetch_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "hybrid_recall_at_top_k": {
+            "found": null,
+            "recall_bp": null,
+            "status": "not_available",
+            "total": null
+          },
+          "lexical_recall_at_fetch_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "lexical_recall_at_top_k": {
+            "found": 1,
+            "recall_bp": 5000,
+            "status": "measured",
+            "total": 2
+          },
+          "packed_evidence_recall": {
+            "found": null,
+            "recall_bp": null,
+            "status": "not_available",
+            "total": null
+          }
+        },
+        "mode": "lexical",
+        "model": null,
+        "overview_queries": 1,
+        "platform": "macos",
+        "queries": [
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "answer",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "cs",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "hybrid_recall_at_top_k": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_top_k": {
+                "found": 1,
+                "recall_bp": 10000,
+                "status": "measured",
+                "total": 1
+              },
+              "packed_evidence_recall": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              }
+            },
+            "query_id": "found",
+            "status": "measured",
+            "text": "Evidence | café\nfolder\\note",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "exact_identifier",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "en",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "hybrid_recall_at_top_k": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": 0,
+                "status": "measured",
+                "total": 1
+              },
+              "packed_evidence_recall": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              }
+            },
+            "query_id": "missing",
+            "status": "measured",
+            "text": "Find the second document.",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "absent",
+            "files_in_scope": 2,
+            "fused": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "language": "en",
+            "lexical": [
+              {
+                "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "document_id": "document-a",
+                "end": 10,
+                "start": 0
+              }
+            ],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              }
+            },
+            "query_id": "absent",
+            "status": "measured",
+            "text": "Which insurance policy applies?",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 0,
+            "case_type": "empty_selection",
+            "files_in_scope": 0,
+            "fused": [],
+            "language": "sk",
+            "lexical": [],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": null,
+                "recall_bp": null,
+                "status": "not_available",
+                "total": null
+              }
+            },
+            "query_id": "empty",
+            "status": "measured",
+            "text": "Kto zodpovedá za kontrolu?",
+            "vector": []
+          },
+          {
+            "candidates_with_chunks": 2,
+            "case_type": "overview",
+            "files_in_scope": 2,
+            "fused": [],
+            "language": "de",
+            "lexical": [],
+            "metrics": {
+              "candidate_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "hybrid_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_fetch_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "lexical_recall_at_top_k": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              },
+              "packed_evidence_recall": {
+                "found": 0,
+                "recall_bp": null,
+                "status": "not_applicable",
+                "total": 0
+              }
+            },
+            "query_id": "overview",
+            "status": "deferred_overview_wp8",
+            "text": "Gib einen Überblick.",
+            "vector": []
+          }
+        ],
+        "queries_total": 5,
+        "retrieval_version": "legacy-fts-eval-rrf-v1",
+        "schema_version": 1,
+        "timing": {
+          "cold_cache_ms": null,
+          "end_to_end_ms": null,
+          "warm_retrieval_ms": null
+        },
+        "top_k": 1
+      },
+      "name": "unavailable"
+    }
+  ],
+  "contract": "eval-report",
+  "version": 1
+}

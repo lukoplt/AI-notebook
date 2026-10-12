@@ -20,9 +20,12 @@ struct AddProviderSheet: View {
     @State private var baseURL: String = ""
     @State private var apiKey: String = ""
     @State private var hadStoredKey = false
-    @State private var testResult: String?
-    @State private var testSucceeded = false
+    @State private var selectedPresetId = "custom"
+    @State private var probeResult: ProviderProbeResult?
+    @State private var formError: String?
     @State private var isTesting = false
+    @State private var probeRevision = 0
+    @State private var probeTask: Task<Void, Never>?
     @State private var showingPrivacyGate = false
     @State private var showingDeleteConfirm = false
 
@@ -31,54 +34,97 @@ struct AddProviderSheet: View {
     private var isBuiltInOllama: Bool { existing?.isBuiltInOllama == true }
 
     private var canSave: Bool {
-        !name.trimmingCharacters(in: .whitespaces).isEmpty
-            && !baseURL.trimmingCharacters(in: .whitespaces).isEmpty
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && !baseURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && (!requiresKey || hadStoredKey || hasDraftKey)
+    }
+
+    private var requiresKey: Bool { type == .openai || type == .anthropic }
+    private var hasDraftKey: Bool { !apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    private var selectableTypes: [ProviderType] {
+        // Changing a selected embedder to a chat-only type would require a
+        // different embedding selection. Let Settings confirm that change first.
+        ProviderType.allCases.filter {
+            existing?.id != settings.selectedEmbeddingProviderId || $0.supportsEmbeddings
+        }
+    }
+
+    private var providerTypeBinding: Binding<ProviderType> {
+        Binding(get: { type }, set: { newType in
+            // Apply defaults only for an intentional type edit. Populating an
+            // existing row must preserve its exact stored root, even when that
+            // root happens to match another provider's default.
+            let usesDefaultRoot = baseURL.isEmpty || baseURL == type.defaultBaseURL
+            type = newType
+            if usesDefaultRoot { baseURL = newType.defaultBaseURL }
+            selectedPresetId = "custom"
+            invalidateProbe()
+        })
+    }
+
+    private var presetHelpKey: AppText.Key {
+        switch ProviderPresets.all.first(where: { $0.id == selectedPresetId })?.helpKey {
+        case "providerPresetLocalHelp": .providerPresetLocalHelp
+        case "providerPresetRemoteHelp": .providerPresetRemoteHelp
+        default: .providerPresetCustomHelp
+        }
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(text.string(isEdit ? .editProviderTitle : .addProviderTitle))
-                .font(.title2).bold()
+                .tokenFont(.title)
 
-            Picker(text.string(.providerTypeLabel), selection: $type) {
-                ForEach(ProviderType.allCases, id: \.self) { t in
-                    Text(displayName(for: t)).tag(t)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    Picker(text.string(.providerTypeLabel), selection: providerTypeBinding) {
+                        ForEach(selectableTypes, id: \.self) { t in
+                            Text(displayName(for: t)).tag(t)
+                        }
+                    }
+                    .disabled(isBuiltInOllama)
+
+                    if type == .openaiCompatible {
+                        Picker(text.string(.providerPresetLabel), selection: $selectedPresetId) {
+                            ForEach(ProviderPresets.all, id: \.id) { preset in
+                                Text(preset.id == "custom" ? text.string(.providerPresetCustom) : preset.name)
+                                    .tag(preset.id)
+                            }
+                        }
+                        .onChange(of: selectedPresetId) { _, id in
+                            applyPreset(id)
+                        }
+                        Text(text.string(presetHelpKey))
+                            .tokenFont(.caption).tokenForeground(.text2)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    TextField(text.string(.providerNameLabel), text: $name)
+                    TextField(text.string(.providerUrlLabel), text: $baseURL)
+
+                    if type != .ollama {
+                        SecureField(
+                            hadStoredKey ? text.string(.providerKeySavedLabel) : text.string(.providerApiKeyLabel),
+                            text: $apiKey
+                        )
+                    }
+
+                    HStack {
+                        Button(text.string(.providerTestButton), action: startTest)
+                            .disabled(isTesting || baseURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                        if isTesting { ProgressView().controlSize(.small) }
+                    }
+                    if let probeResult {
+                        Label(providerProbeText(probeResult, text: text), systemImage: probeSymbol(probeResult))
+                            .foregroundStyle(probeColor(probeResult))
+                            .tokenFont(.caption).fixedSize(horizontal: false, vertical: true)
+                    }
+                    if let formError {
+                        Text(formError).tokenForeground(.danger).tokenFont(.caption)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
             }
-            .disabled(isBuiltInOllama)
-            .onChange(of: type) { _, newType in
-                if baseURL.isEmpty || ProviderType.allCases.map(\.defaultBaseURL).contains(baseURL) {
-                    baseURL = newType.defaultBaseURL
-                }
-                testResult = nil
-                testSucceeded = false
-            }
-
-            TextField(text.string(.providerNameLabel), text: $name)
-            TextField(text.string(.providerUrlLabel), text: $baseURL)
-
-            if type != .ollama {
-                SecureField(
-                    hadStoredKey ? text.string(.providerKeySavedLabel) : text.string(.providerApiKeyLabel),
-                    text: $apiKey
-                )
-            }
-
-            HStack {
-                Button(text.string(.providerTestButton)) {
-                    Task { await runTest() }
-                }
-                .disabled(isTesting || baseURL.isEmpty)
-                if isTesting { ProgressView().controlSize(.small) }
-                if testSucceeded {
-                    Label(text.string(.providerTestSuccess), systemImage: "checkmark.circle")
-                        .foregroundStyle(.green)
-                } else if let testResult {
-                    Text(testResult).foregroundStyle(.red).font(.caption)
-                }
-            }
-
-            Spacer()
 
             HStack {
                 if isEdit && !isBuiltInOllama {
@@ -94,8 +140,11 @@ struct AddProviderSheet: View {
             }
         }
         .padding(20)
-        .frame(width: 460, height: 340)
+        .frame(width: 520, height: 460)
         .onAppear(perform: populate)
+        .onChange(of: baseURL) { _, _ in invalidateProbe() }
+        .onChange(of: apiKey) { _, _ in invalidateProbe() }
+        .onDisappear { invalidateProbe() }
         .alert(text.string(.privacyGateTitle), isPresented: $showingPrivacyGate) {
             Button(text.string(.privacyGateAccept)) { persist(acknowledge: true) }
             Button(text.string(.cancel), role: .cancel) {}
@@ -129,30 +178,91 @@ struct AddProviderSheet: View {
         type = existing.type
         name = existing.name
         baseURL = existing.baseURL
-        hadStoredKey = ((try? routerHolder.secrets.load(providerId: existing.id)) ?? nil) != nil
+        let storedKey = (try? routerHolder.secrets.load(providerId: existing.id)) ?? nil
+        hadStoredKey = storedKey.map { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty } ?? false
         // The stored key is never loaded back into the field (FR-A7).
     }
 
-    private func runTest() async {
+    private func applyPreset(_ id: String) {
+        invalidateProbe()
+        guard let preset = ProviderPresets.all.first(where: { $0.id == id }), id != "custom" else { return }
+        baseURL = preset.baseURL
+        if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { name = preset.name }
+    }
+
+    private func invalidateProbe() {
+        probeRevision += 1
+        probeTask?.cancel()
+        probeTask = nil
+        isTesting = false
+        probeResult = nil
+        formError = nil
+    }
+
+    private func startTest() {
+        invalidateProbe()
+        let revision = probeRevision
+        let requestedType = type, requestedRoot = baseURL, requestedKeyDraft = apiKey
+        let key: String?
+        do {
+            if hasDraftKey { key = apiKey }
+            else if let existing { key = try routerHolder.secrets.load(providerId: existing.id) }
+            else { key = nil }
+        } catch {
+            formError = providerErrorText(error, text: text)
+            return
+        }
         isTesting = true
-        defer { isTesting = false }
-        testResult = nil
-        testSucceeded = false
-        let keyForTest: String? = {
-            if !apiKey.isEmpty { return apiKey }
-            if let existing { return (try? routerHolder.secrets.load(providerId: existing.id)) ?? nil }
-            return nil
-        }()
-        if let error = await routerHolder.router.testConnection(
-            type: type, baseURL: baseURL.trimmingCharacters(in: .whitespaces), apiKey: keyForTest
-        ) {
-            testResult = providerErrorText(error, text: text)
-        } else {
-            testSucceeded = true
+        probeTask = Task { @MainActor in
+            defer {
+                if probeRevision == revision {
+                    isTesting = false
+                    probeTask = nil
+                }
+            }
+            do {
+                let result = try await routerHolder.router.probe(
+                    type: requestedType, baseURL: requestedRoot, apiKey: key)
+                guard !Task.isCancelled, probeRevision == revision,
+                      type == requestedType, baseURL == requestedRoot, apiKey == requestedKeyDraft else { return }
+                probeResult = result
+            } catch {
+                guard !Task.isCancelled, probeRevision == revision,
+                      type == requestedType, baseURL == requestedRoot, apiKey == requestedKeyDraft else { return }
+                if error is CancellationError || (error as? URLError)?.code == .cancelled { return }
+                formError = providerErrorText(error, text: text)
+            }
+        }
+    }
+
+    private func probeColor(_ result: ProviderProbeResult) -> Color {
+        switch result.status {
+        case .verified: DesignTokens.color(.success)
+        case .listingUnsupported: DesignTokens.color(.warning)
+        case .failed: DesignTokens.color(.danger)
+        }
+    }
+
+    private func probeSymbol(_ result: ProviderProbeResult) -> String {
+        switch result.status {
+        case .verified: "checkmark.circle"
+        case .listingUnsupported: "info.circle"
+        case .failed: "exclamationmark.circle"
         }
     }
 
     private func saveTapped() {
+        guard !requiresKey || hadStoredKey || hasDraftKey else {
+            formError = text.string(.errorInvalidApiKey)
+            return
+        }
+        do {
+            _ = try ProviderAPIRoot.normalize(baseURL)
+        } catch {
+            formError = providerErrorText(error, text: text)
+            return
+        }
+        guard canSave else { return }
         // Consent gate (FR-A8): fires for a NEW cloud/network provider and
         // ALSO when an existing provider's type changes to a cloud/network
         // type — the stored consent belonged to the previous type and must
@@ -166,34 +276,30 @@ struct AddProviderSheet: View {
     }
 
     private func persist(acknowledge: Bool) {
-        let cfg = ProviderConfig(
-            id: existing?.id ?? UUID().uuidString,
-            type: type,
-            name: name.trimmingCharacters(in: .whitespaces),
-            baseURL: baseURL.trimmingCharacters(in: .whitespaces),
-            enabled: true,
-            privacyAcknowledged: false,   // saveProvider never clobbers it; see acknowledgePrivacy below
-            createdAt: existing?.createdAt ?? Date()
-        )
         do {
+            if existing?.id == settings.selectedEmbeddingProviderId && !type.supportsEmbeddings {
+                throw ProviderConfigurationError.unsupportedEndpoint
+            }
+            let cfg = ProviderConfig(
+                id: existing?.id ?? UUID().uuidString,
+                type: type,
+                name: name.trimmingCharacters(in: .whitespacesAndNewlines),
+                baseURL: try ProviderAPIRoot.normalize(baseURL),
+                enabled: existing?.enabled ?? true,
+                privacyAcknowledged: false,   // saveProvider preserves existing consent
+                createdAt: existing?.createdAt ?? Date()
+            )
             try store.saveProvider(cfg)
             if acknowledge {
                 try store.acknowledgePrivacy(providerId: cfg.id)
             }
-            if type != .ollama && !apiKey.isEmpty {
+            if type != .ollama && hasDraftKey {
                 try routerHolder.secrets.save(providerId: cfg.id, secret: apiKey)
-            }
-            // If this edit switched the currently-selected embedding provider
-            // to a type that no longer supports embeddings, the selection
-            // would silently keep pointing at it (picker no longer offers it,
-            // router falls back to Ollama at runtime) — reset it explicitly.
-            if settings.selectedEmbeddingProviderId == cfg.id && !cfg.type.supportsEmbeddings {
-                settings.selectedEmbeddingProviderId = ProviderConfig.ollamaId
             }
             onSaved()
             dismiss()
         } catch {
-            testResult = String(describing: error)
+            formError = providerErrorText(error, text: text)
         }
     }
 
@@ -208,11 +314,12 @@ struct AddProviderSheet: View {
             }
             if settings.selectedEmbeddingProviderId == existing.id {
                 settings.selectedEmbeddingProviderId = ProviderConfig.ollamaId
+                settings.selectedEmbeddingModel = "nomic-embed-text"
             }
             onSaved()
             dismiss()
         } catch {
-            testResult = String(describing: error)
+            formError = providerErrorText(error, text: text)
         }
     }
 }

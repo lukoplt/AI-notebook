@@ -41,7 +41,7 @@ final class LocalizationTests: XCTestCase {
 
         let cs = AppText(language: .czech)
         XCTAssertEqual(cs.string(.settings), "Nastavení")
-        XCTAssertEqual(cs.string(.notebooks), "Poznámkové bloky")
+        XCTAssertEqual(cs.string(.notebooks), "Notebooky")
         XCTAssertEqual(cs.string(.create), "Vytvořit")
         XCTAssertEqual(cs.string(.welcome), "Vítejte")
         XCTAssertEqual(cs.string(.openOllamaDownload), "Otevřít stránku ke stažení")
@@ -157,5 +157,48 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(cs.string(.updateLaterButton), "Později")
         XCTAssertEqual(en.string(.updateStatusFailed), "Couldn't check for updates.")
         XCTAssertEqual(cs.string(.updateStatusFailed), "Kontrola aktualizací se nezdařila.")
+    }
+
+    // MARK: UI redesign (Codex-style shell)
+
+    func testRedesignShellStringsAreBilingual() {
+        let en = AppText(language: .english), cs = AppText(language: .czech)
+        XCTAssertEqual(en.string(.shellNewChat), "New chat")
+        XCTAssertEqual(cs.string(.shellNewChat), "Nový chat")
+        XCTAssertEqual(en.string(.chatEmptyTitle), "What are we working on?")
+        XCTAssertEqual(cs.string(.chatEmptyTitle), "Na čem pracujeme?")
+        XCTAssertEqual(cs.string(.composerPlaceholder), "Zeptej se na cokoliv v notebooku…")
+        XCTAssertEqual(cs.string(.shellEmptyAppTitle), "Začni přidáním složky nebo vytvořením notebooku")
+        XCTAssertEqual(cs.string(.panelNoteChat), "Chat k poznámce")
+        XCTAssertEqual(cs.string(.toolHistory), "Historie nástrojů")
+        XCTAssertEqual(cs.string(.settingsAbout), "O aplikaci")
+        XCTAssertEqual(en.string(.documentExportPDF), "Export as PDF…")
+    }
+
+    func testRedesignFormatStringsKeepTheirPlaceholders() {
+        for language in [AppLanguage.english, .czech] {
+            let t = AppText(language: language)
+            XCTAssertTrue(t.string(.shellShowMore).contains("%d"), "\(language)")
+            XCTAssertTrue(t.string(.folderSummaryErrors).contains("%d"), "\(language)")
+            XCTAssertTrue(t.string(.folderSummaryFiles).contains("%@"), "\(language)")
+            XCTAssertTrue(t.string(.citationPage).contains("%@"), "\(language)")
+            XCTAssertTrue(t.string(.chatReplyNoteTitle).contains("%@"), "\(language)")
+        }
+        XCTAssertEqual(String(format: AppText(language: .czech).string(.citationPage), "3–4"), "s. 3–4")
+        XCTAssertEqual(String(format: AppText(language: .english).string(.shellShowMore), 2), "Show more (2)")
+    }
+    /// UI redesign C1: Czech UI says "notebook" (declined), never "blok", on both
+    /// platforms (Windows: LocalizedStringsTests.Czech_text_says_notebook_not_blok).
+    func testCzechTextSaysNotebookNotBlok() throws {
+        let blok = try NSRegularExpression(pattern: #"\b(poznámkov\w* )?blok(u|y|ů|em|ům|ích|ách)?\b"#,
+                                           options: [.caseInsensitive])
+        let cs = AppText(language: .czech)
+        for key in AppText.Key.allCases {
+            let value = cs.string(key)
+            let range = NSRange(value.startIndex..., in: value)
+            XCTAssertNil(blok.firstMatch(in: value, range: range), "\(key): \(value)")
+        }
+        XCTAssertEqual(cs.string(.createNotebook), "Vytvořit notebook")
+        XCTAssertEqual(cs.string(.notebookName), "Název notebooku")
     }
 }

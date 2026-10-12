@@ -17,7 +17,7 @@ struct NoteHistorySheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(t.string(.historySheetTitle)).font(.title2).bold()
+            Text(t.string(.historySheetTitle)).tokenFont(.title)
             HSplitView {
                 list.frame(minWidth: 240, idealWidth: 280, maxWidth: 340)
                 preview.frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -25,7 +25,7 @@ struct NoteHistorySheet: View {
             .frame(minHeight: 360)
             HStack {
                 if let errorMessage {
-                    Text(errorMessage).font(.caption).foregroundStyle(.red)
+                    Text(errorMessage).tokenFont(.caption).tokenForeground(.danger)
                 }
                 Spacer()
                 Button(t.string(.cancelButton)) { isPresented = false }
@@ -41,17 +41,17 @@ struct NoteHistorySheet: View {
         if versions.isEmpty {
             VStack {
                 Spacer()
-                Text(t.string(.historyEmpty)).foregroundStyle(.secondary)
+                Text(t.string(.historyEmpty)).tokenForeground(.text2)
                 Spacer()
             }
         } else {
             List(selection: $selection) {
                 ForEach(versions.reversed()) { v in
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(reasonLabel(v.reason)).font(.headline)
+                        Text(reasonLabel(v.reason)).tokenFont(.headline)
                         Text(v.savedAt.formatted(date: .abbreviated, time: .shortened))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .tokenFont(.caption)
+                            .tokenForeground(.text2)
                     }
                     .tag(v.id ?? -1)
                 }
@@ -64,10 +64,10 @@ struct NoteHistorySheet: View {
     private var preview: some View {
         if let id = selection, let v = versions.first(where: { $0.id == id }) {
             VStack(alignment: .leading, spacing: 8) {
-                Text(v.title).font(.title3).bold()
+                Text(v.title).tokenFont(.title)
                 ScrollView {
                     Text(v.bodyMd)
-                        .font(.system(.body, design: .monospaced))
+                        .font(DesignTokens.font(.mono))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .textSelection(.enabled)
                 }
@@ -82,7 +82,7 @@ struct NoteHistorySheet: View {
         } else {
             VStack {
                 Spacer()
-                Text(t.string(.historyEmpty)).foregroundStyle(.secondary)
+                Text(t.string(.historyEmpty)).tokenForeground(.text2)
                 Spacer()
             }
         }

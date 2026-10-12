@@ -7,7 +7,12 @@ public record SourceChunk(
     string Text,
     int TokenCount,
     int? PageHint,
-    string? Context = null);
+    string? Context = null,
+    long? RevisionId = null,
+    int? CharStart = null,
+    int? CharEnd = null,
+    string? Lang = null,
+    bool LangInherited = false);
 
 public sealed record ChunkDraft(
     string Text,

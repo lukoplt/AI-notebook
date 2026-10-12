@@ -1,0 +1,1538 @@
+{
+  "batteryWorkers": 2,
+  "budgetPercent": 6,
+  "busyWorkers": 2,
+  "cases": [
+    {
+      "expected": 1,
+      "input": 0,
+      "name": "max-workers-0",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 1,
+      "input": 1,
+      "name": "max-workers-1",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 1,
+      "input": 2,
+      "name": "max-workers-2",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 1,
+      "input": 3,
+      "name": "max-workers-3",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 2,
+      "input": 4,
+      "name": "max-workers-4",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 4,
+      "input": 8,
+      "name": "max-workers-8",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 5,
+      "input": 10,
+      "name": "max-workers-10",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 6,
+      "input": 12,
+      "name": "max-workers-12",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 6,
+      "input": 14,
+      "name": "max-workers-14",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 6,
+      "input": 24,
+      "name": "max-workers-24",
+      "operation": "max-workers"
+    },
+    {
+      "expected": 536870912,
+      "input": 0,
+      "name": "memory-budget-0",
+      "operation": "memory-budget"
+    },
+    {
+      "expected": 536870912,
+      "input": 4294967296,
+      "name": "memory-budget-4gb",
+      "operation": "memory-budget"
+    },
+    {
+      "expected": 536870912,
+      "input": 8589934592,
+      "name": "memory-budget-8gb",
+      "operation": "memory-budget"
+    },
+    {
+      "expected": 1030792151,
+      "input": 17179869184,
+      "name": "memory-budget-16gb",
+      "operation": "memory-budget"
+    },
+    {
+      "expected": 1073741824,
+      "input": 34359738368,
+      "name": "memory-budget-32gb",
+      "operation": "memory-budget"
+    },
+    {
+      "expected": 1073741824,
+      "input": 68719476736,
+      "name": "memory-budget-64gb",
+      "operation": "memory-budget"
+    },
+    {
+      "expected": 1,
+      "input": 0,
+      "name": "hash-width-0",
+      "operation": "hash-width"
+    },
+    {
+      "expected": 1,
+      "input": 1,
+      "name": "hash-width-1",
+      "operation": "hash-width"
+    },
+    {
+      "expected": 2,
+      "input": 2,
+      "name": "hash-width-2",
+      "operation": "hash-width"
+    },
+    {
+      "expected": 4,
+      "input": 4,
+      "name": "hash-width-4",
+      "operation": "hash-width"
+    },
+    {
+      "expected": 4,
+      "input": 6,
+      "name": "hash-width-6",
+      "operation": "hash-width"
+    },
+    {
+      "expected": 5,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-idle-10-cores",
+      "operation": "target"
+    },
+    {
+      "expected": 6,
+      "input": {
+        "cores": 12,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-idle-12-cores",
+      "operation": "target"
+    },
+    {
+      "expected": 6,
+      "input": {
+        "cores": 16,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-idle-16-cores-capped",
+      "operation": "target"
+    },
+    {
+      "expected": 2,
+      "input": {
+        "cores": 4,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-idle-4-cores",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 1,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-idle-single-core",
+      "operation": "target"
+    },
+    {
+      "expected": 5,
+      "input": {
+        "cores": 10,
+        "loadMilli": 5200,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 5,
+        "thermal": "nominal"
+      },
+      "name": "target-own-load-is-not-external",
+      "operation": "target"
+    },
+    {
+      "expected": 5,
+      "input": {
+        "cores": 10,
+        "loadMilli": 9000,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 5,
+        "thermal": "nominal"
+      },
+      "name": "target-own-load-plus-light-external",
+      "operation": "target"
+    },
+    {
+      "expected": 2,
+      "input": {
+        "cores": 10,
+        "loadMilli": 5000,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-busy-half-cores",
+      "operation": "target"
+    },
+    {
+      "expected": 5,
+      "input": {
+        "cores": 10,
+        "loadMilli": 4999,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-just-below-busy",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 10,
+        "loadMilli": 10000,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-overloaded",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 10,
+        "loadMilli": 15000,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 5,
+        "thermal": "nominal"
+      },
+      "name": "target-overloaded-net-of-own",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "warning",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-memory-warning",
+      "operation": "target"
+    },
+    {
+      "expected": 0,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "critical",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-memory-critical",
+      "operation": "target"
+    },
+    {
+      "expected": 0,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "critical",
+        "onBattery": true,
+        "ownWorkers": 0,
+        "thermal": "critical"
+      },
+      "name": "target-memory-critical-wins",
+      "operation": "target"
+    },
+    {
+      "expected": 5,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "fair"
+      },
+      "name": "target-thermal-fair",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "serious"
+      },
+      "name": "target-thermal-serious",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "critical"
+      },
+      "name": "target-thermal-critical",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": true,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-low-power",
+      "operation": "target"
+    },
+    {
+      "expected": 2,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": true,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-battery",
+      "operation": "target"
+    },
+    {
+      "expected": 2,
+      "input": {
+        "cores": 4,
+        "loadMilli": 0,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": true,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-battery-4-cores",
+      "operation": "target"
+    },
+    {
+      "expected": 2,
+      "input": {
+        "cores": 10,
+        "loadMilli": 6000,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": true,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-battery-busy",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 10,
+        "loadMilli": 0,
+        "lowPower": true,
+        "memory": "normal",
+        "onBattery": true,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-battery-low-power",
+      "operation": "target"
+    },
+    {
+      "expected": 2,
+      "input": {
+        "cores": 10,
+        "loadMilli": 6000,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": -3,
+        "thermal": "nominal"
+      },
+      "name": "target-negative-own-workers",
+      "operation": "target"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cores": 0,
+        "loadMilli": 500,
+        "lowPower": false,
+        "memory": "normal",
+        "onBattery": false,
+        "ownWorkers": 0,
+        "thermal": "nominal"
+      },
+      "name": "target-zero-cores",
+      "operation": "target"
+    },
+    {
+      "expected": 5,
+      "input": {
+        "cap": 5,
+        "samples": [
+          {
+            "atMs": 0,
+            "expected": 2,
+            "target": 5
+          },
+          {
+            "atMs": 10000,
+            "expected": 2,
+            "target": 5
+          },
+          {
+            "atMs": 29999,
+            "expected": 2,
+            "target": 5
+          },
+          {
+            "atMs": 30000,
+            "expected": 5,
+            "target": 5
+          },
+          {
+            "atMs": 40000,
+            "expected": 5,
+            "target": 5
+          }
+        ]
+      },
+      "name": "governor-starts-at-two-then-raises-after-hold",
+      "operation": "governor"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cap": 5,
+        "samples": [
+          {
+            "atMs": 0,
+            "expected": 2,
+            "target": 5
+          },
+          {
+            "atMs": 30000,
+            "expected": 5,
+            "target": 5
+          },
+          {
+            "atMs": 31000,
+            "expected": 1,
+            "target": 1
+          },
+          {
+            "atMs": 31100,
+            "expected": 1,
+            "target": 2
+          }
+        ]
+      },
+      "name": "governor-lowers-at-once",
+      "operation": "governor"
+    },
+    {
+      "expected": 6,
+      "input": {
+        "cap": 6,
+        "samples": [
+          {
+            "atMs": 0,
+            "expected": 2,
+            "target": 6
+          },
+          {
+            "atMs": 20000,
+            "expected": 2,
+            "target": 2
+          },
+          {
+            "atMs": 25000,
+            "expected": 2,
+            "target": 6
+          },
+          {
+            "atMs": 50000,
+            "expected": 2,
+            "target": 6
+          },
+          {
+            "atMs": 55000,
+            "expected": 6,
+            "target": 6
+          }
+        ]
+      },
+      "name": "governor-dip-restarts-hold",
+      "operation": "governor"
+    },
+    {
+      "expected": 3,
+      "input": {
+        "cap": 6,
+        "samples": [
+          {
+            "atMs": 0,
+            "expected": 2,
+            "target": 4
+          },
+          {
+            "atMs": 15000,
+            "expected": 2,
+            "target": 6
+          },
+          {
+            "atMs": 30000,
+            "expected": 3,
+            "target": 3
+          }
+        ]
+      },
+      "name": "governor-raise-to-latest-target",
+      "operation": "governor"
+    },
+    {
+      "expected": 5,
+      "input": {
+        "cap": 5,
+        "samples": [
+          {
+            "atMs": 0,
+            "expected": 1,
+            "target": 0
+          },
+          {
+            "atMs": 1000,
+            "expected": 1,
+            "target": 5
+          },
+          {
+            "atMs": 31000,
+            "expected": 5,
+            "target": 5
+          }
+        ]
+      },
+      "name": "governor-critical-reads-as-one",
+      "operation": "governor"
+    },
+    {
+      "expected": 3,
+      "input": {
+        "cap": 3,
+        "samples": [
+          {
+            "atMs": 0,
+            "expected": 2,
+            "target": 9
+          },
+          {
+            "atMs": 30000,
+            "expected": 3,
+            "target": 9
+          }
+        ]
+      },
+      "name": "governor-capped-by-max",
+      "operation": "governor"
+    },
+    {
+      "expected": 1,
+      "input": {
+        "cap": 1,
+        "samples": [
+          {
+            "atMs": 0,
+            "expected": 1,
+            "target": 4
+          },
+          {
+            "atMs": 60000,
+            "expected": 1,
+            "target": 4
+          }
+        ]
+      },
+      "name": "governor-single-core-cap",
+      "operation": "governor"
+    },
+    {
+      "expected": 5,
+      "input": {
+        "cap": 5,
+        "samples": [
+          {
+            "atMs": 10000,
+            "expected": 2,
+            "target": 5
+          },
+          {
+            "atMs": 5000,
+            "expected": 2,
+            "target": 5
+          },
+          {
+            "atMs": 34999,
+            "expected": 2,
+            "target": 5
+          },
+          {
+            "atMs": 35000,
+            "expected": 5,
+            "target": 5
+          }
+        ]
+      },
+      "name": "governor-clock-back-restarts-hold",
+      "operation": "governor"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "limit": 4,
+        "reservations": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [],
+              "waiters": []
+            },
+            "limit": 2,
+            "operation": "limit"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": [
+                "c"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "c"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": [
+                "c",
+                "d"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "d"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 4,
+              "reservations": [
+                "a",
+                "b",
+                "c",
+                "d"
+              ],
+              "waiters": []
+            },
+            "limit": 4,
+            "operation": "limit"
+          }
+        ],
+        "maxExtractions": 6,
+        "memoryBytes": 1073741824
+      },
+      "name": "raised-limit-drains-fifo",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "limit": 1,
+        "reservations": [
+          "d"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a",
+                "b",
+                "c"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "c"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 1,
+              "reservations": [
+                "a",
+                "b",
+                "c"
+              ],
+              "waiters": []
+            },
+            "limit": 1,
+            "operation": "limit"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 1,
+              "reservations": [
+                "a",
+                "b",
+                "c"
+              ],
+              "waiters": [
+                "d"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "d"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 1,
+              "reservations": [
+                "b",
+                "c"
+              ],
+              "waiters": [
+                "d"
+              ]
+            },
+            "operation": "release",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 1,
+              "reservations": [
+                "c"
+              ],
+              "waiters": [
+                "d"
+              ]
+            },
+            "operation": "release",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 1,
+              "reservations": [
+                "d"
+              ],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "c"
+          }
+        ],
+        "maxExtractions": 6,
+        "memoryBytes": 1073741824
+      },
+      "name": "lowered-limit-keeps-granted-work",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "limit": 2,
+        "reservations": [
+          "a",
+          "b"
+        ],
+        "waiters": [
+          "c"
+        ]
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [],
+              "waiters": []
+            },
+            "limit": 9,
+            "operation": "limit"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 2,
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": [
+                "c"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "c"
+          }
+        ],
+        "maxExtractions": 2,
+        "memoryBytes": 1073741824
+      },
+      "name": "limit-clamped-to-max",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "limit": 1,
+        "reservations": [
+          "a"
+        ],
+        "waiters": [
+          "b"
+        ]
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 1,
+              "reservations": [],
+              "waiters": []
+            },
+            "limit": 0,
+            "operation": "limit"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 1,
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 1,
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          }
+        ],
+        "maxExtractions": 6,
+        "memoryBytes": 1073741824
+      },
+      "name": "limit-at-least-one",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "limit": 4,
+        "reservations": [
+          "a",
+          "b"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 4,
+              "reservations": [],
+              "waiters": []
+            },
+            "limit": 4,
+            "operation": "limit"
+          },
+          {
+            "expected": {
+              "level": "warning",
+              "limit": 4,
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "warning",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "limit": 4,
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "warning",
+              "limit": 4,
+              "reservations": [
+                "a"
+              ],
+              "waiters": [
+                "b"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 4,
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "level": "normal",
+            "operation": "pressure"
+          }
+        ],
+        "maxExtractions": 6,
+        "memoryBytes": 1073741824
+      },
+      "name": "warning-below-limit",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "limit": 6,
+        "reservations": [
+          "a"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [],
+              "waiters": []
+            },
+            "limit": 6,
+            "operation": "limit"
+          },
+          {
+            "expected": {
+              "level": "critical",
+              "limit": 6,
+              "reservations": [],
+              "waiters": []
+            },
+            "level": "critical",
+            "operation": "pressure"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "critical",
+              "limit": 6,
+              "reservations": [],
+              "waiters": [
+                "a"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "level": "normal",
+            "operation": "pressure"
+          }
+        ],
+        "maxExtractions": 6,
+        "memoryBytes": 1073741824
+      },
+      "name": "critical-overrides-limit",
+      "operation": "admission"
+    },
+    {
+      "expected": {
+        "level": "normal",
+        "limit": 6,
+        "reservations": [
+          "b",
+          "c",
+          "d",
+          "e"
+        ],
+        "waiters": []
+      },
+      "input": {
+        "events": [
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [],
+              "waiters": []
+            },
+            "limit": 6,
+            "operation": "limit"
+          },
+          {
+            "bytes": 262144000,
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "a"
+          },
+          {
+            "bytes": 262144000,
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a",
+                "b"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "b"
+          },
+          {
+            "bytes": 262144000,
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a",
+                "b",
+                "c"
+              ],
+              "waiters": []
+            },
+            "operation": "acquire",
+            "requestId": "c"
+          },
+          {
+            "bytes": 262144000,
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a",
+                "b",
+                "c"
+              ],
+              "waiters": [
+                "d"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "d"
+          },
+          {
+            "bytes": 10,
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "a",
+                "b",
+                "c"
+              ],
+              "waiters": [
+                "d",
+                "e"
+              ]
+            },
+            "operation": "acquire",
+            "requestId": "e"
+          },
+          {
+            "expected": {
+              "level": "normal",
+              "limit": 6,
+              "reservations": [
+                "b",
+                "c",
+                "d",
+                "e"
+              ],
+              "waiters": []
+            },
+            "operation": "release",
+            "requestId": "a"
+          }
+        ],
+        "maxExtractions": 6,
+        "memoryBytes": 1030750208
+      },
+      "name": "budget-still-bounds-office",
+      "operation": "admission"
+    },
+    {
+      "expected": "nominal",
+      "input": 0,
+      "name": "darwin-thermal-0",
+      "operation": "darwin-thermal"
+    },
+    {
+      "expected": "fair",
+      "input": 1,
+      "name": "darwin-thermal-1",
+      "operation": "darwin-thermal"
+    },
+    {
+      "expected": "serious",
+      "input": 2,
+      "name": "darwin-thermal-2",
+      "operation": "darwin-thermal"
+    },
+    {
+      "expected": "critical",
+      "input": 3,
+      "name": "darwin-thermal-3",
+      "operation": "darwin-thermal"
+    },
+    {
+      "expected": "nominal",
+      "input": 4,
+      "name": "darwin-thermal-4",
+      "operation": "darwin-thermal"
+    },
+    {
+      "expected": "nominal",
+      "input": -1,
+      "name": "darwin-thermal--1",
+      "operation": "darwin-thermal"
+    },
+    {
+      "expected": {
+        "lowPower": false,
+        "onBattery": false
+      },
+      "input": {
+        "acLineStatus": 1,
+        "systemStatusFlag": 0
+      },
+      "name": "windows-power-1-0",
+      "operation": "windows-power"
+    },
+    {
+      "expected": {
+        "lowPower": false,
+        "onBattery": true
+      },
+      "input": {
+        "acLineStatus": 0,
+        "systemStatusFlag": 0
+      },
+      "name": "windows-power-0-0",
+      "operation": "windows-power"
+    },
+    {
+      "expected": {
+        "lowPower": false,
+        "onBattery": false
+      },
+      "input": {
+        "acLineStatus": 255,
+        "systemStatusFlag": 0
+      },
+      "name": "windows-power-255-0",
+      "operation": "windows-power"
+    },
+    {
+      "expected": {
+        "lowPower": true,
+        "onBattery": false
+      },
+      "input": {
+        "acLineStatus": 1,
+        "systemStatusFlag": 1
+      },
+      "name": "windows-power-1-1",
+      "operation": "windows-power"
+    },
+    {
+      "expected": {
+        "lowPower": true,
+        "onBattery": true
+      },
+      "input": {
+        "acLineStatus": 0,
+        "systemStatusFlag": 1
+      },
+      "name": "windows-power-0-1",
+      "operation": "windows-power"
+    },
+    {
+      "expected": {
+        "lowPower": true,
+        "onBattery": true
+      },
+      "input": {
+        "acLineStatus": 0,
+        "systemStatusFlag": 9
+      },
+      "name": "windows-power-0-9",
+      "operation": "windows-power"
+    },
+    {
+      "expected": {
+        "lowPower": false,
+        "onBattery": false
+      },
+      "input": {
+        "acLineStatus": 1,
+        "systemStatusFlag": 8
+      },
+      "name": "windows-power-1-8",
+      "operation": "windows-power"
+    },
+    {
+      "expected": 0,
+      "input": {
+        "cores": 8,
+        "idle": 100,
+        "kernel": 100,
+        "user": 0
+      },
+      "name": "windows-load-0",
+      "operation": "windows-load"
+    },
+    {
+      "expected": 8000,
+      "input": {
+        "cores": 8,
+        "idle": 0,
+        "kernel": 50,
+        "user": 50
+      },
+      "name": "windows-load-1",
+      "operation": "windows-load"
+    },
+    {
+      "expected": 4000,
+      "input": {
+        "cores": 8,
+        "idle": 50,
+        "kernel": 100,
+        "user": 0
+      },
+      "name": "windows-load-2",
+      "operation": "windows-load"
+    },
+    {
+      "expected": 4000,
+      "input": {
+        "cores": 10,
+        "idle": 600,
+        "kernel": 800,
+        "user": 200
+      },
+      "name": "windows-load-3",
+      "operation": "windows-load"
+    },
+    {
+      "expected": 0,
+      "input": {
+        "cores": 4,
+        "idle": 0,
+        "kernel": 0,
+        "user": 0
+      },
+      "name": "windows-load-4",
+      "operation": "windows-load"
+    },
+    {
+      "expected": 0,
+      "input": {
+        "cores": 4,
+        "idle": 150,
+        "kernel": 100,
+        "user": 0
+      },
+      "name": "windows-load-5",
+      "operation": "windows-load"
+    },
+    {
+      "expected": 4000,
+      "input": {
+        "cores": 4,
+        "idle": -5,
+        "kernel": 100,
+        "user": 0
+      },
+      "name": "windows-load-6",
+      "operation": "windows-load"
+    }
+  ],
+  "constrainedWorkers": 1,
+  "contract": "ingestion-adaptive-concurrency",
+  "initialWorkers": 2,
+  "maxBudgetBytes": 1073741824,
+  "maxHashWidth": 4,
+  "maxWorkers": 6,
+  "minBudgetBytes": 536870912,
+  "raiseAfterMs": 30000,
+  "sampleIntervalMs": 2000,
+  "thermal": [
+    "nominal",
+    "fair",
+    "serious",
+    "critical"
+  ],
+  "version": 1
+}

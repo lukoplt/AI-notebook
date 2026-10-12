@@ -23,15 +23,18 @@ public struct OllamaChatRequest: Codable, Sendable {
     public struct Options: Codable, Sendable {
         public let temperature: Double?
         public let numCtx: Int?
+        public let numPredict: Int?
 
         enum CodingKeys: String, CodingKey {
             case temperature
             case numCtx = "num_ctx"
+            case numPredict = "num_predict"
         }
 
-        public init(temperature: Double? = nil, numCtx: Int? = nil) {
+        public init(temperature: Double? = nil, numCtx: Int? = nil, numPredict: Int? = nil) {
             self.temperature = temperature
             self.numCtx = numCtx
+            self.numPredict = numPredict
         }
     }
 

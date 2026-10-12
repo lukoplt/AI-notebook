@@ -1,6 +1,6 @@
 namespace AINotebook.App.Services;
 
-/// <summary>PascalCase mirror of the mac AppText.Key cases (148). Convenience for
+/// <summary>PascalCase localized resource keys, including the mac AppText.Key provider keys. Convenience for
 /// compile-time-checked lookups; resolves to the same .resw entry as the string key.</summary>
 public enum StringKey
 {
@@ -12,23 +12,23 @@ public enum StringKey
     OnboardingDetectWaiting, OnboardingPickModelsTitle, OnboardingPickModelsBody, ChatModel,
     EmbeddingModel, OnboardingPullTitle, OnboardingPullBody, OnboardingPullingChat,
     OnboardingPullingEmbedding, OnboardingDoneTitle, OnboardingDoneBody, OllamaUnreachable,
-    StartUsingApp, SourcesSectionTitle, AddSourceButton, AddSourceSheetTitle,
+    StartUsingApp, AddSourceButton, AddSourceSheetTitle,
     AddSourceFromFile, AddSourceFromURL, AddSourceFromText, AddSourceURLPlaceholder,
     AddSourceTitlePlaceholder, AddSourceTextPlaceholder, AddSourceConfirm, CancelButton,
     SourceStatusPending, SourceStatusChunking, SourceStatusReady, SourceStatusError,
     NoSourcesEmptyState, DeleteSourceConfirm, DeleteButton, IndexingInProgress,
     IndexingProgressFormat, IndexingComplete, IndexingError, IndexingPaused, IndexingIdle,
-    ChatNewSessionTitle, ChatInputPlaceholder, ChatSendButton, ChatEmptyState, ChatErrorPrefix,
+    ChatNewSessionTitle, ChatInputPlaceholder, ChatSendButton,
     ChatCitationsSectionTitle, ChatNoCitationsForMessage, ChatRegenerateButton,
-    ChatSessionsLabel, ChatNewSessionButton, ChatDeleteSessionButton, ChatSaveAsNoteButton,
-    NotesSectionTitle, NotesEmptyState, NotesNewButton, NoteUntitled, NoteTitlePlaceholder,
+    ChatNewSessionButton, ChatDeleteSessionButton, ChatSaveAsNoteButton,
+    NotesEmptyState, NotesNewButton, NoteUntitled, NoteTitlePlaceholder,
     NoteBodyPlaceholder, NoteOriginManual, NoteOriginChat, NoteOriginTransformation,
     TransformationsSectionTitle, TransformationPickerLabel, TransformationSourcePickerLabel,
-    TransformationRunButton, TransformationResultTitle, TransformationRunningStatus,
-    TransformationEditButton, TransformationEditorTitle, TransformationEditorNew,
+    TransformationRunButton, TransformationRunningStatus,
+    TransformationEditorTitle, TransformationEditorNew,
     TransformationEditorDelete, TransformationEditorNamePlaceholder,
     TransformationEditorTemplatePlaceholder, ReembedButton, ReembedConfirm, ReembedConfirmYes,
-    EmbeddingSectionTitle, CurrentModelLabel, ManageModelsButton, ManageModelsTitle,
+    CurrentModelLabel, ManageModelsButton, ManageModelsTitle,
     ManageModelsPullPlaceholder, ManageModelsPullButton, ManageModelsRefreshButton,
     ManageModelsDeleteTitle, ManageModelsDeleteConfirm,
     ChatModelPickerLabel, EmbeddingModelPickerLabel, OpenNoteFromCitation, NotesChatPanelTitle,
@@ -36,14 +36,12 @@ public enum StringKey
     EditorStatusUnsaved, EditorStatusError, EditorFailedToLoad, AttachmentBrokenLink,
     AttachmentSaveFailed, AttachmentOpenButton, HistoryButton, HistorySheetTitle, HistoryEmpty,
     HistoryRestoreButton, HistoryReasonAutosave, HistoryReasonRestore, AiToolsSectionTitle,
-    AiToolsEmptyTitle, AiToolsEmptyBody, AiToolsScopeAllSources, AiToolsScopeHint,
-    AiToolsPreviewButton, AiToolsHistoryButton, AiToolsResultSavedFormat,
+    AiToolsScopeAllSources, AiToolsScopeHint,
+    AiToolsPreviewButton, AiToolsResultSavedFormat,
     AiToolsOpenNoteButton, AiToolsRunningFormat, AiToolsBatchSavedFormat,
     AiToolsPromptPreviewTitle, AiToolsHistoryEmpty, AiToolsHistoryTitle,
-    AiToolsDescriptionPlaceholder, UnsavedChangesTitle, UnsavedChangesMessage,
-    UnsavedSaveButton, UnsavedDiscardButton,
-    // NotebookLM Stage C: follow-up chips, per-source summary, chat source scope.
-    ChatFollowupsLabel, SourceSummaryLabel, SourceSummarizeButton, SourceSummarizingStatus,
+    AiToolsDescriptionPlaceholder,         // NotebookLM Stage C: follow-up chips, per-source summary, chat source scope.
+    SourceSummaryLabel, SourceSummarizeButton, SourceSummarizingStatus,
     ChatScopeButton, ChatScopeAllSources, ChatScopeTitle,
     // Epic A: multi-provider AI support.
     ProvidersSectionTitle, AddProviderButton, AddProviderTitle, EditProviderTitle,
@@ -54,30 +52,95 @@ public enum StringKey
     PrivacyGateTitle, PrivacyGateBody, PrivacyGateAcknowledge,
     ChatProviderPickerLabel, EmbeddingProviderPickerLabel,
     ErrorConsentRequired,
+    // Folder chat provider settings.
+    ProviderPresetLabel,
+    ProviderPresetCustom,
+    ProviderPresetLocalHelp,
+    ProviderPresetRemoteHelp,
+    ProviderPresetCustomHelp,
+    ProviderRefreshModels,
+    ProviderManualModelId,
+    ProviderApplyModel,
+    ProviderListingVerified,
+    ProviderListingUnsupported,
+    ProviderRuntimeContext,
+    ProviderMaxOutputTokens,
+    ProviderContextWindow,
+    ProviderContextUnknown,
+    ProviderLimitsAssumption,
+    ProviderLimitsUserOverride,
+    ProviderLimitsSave,
+    ProviderLimitsReset,
+    ProviderLimitsInvalid,
+    ProviderInvalidRoot,
+    ProviderContextTooLong,
+    ProviderEmbeddingSelectionConverted,
+    ProviderConnectionFailed,
+    ProviderResponseInvalid,
+    ProviderRequestFailed,
+    ProviderSelectionUnavailable,
+    ProviderEndpointUnsupported,
     // Epic B: export, search, drag&drop, tags, bulk ops.
-    NoteSearchPlaceholder,
-    SourcePreviewTitle, SourcePreviewChunksLabel, SourcePreviewNoContent, SourcePreviewButton,
-    ExportNoteButton, ExportNoteMarkdown, ExportNotePdf, ExportNotebookButton, ExportNotebookZip,
+        SourcePreviewTitle, SourcePreviewChunksLabel, SourcePreviewNoContent, SourcePreviewButton,
+    ExportNoteMarkdown, ExportNotePdf, ExportNotebookButton, ExportNotebookZip,
     BackupButton, BackupRestoreButton, BackupRestoreConfirm, ExportSuccess,
     GlobalSearchTitle, GlobalSearchPlaceholder, GlobalSearchEmpty,
     GlobalSearchSectionNotes, GlobalSearchSectionSources,
     BulkSelectButton, BulkDeleteSelectedButton, BulkDeleteConfirmFormat, BulkSummarizeSelectedButton,
     TagsSectionTitle, AddTagButton, TagNamePlaceholder, FilterByTagLabel, AllTagsOption, DeleteTagTitle,
     // Epic C: chat quality.
-    NotebookInstructionsLabel, NotebookInstructionsPlaceholder, NotebookInstructionsSaved,
-    SourceSetsSectionTitle, AddSourceSetButton, SourceSetNamePlaceholder, DeleteSourceSetTitle,
-    ChatEditButton, ChatRegenerateWithButton,
-    // FR-C5 personas (macOS parity: Localization.swift persona* keys).
-    PersonaMenu, PersonaNone, PersonaNew, PersonaNamePlaceholder, PersonaInstructionsPlaceholder,
+    NotebookInstructionsLabel, NotebookInstructionsPlaceholder,     SourceSetsSectionTitle, AddSourceSetButton, SourceSetNamePlaceholder, DeleteSourceSetTitle,
+    ChatEditButton,     // FR-C5 personas (macOS parity: Localization.swift persona* keys).
+    PersonaMenu, PersonaNew, PersonaNamePlaceholder, PersonaInstructionsPlaceholder,
     CitationPanelTitle, CitationPanelEmpty,
     // Epic D: retrieval quality.
     ContextualEnrichmentLabel, ContextualEnrichmentHint,
     // Epic E: live sources.
     FolderWatchButton, FolderWatchActiveLabel,
     UrlRefreshButton, UrlRefreshingStatus,
-    WebSearchToggleLabel, WebSearchResultsTitle, WebSearchEmpty,
+    WebSearchResultsTitle, WebSearchEmpty,
     // In-app update check.
     UpdateBannerTitle, UpdateDownloadButton, UpdateLaterButton, UpdateAutoCheckToggle,
     UpdateCheckNowButton, UpdateStatusChecking, UpdateStatusUpToDate, UpdateStatusAvailable,
     UpdateStatusFailed,
+    // WP6 folder ingestion, explicit scopes and re-index (ingestion-ui-v1 localization cases).
+    AddFolderButton, FolderLastFullScan, FolderNeverScanned, FolderWatchEnabled, FolderScanNow,
+    FolderVerifyAll, FolderRulesTitle, FolderIncludeExtensions, FolderIgnoreGlobs, FolderMaxFileBytes,
+    FolderMaxOfficeBytes, FolderMaxTextScalars, FolderMaxPdfPages, FolderMaxChunks, FolderMaxCells,
+    FolderEncodingFallback, FolderEncodingNone, FolderEncodingCp1250, FolderEncodingUsed, FolderRulesInvalid,
+    FolderRemoveButton, FolderRemoveConfirm, FolderRemoveKeepsFiles, FolderSearchable, FolderNotSearchable,
+    FolderCurrent, FolderRefreshPending, FolderRefreshError, FolderSkipped, FolderMissing,
+    FolderUnavailable, FolderAtLeast, FolderOverlapError, FolderReadError, FolderLimitError,
+    FolderEncodingError, FolderDocumentError, SourceErrorMissingPart, SourceErrorDamaged,
+    SourceErrorNotDownloaded, ScopeWholeNotebook, ScopeSelection, ScopeFolders,
+    ScopeSourceSets, ScopeSources, ScopeEmpty, ReindexButton, ReindexProgress,
+    ReindexDiscovering, ReindexPausedForChat, ReindexFailed, ReindexDualSpaceNote, ReindexDiscard,
+    ReindexRetry,
+    // WP8 context pack: Overview, context preview, snapshot citations and omission reasons.
+    ChatOverviewToggle, ContextPreviewBeforeSend, ContextPreviewSent, ContextPreviewTitle,
+    ContextPreviewPreparing, ContextPreviewUnavailable, ContextPreviewEstimatedTokens,
+    ContextPreviewAssumedLimit, ContextPreviewSetContextSize, ContextPreviewMessages, ContextPreviewWireOrder, ContextPreviewOptions,
+    ContextPreviewIncluded, ContextPreviewOmitted, ContextPreviewCoverage, ContextPreviewRecalculate,
+    ContextPreviewClose, ContextTooSmall, CitationOpenOriginal, CitationRevisionChanged,
+    CitationOriginalUnavailable, CitationOriginalOutsideFolder,
+    ContextOmittedEvidenceBudget, ContextOmittedTopK, ContextOmittedHistoryBudget, ContextOmittedMapBudget,
+    ContextOmittedExternalBudget, ContextOmittedTruncated, ContextOmittedDuplicate,
+    ContextOmittedRevisionMismatch, ContextOmittedNeighbourBudget, ContextOmittedLegacyNoSpan,
+    ContextOmittedEmptySelection,
+    // Grouped Sources: expandable folders with lazily paged members, language badge.
+    FolderShowFiles, FolderHideFiles, FolderFilesCount, FolderLoadMoreFiles, FolderNoFiles,
+    SourceLanguageLabel, SourceLanguageMixed,
+    // UI redesign: shell (sidebar, top bar, right panel, empty states).
+    ShellNewChat, ShellSearch, ShellNewNotebook, ShellShowMore, ShellShowLess, ShellUpdateAvailable, NotebookInstructionsMenu, DeleteChat, ConfirmDeleteChat, ShellTogglePanel, ShellMore, PanelContext, PanelNoteChat, ShellEmptyAppTitle, OpenFolderAsNotebook, ShellBack, Close,
+    // UI redesign: chat thread + composer (names shared with the macOS AppText.Key).
+    ChatEmptyTitle, ComposerPlaceholder, ComposerAdd, ComposerAddFile, ComposerAddUrl, ComposerWebSearch, ComposerOverviewMode, ComposerRunTool, ComposerPreviewContext, ComposerScope, ComposerModel, ComposerRegenerateWith, ComposerModelSettings, ComposerEditing, MessageCopy, ChatRetry, ChatReplyNoteTitle, NoteSavedNotice, OpenNote, ChooseNotebook, PersonaChipNone,
+    // UI redesign: right panel segments (names shared with the macOS AppText.Key).
+    SourcesAddText, FolderSummaryFiles, FolderSummaryErrors, NotesSearchPlaceholder, ToolHistory, ContextPanelHint, ContextPanelDraft, ContextPanelBackToDraft, CitationsPanelEmpty, CitationPage,
+    // UI redesign: note document, settings page and tools.
+    SettingsGeneral, SettingsModelsLimits, SettingsIndexing, SettingsTools, SettingsAbout, WebSearchToggle, ToolScopeSource,     // UI redesign: parity with the macOS lane (names shared with AppText.Key).
+    SettingsUpdates, SettingsLimits, AboutLicense, AboutNotice, AboutSourceCode, AboutCredits, ToolScope, ToolsPickTemplate, DocumentExport,
+    // UI redesign C1: chat rename and Stop (names shared with AppText.Key).
+    RenameChat, RenameChatTitle, ChatStopButton, ChatStopped,
+    // Indexing progress (spec 2026-10-10): Sources status strip and folder-row scan feedback (names shared with AppText.Key).
+    IndexingScanning, IndexingExtracting, IndexingExtractingSlowed, IndexingExtractingPaused, IndexingWithScan, IndexingEmbedding, IndexingPreparing, IndexingRetrying, IndexingRetryNow, IndexingBlockedNoModel, IndexingBlockedProviderDisabled, IndexingBlockedConsent, IndexingBlockedCredential, IndexingFailed, IndexingRuntimeFailed, IndexingOpenSettings, IndexingReady, IndexingLexicalOnly, IndexingBuildIndex, IndexingSourceErrors, IndexingSourceErrorsGaveUp, IndexingRetryAllFailed, SourceRetryButton, SourceGaveUp, FolderChecking, FolderNoChanges, FolderChangedFiles,
 }

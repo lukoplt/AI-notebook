@@ -1,0 +1,503 @@
+{
+  "contract": "lang-normalize",
+  "version": 1,
+  "cases": [
+    {
+      "name": "empty",
+      "input": "",
+      "expected": {"words": [], "wordScalars": [], "letterCount": 0, "wordCount": 0, "boundaryWords": []}
+    },
+    {
+      "name": "uppercase-sharp-s",
+      "input": "ẞ",
+      "expected": {
+        "words": ["ss"],
+        "wordScalars": [[115, 115]],
+        "letterCount": 2,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 115, 115, -2]]
+      }
+    },
+    {
+      "name": "lowercase-sharp-s",
+      "input": "ß",
+      "expected": {
+        "words": ["ss"],
+        "wordScalars": [[115, 115]],
+        "letterCount": 2,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 115, 115, -2]]
+      }
+    },
+    {
+      "name": "german-strasse",
+      "input": "Straße STRAẞE",
+      "expected": {
+        "words": ["strasse", "strasse"],
+        "wordScalars": [[115, 116, 114, 97, 115, 115, 101], [115, 116, 114, 97, 115, 115, 101]],
+        "letterCount": 14,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 115, 116, 114, 97, 115, 115, 101, -2], [-1, 115, 116, 114, 97, 115, 115, 101, -2]]
+      }
+    },
+    {
+      "name": "four-i-forms",
+      "input": "İ ı I i",
+      "expected": {
+        "words": ["i̇", "ı", "i", "i"],
+        "wordScalars": [[105, 775], [305], [105], [105]],
+        "letterCount": 4,
+        "wordCount": 4,
+        "boundaryWords": [[-1, 105, 775, -2], [-1, 305, -2], [-1, 105, -2], [-1, 105, -2]]
+      }
+    },
+    {
+      "name": "dotted-i-decomposed",
+      "input": "İ i̇",
+      "expected": {
+        "words": ["i̇", "i̇"],
+        "wordScalars": [[105, 775], [105, 775]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 105, 775, -2], [-1, 105, 775, -2]]
+      }
+    },
+    {
+      "name": "hacek-decomposed",
+      "input": "Č č",
+      "expected": {
+        "words": ["č", "č"],
+        "wordScalars": [[269], [269]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 269, -2], [-1, 269, -2]]
+      }
+    },
+    {
+      "name": "hacek-precomposed",
+      "input": "Č č",
+      "expected": {
+        "words": ["č", "č"],
+        "wordScalars": [[269], [269]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 269, -2], [-1, 269, -2]]
+      }
+    },
+    {
+      "name": "slovak-precomposed",
+      "input": "Ľ Ĺ Ŕ Ô Ä ľ ĺ ŕ ô ä",
+      "expected": {
+        "words": ["ľ", "ĺ", "ŕ", "ô", "ä", "ľ", "ĺ", "ŕ", "ô", "ä"],
+        "wordScalars": [[318], [314], [341], [244], [228], [318], [314], [341], [244], [228]],
+        "letterCount": 10,
+        "wordCount": 10,
+        "boundaryWords": [
+          [-1, 318, -2],
+          [-1, 314, -2],
+          [-1, 341, -2],
+          [-1, 244, -2],
+          [-1, 228, -2],
+          [-1, 318, -2],
+          [-1, 314, -2],
+          [-1, 341, -2],
+          [-1, 244, -2],
+          [-1, 228, -2]
+        ]
+      }
+    },
+    {
+      "name": "slovak-decomposed",
+      "input": "Ľ Ĺ Ŕ Ô Ä",
+      "expected": {
+        "words": ["ľ", "ĺ", "ŕ", "ô", "ä"],
+        "wordScalars": [[318], [314], [341], [244], [228]],
+        "letterCount": 5,
+        "wordCount": 5,
+        "boundaryWords": [[-1, 318, -2], [-1, 314, -2], [-1, 341, -2], [-1, 244, -2], [-1, 228, -2]]
+      }
+    },
+    {
+      "name": "german-umlauts",
+      "input": "ÄÖÜ äöü ÄÖÜ",
+      "expected": {
+        "words": ["äöü", "äöü", "äöü"],
+        "wordScalars": [[228, 246, 252], [228, 246, 252], [228, 246, 252]],
+        "letterCount": 9,
+        "wordCount": 3,
+        "boundaryWords": [[-1, 228, 246, 252, -2], [-1, 228, 246, 252, -2], [-1, 228, 246, 252, -2]]
+      }
+    },
+    {
+      "name": "digits-all-scripts",
+      "input": "ab12cd٣ef４gh",
+      "expected": {
+        "words": ["ab", "cd", "ef", "gh"],
+        "wordScalars": [[97, 98], [99, 100], [101, 102], [103, 104]],
+        "letterCount": 8,
+        "wordCount": 4,
+        "boundaryWords": [[-1, 97, 98, -2], [-1, 99, 100, -2], [-1, 101, 102, -2], [-1, 103, 104, -2]]
+      }
+    },
+    {
+      "name": "punctuation",
+      "input": "a,b.c!d?e:f;g/h\\i_j",
+      "expected": {
+        "words": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"],
+        "wordScalars": [[97], [98], [99], [100], [101], [102], [103], [104], [105], [106]],
+        "letterCount": 10,
+        "wordCount": 10,
+        "boundaryWords": [
+          [-1, 97, -2],
+          [-1, 98, -2],
+          [-1, 99, -2],
+          [-1, 100, -2],
+          [-1, 101, -2],
+          [-1, 102, -2],
+          [-1, 103, -2],
+          [-1, 104, -2],
+          [-1, 105, -2],
+          [-1, 106, -2]
+        ]
+      }
+    },
+    {
+      "name": "apostrophes",
+      "input": "can't l’amour rockʼn",
+      "expected": {
+        "words": ["can", "t", "l", "amour", "rockʼn"],
+        "wordScalars": [[99, 97, 110], [116], [108], [97, 109, 111, 117, 114], [114, 111, 99, 107, 700, 110]],
+        "letterCount": 16,
+        "wordCount": 5,
+        "boundaryWords": [
+          [-1, 99, 97, 110, -2],
+          [-1, 116, -2],
+          [-1, 108, -2],
+          [-1, 97, 109, 111, 117, 114, -2],
+          [-1, 114, 111, 99, 107, 700, 110, -2]
+        ]
+      }
+    },
+    {
+      "name": "hyphens",
+      "input": "a-b‐c‑d–e—f",
+      "expected": {
+        "words": ["a", "b", "c", "d", "e", "f"],
+        "wordScalars": [[97], [98], [99], [100], [101], [102]],
+        "letterCount": 6,
+        "wordCount": 6,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2], [-1, 99, -2], [-1, 100, -2], [-1, 101, -2], [-1, 102, -2]]
+      }
+    },
+    {
+      "name": "cyrillic",
+      "input": "ПРИВЕТ Ёж",
+      "expected": {
+        "words": ["привет", "ёж"],
+        "wordScalars": [[1087, 1088, 1080, 1074, 1077, 1090], [1105, 1078]],
+        "letterCount": 8,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 1087, 1088, 1080, 1074, 1077, 1090, -2], [-1, 1105, 1078, -2]]
+      }
+    },
+    {
+      "name": "greek-sigma",
+      "input": "ΟΣ ος Σ σ ς",
+      "expected": {
+        "words": ["οσ", "οσ", "σ", "σ", "σ"],
+        "wordScalars": [[959, 963], [959, 963], [963], [963], [963]],
+        "letterCount": 7,
+        "wordCount": 5,
+        "boundaryWords": [[-1, 959, 963, -2], [-1, 959, 963, -2], [-1, 963, -2], [-1, 963, -2], [-1, 963, -2]]
+      }
+    },
+    {
+      "name": "mixed-script-word",
+      "input": "AБΣč",
+      "expected": {
+        "words": ["aбσč"],
+        "wordScalars": [[97, 1073, 963, 269]],
+        "letterCount": 4,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 97, 1073, 963, 269, -2]]
+      }
+    },
+    {
+      "name": "emoji-boundaries",
+      "input": "ab😀cd👩‍💻ef",
+      "expected": {
+        "words": ["ab", "cd", "ef"],
+        "wordScalars": [[97, 98], [99, 100], [101, 102]],
+        "letterCount": 6,
+        "wordCount": 3,
+        "boundaryWords": [[-1, 97, 98, -2], [-1, 99, 100, -2], [-1, 101, 102, -2]]
+      }
+    },
+    {
+      "name": "whitespace-variants",
+      "input": "A B C\tD\r\nE F G H",
+      "expected": {
+        "words": ["a", "b", "c", "d", "e", "f", "g", "h"],
+        "wordScalars": [[97], [98], [99], [100], [101], [102], [103], [104]],
+        "letterCount": 8,
+        "wordCount": 8,
+        "boundaryWords": [
+          [-1, 97, -2],
+          [-1, 98, -2],
+          [-1, 99, -2],
+          [-1, 100, -2],
+          [-1, 101, -2],
+          [-1, 102, -2],
+          [-1, 103, -2],
+          [-1, 104, -2]
+        ]
+      }
+    },
+    {
+      "name": "leading-marks",
+      "input": "̌́a ̇b",
+      "expected": {
+        "words": ["a", "b"],
+        "wordScalars": [[97], [98]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2]]
+      }
+    },
+    {
+      "name": "attached-noncomposing-marks",
+      "input": "ȧ̸b",
+      "expected": {
+        "words": ["ȧ̸b"],
+        "wordScalars": [[551, 824, 98]],
+        "letterCount": 2,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 551, 824, 98, -2]]
+      }
+    },
+    {
+      "name": "mark-after-boundary",
+      "input": "a-̌b",
+      "expected": {
+        "words": ["a", "b"],
+        "wordScalars": [[97], [98]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2]]
+      }
+    },
+    {
+      "name": "canonical-reordering",
+      "input": "à̕",
+      "expected": {
+        "words": ["à̕"],
+        "wordScalars": [[224, 789]],
+        "letterCount": 1,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 224, 789, -2]]
+      }
+    },
+    {
+      "name": "compatibility-preserved",
+      "input": "Ａ①ﬃ",
+      "expected": {
+        "words": ["ａ", "ffi"],
+        "wordScalars": [[65345], [102, 102, 105]],
+        "letterCount": 4,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 65345, -2], [-1, 102, 102, 105, -2]]
+      }
+    },
+    {
+      "name": "joiner-boundaries",
+      "input": "a‍b‌c",
+      "expected": {
+        "words": ["a", "b", "c"],
+        "wordScalars": [[97], [98], [99]],
+        "letterCount": 3,
+        "wordCount": 3,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2], [-1, 99, -2]]
+      }
+    },
+    {
+      "name": "replacement-boundary",
+      "input": "ab�cd",
+      "expected": {
+        "words": ["ab", "cd"],
+        "wordScalars": [[97, 98], [99, 100]],
+        "letterCount": 4,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, 98, -2], [-1, 99, 100, -2]]
+      }
+    },
+    {
+      "name": "hangul-composition",
+      "input": "가 각",
+      "expected": {
+        "words": ["가", "각"],
+        "wordScalars": [[44032], [44033]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 44032, -2], [-1, 44033, -2]]
+      }
+    },
+    {
+      "name": "supplementary-letters",
+      "input": "𐐀𐐨",
+      "expected": {
+        "words": ["𐐨𐐨"],
+        "wordScalars": [[66600, 66600]],
+        "letterCount": 2,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 66600, 66600, -2]]
+      }
+    },
+    {
+      "name": "unicode-15-kawi-letter",
+      "input": "𑼂",
+      "expected": {
+        "words": ["𑼂"],
+        "wordScalars": [[73474]],
+        "letterCount": 1,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 73474, -2]]
+      }
+    },
+    {
+      "name": "variation-selector-attaches",
+      "input": "a️ b",
+      "expected": {
+        "words": ["a️", "b"],
+        "wordScalars": [[97, 65039], [98]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, 65039, -2], [-1, 98, -2]]
+      }
+    },
+    {
+      "name": "combining-iota-fold",
+      "input": "ͅ",
+      "expected": {
+        "words": ["ι"],
+        "wordScalars": [[953]],
+        "letterCount": 1,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 953, -2]]
+      }
+    },
+    {
+      "name": "only-boundaries",
+      "input": "123 😀 — \t",
+      "expected": {"words": [], "wordScalars": [], "letterCount": 0, "wordCount": 0, "boundaryWords": []}
+    },
+    {
+      "name": "only-marks",
+      "input": "́̌",
+      "expected": {"words": [], "wordScalars": [], "letterCount": 0, "wordCount": 0, "boundaryWords": []}
+    },
+    {
+      "name": "enclosing-and-spacing-marks",
+      "input": "a⃝bः",
+      "expected": {
+        "words": ["a⃝bः"],
+        "wordScalars": [[97, 8413, 98, 2307]],
+        "letterCount": 2,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 97, 8413, 98, 2307, -2]]
+      }
+    },
+    {
+      "name": "nul-boundary",
+      "input": "a\u0000b",
+      "expected": {
+        "words": ["a", "b"],
+        "wordScalars": [[97], [98]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2]]
+      }
+    },
+    {
+      "name": "unpaired-high-middle",
+      "utf16Units": [97, 55296, 98],
+      "expected": {
+        "words": ["a", "b"],
+        "wordScalars": [[97], [98]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2]]
+      }
+    },
+    {
+      "name": "unpaired-low-middle",
+      "utf16Units": [97, 56320, 98],
+      "expected": {
+        "words": ["a", "b"],
+        "wordScalars": [[97], [98]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2]]
+      }
+    },
+    {
+      "name": "two-high-then-low",
+      "utf16Units": [55296, 55297, 56320, 99],
+      "expected": {
+        "words": ["𐐨c"],
+        "wordScalars": [[66600, 99]],
+        "letterCount": 2,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 66600, 99, -2]]
+      }
+    },
+    {
+      "name": "low-high-reversed",
+      "utf16Units": [56320, 55296],
+      "expected": {"words": [], "wordScalars": [], "letterCount": 0, "wordCount": 0, "boundaryWords": []}
+    },
+    {
+      "name": "valid-surrogate-emoji",
+      "utf16Units": [97, 55357, 56832, 98],
+      "expected": {
+        "words": ["a", "b"],
+        "wordScalars": [[97], [98]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2]]
+      }
+    },
+    {
+      "name": "terminal-high",
+      "utf16Units": [97, 55296],
+      "expected": {
+        "words": ["a"],
+        "wordScalars": [[97]],
+        "letterCount": 1,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 97, -2]]
+      }
+    },
+    {
+      "name": "surrogate-pair-letter",
+      "utf16Units": [55297, 56320],
+      "expected": {
+        "words": ["𐐨"],
+        "wordScalars": [[66600]],
+        "letterCount": 1,
+        "wordCount": 1,
+        "boundaryWords": [[-1, 66600, -2]]
+      }
+    },
+    {
+      "name": "surrogate-breaks-mark-attachment",
+      "utf16Units": [97, 55296, 780, 98],
+      "expected": {
+        "words": ["a", "b"],
+        "wordScalars": [[97], [98]],
+        "letterCount": 2,
+        "wordCount": 2,
+        "boundaryWords": [[-1, 97, -2], [-1, 98, -2]]
+      }
+    }
+  ]
+}

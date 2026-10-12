@@ -25,6 +25,26 @@ public final class AppSettings: ObservableObject {
 
     private let defaults: UserDefaults
 
+    @Published public private(set) var embeddingSelectionConversionNoticePending: Bool
+
+    /// Runs after the database upgrade and before any background embedding work.
+    /// Existing vectors keep their original identity; this only converts preferences.
+    public func convertLegacyProviderSelection(store: NotebookStore) throws {
+        guard !defaults.bool(forKey: ProviderSettingsKeys.providerConfigurationV19Converted) else { return }
+        if let provider = try store.provider(id: selectedEmbeddingProviderId), !provider.type.supportsEmbeddings {
+            selectedEmbeddingProviderId = ProviderConfig.ollamaId
+            selectedEmbeddingModel = "nomic-embed-text"
+            embeddingSelectionConversionNoticePending = true
+            defaults.set(true, forKey: ProviderSettingsKeys.embeddingSelectionConversionNoticePending)
+        }
+        defaults.set(true, forKey: ProviderSettingsKeys.providerConfigurationV19Converted)
+    }
+
+    public func dismissEmbeddingSelectionConversionNotice() {
+        embeddingSelectionConversionNoticePending = false
+        defaults.set(false, forKey: ProviderSettingsKeys.embeddingSelectionConversionNoticePending)
+    }
+
     @Published public var language: AppLanguage {
         didSet {
             defaults.set(language.rawValue, forKey: Keys.language)
@@ -75,6 +95,8 @@ public final class AppSettings: ObservableObject {
         defaults: UserDefaults = .standard
     ) {
         self.defaults = defaults
+        self.embeddingSelectionConversionNoticePending = defaults.bool(
+            forKey: ProviderSettingsKeys.embeddingSelectionConversionNoticePending)
 
         if let raw = defaults.string(forKey: Keys.language),
            let stored = AppLanguage(rawValue: raw) {

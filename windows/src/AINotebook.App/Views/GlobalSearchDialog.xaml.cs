@@ -24,6 +24,7 @@ public sealed partial class GlobalSearchDialog : ContentDialog
         InitializeComponent();
 
         Title = _t.Get(StringKey.GlobalSearchTitle);
+        CloseButtonText = _t.Get(StringKey.Close);
         SearchButton.Content = _t.Get(StringKey.GlobalSearchTitle);
         NotesSectionLabel.Text = _t.Get(StringKey.GlobalSearchSectionNotes);
         SourcesSectionLabel.Text = _t.Get(StringKey.GlobalSearchSectionSources);

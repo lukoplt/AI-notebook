@@ -3,8 +3,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace AINotebook.App.Services;
 
 /// <summary>
-/// Port of the mac TabSwitchCoordinator. The detail page subscribes to Target,
-/// switches its segmented tab, then Clear()s. Pairs with NoteJumpCoordinator.
+/// Port of the mac TabSwitchCoordinator. The shell (ShellViewModel) subscribes to Target, maps the
+/// request onto the redesigned UI (Sources/Notes → right panel, Chat → thread, Transformations →
+/// run-tool dialog; see NavigationState.ApplyAsync), then Clear()s. Pairs with NoteJumpCoordinator.
 /// </summary>
 public sealed partial class TabSwitchCoordinator : ObservableObject
 {

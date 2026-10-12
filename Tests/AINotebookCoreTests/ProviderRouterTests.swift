@@ -63,7 +63,7 @@ final class ProviderRouterTests: XCTestCase {
         XCTAssertTrue(body.contains(#""model":"llama3.2""#), "live model must win: \(body)")
     }
 
-    func testChatFallsBackToOllamaWhenConfigMissing() async throws {
+    func testChatRejectsMissingProviderWithoutRequest() async throws {
         let store = try NotebookStore(path: .inMemory)
         let selection = StaticSelection(chat: ("no-such-id", "llama3.2:3b"), embed: (ProviderConfig.ollamaId, "x"))
         let router = makeRouter(store: store, selection: selection)
@@ -72,14 +72,19 @@ final class ProviderRouterTests: XCTestCase {
             captured = req
             return (httpResponse(req.url!, status: 200), Data("{\"model\":\"m\",\"created_at\":\"\",\"message\":{\"role\":\"assistant\",\"content\":\"ok\"},\"done\":true}\n".utf8))
         }
-        _ = try await collect(router.stream(model: "ignored", messages: [ChatTurn(role: .user, content: "hi")]))
-        XCTAssertEqual(captured?.url?.absoluteString, "http://127.0.0.1:11434/api/chat")
+        do {
+            _ = try await collect(router.stream(model: "ignored", messages: [ChatTurn(role: .user, content: "hi")]))
+            XCTFail("expected missingProvider")
+        } catch {
+            XCTAssertEqual(error as? ProviderConfigurationError, .missingProvider)
+        }
+        XCTAssertNil(captured)
     }
 
     func testEmbedRoutesToOpenAIEmbeddings() async throws {
         let store = try NotebookStore(path: .inMemory)
         // Acknowledged deliberately (see note in the chat-routing test above).
-        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com", privacyAcknowledged: true)
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com/v1", privacyAcknowledged: true)
         try store.saveProvider(cfg)
         let secrets = InMemorySecretStore()
         try secrets.save(providerId: cfg.id, secret: "sk-oai")
@@ -98,14 +103,7 @@ final class ProviderRouterTests: XCTestCase {
         XCTAssertTrue(body.contains(#""model":"text-embedding-3-small""#), body)
     }
 
-    func testEmbedForChatOnlyTypeFallsBackToOllama() async throws {
-        // UI never offers openwebui for embeddings; if selected anyway the
-        // router falls back to Ollama (Windows parity).
-        // Acknowledged deliberately: the config itself is still a cloud type
-        // (openwebui.isCloud == true), so the FR-A8 gate is checked on it
-        // before the type-switch fallback runs — this test is about the
-        // fallback-routing behavior, not consent, so we grant consent on
-        // the fixture to isolate what's under test.
+    func testEmbedRejectsChatOnlyProviderWithoutRequest() async throws {
         let store = try NotebookStore(path: .inMemory)
         let cfg = ProviderConfig(type: .openwebui, name: "LAN", baseURL: "http://h:3000", privacyAcknowledged: true)
         try store.saveProvider(cfg)
@@ -116,78 +114,98 @@ final class ProviderRouterTests: XCTestCase {
             captured = req
             return (httpResponse(req.url!, status: 200), Data(#"{"embeddings":[[1.0,0.0]]}"#.utf8))
         }
-        _ = try await router.embed(model: "ignored", inputs: ["a"])
-        // Falls back to the openwebui config's host? No — to Ollama's default.
-        XCTAssertEqual(captured?.url?.absoluteString, "http://127.0.0.1:11434/api/embed")
+        do {
+            _ = try await router.embed(model: "ignored", inputs: ["a"])
+            XCTFail("expected unsupportedEndpoint")
+        } catch {
+            XCTAssertEqual(error as? ProviderConfigurationError, .unsupportedEndpoint)
+        }
+        XCTAssertNil(captured)
     }
 
-    func testListModelsOpenWebUI() async throws {
+    func testDiscoverModelsOpenWebUIPreservesRawIDsAndLabelOrder() async throws {
         let store = try NotebookStore(path: .inMemory)
         let cfg = ProviderConfig(type: .openwebui, name: "LAN", baseURL: "http://h:3000")
         try store.saveProvider(cfg)
         let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (ProviderConfig.ollamaId, "y"))
         let router = makeRouter(store: store, selection: selection)
         MockURLProtocol.handler = { req in
-            (httpResponse(req.url!, status: 200), Data(#"{"data":[{"id":"llama3.2","name":"Llama 3.2"}]}"#.utf8))
+            (httpResponse(req.url!, status: 200), Data(#"{"data":[{"id":"llama3.2","name":"Llama 3.2"},{"id":"organization/Zeta:Q4","name":"Alpha"}]}"#.utf8))
         }
-        let models = await router.listModels(providerId: cfg.id)
-        XCTAssertEqual(models.map(\.id), ["llama3.2"])
+        let models = try await router.discoverModels(providerId: cfg.id)
+        XCTAssertEqual(models.map(\.id), ["organization/Zeta:Q4", "llama3.2"])
+        XCTAssertEqual(models.map(\.label), ["Alpha", "Llama 3.2"])
     }
 
-    func testListModelsFailureIsEmptyForUI() async throws {
+    func testDiscoverModelsPropagatesTransportFailure() async throws {
         let store = try NotebookStore(path: .inMemory)
         let cfg = ProviderConfig(type: .openwebui, name: "LAN", baseURL: "http://h:3000")
         try store.saveProvider(cfg)
         let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (ProviderConfig.ollamaId, "y"))
         let router = makeRouter(store: store, selection: selection)
         MockURLProtocol.handler = { _ in throw URLError(.cannotConnectToHost) }
-        let models = await router.listModels(providerId: cfg.id)
-        XCTAssertEqual(models, [])
+        do {
+            _ = try await router.discoverModels(providerId: cfg.id)
+            XCTFail("Expected the listing failure to remain visible")
+        } catch {
+            XCTAssertEqual((error as? URLError)?.code, .cannotConnectToHost)
+        }
     }
 
-    func testListModelsAnthropicFailureGivesFallbackList() async throws {
+    func testDiscoverModelsAnthropicFailureDoesNotReturnStaticSuggestions() async throws {
         let store = try NotebookStore(path: .inMemory)
         let cfg = ProviderConfig(type: .anthropic, name: "Claude", baseURL: "https://api.anthropic.com")
         try store.saveProvider(cfg)
         let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (ProviderConfig.ollamaId, "y"))
         let router = makeRouter(store: store, selection: selection)
         MockURLProtocol.handler = { _ in throw URLError(.notConnectedToInternet) }
-        let models = await router.listModels(providerId: cfg.id)
-        XCTAssertEqual(models, AnthropicChatAdapter.defaultModels)
+        do {
+            _ = try await router.discoverModels(providerId: cfg.id)
+            XCTFail("Expected the listing failure instead of static model suggestions")
+        } catch {
+            XCTAssertEqual((error as? URLError)?.code, .notConnectedToInternet)
+        }
     }
 
-    func testTestConnectionSuccessReturnsNil() async throws {
+    func testProbeSuccessVerifiesListingOnly() async throws {
         let store = try NotebookStore(path: .inMemory)
         let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (ProviderConfig.ollamaId, "y"))
         let router = makeRouter(store: store, selection: selection)
         MockURLProtocol.handler = { req in
             (httpResponse(req.url!, status: 200), Data(#"{"data":[{"id":"m"}]}"#.utf8))
         }
-        let error = await router.testConnection(type: .openwebui, baseURL: "http://h:3000", apiKey: "k")
-        XCTAssertNil(error)
+        let result = try await router.probe(type: .openwebui, baseURL: "http://h:3000", apiKey: "k")
+        XCTAssertEqual(result.status, .verified)
+        XCTAssertEqual(result.models.map(\.id), ["m"])
+        XCTAssertNil(result.errorCode)
+        XCTAssertFalse(result.generationVerified)
     }
 
-    func testTestConnectionReports401() async throws {
+    func testProbeReportsAuthenticationFailure() async throws {
         let store = try NotebookStore(path: .inMemory)
         let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (ProviderConfig.ollamaId, "y"))
         let router = makeRouter(store: store, selection: selection)
         MockURLProtocol.handler = { req in
             (httpResponse(req.url!, status: 401), Data())
         }
-        let error = await router.testConnection(type: .openwebui, baseURL: "http://h:3000", apiKey: "bad")
-        guard case .auth = error as? ProviderError else {
-            return XCTFail("expected ProviderError.auth, got \(String(describing: error))")
-        }
+        let result = try await router.probe(type: .openwebui, baseURL: "http://h:3000", apiKey: "bad")
+        XCTAssertEqual(result.status, .failed)
+        XCTAssertEqual(result.errorCode, "auth")
+        XCTAssertTrue(result.models.isEmpty)
+        XCTAssertFalse(result.generationVerified)
     }
 
-    func testTestConnectionReportsNetworkFailure() async throws {
+    func testProbeReportsNetworkFailure() async throws {
         // Phase 1 lesson: a typo'd LAN URL must NOT report success.
         let store = try NotebookStore(path: .inMemory)
         let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (ProviderConfig.ollamaId, "y"))
         let router = makeRouter(store: store, selection: selection)
         MockURLProtocol.handler = { _ in throw URLError(.cannotConnectToHost) }
-        let error = await router.testConnection(type: .openwebui, baseURL: "http://192.168.1.99:9999", apiKey: nil)
-        XCTAssertNotNil(error)
+        let result = try await router.probe(type: .openwebui, baseURL: "http://192.168.1.99:9999", apiKey: nil)
+        XCTAssertEqual(result.status, .failed)
+        XCTAssertEqual(result.errorCode, "transport")
+        XCTAssertTrue(result.models.isEmpty)
+        XCTAssertFalse(result.generationVerified)
     }
 
     /// A mid-drain settings change must not let the network call diverge
@@ -198,7 +216,7 @@ final class ProviderRouterTests: XCTestCase {
         // Acknowledged deliberately (see note in the chat-routing test above):
         // the composite key still resolves this real saved provider row, so
         // it would trip the FR-A8 gate otherwise.
-        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com", privacyAcknowledged: true)
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com/v1", privacyAcknowledged: true)
         try store.saveProvider(cfg)
         let secrets = InMemorySecretStore()
         try secrets.save(providerId: cfg.id, secret: "sk-oai")
@@ -249,7 +267,7 @@ final class ProviderRouterTests: XCTestCase {
     /// data via chat — the router throws before the adapter makes a request.
     func testStreamThrowsConsentRequiredForUnacknowledgedCloudProvider() async throws {
         let store = try NotebookStore(path: .inMemory)
-        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com")
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com/v1")
         XCTAssertFalse(cfg.privacyAcknowledged, "fixture must start unacknowledged")
         try store.saveProvider(cfg)
         let selection = StaticSelection(chat: (cfg.id, "gpt-4o"), embed: (ProviderConfig.ollamaId, "x"))
@@ -272,7 +290,7 @@ final class ProviderRouterTests: XCTestCase {
     /// receive text to embed either.
     func testEmbedThrowsConsentRequiredForUnacknowledgedCloudProvider() async throws {
         let store = try NotebookStore(path: .inMemory)
-        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com")
+        let cfg = ProviderConfig(type: .openai, name: "OpenAI", baseURL: "https://api.openai.com/v1")
         XCTAssertFalse(cfg.privacyAcknowledged, "fixture must start unacknowledged")
         try store.saveProvider(cfg)
         let selection = StaticSelection(chat: (ProviderConfig.ollamaId, "x"), embed: (cfg.id, "text-embedding-3-small"))
