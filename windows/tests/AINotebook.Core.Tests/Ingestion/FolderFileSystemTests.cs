@@ -284,7 +284,17 @@ public sealed class FolderFileSystemTests
     private sealed class Tree : IDisposable
     {
         public string Path { get; } = Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "wp6-win-fs-" + Guid.NewGuid())).FullName;
-        public void Dispose() => Directory.Delete(Path, true);
+        public void Dispose()
+        {
+            // Remove links (junctions, symlinks) first: a recursive delete that
+            // reaches a junction fails on Windows ("The parameter is incorrect").
+            foreach (var entry in new DirectoryInfo(Path).EnumerateFileSystemInfos("*", SearchOption.TopDirectoryOnly))
+            {
+                if (!entry.Attributes.HasFlag(FileAttributes.ReparsePoint)) continue;
+                if (entry is DirectoryInfo dir) dir.Delete(false); else entry.Delete();
+            }
+            Directory.Delete(Path, true);
+        }
     }
 }
 
