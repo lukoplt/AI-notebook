@@ -1,0 +1,5 @@
+# Hash-checked resources must keep their exact bytes on every platform
+# (Windows checkouts otherwise convert LF to CRLF and the SHA-256 sidecars
+# no longer match).
+*.sha256 -text
+Sources/AINotebookCore/Resources/** -text

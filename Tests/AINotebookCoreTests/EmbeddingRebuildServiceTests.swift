@@ -2,18 +2,11 @@ import XCTest
 @testable import AINotebookCore
 
 @MainActor final class EmbeddingRebuildServiceTests: XCTestCase {
-    private var dirs: [URL] = []
-
-    override func tearDown() {
-        for dir in dirs { try? FileManager.default.removeItem(at: dir) }
-        dirs = []
-        super.tearDown()
-    }
 
     private func tempJournal() throws -> EmbeddingRebuildJournal {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        dirs.append(dir)
+        addTeardownBlock { try? FileManager.default.removeItem(at: dir) }
         return EmbeddingRebuildJournal(url: dir.appendingPathComponent(EmbeddingRebuildJournal.fileName))
     }
 

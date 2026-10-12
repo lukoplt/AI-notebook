@@ -136,13 +136,6 @@ final class DrainCallCounter: @unchecked Sendable {
 }
 
 @MainActor final class ProfileEmbeddingDrainTests: XCTestCase {
-    private var dirs: [URL] = []
-
-    override func tearDown() {
-        for dir in dirs { try? FileManager.default.removeItem(at: dir) }
-        dirs = []
-        super.tearDown()
-    }
 
     // MARK: - Fixture helpers
 
@@ -345,7 +338,7 @@ final class DrainCallCounter: @unchecked Sendable {
             .first { $0["name"] as? String == "fresh-import" })
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        dirs.append(dir)
+        addTeardownBlock { try? FileManager.default.removeItem(at: dir) }
         let path = StorePath(fileURL: dir.appendingPathComponent("db.sqlite"))
         let persisted = choice(c["selection"])
         let text = c["canonicalText"] as! String
