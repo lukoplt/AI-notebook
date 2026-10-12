@@ -286,14 +286,40 @@ public sealed class FolderFileSystemTests
         public string Path { get; } = Directory.CreateDirectory(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "wp6-win-fs-" + Guid.NewGuid())).FullName;
         public void Dispose()
         {
-            // Remove links (junctions, symlinks) first: a recursive delete that
-            // reaches a junction fails on Windows ("The parameter is incorrect").
-            foreach (var entry in new DirectoryInfo(Path).EnumerateFileSystemInfos("*", SearchOption.TopDirectoryOnly))
+            // Unlink every reparse point (junction, symlink) first, at any depth and
+            // without following it: a recursive delete that meets a junction fails on
+            // Windows ("The parameter is incorrect"). Cleanup must never fail a test.
+            try
             {
-                if (!entry.Attributes.HasFlag(FileAttributes.ReparsePoint)) continue;
-                if (entry is DirectoryInfo dir) dir.Delete(false); else entry.Delete();
+                Unlink(new DirectoryInfo(Path));
+                Directory.Delete(Path, true);
             }
-            Directory.Delete(Path, true);
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
+        }
+
+        private static void Unlink(DirectoryInfo directory)
+        {
+            foreach (var entry in directory.EnumerateFileSystemInfos())
+            {
+                if (entry.Attributes.HasFlag(FileAttributes.ReparsePoint))
+                {
+                    if (entry is DirectoryInfo link) RemoveDirectoryLink(link.FullName); else entry.Delete();
+                }
+                else if (entry is DirectoryInfo child) Unlink(child);
+            }
+        }
+
+        private static void RemoveDirectoryLink(string path)
+        {
+            try { Directory.Delete(path, false); }
+            catch (IOException) when (OperatingSystem.IsWindows())
+            {
+                var start = new ProcessStartInfo("cmd.exe") { UseShellExecute = false, CreateNoWindow = true };
+                start.ArgumentList.Add("/c"); start.ArgumentList.Add("rmdir"); start.ArgumentList.Add(path);
+                using var process = Process.Start(start)!;
+                process.WaitForExit();
+            }
         }
     }
 }
