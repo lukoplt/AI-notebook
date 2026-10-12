@@ -12,10 +12,14 @@ final class MemoryPressureContractTests: XCTestCase {
     }
 
     /// Waits (bounded) until the admission actor reflects an asynchronous acquire.
+    /// Waits up to 10 s of wall time (not a fixed number of yields): CI runners
+    /// under `swift test --parallel` can need far longer than 2,000 yields.
     private func settle(_ name: String, _ condition: () async -> Bool) async {
-        for _ in 0..<2_000 {
+        let deadline = Date().addingTimeInterval(10)
+        while Date() < deadline {
             if await condition() { return }
             await Task.yield()
+            try? await Task.sleep(nanoseconds: 1_000_000)
         }
         XCTFail("\(name): admission did not settle")
     }
