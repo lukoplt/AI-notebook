@@ -109,7 +109,7 @@ public class ChatEngineProviderSnapshotTests
         var engine = new ChatEngine(store, new Retriever(store, new MockEmbeddingClient(), "embed"), router, "stale", retryBackoffMillis: 1);
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => engine.SendAsync(session.Id!.Value, nb.Id.Value, "Q", onRetry: cts.Cancel, ct: cts.Token));
         Assert.Single(handler.Requests);
-        Assert.Single(store.Messages(session.Id.Value));
+        Assert.Single(store.Messages(session.Id!.Value));
     }
 
     [Fact]

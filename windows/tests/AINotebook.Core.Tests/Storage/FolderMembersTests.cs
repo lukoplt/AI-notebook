@@ -76,8 +76,8 @@ public sealed class FolderMembersTests
     [Fact]
     public void InvalidArgumentsAreRejected()
     {
-        Assert.Equal(Fixture().GetProperty("maxLimit").GetInt32(), NotebookStore.FolderMembersMaxLimit);
-        Assert.Equal(Fixture().GetProperty("uiPageSize").GetInt32(), NotebookStore.FolderMembersPageSize);
+        Assert.Equal(NotebookStore.FolderMembersMaxLimit, Fixture().GetProperty("maxLimit").GetInt32());
+        Assert.Equal(NotebookStore.FolderMembersPageSize, Fixture().GetProperty("uiPageSize").GetInt32());
         var c = Case("invalid-arguments");
         var seeded = Seed(c);
         using var store = seeded.Store;

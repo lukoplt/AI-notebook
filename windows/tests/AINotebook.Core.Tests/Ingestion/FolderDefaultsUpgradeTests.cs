@@ -63,7 +63,7 @@ public sealed class FolderDefaultsUpgradeTests
         var contract = Fixture();
         Assert.Equal(contract.GetProperty("defaultIncludeExts").EnumerateArray().Select(e => e.GetString()!), FolderRules.Defaults.IncludeExts);
         Assert.Equal(contract.GetProperty("oldDefaultIncludeExts").EnumerateArray().Select(e => e.GetString()!), FolderDefaultsUpgrade.OldDefault);
-        Assert.Equal(contract.GetProperty("upgradeMarker").GetString(), FolderDefaultsUpgrade.Marker);
+        Assert.Equal(FolderDefaultsUpgrade.Marker, contract.GetProperty("upgradeMarker").GetString());
         foreach (var extension in FolderRules.Defaults.IncludeExts)
             Assert.NotNull(SourceTypeExtensions.Detect("a." + extension));
     }

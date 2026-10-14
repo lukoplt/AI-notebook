@@ -471,7 +471,7 @@ internal sealed class ReleaseHarness
             long revisionId = Assert.IsType<long>(source.PublishedRevisionId);
             Assert.Equal(asset.CanonicalText, Store.Revision(revisionId)!.Draft.CanonicalText);
             Assert.Contains(asset.RelPath, sections[1].Text);
-            var citation = Assert.Single(request.CitationMap.Where(c => c.SourceId == source.Id));
+            var citation = Assert.Single(request.CitationMap, c => c.SourceId == source.Id);
             Assert.Equal(FolderId, citation.FolderId);
             Assert.Equal(asset.RelPath, citation.RelPath);
             Assert.Equal(revisionId, citation.RevisionId);

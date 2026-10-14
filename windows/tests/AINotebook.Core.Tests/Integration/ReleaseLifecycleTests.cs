@@ -61,7 +61,7 @@ public sealed class ReleaseLifecycleTests
         h.Append(row.Name);
         await h.ScanOnlyAsync();
         string target = $"source:{old.Id}";
-        var job = Assert.Single(h.Store.DueJobs("extract", h.Clock.Now, 32).Where(j => j.Draft.Target == target));
+        var job = Assert.Single(h.Store.DueJobs("extract", h.Clock.Now, 32), j => j.Draft.Target == target);
         h.Gate.Arm();
         var queue = h.Queue;
         var worker = h.Worker;
@@ -94,7 +94,7 @@ public sealed class ReleaseLifecycleTests
         await h.CloseAsync();
         await h.ReopenAsync();
         await h.ScanOnlyAsync();
-        var retry = Assert.Single(h.Store.DueJobs("extract", h.Clock.Now, 32).Where(j => j.Draft.Target == target));
+        var retry = Assert.Single(h.Store.DueJobs("extract", h.Clock.Now, 32), j => j.Draft.Target == target);
         Assert.Equal(row.Expected.NewJob, retry.Id != job.Id);
         Assert.Equal(0, retry.Attempts);
         await h.DrainAsync();

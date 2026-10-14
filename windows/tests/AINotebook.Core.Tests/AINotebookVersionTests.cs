@@ -12,7 +12,7 @@ public class AINotebookVersionTests
     /// a release bump that forgets the constant fails CI here.
     [Fact]
     public void VersionMatchesRepoVersionFile()
-        => Assert.Equal(RepoVersion(), AINotebookVersion.Current);
+        => Assert.Equal(AINotebookVersion.Current, RepoVersion());
 
     [Fact]
     public void VersionIsSemverShape()
