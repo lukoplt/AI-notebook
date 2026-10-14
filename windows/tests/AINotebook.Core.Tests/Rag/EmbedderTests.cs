@@ -29,7 +29,7 @@ public class EmbedderTests
         var written = await embedder.EmbedAllPendingAsync();
 
         Assert.Equal(5, written);
-        Assert.Equal(0, store.UnembeddedChunks("m", 100).Count);
+        Assert.Empty(store.UnembeddedChunks("m", 100));
         Assert.Equal(3, client.Calls.Count);
         Assert.Equal(new[] { 2, 2, 1 }, client.Calls.Select(c => c.Length).ToArray());
     }

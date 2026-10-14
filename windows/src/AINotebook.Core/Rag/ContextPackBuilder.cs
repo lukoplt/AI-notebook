@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using static AINotebook.Core.Rag.ContextPackRendering;
@@ -197,7 +198,7 @@ public static class ContextPackBuilder
         return request;
     }
 
-    private static void Validate(ContextPackInput x, IContextTokenEstimator estimator)
+    private static void Validate([NotNull] ContextPackInput? x, IContextTokenEstimator estimator)
     {
         if (x is null || x.Model is null || x.Scope is null || x.Coverage is null || estimator.Version <= 0) throw Invalid();
         if (x.Model.RuntimeContext <= 0 || x.Model.MaxOutputTokens <= 0 || x.TopK <= 0 || x.FetchK < x.TopK || x.EvidenceBudgetCap is < 0
